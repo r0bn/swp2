@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SPIRIT</string>
+    <string name="scanning">Scanning...</string>
+    <string name="menu_standard">Standard</string>
+    <string name="menu_metric">Metric</string>
+    <string name="title_activity_story_details_">StoryDetails_Activity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="action_restart">Spielen</string>
+    <string name="action_start">Neustart</string>
+    <string name="action_delete">Löschen</string>
+
+</resources>

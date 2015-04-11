@@ -1,0 +1,60 @@
+<arml xmlns="http://opengis.net/arml/2.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:gml="http://www.opengis.net/gml/3.2">
+	<ARElements>
+		<Feature id="myFeature1">
+			<name>StadtPark</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.781194 9.173898</gml:pos>
+					</gml:Point>
+					<video>Welcome to Stuttgart_2.mp4</video>
+				</anchors>
+		</Feature>
+		<Feature id="myFeature2">
+			<name>HFT Building1</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.780570 9.173404</gml:pos>
+					</gml:Point>
+					<video>Main Entrance_2.mp4</video>
+				</anchors>
+		</Feature>
+		<Feature id="myFeature3">
+			<name>TU Library</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.781650 9.172047</gml:pos>
+					</gml:Point>
+					<video>Library_2.mp4</video>
+				</anchors>
+		</Feature>
+		<Feature id="myFeature4">
+			<name>HFT Building2</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.779615 9.173779</gml:pos>
+					</gml:Point>
+					<video>Building two_2.mp4</video>
+				</anchors>
+		</Feature>
+		<Feature id="myFeature5">
+			<name>Mensa</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.780466 9.170027</gml:pos>
+					</gml:Point>
+					<video>Mesa_2.mp4</video>
+				</anchors>
+		</Feature>
+			<Feature id="myFeature6">
+			<name>Schlossplatz</name>
+				<anchors>
+					<gml:Point>
+						<gml:pos>48.778514 9.180092</gml:pos>
+					</gml:Point>
+					<video>Schlossplatz_2.mp4</video>
+				</anchors>
+		</Feature>
+	</ARElements>
+</arml>

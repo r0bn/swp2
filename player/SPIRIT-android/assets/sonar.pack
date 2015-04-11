@@ -1,0 +1,38 @@
+
+sonar.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+hg_musterplatine
+  rotate: false
+  xy: 1, 389
+  size: 910, 512
+  orig: 910, 512
+  offset: 0, 0
+  index: -1
+sonar_schein3
+  rotate: false
+  xy: 1, 131
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+sonar_punkt
+  rotate: false
+  xy: 1, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 3
+
+sonar2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sonar_scheibe
+  rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 3

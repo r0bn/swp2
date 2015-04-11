@@ -1,0 +1,82 @@
+
+gui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+drehrad_linien_kreis
+  rotate: false
+  xy: 1, 504
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+textbox
+  rotate: false
+  xy: 1, 319
+  size: 512, 183
+  orig: 512, 183
+  offset: 0, 0
+  index: -1
+magequip
+  rotate: false
+  xy: 1, 255
+  size: 512, 62
+  orig: 512, 62
+  offset: 0, 0
+  index: 3
+schein_uebergabegeist_blau
+  rotate: false
+  xy: 515, 760
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+skip
+  rotate: false
+  xy: 1, 53
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+start
+  rotate: false
+  xy: 515, 558
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+stopp
+  rotate: false
+  xy: 773, 816
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+sonar
+  rotate: false
+  xy: 203, 53
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+auge
+  rotate: false
+  xy: 515, 356
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+auwahlrahmen
+  rotate: false
+  xy: 405, 53
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: 3
+button_eckig2
+  rotate: false
+  xy: 1, 1
+  size: 204, 50
+  orig: 204, 50
+  offset: 0, 0
+  index: -1

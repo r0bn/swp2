@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.hft_stuttgart.spirit.android.StoryDetails_Activity" >
+
+    <item android:id="@+id/action_restart" android:title="@string/action_restart"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_start" android:title="@string/action_start"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_delete" android:title="@string/action_delete"
+        android:orderInCategory="100" android:showAsAction="never" />
+
+</menu>
