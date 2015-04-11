@@ -1,0 +1,9 @@
+{
+  "name": "bower-components",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "bootswatch-dist": "readable",
+    "angular": "*"
+  }
+}

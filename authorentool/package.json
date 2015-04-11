@@ -1,0 +1,22 @@
+{
+  "name": "angular",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  },
+  "devDependencies": {
+    "browser-sync": "*",
+    "gulp-develop-server": "*",
+    "coffee-script": "*",
+    "gulp": "*",
+    "gulp-coffee": "*",
+    "gulp-jade": "*",
+    "gulp-stylus": "*",
+    "gulp-util": "*",
+    "bower": "*"
+  },
+  "dependencies": {
+    "express": "*",
+    "jade": "*"
+  }
+}
