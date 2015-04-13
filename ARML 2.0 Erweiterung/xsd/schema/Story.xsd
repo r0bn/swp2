@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:gml="http://www.opengis.net/gml/3.2"
+            elementFormDefault="qualified"
+            version="2.0.0">
+    <xsd:annotation>
+        <xsd:documentation>
+            <Revision>4</Revision>
+            <Last_Update>13.04.2015</Last_Update>
+            <Last_Editor>Yasin Abdelmonem</Last_Editor>
+            <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
+        </xsd:documentation> 
+    </xsd:annotation>
+    
+    <xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/gml.xsd"  />
+    
+    <xsd:complexType name="StoryType">
+        <xsd:sequence>
+            <xsd:element name="Title" type="xsd:string" maxOccurs="1" minOccurs="0" />
+            <xsd:element name="Description" type="xsd:string" maxOccurs="1" minOccurs="1" />
+            <xsd:element name="Author" type="xsd:string" maxOccurs="1" minOccurs="1" />
+            <xsd:element name="CreationDate" type="xsd:date" maxOccurs="1" minOccurs="1" />
+            <xsd:element name="Size" type="xsd:string"  />
+            <xsd:element name="Location" maxOccurs="1" minOccurs="1"> 
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="gml:Point"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Radius" type="xsd:integer" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="POI" minOccurs="1" maxOccurs="unbounded">
+                <xsd:complexType> 
+                    <xsd:sequence>
+                        <xsd:element name="Accessible" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                        <xsd:element name="Internet" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                    </xsd:sequence>
+                    <xsd:attribute name="id" type="xsd:ID" />
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:ID" />
+    </xsd:complexType>
+    <xsd:element name="Story" type="StoryType"/>
+</xsd:schema>

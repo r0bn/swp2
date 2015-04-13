@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            elementFormDefault="qualified"
+            version="2.0.0">
+    <xsd:annotation>
+        <xsd:documentation>
+            <Revision>4</Revision>
+            <Last_Update>13.04.2015</Last_Update>
+            <Last_Editor>Yasin Abdelmonem</Last_Editor>
+            <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
+        </xsd:documentation> 
+    </xsd:annotation>
+    <xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink/xlink.xsd" />
+    
+    <xsd:complexType name="DependencyType">
+        <xsd:sequence>
+            <xsd:element name="Storypoint" minOccurs="1" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Container" minOccurs="0" maxOccurs="unbounded" >
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="Storypointlist" minOccurs="0" maxOccurs="1">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="StorypointRef" minOccurs="0" maxOccurs="unbounded">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute ref="xlink:href" />
+                                                    </xsd:complexType>
+                                                </xsd:element>  
+                                            </xsd:sequence>  
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="Itemlist" minOccurs="0" maxOccurs="1">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="ItemRef" minOccurs="0" maxOccurs="unbounded">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute ref="xlink:href" />
+                                                    </xsd:complexType>
+                                                </xsd:element> 
+                                            </xsd:sequence>   
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="EndOfStory" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                    <xsd:attribute name="id" type="xsd:ID"/> 
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="Dependency" type="DependencyType" />
+</xsd:schema>
