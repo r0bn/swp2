@@ -8,9 +8,16 @@ html
 
     link(rel="icon" href="/static/favicon.png")
 
+    // Codemirror
+    link(rel="stylesheet",href="bower/codemirror/lib/codemirror.css")
+    link(rel="stylesheet",href="bower/codemirror/theme/eclipse.css")
+    script(src="bower/codemirror/lib/codemirror.js")
+    script(src="bower/codemirror/mode/xml/xml.js")
+
     link(rel="stylesheet",href="/bower/bootswatch-dist/css/bootstrap.css")
     link(rel="stylesheet",href="/static/build/main.css")
     script(src="/bower/angular/angular.js")
+    script(src="bower/angular-ui-codemirror/ui-codemirror.js")
 
     title #{title} 
 
