@@ -1,3 +1,10 @@
+/*ARML Parser
+ * 
+ * erzeugt POI (im Core Package abgelegt)
+ * 
+ * 
+ */
+
 package de.hft_stuttgart.spirit.android;
 
 import java.io.InputStream;
@@ -40,7 +47,7 @@ public class XmlPullParserHandler {
 				while(eventType != XmlPullParser.END_DOCUMENT){
 					String tagname = parser.getName();
 					switch(eventType) {
-					
+
 					case XmlPullParser.START_TAG:
 						
 						if(tagname.equalsIgnoreCase("Feature")){
@@ -64,6 +71,7 @@ public class XmlPullParserHandler {
 					    }else if (tagname.equals("video")){
 					    	place.setVideo(text);
 					    }
+						//für die Tags hier elseIf einfügen
 						break;
 						
 						default: 

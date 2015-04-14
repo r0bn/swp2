@@ -1,7 +1,8 @@
 package de.hft_stuttgart.spirit;
 
 public class Poi {
-
+	
+	// Hier Felder einfügen
 	private String name;
 	private String longitude;
 	private String latitude;

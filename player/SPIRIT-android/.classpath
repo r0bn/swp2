@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="src" path="/SPIRIT-core"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/eclipse/plugins/gdx-backend-android-1.4.1.jar" sourcepath="/home/storzi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.4.1/ed5d76e7b283896e10c7e622305338c263739b07/gdx-backend-android-1.4.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/eclipse/plugins/gdx-1.4.1.jar" sourcepath="/home/storzi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.4.1/a36f5d3e6a3b0fa3c625f8ce88216daf99435bce/gdx-1.4.1-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="libs/Vuforia.jar"/>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="libs/Vuforia.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx/gdx-1.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx/gdx-backend-android-1.4.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

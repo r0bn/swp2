@@ -262,6 +262,7 @@ public interface UIController {
 	public void setBrowserAlpha(float alpha);
 	public void hideBrowser();
 	public void setBrowserSize(float width, float height);
+	//für Parser 
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
 	

@@ -21,7 +21,8 @@ public class StoryEngine implements SpiritStoryEngine {
 	public StoryEngine(UIController spiritFacade) {
 		facade = spiritFacade;
 	}
-
+	
+	//Wird nach jedem Frame aufgerufen
 	@Override
 	public void update() {
 
