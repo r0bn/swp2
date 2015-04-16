@@ -1,14 +1,16 @@
     gulp =            require 'gulp'
     gutil =           require 'gulp-util'
+    order =           require 'gulp-order'
 
     # server
 
-    server =          require "gulp-develop-server"
     browserSync =     require 'browser-sync'
     reload =          browserSync.reload
 
     # js
     coffee =          require 'gulp-coffee'
+    uglify =          require 'gulp-uglify'
+    concat =          require 'gulp-concat'
 
     # html
     jade =            require 'gulp-jade'
@@ -20,13 +22,11 @@
 
 ## HTML
 
-    ###
     gulp.task 'html', () ->
       gulp.src './assets/jade/*.jade'
       .pipe jade()
       .pipe gulp.dest './static'
       .pipe reload({stream:true})
-    ###
 
 ## JS
 
@@ -36,6 +36,18 @@
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
 
+    gulp.task 'js-vendor', () ->
+        gulp.src [
+            './bower_components/codemirror/lib/codemirror.js'
+            './bower_components/codemirror/mode/xml/xml.js'
+            './bower_components/angular/angular.js'
+            './bower_components/angular-ui-codemirror/ui-codemirror.js'
+        ]
+        .pipe concat 'vendor.js'
+        .pipe uglify()
+        .pipe gulp.dest './static/build'
+        .pipe reload({stream:true})
+
 ## CSS 
 
     gulp.task 'css', () ->
@@ -44,28 +56,35 @@
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
 
+    gulp.task 'css-vendor', () ->
+        gulp.src [
+            './bower_components/codemirror/lib/codemirror.css'
+            './bower_components/codemirror/theme/eclipse.css'
+            './bower_components/bootswatch-dist/css/bootstrap.css'
+        ]
+        .pipe concat 'vendor.css'
+        .pipe gulp.dest './static/build'
+        .pipe reload({stream:true})
+
 ## Build all
 
-    gulp.task 'build', ['js', 'css'], () ->
+    gulp.task 'build', ['js', 'css', 'html', 'js-vendor', 'css-vendor'], () ->
 
 # Watch
 
     gulp.task 'watch', ['build'], () ->
       gulp.watch ['assets/coffee/**/*'],['js']
       gulp.watch ['assets/stylus/**/*'],['css']
-      gulp.watch ['server/views/**/*'], reload
-      gulp.watch ['app.litcoffee', 'server/**/*.litcoffee'], server.restart
+      gulp.watch ['assets/jade/**/*'], ['html']
 
     gulp.task 'browser-sync', ['watch'], () ->
       browserSync {
-        proxy : "localhost:4000"
+        server :
+            baseDir : "./static"
         open: false
         port:4001
       }
 
 # Server
 
-    gulp.task 'server', () ->
-      server.listen { path: 'app.litcoffee' }
-
-    gulp.task 'default', ['server', 'browser-sync']
+    gulp.task 'default', ['browser-sync']
