@@ -24,3 +24,12 @@ Method: GET
 Response type: XML
 
 Notes: Media data with absolute URI included.
+
+
+### Temporary story metadata POST route
+
+http://api.dev.la/createstory
+
+Method: POST
+
+Fields: title, description, author, size, creation_date, location, radius
