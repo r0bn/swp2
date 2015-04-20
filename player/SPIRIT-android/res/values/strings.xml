@@ -2,8 +2,15 @@
 <resources>
 
     <string name="app_name">SPIRIT</string>
-        <string name="scanning">Scanning...</string>   
-        <string name="menu_standard">Standard</string>
+    <string name="scanning">Scanning...</string>
+    <string name="menu_standard">Standard</string>
     <string name="menu_metric">Metric</string>
-        
+    <string name="title_activity_swipe_view_">SwipeView_Activity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main_">StorytellAR</string>
+    <string name="title_activity_story_list_installed__fragment">StoryListInstalled_Fragment</string>
+    <string name="title_activity_story_list_store__fragment">StoryListStore_Fragment</string>
+    <string name="title_activity_story_details_">StoryDetails_Activity</string>
+
 </resources>
