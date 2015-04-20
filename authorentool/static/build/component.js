@@ -13,21 +13,9 @@ mainApp.controller("mainCtrl", [
     $scope.handleStorySelected = function() {
       return $scope.storySelected = true;
     };
-    $scope.storys = [
-      {
-        name: "story01",
-        author: "fritz",
-        timestamp: "17. Okt 14"
-      }, {
-        name: "story02",
-        author: "hans",
-        timestamp: "17. Dez 15"
-      }, {
-        name: "kneipentour",
-        author: "hugo",
-        timestamp: "4. April 15"
-      }
-    ];
+    $http.get("http://api.dev.la/stories").success(function(data) {
+      return $scope.storys = data;
+    });
     $scope.mediaData = [
       {
         id: 1,
