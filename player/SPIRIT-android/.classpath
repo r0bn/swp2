@@ -9,5 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/Vuforia.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx/gdx-1.4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx/gdx-backend-android-1.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jersey-bundle-1.19.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
