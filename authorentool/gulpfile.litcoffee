@@ -2,8 +2,13 @@
     gutil =           require 'gulp-util'
     order =           require 'gulp-order'
 
-    # server
+    ftp =             require 'gulp-ftp'
+    try
+        ftpConfig =       require './config-ftp.json'
+    catch
+        console.log "task deployment might requires credentials"
 
+    # server
     browserSync =     require 'browser-sync'
     reload =          browserSync.reload
 
@@ -69,6 +74,17 @@
 ## Build all
 
     gulp.task 'build', ['js', 'css', 'html', 'js-vendor', 'css-vendor'], () ->
+
+## Deployment
+
+    gulp.task "deploy", ['build'], () ->
+        gulp.src "static/**/*"
+            .pipe ftp {
+                host : ftpConfig.host
+                user : ftpConfig.user
+                pass : ftpConfig.pass
+                remotePath : "/"
+            }
 
 # Watch
 
