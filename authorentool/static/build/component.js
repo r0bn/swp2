@@ -19,6 +19,11 @@ mainApp.controller("mainCtrl", [
     $http.get("http://api.dev.la/stories").success(function(data) {
       return $scope.storys = data;
     });
+    $scope.createStory = function() {
+      return $http.post("http://api.dev.la/createstory", $scope.storys[0]).success(function() {
+        return console.log("created");
+      });
+    };
     return $scope.mediaData = [
       {
         id: 1,

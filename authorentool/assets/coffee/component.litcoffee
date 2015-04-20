@@ -26,6 +26,11 @@
             .success (data) ->
                 $scope.storys = data
 
+        $scope.createStory = () ->
+            $http.post("http://api.dev.la/createstory", $scope.storys[0])
+                .success () ->
+                    console.log "created"
+
         $scope.mediaData = [
             {
                 id : 1
