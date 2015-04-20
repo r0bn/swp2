@@ -31,6 +31,9 @@
                 .success () ->
                     console.log "created"
 
+        $scope.deleteStory = () ->
+            console.log("Gelöscht")
+
         $scope.mediaData = [
             {
                 id : 1
