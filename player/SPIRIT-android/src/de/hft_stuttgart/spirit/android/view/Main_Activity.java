@@ -12,8 +12,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.R;
 
+@SuppressWarnings("deprecation")
 public class Main_Activity extends ActionBarActivity implements ActionBar.TabListener{
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -84,13 +86,14 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        
+        if (id == R.id.action_filter) {
+        	Toast toast = Toast.makeText(getApplicationContext(),"Work in progress for Filter!",Toast.LENGTH_SHORT);
+        	toast.show();
             return true;
+        } else {
+        	return false;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

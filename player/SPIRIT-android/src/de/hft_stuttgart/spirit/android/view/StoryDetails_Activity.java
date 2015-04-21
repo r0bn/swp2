@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.R;
 
 public class StoryDetails_Activity extends ActionBarActivity {
@@ -28,12 +29,22 @@ public class StoryDetails_Activity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        Toast toast;
+        switch (id) {
+		case R.id.action_start:
+        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Start!",Toast.LENGTH_SHORT);
+        	toast.show();
+			return true;
+		case R.id.action_restart:
+        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Neustart!",Toast.LENGTH_SHORT);
+        	toast.show();
+			return true;
+		case R.id.action_delete:
+        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Löschen!",Toast.LENGTH_SHORT);
+        	toast.show();
+			return true;
+		default:
+			return false;
+		}
     }
 }
