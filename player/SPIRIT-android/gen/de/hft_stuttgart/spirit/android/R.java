@@ -1668,12 +1668,16 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f0b001f;
         public static final int action_bar_title=0x7f0b001e;
         public static final int action_context_bar=0x7f0b0032;
+        public static final int action_delete=0x7f0b0057;
+        public static final int action_filter=0x7f0b0054;
         public static final int action_menu_divider=0x7f0b0005;
         public static final int action_menu_presenter=0x7f0b0006;
         public static final int action_mode_bar=0x7f0b002e;
         public static final int action_mode_bar_stub=0x7f0b002d;
         public static final int action_mode_close_button=0x7f0b0020;
-        public static final int action_settings=0x7f0b0054;
+        public static final int action_restart=0x7f0b0056;
+        public static final int action_settings=0x7f0b0058;
+        public static final int action_start=0x7f0b0055;
         public static final int activity_chooser_view_content=0x7f0b0021;
         public static final int always=0x7f0b0014;
         public static final int beginning=0x7f0b001b;
@@ -1802,9 +1806,7 @@ containing a value of this type.
     public static final class menu {
         public static final int main_=0x7f0e0000;
         public static final int story_details_=0x7f0e0001;
-        public static final int story_list_installed_=0x7f0e0002;
-        public static final int story_list_store_=0x7f0e0003;
-        public static final int swipe_view_=0x7f0e0004;
+        public static final int swipe_view_=0x7f0e0002;
     }
     public static final class raw {
         public static final int film_texture_fragment_shader=0x7f060000;
@@ -1867,7 +1869,11 @@ containing a value of this type.
         /**  Content description for the Toolbar icon used to collapse an expanded action mode. [CHAR LIMIT=NONE] 
          */
         public static final int abc_toolbar_collapse_description=0x7f0c0004;
+        public static final int action_delete=0x7f0c001e;
+        public static final int action_filter=0x7f0c001b;
+        public static final int action_restart=0x7f0c001c;
         public static final int action_settings=0x7f0c0016;
+        public static final int action_start=0x7f0c001d;
         public static final int app_name=0x7f0c0010;
         public static final int hello_world=0x7f0c0015;
         public static final int menu_metric=0x7f0c0013;

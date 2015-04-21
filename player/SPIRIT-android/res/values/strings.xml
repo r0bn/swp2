@@ -12,5 +12,9 @@
     <string name="title_activity_story_list_installed__fragment">StoryListInstalled_Fragment</string>
     <string name="title_activity_story_list_store__fragment">StoryListStore_Fragment</string>
     <string name="title_activity_story_details_">StoryDetails_Activity</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_restart">Neustart</string>
+    <string name="action_start">Start</string>
+    <string name="action_delete">Löschen</string>
 
 </resources>
