@@ -1,6 +1,9 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import java.io.IOException;
 import java.util.Locale;
+
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +13,26 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.webkit.GeolocationPermissions;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.R;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.content.Context;
+import android.graphics.Point;
+import android.location.Address;
+import android.location.Geocoder;
 
 @SuppressWarnings("deprecation")
 public class Main_Activity extends ActionBarActivity implements ActionBar.TabListener{
@@ -88,14 +107,180 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         int id = item.getItemId();
         
         if (id == R.id.action_filter) {
-        	Toast toast = Toast.makeText(getApplicationContext(),"Work in progress for Filter!",Toast.LENGTH_SHORT);
-        	toast.show();
+        	
+        	//Toast toast = Toast.makeText(getApplicationContext(),"Work in progress for Filter!",Toast.LENGTH_SHORT);
+        	//toast.show();
+            //return true;
+        	
+            LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View popup = inflater.inflate(R.layout.filter_popup, null);
+            final PopupWindow popupWindow = new PopupWindow(popup, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
+
+            final EditText radiusEditText = (EditText) popup.findViewById(R.id.radiusEditText);
+            final SeekBar radiusSeekBar = (SeekBar) popup.findViewById(R.id.radiusSeekbar);
+
+            //change the text using the seekbar:
+            radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    radiusEditText.setText(String.valueOf(i));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+            //change the seekbar using the text:
+            radiusEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                }
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					 try {
+	                        //Update Seekbar value after entering a number
+	                        radiusSeekBar.setProgress(Integer.parseInt(s.toString()));
+	                    } catch (Exception ex) {
+	                        ex.printStackTrace();
+	                    }
+					
+				}
+            });
+
+            popupWindow.setFocusable(true); //show keyboard after opening the popup
+
+
+            Button getLocationButton = (Button) popup.findViewById(R.id.getLocation);
+
+            
+            //the getLocationButton calls the geoLocate function, and closes the filter_popup
+            getLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        geoLocate(popup,radiusSeekBar.getProgress()); //with a reference to the popup view (to get the popup elements)
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    popupWindow.dismiss();
+                }
+            });
+            
+            
+            //the resetfilterButton closes the filter_popup and shows all stories
+            Button resetFilterButton = (Button) popup.findViewById(R.id.resetFilter);
+
+            resetFilterButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getAllStoriesFromServer();
+
+                    popupWindow.dismiss();
+                }
+            });
+
+            
+            //get the display-size to place the popup window
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+
+
+            popupWindow.showAsDropDown(getLocationButton, width / 2, height / 4);
+            // popupWindow.showAsDropDown(edittext,width/2,height/4); //coordinates must be dynamic
+          
             return true;
         } else {
         	return false;
         }
     }
 
+    
+    public void geoLocate(View v, int radius)throws IOException {
+
+        EditText cityEditText = (EditText) v.findViewById(R.id.cityEditText);
+
+        if (cityEditText.getText().toString().matches("")){ //no city was inserted
+
+            getAllStoriesFromServer();
+
+        }else { //look for coordinates
+            String location = cityEditText.getText().toString();
+
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(cityEditText.getWindowToken(), 0);
+
+
+            Geocoder gc = new Geocoder(this);
+            java.util.List<Address> list = gc.getFromLocationName(location, 1);
+
+            if (list.isEmpty()){
+                Toast.makeText(this, "Stadt nicht gefunden", Toast.LENGTH_LONG).show();
+            }else {
+                Address address = list.get(0); //get only the first location (google finds more than one location)
+                String locality = address.getLocality();
+                Toast.makeText(this, locality, Toast.LENGTH_LONG).show(); //the found the location name in a small popup
+
+                double latitude = address.getLatitude();
+                double longitude = address.getLongitude();
+
+
+                if (radius == 0) {   //input error => show all stories within a 1 km radius instead
+                    getStoriesFromServer(latitude, longitude, 1);
+                } else {
+                    getStoriesFromServer(latitude, longitude, radius);
+                }
+            }
+        }
+    }
+
+    //get stories from the server with parameters: platitude,longitude,radius
+    void getStoriesFromServer(double latitude, double longitude, int radius){ //stub
+
+    	
+    	
+        //=====only for testing purposes=========================================
+        // TextView coordinateText = (TextView) findViewById(R.id.textTitel);//show the coordinates in the main menu
+        // coordinateText.setText("latitude= " + latitude + ", longitude= " + longitude + ", radius= " + radius);//the coordinates for the server
+    	Toast.makeText(this, "latitude= " + latitude + ", longitude= " + longitude + ", radius= " 
+    			+ radius + " km", Toast.LENGTH_LONG).show();
+    	//=====only for testing purposes=========================================
+    	
+    }
+    
+    //get all Stories from the Server
+    void getAllStoriesFromServer(){    //stub
+
+    	
+    	//=====only for testing purposes=========================================
+        // TextView coordinateText = (TextView) findViewById(R.id.textTitel);//show the coordinates in the main menu
+        // coordinateText.setText("show all Stories");//the coordinates for the server
+    	Toast.makeText(this, "show all Stories", Toast.LENGTH_LONG).show();
+    	//=====only for testing purposes=========================================
+    	
+        
+    }
+    
+        
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
