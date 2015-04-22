@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Radius um die Stadt"
+        android:text="Einzugsradius"
         android:id="@+id/radiusTextView"
         android:layout_below="@+id/cityEditText"
         android:layout_alignParentLeft="true"
