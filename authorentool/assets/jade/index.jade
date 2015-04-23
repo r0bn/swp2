@@ -1,0 +1,65 @@
+extend layout/base
+
+block vars
+    - var title = "Welcome"
+
+block scripts
+    script(src="build/component.js")
+
+block content
+    .container-fluid(ng-app="mainApp",ng-controller="mainCtrl")
+        .row(ng-if="storySelected")
+            .col-md-8
+                .row
+                    .col-md-12
+                        .page-header
+                            h3 XML Editor 
+                        div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
+                .row
+                    .col-md-4.col-md-offset-8
+                        button.btn.btn-primary.btn-lg.pull-right Save
+
+            .col-md-4
+                .row
+                    .col-md-12
+                        .page-header
+                            h3 Media Library
+                .row
+                    .col-md-12
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th Name 
+                                    th Type
+                                    th Action
+                            tbody
+                                tr(ng-repeat="obj in mediaData")
+                                    td {{ obj.name }}
+                                    td 
+                                        span.label.label-default {{ obj.type }}
+                                    td
+                                        button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
+                                        button.btn.btn-danger.btn-xs Delete 
+
+        .row(ng-if="!storySelected")
+            .col-md-3.col-centered(style="margin-top:100px")
+                .list-group(ng-repeat="story in storys")
+                    a.list-group-item(href="#",ng-click="handleStorySelected(story)")
+                        h4.list-group-item-heading {{ story.title }}
+                        p.list-group-item-text 
+                            | {{ story.description }}
+                            br
+                            br
+                            | Author: {{ story.author }}
+                            br
+                            | Erstellt: {{ story.creation_date }}
+
+                .list-group
+                        button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story
+
+
+
+
+
+
+

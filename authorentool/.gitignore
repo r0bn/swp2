@@ -1,0 +1,9 @@
+static/build
+static/index.html
+
+node_modules
+bower_components
+
+npm-debug.log
+
+config-ftp.json

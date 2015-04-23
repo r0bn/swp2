@@ -1,11 +1,61 @@
 # Component #
 
-    mainApp = angular.module "mainApp", []
+    mainApp = angular.module "mainApp", ['ui.codemirror']
 
     mainApp.controller "mainCtrl", ["$scope", "$http", ($scope, $http) ->
 
-          ]
+        # Codemirror
+        $scope.editorOptions =
+            #lineWrapping : true
+            lineNumbers: true
+            #readOnly: 'nocursor'
+            mode: 'xml'
+            #indentUnit : 2
+            theme : "eclipse"
 
-    mainApp.directive 'draggable', () ->
-        (scope, element) ->
-            el = element[0]
+
+        $scope.storySelected = false
+        $scope.handleStorySelected = (story) ->
+            $scope.storySelected = true
+
+            $http.get("http://api.dev.la/story/#{story.id}")
+                .success (data) ->
+                    $scope.xmlFile = data
+
+        $http.get("http://api.dev.la/stories")
+            .success (data) ->
+                $scope.storys = data
+
+        $scope.createStory = () ->
+            $http.post("http://api.dev.la/createstory", $scope.storys[0])
+                .success () ->
+                    console.log "created"
+
+        $scope.deleteStory = () ->
+            console.log("Gelöscht")
+
+        $scope.mediaData = [
+            {
+                id : 1
+                name : "Cover"
+                type : "image"
+            },
+            {
+                id : 2
+                name : "ReferenceBar"
+                type : "image"
+            },
+            {
+                id : 3
+                name : "Introduction"
+                type : "movie"
+            },
+            {
+                id : 4
+                name : "FinalScene"
+                type : "movie"
+            }
+        ]
+
+    ]
+

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootswatch-dist": "readable",
-    "angular": "*"
+    "angular": "*",
+    "angular-ui-codemirror": "~0.2.3"
   }
 }

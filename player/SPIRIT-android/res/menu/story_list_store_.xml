@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.hft_stuttgart.spirit.android.StoryListStore_Fragment" >
+    <item android:id="@+id/action_filter" android:title="@string/action_filter"></item>
+
+</menu>

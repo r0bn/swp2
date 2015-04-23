@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules
 bower_components
 npm-debug.log
@@ -6,3 +7,5 @@ player/SPIRIT-android/bin/SPIRIT-android.apk
 player/SPIRIT-android/bin/SPIRIT-android.apk
 player/SPIRIT-android/bin/dexedLibs/gdx-1.4.1-0bcffac4a8ccdd5d0ce4e16ea41304e3.jar
 player/SPIRIT-android/bin/dexedLibs/gdx-backend-android-1.4.1-858fec4e20c14945bc82223fc07d001a.jar
+=======
+>>>>>>> origin/master

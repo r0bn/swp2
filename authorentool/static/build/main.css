@@ -1,3 +1,8 @@
-.demo {
-  color: #f00;
+.CodeMirror {
+  height: 600px;
+  margin-bottom: 20px;
+}
+.col-centered {
+  float: none;
+  margin: 0 auto;
 }

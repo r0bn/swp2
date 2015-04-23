@@ -1,6 +1,13 @@
 # Authorentool 
 
+## Live Website
+
+http://storytellar.dev.la/authorentool/
+
 ## Setup
+
+* NodeJS installieren https://nodejs.org/
+
 
 Dependencies installieren
 ```
@@ -16,5 +23,9 @@ Starten
 ```
 gulp
 ```
+
+## CSS Klassen
+
+https://bootswatch.com/readable/
 
 

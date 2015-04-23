@@ -6,17 +6,19 @@
   },
   "devDependencies": {
     "browser-sync": "*",
-    "gulp-develop-server": "*",
     "coffee-script": "*",
     "gulp": "*",
     "gulp-coffee": "*",
     "gulp-jade": "*",
+    "gulp-uglify": "*",
+    "gulp-order": "*",
+    "gulp-concat": "*",
     "gulp-stylus": "*",
     "gulp-util": "*",
+    "gulp-ftp": "*",
     "bower": "*"
   },
   "dependencies": {
-    "express": "*",
     "jade": "*"
   }
 }
