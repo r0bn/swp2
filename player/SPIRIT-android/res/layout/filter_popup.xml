@@ -11,15 +11,15 @@
     >
 
     <Button
+        android:id="@+id/getLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filtern"
-        android:id="@+id/getLocation"
-
-
-        android:layout_below="@+id/radiusSeekbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/radiusSeekbar"
+        android:background="@drawable/abc_btn_default_mtrl_shape"
+        android:text="@string/filtern"
+        android:textColor="#FF000000" />
 
     <EditText
         android:layout_width="279dp"
@@ -29,6 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:maxLength="20"
+        android:inputType="text"
         android:singleLine="true"/>
 
     <SeekBar
@@ -37,7 +38,7 @@
         android:id="@+id/radiusSeekbar"
         android:max="100"
         android:progress="50"
-        android:layout_gravity="left|top"
+        android:layout_gravity="start|top"
         android:layout_alignRight="@+id/cityEditText"
         android:layout_alignEnd="@+id/cityEditText"
         android:layout_below="@+id/radiusEditText"
@@ -45,19 +46,21 @@
         android:layout_alignParentStart="true" />
 
     <Button
+        android:id="@+id/resetFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nicht Filtern"
-        android:id="@+id/resetFilter"
-        android:layout_alignTop="@+id/getLocation"
+        android:layout_alignEnd="@+id/radiusSeekbar"
         android:layout_alignRight="@+id/radiusSeekbar"
-        android:layout_alignEnd="@+id/radiusSeekbar" />
+        android:layout_alignTop="@+id/getLocation"
+        android:background="@drawable/abc_btn_default_mtrl_shape"
+        android:text="@string/showAll"
+        android:textColor="#FF000000" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Bitte Stadt eingeben"
+        android:text="@string/enterCity"
         android:id="@+id/cityTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -67,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Einzugsradius"
+        android:text="@string/radius"
         android:id="@+id/radiusTextView"
         android:layout_below="@+id/cityEditText"
         android:layout_alignParentLeft="true"
@@ -80,7 +83,7 @@
         android:layout_below="@+id/radiusTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="50"
+        android:text="@string/seekbarStartvalue"
         android:inputType="number"
         android:layout_alignRight="@+id/getLocation"
         android:layout_alignEnd="@+id/getLocation"
@@ -91,9 +94,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="km"
+        android:text="@string/km"
         android:id="@+id/kmTextView"
         android:layout_toLeftOf="@+id/resetFilter"
+        android:layout_toStartOf="@+id/resetFilter" 
         android:layout_below="@+id/radiusTextView"
         android:layout_toRightOf="@+id/radiusEditText"
         android:layout_toEndOf="@+id/radiusEditText" />

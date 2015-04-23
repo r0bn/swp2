@@ -204,7 +204,7 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
             int height = size.y;
 
 
-            popupWindow.showAsDropDown(getLocationButton, width / 2, height / 4);
+            popupWindow.showAsDropDown(getLocationButton, width / 2, height / 5);
             // popupWindow.showAsDropDown(edittext,width/2,height/4); //coordinates must be dynamic
           
             return true;

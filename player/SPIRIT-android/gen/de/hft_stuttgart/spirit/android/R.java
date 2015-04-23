@@ -1886,10 +1886,16 @@ containing a value of this type.
         public static final int action_settings=0x7f0c0016;
         public static final int action_start=0x7f0c001d;
         public static final int app_name=0x7f0c0010;
+        public static final int enterCity=0x7f0c0021;
+        public static final int filtern=0x7f0c001f;
         public static final int hello_world=0x7f0c0015;
+        public static final int km=0x7f0c0024;
         public static final int menu_metric=0x7f0c0013;
         public static final int menu_standard=0x7f0c0012;
+        public static final int radius=0x7f0c0022;
         public static final int scanning=0x7f0c0011;
+        public static final int seekbarStartvalue=0x7f0c0023;
+        public static final int showAll=0x7f0c0020;
         public static final int title_activity_main_=0x7f0c0017;
         public static final int title_activity_story_details_=0x7f0c001a;
         public static final int title_activity_story_list_installed__fragment=0x7f0c0018;

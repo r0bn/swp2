@@ -507,10 +507,16 @@ int string action_restart 0x7f0c001c
 int string action_settings 0x7f0c0016
 int string action_start 0x7f0c001d
 int string app_name 0x7f0c0010
+int string enterCity 0x7f0c0021
+int string filtern 0x7f0c001f
 int string hello_world 0x7f0c0015
+int string km 0x7f0c0024
 int string menu_metric 0x7f0c0013
 int string menu_standard 0x7f0c0012
+int string radius 0x7f0c0022
 int string scanning 0x7f0c0011
+int string seekbarStartvalue 0x7f0c0023
+int string showAll 0x7f0c0020
 int string title_activity_main_ 0x7f0c0017
 int string title_activity_story_details_ 0x7f0c001a
 int string title_activity_story_list_installed__fragment 0x7f0c0018
