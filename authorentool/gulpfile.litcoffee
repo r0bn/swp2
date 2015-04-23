@@ -79,10 +79,10 @@
 ## Documentation
 
     gulp.task 'docs', () ->
-        globby ["README.md", "assets/**/*"], (err, files) ->
+        globby ["README.md", "assets/**/*", "gulpfile.litcoffee"], (err, files) ->
             fileList = files.join(" ")
 
-            exec __dirname + "/node_modules/docco/bin/docco -o docs/ -L " +__dirname + "/docs/language.json " + fileList, (err, stdout, stderr) ->
+            exec __dirname + "/node_modules/docco/bin/docco -o docs/ -L " +__dirname + "/docs/language.json -l linear " + fileList, (err, stdout, stderr) ->
                 console.log stdout
                 console.log stderr
 

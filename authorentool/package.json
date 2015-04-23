@@ -1,5 +1,5 @@
 {
-  "name": "angular",
+  "name": "authorentool",
   "version": "1.0.0",
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install"
@@ -16,11 +16,11 @@
     "gulp-stylus": "*",
     "gulp-util": "*",
     "gulp-ftp": "*",
-    "bower": "*"
+    "bower": "*",
+    "docco": "*",
+    "globby": "*",
+    "jade": "*"
   },
   "dependencies": {
-    "docco": "^0.7.0",
-    "globby": "^2.0.0",
-    "jade": "*"
   }
 }

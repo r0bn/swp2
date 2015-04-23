@@ -1,10 +1,14 @@
-# Component #
+# Client Logic #
+
+The following code is a angularJS (https://angularjs.org/) Application.
 
     mainApp = angular.module "mainApp", ['ui.codemirror']
 
+    # the main controller
     mainApp.controller "mainCtrl", ["$scope", "$http", ($scope, $http) ->
 
-        # Codemirror
+        # Codemirror Options
+        # Details: https://codemirror.net/doc/manual.html#config
         $scope.editorOptions =
             #lineWrapping : true
             lineNumbers: true
@@ -13,7 +17,7 @@
             #indentUnit : 2
             theme : "eclipse"
 
-
+        # handles the event if a user choose a story to edit
         $scope.storySelected = false
         $scope.handleStorySelected = (story) ->
             $scope.storySelected = true
@@ -22,18 +26,18 @@
                 .success (data) ->
                     $scope.xmlFile = data
 
-        $http.get("http://api.dev.la/stories")
-            .success (data) ->
-                $scope.storys = data
-
+        # Creates a story on the server
         $scope.createStory = () ->
             $http.post("http://api.dev.la/createstory", $scope.storys[0])
                 .success () ->
                     console.log "created"
 
-        $scope.deleteStory = () ->
-            console.log("Gelöscht")
+        # this will be initial executed and get all available story's
+        $http.get("http://api.dev.la/stories")
+            .success (data) ->
+                $scope.storys = data
 
+        # This is dummy data for demmo reasons
         $scope.mediaData = [
             {
                 id : 1

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>gulpfile.litcoffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>gulpfile.litcoffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="README.html">
+                    README.md
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="component.html">
+                    component.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="index.html">
+                    index.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="base.html">
+                    base.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mixins.html">
+                    mixins.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.styl
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="gulpfile.html">
+                    gulpfile.litcoffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre>gulp =            <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp'</span>
+gutil =           <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-util'</span>
+order =           <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-order'</span>
+
+ftp =             <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-ftp'</span>
+<span class="hljs-keyword">try</span>
+    ftpConfig =       <span class="hljs-built_in">require</span> <span class="hljs-string">'./config-ftp.json'</span>
+<span class="hljs-keyword">catch</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"task deployment might requires credentials"</span></pre></div>
+        
+      
+        
+        <p>server</p>
+
+        
+          <div class='highlight'><pre>browserSync =     <span class="hljs-built_in">require</span> <span class="hljs-string">'browser-sync'</span>
+reload =          browserSync.reload</pre></div>
+        
+      
+        
+        <p>js</p>
+
+        
+          <div class='highlight'><pre>coffee =          <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-coffee'</span>
+uglify =          <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-uglify'</span>
+concat =          <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-concat'</span></pre></div>
+        
+      
+        
+        <p>html</p>
+
+        
+          <div class='highlight'><pre>jade =            <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-jade'</span></pre></div>
+        
+      
+        
+        <p>css </p>
+
+        
+          <div class='highlight'><pre>stylus =          <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-stylus'</span></pre></div>
+        
+      
+        
+        <p>documentation</p>
+
+        
+          <div class='highlight'><pre>globby =          <span class="hljs-built_in">require</span> <span class="hljs-string">'globby'</span>
+exec =            <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).exec</pre></div>
+        
+      
+        
+        <h1 id="file-creation">File Creation</h1>
+<h2 id="html">HTML</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'html'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+  gulp.src <span class="hljs-string">'./assets/jade/*.jade'</span>
+  .pipe jade()
+  .pipe gulp.dest <span class="hljs-string">'./static'</span>
+  .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})</pre></div>
+        
+      
+        
+        <h2 id="js">JS</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'js'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+  gulp.src <span class="hljs-string">'./assets/coffee/**/*.litcoffee'</span>
+  .pipe coffee({bare : <span class="hljs-literal">true</span>}).<span class="hljs-literal">on</span>(<span class="hljs-string">'error'</span>, gutil.log)
+  .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
+  .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})
+
+gulp.task <span class="hljs-string">'js-vendor'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gulp.src [
+        <span class="hljs-string">'./bower_components/codemirror/lib/codemirror.js'</span>
+        <span class="hljs-string">'./bower_components/codemirror/mode/xml/xml.js'</span>
+        <span class="hljs-string">'./bower_components/angular/angular.js'</span>
+        <span class="hljs-string">'./bower_components/angular-ui-codemirror/ui-codemirror.js'</span>
+    ]
+    .pipe concat <span class="hljs-string">'vendor.js'</span>
+    .pipe uglify()
+    .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
+    .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})</pre></div>
+        
+      
+        
+        <h2 id="css">CSS</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'css'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+  gulp.src <span class="hljs-string">'./assets/stylus/**/*.styl'</span>
+  .pipe stylus()
+  .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
+  .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})
+
+gulp.task <span class="hljs-string">'css-vendor'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gulp.src [
+        <span class="hljs-string">'./bower_components/codemirror/lib/codemirror.css'</span>
+        <span class="hljs-string">'./bower_components/codemirror/theme/eclipse.css'</span>
+        <span class="hljs-string">'./bower_components/bootswatch-dist/css/bootstrap.css'</span>
+    ]
+    .pipe concat <span class="hljs-string">'vendor.css'</span>
+    .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
+    .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})</pre></div>
+        
+      
+        
+        <h2 id="documentation">Documentation</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'docs'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    globby [<span class="hljs-string">"README.md"</span>, <span class="hljs-string">"assets/**/*"</span>, <span class="hljs-string">"gulpfile.litcoffee"</span>], <span class="hljs-function"><span class="hljs-params">(err, files)</span> -&gt;</span>
+        fileList = files.join(<span class="hljs-string">" "</span>)
+
+        exec __dirname + <span class="hljs-string">"/node_modules/docco/bin/docco -o docs/ -L "</span> +__dirname + <span class="hljs-string">"/docs/language.json -l linear "</span> + fileList, <span class="hljs-function"><span class="hljs-params">(err, stdout, stderr)</span> -&gt;</span>
+            <span class="hljs-built_in">console</span>.log stdout
+            <span class="hljs-built_in">console</span>.log stderr</pre></div>
+        
+      
+        
+        <h2 id="build-all">Build all</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'build'</span>, [<span class="hljs-string">'js'</span>, <span class="hljs-string">'css'</span>, <span class="hljs-string">'html'</span>, <span class="hljs-string">'js-vendor'</span>, <span class="hljs-string">'css-vendor'</span>], <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></pre></div>
+        
+      
+        
+        <h2 id="deployment">Deployment</h2>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">"deploy"</span>, [<span class="hljs-string">'build'</span>], <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gulp.src <span class="hljs-string">"static/**/*"</span>
+        .pipe ftp {
+            host : ftpConfig.host
+            user : ftpConfig.user
+            pass : ftpConfig.pass
+            remotePath : <span class="hljs-string">"/"</span>
+        }</pre></div>
+        
+      
+        
+        <h1 id="watch">Watch</h1>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'watch'</span>, [<span class="hljs-string">'build'</span>], <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+  gulp.watch [<span class="hljs-string">'assets/coffee/**/*'</span>],[<span class="hljs-string">'js'</span>]
+  gulp.watch [<span class="hljs-string">'assets/stylus/**/*'</span>],[<span class="hljs-string">'css'</span>]
+  gulp.watch [<span class="hljs-string">'assets/jade/**/*'</span>], [<span class="hljs-string">'html'</span>]
+
+gulp.task <span class="hljs-string">'browser-sync'</span>, [<span class="hljs-string">'watch'</span>], <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+  browserSync {
+    server :
+        baseDir : <span class="hljs-string">"./static"</span>
+    <span class="hljs-attribute">open</span>: <span class="hljs-literal">false</span>
+    <span class="hljs-attribute">port</span>:<span class="hljs-number">4001</span>
+  }</pre></div>
+        
+      
+        
+        <h1 id="server">Server</h1>
+
+        
+          <div class='highlight'><pre>gulp.task <span class="hljs-string">'default'</span>, [<span class="hljs-string">'browser-sync'</span>]</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
