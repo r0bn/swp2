@@ -1,0 +1,14 @@
+{  
+  ".styl":{  
+    "name":"css",
+    "symbol":"//"
+  },
+  ".jade":{  
+    "name":"html",
+    "symbol":"//"
+  },
+  ".config":{  
+    "name":"sh",
+    "symbol":"#"
+  }
+}

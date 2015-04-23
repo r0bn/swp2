@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>base.jade</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="README.html">
+                  README.md
+                </a>
+              
+                
+                <a class="source" href="component.html">
+                  component.litcoffee
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.jade
+                </a>
+              
+                
+                <a class="source" href="base.html">
+                  base.jade
+                </a>
+              
+                
+                <a class="source" href="mixins.html">
+                  mixins.jade
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.styl
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>base.jade</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>include mixins
+
+doctype html
+block vars
+html
+  head
+    meta(charset="utf-8")
+
+    link(rel="icon" href="favicon.png")</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Codemirror</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    link(rel="stylesheet",href="build/vendor.css")
+    script(src="build/vendor.js")
+
+    link(rel="stylesheet",href="build/main.css")
+
+    title #{title} 
+
+  body(ng-app="mainApp",ng-controller="mainCtrl")
+
+    .navbar.navbar-default
+      .container-fluid
+        .navbar-header
+            a.navbar-brand(href="") Authorentool
+
+    block content
+
+             
+    block scripts</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

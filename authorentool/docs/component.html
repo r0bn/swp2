@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Component</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="README.html">
+                  README.md
+                </a>
+              
+                
+                <a class="source" href="component.html">
+                  component.litcoffee
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.jade
+                </a>
+              
+                
+                <a class="source" href="base.html">
+                  base.jade
+                </a>
+              
+                
+                <a class="source" href="mixins.html">
+                  mixins.jade
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.styl
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="component">Component</h1>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>mainApp = angular.<span class="hljs-built_in">module</span> <span class="hljs-string">"mainApp"</span>, [<span class="hljs-string">'ui.codemirror'</span>]
+
+mainApp.controller <span class="hljs-string">"mainCtrl"</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">"$http"</span>, <span class="hljs-function"><span class="hljs-params">($scope, $http)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Codemirror</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.editorOptions =</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>lineWrapping : true</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-attribute">lineNumbers</span>: <span class="hljs-literal">true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>readOnly: ‘nocursor’</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-attribute">mode</span>: <span class="hljs-string">'xml'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>indentUnit : 2</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        theme : <span class="hljs-string">"eclipse"</span>
+
+
+    $scope.storySelected = <span class="hljs-literal">false</span>
+    $scope.handleStorySelected = <span class="hljs-function"><span class="hljs-params">(story)</span> -&gt;</span>
+        $scope.storySelected = <span class="hljs-literal">true</span>
+
+        $http.get(<span class="hljs-string">"http://api.dev.la/story/<span class="hljs-subst">#{story.id}</span>"</span>)
+            .success (data) -&gt;
+                $scope.xmlFile = data
+
+    $http.get(<span class="hljs-string">"http://api.dev.la/stories"</span>)
+        .success (data) -&gt;
+            $scope.storys = data
+
+    $scope.createStory = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+        $http.post(<span class="hljs-string">"http://api.dev.la/createstory"</span>, $scope.storys[<span class="hljs-number">0</span>])
+            .success () -&gt;
+                <span class="hljs-built_in">console</span>.log <span class="hljs-string">"created"</span>
+
+    $scope.deleteStory = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Gelöscht"</span>)
+
+    $scope.mediaData = [
+        {
+            id : <span class="hljs-number">1</span>
+            name : <span class="hljs-string">"Cover"</span>
+            type : <span class="hljs-string">"image"</span>
+        },
+        {
+            id : <span class="hljs-number">2</span>
+            name : <span class="hljs-string">"ReferenceBar"</span>
+            type : <span class="hljs-string">"image"</span>
+        },
+        {
+            id : <span class="hljs-number">3</span>
+            name : <span class="hljs-string">"Introduction"</span>
+            type : <span class="hljs-string">"movie"</span>
+        },
+        {
+            id : <span class="hljs-number">4</span>
+            name : <span class="hljs-string">"FinalScene"</span>
+            type : <span class="hljs-string">"movie"</span>
+        }
+    ]
+
+]</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
