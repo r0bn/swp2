@@ -14,5 +14,3 @@ player/SPIRIT-android/project.properties
 *.class
 *.class
 player/SPIRIT-android/project.properties
-*.class
-*.db
