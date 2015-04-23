@@ -23,6 +23,11 @@
     # css 
     stylus =          require 'gulp-stylus'
 
+    # documentation
+    globby =          require 'globby'
+    exec =            require('child_process').exec
+
+
 # File Creation
 
 ## HTML
@@ -70,6 +75,16 @@
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
+
+## Documentation
+
+    gulp.task 'docs', () ->
+        globby ["README.md", "assets/**/*"], (err, files) ->
+            fileList = files.join(" ")
+
+            exec __dirname + "/node_modules/docco/bin/docco -o docs/ -L " +__dirname + "/docs/language.json " + fileList, (err, stdout, stderr) ->
+                console.log stdout
+                console.log stderr
 
 ## Build all
 
