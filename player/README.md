@@ -4,11 +4,11 @@
 
 You have to import 3 Projects:
 
--SPIRIT-Android
+-SPIRIT-Android (and choose google api)
 
 -SPIRIT-Core
 
--android-support-v7-appcompat
+-android-support-v7-appcompat (and choose android API)
 
 
 Then start the SPIRIT-Android Projekt
