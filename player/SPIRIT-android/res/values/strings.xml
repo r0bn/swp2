@@ -19,8 +19,9 @@
     <string name="filtern">Filtern</string>
     <string name="showAll">alle anzeigen</string>
     <string name="enterCity">Bitte Stadt eingeben</string>
-    <string name="radius">Einzugsradius</string>
+    <string name="radius">Einzugsradius (bei Ort)</string>
     <string name="seekbarStartvalue">50</string>
     <string name="km">km</string>
+    <string name="buzzword">Bitte Schlagwort eingeben</string>
 
 </resources>

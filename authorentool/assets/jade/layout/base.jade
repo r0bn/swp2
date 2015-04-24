@@ -1,5 +1,9 @@
+// # Basis Template HTML
+
+// pattern library
 include mixins
 
+// HTML 5
 doctype html
 block vars
 html
@@ -8,24 +12,24 @@ html
 
     link(rel="icon" href="favicon.png")
 
-    // Codemirror
+    // AngularJS, Codemirror and styles are bundeld in one file 
     link(rel="stylesheet",href="build/vendor.css")
     script(src="build/vendor.js")
-
     link(rel="stylesheet",href="build/main.css")
 
     title #{title} 
 
+  // Bootstrap AngularJS
   body(ng-app="mainApp",ng-controller="mainCtrl")
 
+    // Navigation Header
     .navbar.navbar-default
       .container-fluid
         .navbar-header
             a.navbar-brand(href="") Authorentool
 
+    // Blocks to be extend
     block content
-
-             
     block scripts 
 
 
