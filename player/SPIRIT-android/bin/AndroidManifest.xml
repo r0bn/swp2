@@ -20,10 +20,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -62,6 +66,14 @@
             android:name="de.hft_stuttgart.spirit.android.view.StoryDetails_Activity"
             android:label="@string/title_activity_story_details_" >
         </activity>
+        
+        <meta-data
+    		android:name="com.google.android.gms.version"
+    		android:value="@integer/google_play_services_version" />
+        <meta-data
+    		android:name="com.google.android.geo.API_KEY"
+    		android:value="AIzaSyDbslhFB1XHf4-Ruw7pmHLSOOz-8BwKs3w"/>
+        
     </application>
 
 </manifest>
