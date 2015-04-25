@@ -24,7 +24,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  * @author Mirjam
  *
  */
-public class ContentDownloader implements ContentDownloaderInterface {
+public class ContentDownloader {
 	
 	private static ContentDownloader instance = null;
 	private Client client = null;
@@ -46,8 +46,7 @@ public class ContentDownloader implements ContentDownloaderInterface {
 	 * See Singleton pattern
 	 * @return the instance of ContentDownloader
 	 */
-	@Override
-	public ContentDownloader getInstance() {
+	public static ContentDownloader getInstance() {
 		if(instance == null)
 			instance = new ContentDownloader();
 		return instance;
@@ -58,7 +57,6 @@ public class ContentDownloader implements ContentDownloaderInterface {
 	 * Requested meta data will be saved in the ArrayList allStoriesData. This includes a map with the meta data of each story and the parameter
 	 * 'already_downloaded' which marks downloaded stories.
 	 */
-	@Override
 	public void requestAllStories() {
 		try {
 		WebResource resource = client.resource(getBaseURI(URLallStories));
@@ -108,7 +106,6 @@ public class ContentDownloader implements ContentDownloaderInterface {
 	 * Download of a single story specified by the id. Server returns the XML which includes media data with absolute URI. 
 	 * @param id id of the story to download
 	 */
-	@Override
 	public void downloadStory(int id) {
 		WebResource resource = client.resource(getBaseURI(URLsingleStory, id));
 		
@@ -130,7 +127,6 @@ public class ContentDownloader implements ContentDownloaderInterface {
 	 * of stories were requested before, the stories will be requested from the server and the list will be returned.
 	 * @return list of requested stories with meta data
 	 */
-	@Override
 	public ArrayList<HashMap<String, String>> getAllStoriesData() {
 		if(allStoriesData.isEmpty())
 			requestAllStories();
