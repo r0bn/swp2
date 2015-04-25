@@ -5,7 +5,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
     mainApp = angular.module "mainApp", ['ui.codemirror']
 
     # the main controller
-    mainApp.controller "mainCtrl", ["$scope", "$http", ($scope, $http) ->
+    mainApp.controller "mainCtrl", ["$scope", "$http", "storytellerServer", ($scope, $http, server) ->
+
+        $scope.selectedFile = ""
+        $scope.selectedFile2 = ""
 
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
@@ -22,9 +25,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.handleStorySelected = (story) ->
             $scope.storySelected = true
 
-            $http.get("http://api.dev.la/story/#{story.id}")
-                .success (data) ->
-                    $scope.xmlFile = data
+        $http.get("http://api.dev.la/story/1")
+            .success (data) ->
+                $scope.xmlFile = data
+                #$scope.xmlFile = "<xml content>"
 
         # Creates a story on the server
         $scope.createStory = () ->
@@ -32,10 +36,24 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 .success () ->
                     console.log "created"
 
+        # this saves the current xml file
+        $scope.saveXML = () ->
+            console.log $scope.selectedFile
+            test = $scope.storys[0]
+            test.xml = $scope.xmlFile
+            delete test.id
+            ###
+            $http.post("http://api.dev.la/createstory",test)
+                .success () ->
+                    console.log "xml posted"
+            ###
+            server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
+
         # this will be initial executed and get all available story's
         $http.get("http://api.dev.la/stories")
             .success (data) ->
                 $scope.storys = data
+
 
         # This is dummy data for demmo reasons
         $scope.mediaData = [
@@ -61,5 +79,49 @@ The following code is a angularJS (https://angularjs.org/) Application.
             }
         ]
 
+    ]
+
+
+    mainApp.directive 'fileModel', [ () ->
+        {
+            restrict: 'A'
+            scope :
+                fileModel : '='
+            link: (scope, element, attrs) ->
+                
+                element.bind 'change', () ->
+                    scope.$apply () ->
+                        scope.fileModel = element[0].files[0]
+                        console.log scope.fileModel
+        }
+    ]
+
+    mainApp.factory 'storytellerServer', ['$http', ($http) ->
+        {
+            uploadMediaFile : (files, data) ->
+                $http({
+                    method : 'POST'
+                    url : 'http://api.dev.la/createstory'
+                    headers: {'Content-Type': undefined}
+                    transformRequest : (data) ->
+                        formData = new FormData()
+
+                        for key, value of data.model
+                            formData.append key, value
+
+                        for file in data.files
+                            formData.append "media[]", file
+
+                        formData
+                    data : { files : files, model : data }
+                })
+                .success () ->
+                    console.log "success"
+                .error () ->
+                    console.log "error"
+
+            test : () ->
+                "2"
+        }
     ]
 
