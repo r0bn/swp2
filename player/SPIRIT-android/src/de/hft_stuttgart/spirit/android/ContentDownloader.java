@@ -32,6 +32,7 @@ public class ContentDownloader {
 	public String URLallStories = "http://api.dev.la/stories";
 
 	private ArrayList<HashMap<String, String>> allStoriesData = new ArrayList<HashMap<String, String>>();
+	private ArrayList<Story> downloadedStories = new ArrayList<Story>();
 	
 	/**
 	 * Protected constructor for ContentDownloader
@@ -100,6 +101,13 @@ public class ContentDownloader {
 	 */
 	private void markDownloadedStories() {
 		
+		for (Story x : downloadedStories) {
+			for(int i=0; i< allStoriesData.size(); i++)
+			{
+				if(x.getId().equals(allStoriesData.get(i).get("id")))
+					allStoriesData.get(i).put("already_downloaded", "1");
+			}
+		}
 	}
 
 	/**
@@ -111,7 +119,16 @@ public class ContentDownloader {
 		
 		//Get XML with absolute URI for media data from server
 		System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
-		//Do something with XML here
+
+		//Parse media data from xml
+		//Download media data
+		
+		//Save XML
+		
+		//Create story object and copy existing meta data + set references (XML, media data)
+		//Add story object to list downloadedStories
+		//call markDownloadedStories()
+		
 	}
 	
 	public URI getBaseURI(String URL) {
@@ -133,4 +150,7 @@ public class ContentDownloader {
 		return allStoriesData;
 	}
 	
+	public ArrayList<Story> getDownloadedStories() {
+		return downloadedStories;
+	}
 }
