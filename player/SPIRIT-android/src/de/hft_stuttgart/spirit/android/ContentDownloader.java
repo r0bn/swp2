@@ -1,6 +1,11 @@
 
 package de.hft_stuttgart.spirit.android;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -9,9 +14,12 @@ import javax.ws.rs.core.UriBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import restClient.AndrestClient;
 import restClient.RESTException;
+import android.os.Environment;
 
 
 
@@ -29,6 +37,9 @@ public class ContentDownloader {
 	private ArrayList<Story> allStoriesData = new ArrayList<Story>();
 	private ArrayList<Story> downloadedStories = new ArrayList<Story>();
 	
+	private File rootDir;
+	private File storyMetas;
+	
 	/**
 	 * Protected constructor for ContentDownloader
 	 */
@@ -38,8 +49,19 @@ public class ContentDownloader {
 		//client = Client.create(config);
 		
 		client = new AndrestClient();
+		
+		File extRoot = Environment.getExternalStorageDirectory();
+		rootDir = new File(extRoot.getAbsolutePath()+"/StorytellAR");
+		storyMetas = new File(rootDir, "storyMeta.json");
+		try {
+			storyMetas.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		readMetaData();
 	}
-	
+
 	/**
 	 * Returns the existing instance of ContentDownloader. If an instance of ContentDownloader exists already, the instance will be returned.
 	 * See Singleton pattern
@@ -177,5 +199,38 @@ public class ContentDownloader {
 	
 	public ArrayList<Story> getDownloadedStories() {
 		return downloadedStories;
+	}
+	
+	private void readMetaData() {
+		JSONParser parser = new JSONParser(); 
+		try {
+			org.json.simple.JSONArray stories = (org.json.simple.JSONArray)parser.parse(new FileReader(storyMetas));
+			for(int i=0; i<stories.size(); i++)
+			{
+				org.json.simple.JSONObject story = (org.json.simple.JSONObject) stories.get(i);
+				Story temp = new Story();
+				temp.setId((String) story.get("id"));
+				temp.setTitle((String) story.get("title"));
+				temp.setDescription((String) story.get("description"));
+				temp.setAuthor((String) story.get("author"));
+				temp.setSize((String) story.get("size"));
+				temp.setCreation_date((String) story.get("creation_date"));
+				temp.setLocation((String) story.get("location"));
+				temp.setRadius((String) story.get("radius"));
+				
+				downloadedStories.add(temp);
+			}
+			downloadedStories.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

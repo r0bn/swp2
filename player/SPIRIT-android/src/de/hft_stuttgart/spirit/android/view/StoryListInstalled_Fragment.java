@@ -30,7 +30,6 @@ public class StoryListInstalled_Fragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         items = new ArrayList<Story>();
         items = ContentDownloader.getInstance().getDownloadedStories();
-        items.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
  
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
