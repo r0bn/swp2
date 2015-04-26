@@ -202,6 +202,7 @@ public class ContentDownloader {
 	}
 	
 	private void readMetaData() {
+		downloadedStories.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
 		JSONParser parser = new JSONParser(); 
 		try {
 			org.json.simple.JSONArray stories = (org.json.simple.JSONArray)parser.parse(new FileReader(storyMetas));
@@ -220,7 +221,6 @@ public class ContentDownloader {
 				
 				downloadedStories.add(temp);
 			}
-			downloadedStories.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
