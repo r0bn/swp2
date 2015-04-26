@@ -1,22 +1,20 @@
 
 package de.hft_stuttgart.spirit.android;
 
-import java.net.URI;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 
 
@@ -27,7 +25,6 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 public class ContentDownloader {
 	
 	private static ContentDownloader instance = null;
-	private Client client = null;
 	public String URLsingleStory = "http://api.dev.la/story/";
 	public String URLallStories = "http://api.dev.la/stories";
 
@@ -38,8 +35,7 @@ public class ContentDownloader {
 	 * Protected constructor for ContentDownloader
 	 */
 	protected ContentDownloader() {
-		ClientConfig config = new DefaultClientConfig();
-		client = Client.create(config);
+
 	}
 	
 	/**
@@ -60,10 +56,21 @@ public class ContentDownloader {
 	 */
 	public void requestAllStories() {
 		try {
-		WebResource resource = client.resource(getBaseURI(URLallStories));
-		//Get JSON from server
-		String data = resource.accept(MediaType.APPLICATION_JSON).get(String.class);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpGet getRequest = new HttpGet(URLallStories);
+		getRequest.addHeader("accept", "application/json");
+		HttpResponse response = client.execute(getRequest);
+			
+		if(response.getStatusLine().getStatusCode() != 200) {
+			throw new RuntimeException("Failed: HTTP error code : "+ response.getStatusLine().getStatusCode());
+		}
+			
+		HttpEntity entity = response.getEntity();
+		String data = EntityUtils.toString(entity);
+			
 		System.out.println(data);
+			
+		client.close();
 
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(data);
@@ -92,6 +99,9 @@ public class ContentDownloader {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -114,11 +124,23 @@ public class ContentDownloader {
 	 * Download of a single story specified by the id. Server returns the XML which includes media data with absolute URI. 
 	 * @param id id of the story to download
 	 */
-	public void downloadStory(int id) {
-		WebResource resource = client.resource(getBaseURI(URLsingleStory, id));
-		
-		//Get XML with absolute URI for media data from server
-		System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
+	public void downloadStory(String id) {
+		try {
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpGet getRequest = new HttpGet(URLsingleStory+id);
+		getRequest.addHeader("accept", "application/json");
+		HttpResponse response = client.execute(getRequest);
+			
+		if(response.getStatusLine().getStatusCode() != 200) {
+			throw new RuntimeException("Failed: HTTP error code : "+ response.getStatusLine().getStatusCode());
+		}
+			
+		HttpEntity entity = response.getEntity();
+		String data = EntityUtils.toString(entity);
+			
+		System.out.println(data);
+			
+		client.close();
 
 		//Parse media data from xml
 		//Download media data
@@ -126,17 +148,26 @@ public class ContentDownloader {
 		//Save XML
 		
 		//Create story object and copy existing meta data + set references (XML, media data)
-		//Add story object to list downloadedStories
-		//call markDownloadedStories()
+		HashMap<String,String> temp = new HashMap<String,String>();
+		for(int i=0; i< allStoriesData.size(); i++)
+		{
+			if(id.equals(allStoriesData.get(i).get("id")))
+				temp = allStoriesData.get(i);
+		}
 		
-	}
-	
-	public URI getBaseURI(String URL) {
-		return UriBuilder.fromUri(URL).build();
-	}
-	
-	public URI getBaseURI(String URL, int id) {
-		return UriBuilder.fromUri(URL+id).build();
+		Story downloadedStory = new Story(temp.get("id"), temp.get("title"), temp.get("description"), temp.get("author"), temp.get("size"), temp.get("creation_date"), temp.get("location"), temp.get("radius"));
+		//downloadedStory.setPathToXML("xxx");
+		//downloadedStory.setStoryMediaData(storyMediaData);
+		
+		//Add story object to list downloadedStories
+		downloadedStories.add(downloadedStory);
+		markDownloadedStories();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 	}
 	
 	/**
