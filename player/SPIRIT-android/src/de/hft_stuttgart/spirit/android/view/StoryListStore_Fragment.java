@@ -40,6 +40,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class StoryListStore_Fragment extends Fragment {
 
+	List<Story> items;
+	
 	/**
 	 * Method is called when Fragment is created. It will do the following things:
 	 * - request the stories from the server
@@ -51,7 +53,7 @@ public class StoryListStore_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_story_list_store, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        List<Story> items = new ArrayList<Story>();
+        items = new ArrayList<Story>();
         GetStoreStories task = new GetStoreStories();
         task.execute();
         try {
@@ -67,12 +69,14 @@ public class StoryListStore_Fragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            	Story selectedStory = items.get(position);
                 Intent i = new Intent(getActivity().getApplicationContext(),StoryDetails_Activity.class);
-                i.putExtra(StoryDetails_Activity.EXTRA_STORYNAME, "Crazy Story");
-                i.putExtra(StoryDetails_Activity.EXTRA_DESCRIPTION, "A crazy Story with some crazy shit");
-                i.putExtra(StoryDetails_Activity.EXTRA_LOCATION, "48.780332 9.172515");
-                i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, "Mr. Crazy Author");
-                i.putExtra(StoryDetails_Activity.EXTRA_CREATIONDATE, "Crazy Date");
+                i.putExtra(StoryDetails_Activity.EXTRA_STORYNAME, selectedStory.getTitle());
+                i.putExtra(StoryDetails_Activity.EXTRA_DESCRIPTION, selectedStory.getDescription());
+                i.putExtra(StoryDetails_Activity.EXTRA_LOCATION, selectedStory.getLocation());
+                i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, selectedStory.getAuthor());
+                i.putExtra(StoryDetails_Activity.EXTRA_CREATIONDATE, selectedStory.getCreation_date());
+                i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "STORE");
                 startActivity(i);
             }
         });

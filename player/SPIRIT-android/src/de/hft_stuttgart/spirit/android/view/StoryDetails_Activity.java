@@ -23,6 +23,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 	public final static String EXTRA_LOCATION = "de.hft_stuttgart.spirit.android.view.LOCATION";
 	public final static String EXTRA_AUTHOR = "de.hft_stuttgart.spirit.android.view.AUTHOR";
 	public final static String EXTRA_CREATIONDATE = "de.hft_stuttgart.spirit.android.view.CREATIONDATE";
+	public final static String EXTRA_STOREORINSTALLED = "de.hft_stuttgart.spirit.android.view.STOREORINSTALLED";
 	
 	private final static String TAG = StoryDetails_Activity.class.toString();
 	
@@ -116,7 +117,18 @@ public class StoryDetails_Activity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.story_details_, menu);
+    	
+    	if (getIntent().hasExtra(EXTRA_STOREORINSTALLED)){  		
+    		if(getIntent().getStringExtra(EXTRA_STOREORINSTALLED).equals("STORE")){
+    			getMenuInflater().inflate(R.menu.story_details_store, menu);
+    		} 
+    		else {
+    			getMenuInflater().inflate(R.menu.story_details_installed, menu);
+    		}
+    	} 
+    	else {    		
+    		getMenuInflater().inflate(R.menu.story_details_, menu);
+    	}
         return true;
     }
 
