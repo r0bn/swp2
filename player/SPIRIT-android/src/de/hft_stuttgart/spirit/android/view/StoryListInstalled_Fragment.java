@@ -54,6 +54,11 @@ public class StoryListInstalled_Fragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(getActivity().getApplicationContext(),StoryDetails_Activity.class);
+                i.putExtra(StoryDetails_Activity.EXTRA_STORYNAME, "Crazy Story");
+                i.putExtra(StoryDetails_Activity.EXTRA_DESCRIPTION, "A crazy Story with some crazy shit");
+                i.putExtra(StoryDetails_Activity.EXTRA_LOCATION, "48.780332 9.172515");
+                i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, "Mr. Crazy Author");
+                i.putExtra(StoryDetails_Activity.EXTRA_CREATIONDATE, "Crazy Date");
                 startActivity(i);
             }
         });

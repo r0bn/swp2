@@ -2109,6 +2109,7 @@ containing a value of this type.
         public static final int DescriptionView=0x7f0d0059;
         public static final int DetailsLayout=0x7f0d005a;
         public static final int MapLayout=0x7f0d0060;
+        public static final int StorynameView=0x7f0d0056;
         public static final int action_bar=0x7f0d0046;
         public static final int action_bar_activity_content=0x7f0d0003;
         public static final int action_bar_container=0x7f0d0045;
@@ -2118,6 +2119,7 @@ containing a value of this type.
         public static final int action_bar_title=0x7f0d0033;
         public static final int action_context_bar=0x7f0d0047;
         public static final int action_delete=0x7f0d0075;
+        public static final int action_download=0x7f0d0076;
         public static final int action_filter=0x7f0d0072;
         public static final int action_menu_divider=0x7f0d0005;
         public static final int action_menu_presenter=0x7f0d0006;
@@ -2125,7 +2127,7 @@ containing a value of this type.
         public static final int action_mode_bar_stub=0x7f0d0042;
         public static final int action_mode_close_button=0x7f0d0035;
         public static final int action_restart=0x7f0d0074;
-        public static final int action_settings=0x7f0d0076;
+        public static final int action_settings=0x7f0d0077;
         public static final int action_start=0x7f0d0073;
         public static final int activity_chooser_view_content=0x7f0d0036;
         public static final int adjust_height=0x7f0d0009;
@@ -2210,7 +2212,6 @@ containing a value of this type.
         public static final int textAutor=0x7f0d006f;
         public static final int textRegion=0x7f0d006e;
         public static final int textTitel=0x7f0d006d;
-        public static final int textView=0x7f0d0056;
         public static final int textView2=0x7f0d0058;
         public static final int textView3=0x7f0d0061;
         public static final int textView4=0x7f0d005b;
@@ -2355,12 +2356,13 @@ containing a value of this type.
         public static final int abc_toolbar_collapse_description=0x7f08002a;
         public static final int accept=0x7f080002;
         public static final int action_delete=0x7f080044;
+        public static final int action_download=0x7f080045;
         public static final int action_filter=0x7f080041;
         public static final int action_restart=0x7f080042;
         public static final int action_settings=0x7f08003c;
         public static final int action_start=0x7f080043;
         public static final int app_name=0x7f080036;
-        public static final int buzzword=0x7f08004b;
+        public static final int buzzword=0x7f08004c;
         /**   Text for notification shown when the Android Wear apps needs to be updated. Only shown on the wearable. [CHAR LIMIT=NONE] 
          */
         public static final int common_android_wear_notification_needs_update_text=0x7f080009;
@@ -2472,16 +2474,16 @@ containing a value of this type.
         public static final int create_calendar_message=0x7f080005;
         public static final int create_calendar_title=0x7f080004;
         public static final int decline=0x7f080003;
-        public static final int enterCity=0x7f080047;
-        public static final int filtern=0x7f080045;
+        public static final int enterCity=0x7f080048;
+        public static final int filtern=0x7f080046;
         public static final int hello_world=0x7f08003b;
-        public static final int km=0x7f08004a;
+        public static final int km=0x7f08004b;
         public static final int menu_metric=0x7f080039;
         public static final int menu_standard=0x7f080038;
-        public static final int radius=0x7f080048;
+        public static final int radius=0x7f080049;
         public static final int scanning=0x7f080037;
-        public static final int seekbarStartvalue=0x7f080049;
-        public static final int showAll=0x7f080046;
+        public static final int seekbarStartvalue=0x7f08004a;
+        public static final int showAll=0x7f080047;
         public static final int store_picture_message=0x7f080001;
         public static final int store_picture_title=0x7f080000;
         public static final int title_activity_main_=0x7f08003d;

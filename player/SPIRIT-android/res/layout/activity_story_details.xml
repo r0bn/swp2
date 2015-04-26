@@ -20,12 +20,13 @@
             android:background="#ffc8c8c8">
 
             <TextView
+                android:id="@+id/StorynameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
                 android:text="Storyname"
-                android:id="@+id/textView"
-                android:layout_alignParentTop="true" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
         </RelativeLayout>
 
     </FrameLayout>

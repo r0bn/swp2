@@ -16,6 +16,7 @@
     <string name="action_restart">Neustart</string>
     <string name="action_start">Start</string>
     <string name="action_delete">Löschen</string>
+    <string name="action_download">Herunterladen</string>
     <string name="filtern">Filtern</string>
     <string name="showAll">alle anzeigen</string>
     <string name="enterCity">Bitte Stadt eingeben</string>
