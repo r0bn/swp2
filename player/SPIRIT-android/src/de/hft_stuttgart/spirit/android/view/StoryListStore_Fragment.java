@@ -1,16 +1,20 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.R.id;
 import de.hft_stuttgart.spirit.android.R.layout;
 import de.hft_stuttgart.spirit.android.R.menu;
+import de.hft_stuttgart.spirit.android.Story;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,44 +26,44 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+/**
+ * 
+ * @author Lukas
+ *
+ */
 public class StoryListStore_Fragment extends Fragment {
 
+	/**
+	 * Method is called when Fragment is created. It will do the following things:
+	 * - request the stories from the server
+	 * - handle clickEvents on items(which will lead to the details Activity)
+	 */
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_story_list_store, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        final List<ListViewItem> items = new ArrayList<ListViewItem>();
-
-        /*Dummydaten Start*/
-        items.add(new ListViewItem()
-        {{
-                Titel = "Story 100";
-                Region = "Stuttgart";
-                Autor = "Stefan";
-            }});
-
-        items.add(new ListViewItem()
-        {{
-                Titel = "Story 200";
-                Region = "Calw";
-                Autor = "Karl";
-            }});
-
-        for (int i = 3; i < 20 ; i++){
-            final int x = i;
-            items.add(new ListViewItem()
-            {{
-                    Titel = "Story "+x*100;
-                    Region = "Region";
-                    Autor = "Autor";
-                }});
-        }
+        List<Story> items = new ArrayList<Story>();
+        GetStoreStories task = new GetStoreStories();
+        task.execute();
+        try {
+			items = task.get();
+		} catch (InterruptedException e) {
+			//TODO Better implementation(maybe give Toast that stories could not been downloaded)
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			//TODO Better implementation(maybe give Toast that stories could not been downloaded)
+			e.printStackTrace();
+		}
+       
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,20 +83,19 @@ public class StoryListStore_Fragment extends Fragment {
         return rootView;
     }
 
-    class ListViewItem{  //------
-        public int ThumbnailResource;
-        public String Titel;
-        public String Region;
-        public String Autor;
-    }
-
+	/**
+	 * 
+	 * @author Lukas
+	 *
+	 * This class handles the listview and fills the items with the data from the downloaded stories.
+	 */
     public class CustomListViewAdapter extends BaseAdapter
     {
 
         LayoutInflater inflater;
-        List<ListViewItem> items;
+        List<Story> items;
 
-        public CustomListViewAdapter(StoryListStore_Fragment context, List<ListViewItem> items) {
+        public CustomListViewAdapter(StoryListStore_Fragment context, List<Story> items) {
             super();
 
             this.items = items;
@@ -111,7 +114,6 @@ public class StoryListStore_Fragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
@@ -119,7 +121,7 @@ public class StoryListStore_Fragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
-            ListViewItem item = items.get(position);
+            Story item = items.get(position);
             View vi=convertView;
 
             if(convertView==null)
@@ -129,11 +131,26 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
 
-            textTitel.setText(item.Titel);
-            textRegion.setText(item.Region);
-            textAutor.setText(item.Autor);
+            textTitel.setText(item.getTitle());
+            textRegion.setText(item.getLocation());
+            textAutor.setText(item.getAuthor());
 
             return vi;
         }
+    }
+    
+    /**
+     * 
+     * @author Lukas
+     * This class requests the stories from the ContentDownloader
+     */
+    public class GetStoreStories extends AsyncTask<Void, Void, ArrayList<Story>> {
+
+		@Override
+		protected ArrayList<Story> doInBackground(
+				Void... params) {
+			return ContentDownloader.getInstance().getAllStoriesData();
+		}
+    	
     }
 }

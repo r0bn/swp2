@@ -14,7 +14,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
+import de.hft_stuttgart.spirit.android.Story;
 
 public class StoryListInstalled_Fragment extends Fragment {
 
@@ -24,32 +26,9 @@ public class StoryListInstalled_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_story_list_installed, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        final List<ListViewItem> items = new ArrayList<ListViewItem>();
-
-        /*Dummydaten Start*/
-        items.add(new ListViewItem()
-        {{
-                Titel = "Story 1";
-                Region = "Stuttgart";
-                Autor = "Stefan";
-            }});
-
-        items.add(new ListViewItem()
-        {{
-                Titel = "Story 2";
-                Region = "Calw";
-                Autor = "Karl";
-            }});
-
-        for (int i = 3; i < 20 ; i++){
-            final int x = i;
-            items.add(new ListViewItem()
-            {{
-                    Titel = "Story "+x;
-                    Region = "Region";
-                    Autor = "Autor";
-                }});
-        }
+        List<Story> items = new ArrayList<Story>();
+        items = ContentDownloader.getInstance().getDownloadedStories();
+ 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,12 +59,12 @@ public class StoryListInstalled_Fragment extends Fragment {
     {
 
         LayoutInflater inflater;
-        List<ListViewItem> items;
+        List<Story> items;
 
-        public CustomListViewAdapter(StoryListInstalled_Fragment context, List<ListViewItem> items) {
+        public CustomListViewAdapter(StoryListInstalled_Fragment context, List<Story> items2) {
             super();
 
-            this.items = items;
+            this.items = items2;
             this.inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -109,7 +88,7 @@ public class StoryListInstalled_Fragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
-            ListViewItem item = items.get(position);
+            Story item = items.get(position);
             View vi=convertView;
 
             if(convertView==null)
@@ -119,9 +98,9 @@ public class StoryListInstalled_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
 
-            textTitel.setText(item.Titel);
-            textRegion.setText(item.Region);
-            textAutor.setText(item.Autor);
+            textTitel.setText(item.getTitle());
+            textRegion.setText(item.getLocation());
+            textAutor.setText(item.getAuthor());
 
             return vi;
         }

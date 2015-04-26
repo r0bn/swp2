@@ -18,6 +18,7 @@ public class Story {
 	private String location;
 	private String radius;
 	private String pathToXML;
+	private boolean alreadyDownloaded;
 	private ArrayList<String> storyMediaData;
 
 	/**
@@ -31,7 +32,7 @@ public class Story {
 	 * @param location location in GPS coordinates (meta data)
 	 * @param radius radius (meta data)
 	 */
-	public Story(String id, String title, String description, String author, String size, String creation_date, String location, String radius) {
+	public Story(String id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
 	
 		this.setId(id);
 		this.setTitle(title);
@@ -41,6 +42,11 @@ public class Story {
 		this.setCreation_date(creation_date);
 		this.setLocation(location);
 		this.setRadius(radius);
+		this.setAlreadyDownloaded(alreadyDownloaded);
+	}
+	
+	public Story(){
+		
 	}
 
 	public String getId() {
@@ -121,6 +127,14 @@ public class Story {
 
 	public void setStoryMediaData(ArrayList<String> storyMediaData) {
 		this.storyMediaData = storyMediaData;
+	}
+
+	public boolean isAlreadyDownloaded() {
+		return alreadyDownloaded;
+	}
+
+	public void setAlreadyDownloaded(boolean alreadyDownloaded) {
+		this.alreadyDownloaded = alreadyDownloaded;
 	}
 
 }
