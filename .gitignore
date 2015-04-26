@@ -18,3 +18,4 @@ player/SPIRIT-android/project.properties
 player/android-support-v7-appcompat/gen/android/support/v7/appcompat/BuildConfig.java
 player/SPIRIT-android/bin/dexedLibs/android-support-v4-647705a7a2a3b3aff199eaacf859206e.jar
 player/SPIRIT-android/bin/dexedLibs/android-support-v7-appcompat-8d25bf44af748512e91839f24ff75d9a.jar
+server/.idea
