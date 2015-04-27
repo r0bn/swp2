@@ -17,7 +17,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/radiusSeekbar"
-        android:background="@drawable/abc_btn_default_mtrl_shape"
         android:text="@string/filtern"
         android:textColor="#FF000000" />
 
@@ -52,7 +51,7 @@
         android:layout_alignEnd="@+id/radiusSeekbar"
         android:layout_alignRight="@+id/radiusSeekbar"
         android:layout_alignTop="@+id/getLocation"
-        android:background="@drawable/abc_btn_default_mtrl_shape"
+
         android:text="@string/showAll"
         android:textColor="#FF000000" />
 
@@ -60,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/enterCity"
+        android:text="@string/buzzword"
         android:id="@+id/cityTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

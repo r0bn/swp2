@@ -1,3 +1,1 @@
-## backend framework
-
-auf zum mond!
+## Back-End for Storytellar (Prototype 1)

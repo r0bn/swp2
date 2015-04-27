@@ -1,10 +1,11 @@
 {
-  "name": "bower-components",
-  "version": "0.0.0",
+  "name": "authorentool",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "bootswatch-dist": "readable",
     "angular": "*",
+    "angular-route": "*",
     "angular-ui-codemirror": "~0.2.3"
   }
 }

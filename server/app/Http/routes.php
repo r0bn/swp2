@@ -11,9 +11,25 @@
 |
 */
 
-Route::get('/storytellar', 'StorytellarController@index');
 
-//Route::controllers([
-//	'auth' => 'Auth\AuthController',
-//	'password' => 'Auth\PasswordController',
-//]);
+/**
+ * Download Routes for stories (player)
+ *
+ * This determines the routes for downloading all story
+ * metadata and a specific story by id.
+ */
+Route::get('stories', 'StorytellarController@getStories');// deprecated
+
+Route::get('story', 'StorytellarController@getStories');
+
+Route::get('story/{id}', 'StorytellarController@getStory');
+
+
+/**
+ * Upload Routes for a story (authorentool)
+ *
+ * This determines the routes for uploading story files.
+ */
+Route::post('createstory', 'StorytellarController@createStory'); // deprecated
+
+Route::post('story', 'StorytellarController@createStory');

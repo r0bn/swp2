@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Basis Template HTML</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          
+          <h1 id="basis-template-html">Basis Template HTML</h1>
+
+          
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="README.html">
+                    README.md
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="component.html">
+                    component.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="index.html">
+                    index.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="base.html">
+                    base.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mixins.html">
+                    mixins.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.styl
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="gulpfile.html">
+                    gulpfile.litcoffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>pattern library</p>
+
+        
+          <div class='highlight'><pre>include mixins</pre></div>
+        
+      
+        
+        <p>HTML 5</p>
+
+        
+          <div class='highlight'><pre>doctype html
+block vars
+html
+  head
+    meta(charset="utf-8")
+
+    link(rel="icon" href="favicon.png")</pre></div>
+        
+      
+        
+        <p>AngularJS, Codemirror and styles are bundeld in one file </p>
+
+        
+          <div class='highlight'><pre>    link(rel="stylesheet",href="build/vendor.css")
+    script(src="build/vendor.js")
+    link(rel="stylesheet",href="build/main.css")
+
+    title #{title}</pre></div>
+        
+      
+        
+        <p>Bootstrap AngularJS</p>
+
+        
+          <div class='highlight'><pre>  body(ng-app="mainApp",ng-controller="mainCtrl")</pre></div>
+        
+      
+        
+        <p>Navigation Header</p>
+
+        
+          <div class='highlight'><pre>    .navbar.navbar-default
+      .container-fluid
+        .navbar-header
+            a.navbar-brand(href="") Authorentool</pre></div>
+        
+      
+        
+        <p>Blocks to be extend</p>
+
+        
+          <div class='highlight'><pre>    block content
+    block scripts</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

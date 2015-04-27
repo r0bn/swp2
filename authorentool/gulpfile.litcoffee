@@ -23,6 +23,11 @@
     # css 
     stylus =          require 'gulp-stylus'
 
+    # documentation
+    globby =          require 'globby'
+    exec =            require('child_process').exec
+
+
 # File Creation
 
 ## HTML
@@ -38,6 +43,7 @@
     gulp.task 'js', () ->
       gulp.src './assets/coffee/**/*.litcoffee'
       .pipe coffee({bare : true}).on('error', gutil.log)
+      .pipe concat 'main.js'
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
 
@@ -45,11 +51,13 @@
         gulp.src [
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
+            './bower_components/codemirror/addon/fold/*.js'
             './bower_components/angular/angular.js'
+            './bower_components/angular-route/angular-route.js'
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
         ]
         .pipe concat 'vendor.js'
-        .pipe uglify()
+        #.pipe uglify()
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
 
@@ -64,12 +72,23 @@
     gulp.task 'css-vendor', () ->
         gulp.src [
             './bower_components/codemirror/lib/codemirror.css'
+            './bower_components/codemirror/addon/fold/foldgutter.css'
             './bower_components/codemirror/theme/eclipse.css'
             './bower_components/bootswatch-dist/css/bootstrap.css'
         ]
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
+
+## Documentation
+
+    gulp.task 'docs', () ->
+        globby ["README.md", "assets/**/*", "gulpfile.litcoffee"], (err, files) ->
+            fileList = files.join(" ")
+
+            exec __dirname + "/node_modules/docco/bin/docco -o docs/ -L " +__dirname + "/docs/language.json -l linear " + fileList, (err, stdout, stderr) ->
+                console.log stdout
+                console.log stderr
 
 ## Build all
 

@@ -20,12 +20,13 @@
             android:background="#ffc8c8c8">
 
             <TextView
+                android:id="@+id/StorynameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
                 android:text="Storyname"
-                android:id="@+id/textView"
-                android:layout_alignParentTop="true" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
         </RelativeLayout>
 
     </FrameLayout>
@@ -47,13 +48,14 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Beschreibung"
                 android:id="@+id/textView2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Hier Beschreibung einfügen."
                 android:id="@+id/DescriptionView"
                 android:layout_below="@+id/textView2"
@@ -63,37 +65,16 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/MapLayout"
-        android:layout_below="@+id/DescriptionLayout"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#ffc8c8c8">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Karte"
-                android:id="@+id/textView3" />
-        </RelativeLayout>
-    </FrameLayout>
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/DetailsLayout"
-        android:layout_below="@+id/MapLayout"
-        android:layout_alignParentStart="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -103,20 +84,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Details"
                 android:id="@+id/textView4" />
 
             <TextView
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/textView4"
                 android:text="Author:"
-                android:id="@+id/textView5"
-                android:layout_marginTop="@dimen/activity_vertical_margin" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Erstellungsdatum:"
                 android:id="@+id/textView6"
                 android:layout_below="@+id/textView5"
@@ -126,6 +109,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Author hier einfügen."
                 android:id="@+id/AuthorView"
                 android:layout_above="@+id/textView6"
@@ -135,11 +119,51 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Erstellungsdatum hier einfügen."
                 android:id="@+id/CreationDateView"
                 android:layout_below="@+id/AuthorView"
                 android:layout_toEndOf="@+id/textView6" 
                 android:layout_toRightOf="@+id/textView6" />
+        </RelativeLayout>
+    </FrameLayout>
+        <FrameLayout
+        android:id="@+id/MapLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/DetailsLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/DescriptionLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffc8c8c8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_weight="1"
+                android:text="Karte"
+                android:id="@+id/textView3" />
+            
+            <!--             <fragment xmlns:android="http://schemas.android.com/apk/res/android" -->
+
+			<fragment
+			    android:id="@+id/map"
+			    android:layout_width="wrap_content"
+			    android:layout_height="fill_parent"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentStart="true"
+			    android:layout_below="@+id/textView3"
+			    android:layout_weight="1"
+			    class="com.google.android.gms.maps.MapFragment" />
+
+<!--           		android:name="com.google.android.gms.maps.MapFragment"/> -->
+            
         </RelativeLayout>
     </FrameLayout>
 </RelativeLayout>
