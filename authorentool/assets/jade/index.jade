@@ -55,7 +55,8 @@ block content
                             | Erstellt: {{ story.creation_date }}
 
                 .list-group
-                        button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story
+                        button.btn.btn-primary.btn-lg(ng-click="createStory()") Create Story
+                        button.btn.btn-danger.btn-lg.pull-right( ng-click="deleteStory()") Delete Story
 
 
 

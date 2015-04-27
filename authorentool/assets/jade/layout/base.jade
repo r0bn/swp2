@@ -11,9 +11,10 @@ html
     // Codemirror
     link(rel="stylesheet",href="build/vendor.css")
     script(src="build/vendor.js")
-
+    script(src="build/component.js")
+  
     link(rel="stylesheet",href="build/main.css")
-
+    link(rel="stylesheet",href="build/test.css")
     title #{title} 
 
   body(ng-app="mainApp",ng-controller="mainCtrl")
@@ -21,7 +22,7 @@ html
     .navbar.navbar-default
       .container-fluid
         .navbar-header
-            a.navbar-brand(href="") Authorentool
+            a.navbar-brand(href="#") Authorentool
 
     block content
 

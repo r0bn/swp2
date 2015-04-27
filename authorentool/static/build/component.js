@@ -20,9 +20,37 @@ mainApp.controller("mainCtrl", [
       return $scope.storys = data;
     });
     $scope.createStory = function() {
-      return $http.post("http://api.dev.la/createstory", $scope.storys[0]).success(function() {
-        return console.log("created");
-      });
+      return window.location.href = '../createStory.html';
+    };
+    $scope.deleteStory = function() {
+      return console.log("Gelöscht");
+    };
+    $scope.getFormulars = function() {
+      document.getElementById("createStoryRow").style.display = "none";
+      return document.getElementById("Formular").style.display = "block";
+    };
+    $scope.getNewFeatureElement = function(counter) {
+      var copyForm, stuff;
+      copyForm = document.getElementById("NeuesFeature");
+      stuff = copyForm.cloneNode(true);
+      stuff.style.display = "block";
+      if (counter === void 0) {
+        counter = 1;
+      }
+      stuff.id = "NeuesFeature_" + counter;
+      document.getElementById("column").appendChild(stuff);
+      return stuff.scrollIntoView(true);
+    };
+    $scope.tabbed_pain = function(activeTabID, activeContentID, passiveTabID, passiveContentID) {
+      var activeContent, activeTab, passiveContent, passiveTab;
+      activeTab = document.getElementById(activeTabID);
+      activeTab.classList.add("active");
+      activeContent = document.getElementById(activeContentID);
+      activeContent.style.display = "block";
+      passiveTab = document.getElementById(passiveTabID);
+      passiveTab.classList.remove("active");
+      passiveContent = document.getElementById(passiveContentID);
+      return passiveContent.style.display = "none";
     };
     return $scope.mediaData = [
       {

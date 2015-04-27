@@ -1,0 +1,77 @@
+block vars
+    - var featureCounter = 0
+block content
+
+    .container
+        .row(id="createStoryRow")
+            .col-md-12
+                    button.btn.btn-primary.btn-lg.pull-primary(style="",ng-click="getFormulars()") Neue Story erstellen
+        .row(id="Formular",style="display: none")
+            .col-md-8.column(id="column")
+                form.form-horizontal
+                    fieldset
+                        legend Storydaten
+                        .form-group
+                            label.col-lg-2.control-label(for="inputTitel") Titel
+                            .col-lg-8
+                                input.form-control(type="text", id="inputTitel", placeholder="Titel")
+
+                        .form-group
+                            label.col-lg-2.control-label(for="textAreaDescription") Beschreibung
+                            .col-lg-8
+                                textarea.form-control(rows="3", id="textAreaDescription", placeholder="Bitte geben Sie die Beschreibung der Story ein")
+
+                        .form-group
+                            label.col-lg-2.control-label(for"inputAutor") Autor
+                            .col-lg-8
+                                input.form-control(type="text", id="inputAutor", placeholder="Name des Autors")
+
+                        .form-group
+                            label.col-lg-2.control-label(for"creationDate") Datum
+                            .col-lg-8
+                                input.form-control(type="date", id="creationDate", placeholder="Mit akt. Datum füllen.")
+
+                        .form-group
+                            label.col-lg-2.control-label(for"size") Größe der Story
+                            .col-lg-8
+                                input.form-control(type="date", id="size", placeholder="Berechnen aus Mediendatein?")
+
+                        .form-group
+                            label.col-lg-2.control-label(for"location") Ort
+                            .col-lg-8
+                                input.form-control(type="date", id="location", placeholder="Mittels Map?")
+
+
+                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnFeature", style="",ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
+                form.form-horizontal(id="NeuesFeature", style="display: none")
+                    fieldset
+                        legend Storydaten
+                            .form-group
+                                label.col-lg-2.control-label(for="inputFeature") Feature
+                                .col-lg-8
+                                    input.form-control(type="text", id="inputFeature", placeholder="Featurename")
+                            .form-group
+                                label.col-lg-2.control-label(for="anchorPoint") Ort
+                                .col-lg-8
+                                    input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
+                            .form-group
+                                label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
+                                .col-lg-8
+                                    input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
+                            .form-group
+                                label-col-lg-2.control-label(for="interactions") Interaktion wählen
+                                .col-lg-8
+                                    select(name="Interaction")
+                                        option Quiz
+                                        option Waychooser
+                                        option Item
+
+            .col-md-4
+                .page-header
+                    h3 Media Library
+
+                //.tab-pane.fade(id="XML")
+                        p Zwei und ewig so weiter
+
+block scripts 
+
