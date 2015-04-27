@@ -10,7 +10,7 @@
             <Last_Update>27.04.2015</Last_Update>
             <Last_Editor>Yasin Abdelmonem</Last_Editor>
             <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
-        </xsd:documentation> 
+        </xsd:documentation>
     </xsd:annotation>
     
     <xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/gml.xsd"  />
