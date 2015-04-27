@@ -10,9 +10,9 @@ block scripts
     script(src="build/component.js")
 
 block content
-    .container-fluid(ng-app="mainApp",ng-controller="mainCtrl")
+    .container-fluid(ng-controller="mainCtrl")
         // This Block show's if a story is selected by the user
-        .row(ng-if="storySelected")
+        .row()
             .col-md-8
                 .row
                     .col-md-12
@@ -23,7 +23,7 @@ block content
                         div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
                 .row
                     .col-md-4.col-md-offset-8
-                        button.btn.btn-primary.btn-lg.pull-right Save
+                        button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save
 
             // This is an demo example for the media library
             .col-md-4
@@ -31,6 +31,8 @@ block content
                     .col-md-12
                         .page-header
                             h3 Media Library
+                            input(type="file",file-model="selectedFile")
+                            input(type="file",file-model="selectedFile2")
                 .row
                     .col-md-12
                         table.table.table-striped.table-hover
@@ -49,7 +51,7 @@ block content
                                         button.btn.btn-danger.btn-xs Delete 
 
         // this view's an initial menu with all available story's
-        .row(ng-if="!storySelected")
+        //.row(ng-if="!storySelected")
             .col-md-3.col-centered(style="margin-top:100px")
                 .list-group(ng-repeat="story in storys")
                     a.list-group-item(href="#",ng-click="handleStorySelected(story)")
