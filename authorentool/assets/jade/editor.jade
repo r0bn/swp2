@@ -1,0 +1,44 @@
+
+.container-fluid
+    .row
+        .col-md-8
+            .row
+                .col-md-12
+                    .page-header
+                        h3 XML Editor 
+                    // This initializes the codemirror plugin
+                    // more infos https://codemirror.net
+                    div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
+            .row
+                .col-md-4.col-md-offset-8
+                    button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save
+
+        // This is an demo example for the media library
+        .col-md-4
+            .row
+                .col-md-12
+                    .page-header
+                        h3 Media Library
+                        input(type="file",file-model="selectedFile")
+                        input(type="file",file-model="selectedFile2")
+            .row
+                .col-md-12
+                    table.table.table-striped.table-hover
+                        thead
+                            tr
+                                th Name 
+                                th Type
+                                th Action
+                        tbody
+                            tr(ng-repeat="obj in mediaData")
+                                td {{ obj.name }}
+                                td 
+                                    span.label.label-default {{ obj.type }}
+                                td
+                                    button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
+                                    button.btn.btn-danger.btn-xs Delete 
+
+
+
+
+

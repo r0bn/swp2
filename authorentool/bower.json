@@ -5,6 +5,7 @@
   "dependencies": {
     "bootswatch-dist": "readable",
     "angular": "*",
+    "angular-route": "*",
     "angular-ui-codemirror": "~0.2.3"
   }
 }

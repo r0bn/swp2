@@ -2,13 +2,13 @@
 
 The following code is a angularJS (https://angularjs.org/) Application.
 
-    mainApp = angular.module "mainApp", ['ui.codemirror']
+    storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    # the main controller
-    mainApp.controller "mainCtrl", ["$scope", "$http", "storytellerServer", ($scope, $http, server) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", ($scope, $routeParams, $http, server) ->
 
         $scope.selectedFile = ""
         $scope.selectedFile2 = ""
+        $scope.storyId = $routeParams.story
 
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
@@ -22,34 +22,23 @@ The following code is a angularJS (https://angularjs.org/) Application.
             foldGutter : true
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
-        # handles the event if a user choose a story to edit
-        $scope.storySelected = false
-        $scope.handleStorySelected = (story) ->
-            $scope.storySelected = true
-
-        $http.get("http://api.dev.la/story/1")
+        $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
 
-        # Creates a story on the server
-        $scope.createStory = () ->
-            $http.post("http://api.dev.la/createstory", $scope.storys[0])
-                .success () ->
-                    console.log "created"
+        # this will be initial executed and get all available story's
+        $http.get("http://api.storytellar.de/story")
+            .success (data) ->
+                $scope.storys = data
+
 
         # this saves the current xml file
         $scope.saveXML = () ->
             console.log $scope.selectedFile
-            test = $scope.storys[0]
+            test = $scope.storys[$scope.storyId]
             test.xml = $scope.xmlFile
             delete test.id
             server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
-
-        # this will be initial executed and get all available story's
-        $http.get("http://api.dev.la/stories")
-            .success (data) ->
-                $scope.storys = data
-
 
         # This is dummy data for demmo reasons
         $scope.mediaData = [
@@ -74,11 +63,26 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 type : "movie"
             }
         ]
-
     ]
 
+    storyTellarCtrl.controller "homeCtrl", ["$scope", "$location", "$http", "storytellerServer", ($scope, $location, $http, server) ->
 
-    mainApp.directive 'fileModel', [ () ->
+        # this will be initial executed and get all available story's
+        $http.get("http://api.storytellar.de/story")
+            .success (data) ->
+                $scope.storys = data
+
+        # Creates a story on the server
+        $scope.createStory = () ->
+            $http.post("http://api.storytellar.de/story", $scope.storys[0])
+                .success () ->
+                    console.log "created"
+
+        $scope.select = (id) ->
+            $location.path("/story/#{id}")
+    ]
+
+    storyTellarCtrl.directive 'fileModel', [ () ->
         {
             restrict: 'A'
             scope :
@@ -92,12 +96,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
         }
     ]
 
-    mainApp.factory 'storytellerServer', ['$http', ($http) ->
+    storyTellarCtrl.factory 'storytellerServer', ['$http', ($http) ->
         {
             uploadMediaFile : (files, data) ->
                 $http({
                     method : 'POST'
-                    url : 'http://api.dev.la/createstory'
+                    url : 'http://api.storytellar.de/story'
                     headers: {'Content-Type': undefined}
                     transformRequest : (data) ->
                         formData = new FormData()
@@ -117,4 +121,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     console.log "error"
         }
     ]
+
+
+            
 

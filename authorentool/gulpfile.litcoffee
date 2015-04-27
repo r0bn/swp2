@@ -43,6 +43,7 @@
     gulp.task 'js', () ->
       gulp.src './assets/coffee/**/*.litcoffee'
       .pipe coffee({bare : true}).on('error', gutil.log)
+      .pipe concat 'main.js'
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
 
@@ -52,10 +53,11 @@
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/codemirror/addon/fold/*.js'
             './bower_components/angular/angular.js'
+            './bower_components/angular-route/angular-route.js'
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
         ]
         .pipe concat 'vendor.js'
-        .pipe uglify()
+        #.pipe uglify()
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
 
