@@ -44,11 +44,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
             test = $scope.storys[0]
             test.xml = $scope.xmlFile
             delete test.id
-            ###
-            $http.post("http://api.dev.la/createstory",test)
-                .success () ->
-                    console.log "xml posted"
-            ###
             server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
         # this will be initial executed and get all available story's
@@ -121,9 +116,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     console.log "success"
                 .error () ->
                     console.log "error"
-
-            test : () ->
-                "2"
         }
     ]
 

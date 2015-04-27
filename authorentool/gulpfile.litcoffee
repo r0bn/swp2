@@ -51,9 +51,6 @@
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/codemirror/addon/fold/*.js'
-            #'./bower_components/codemirror/addon/fold/foldcode.js'
-            #'./bower_components/codemirror/addon/fold/foldgutter.js'
-            #'./bower_components/codemirror/addon/fold/xml-fold.js'
             './bower_components/angular/angular.js'
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
         ]
