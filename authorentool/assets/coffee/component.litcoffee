@@ -13,12 +13,14 @@ The following code is a angularJS (https://angularjs.org/) Application.
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
         $scope.editorOptions =
-            #lineWrapping : true
+            lineWrapping : true
             lineNumbers: true
             #readOnly: 'nocursor'
             mode: 'xml'
             #indentUnit : 2
             theme : "eclipse"
+            foldGutter : true
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
         # handles the event if a user choose a story to edit
         $scope.storySelected = false
