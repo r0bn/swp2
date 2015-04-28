@@ -151,6 +151,9 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	toast = Toast.makeText(getApplicationContext(),"Work in progress for Löschen!",Toast.LENGTH_SHORT);
         	toast.show();
 			return true;
+		case R.id.action_download:
+			toast = Toast.makeText(getApplicationContext(),"Work in progress for Herunterladen!",Toast.LENGTH_SHORT);
+        	toast.show();
 		default:
 			return false;
 		}
