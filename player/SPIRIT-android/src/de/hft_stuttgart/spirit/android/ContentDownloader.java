@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import restClient.AndrestClient;
+import restClient.RESTClient;
 import restClient.RESTException;
 import android.os.Environment;
 
@@ -29,37 +29,24 @@ import android.os.Environment;
  */
 public class ContentDownloader {
 	
-	private static ContentDownloader instance = null;
-	private AndrestClient client = null;
-	public String URLsingleStory = "http://api.storytellar.de/story/";
-	public String URLallStories = "http://api.storytellar.de/story";
+	private static ContentDownloader instance;
+	private RESTClient client;
 
-	private ArrayList<Story> allStoriesData = new ArrayList<Story>();
-	private ArrayList<Story> downloadedStories = new ArrayList<Story>();
+	private ArrayList<Story> allStoriesData;
+	private ArrayList<Story> downloadedStories;
 	
-	private File rootDir;
-	private File storyMetas;
 	
 	/**
 	 * Protected constructor for ContentDownloader
 	 */
 	protected ContentDownloader() {
-		//26.04 Lukas Aberle added another restClient
-		//ClientConfig config = new DefaultClientConfig();
-		//client = Client.create(config);
+
+		allStoriesData = new ArrayList<Story>();
+		downloadedStories = new ArrayList<Story>();
+		client = new RESTClient();
 		
-		client = new AndrestClient();
-		
-		File extRoot = Environment.getExternalStorageDirectory();
-		rootDir = new File(extRoot.getAbsolutePath()+"/StorytellAR");
-		storyMetas = new File(rootDir, "storyMeta.json");
-		try {
-			storyMetas.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		readMetaData();
+		/*DummyDaten*/
+		downloadedStories.add(new Story(1, "Dummy", "Beschreibung Dummy", "Lukas", "42", "24.05.2014", "9.484 45.457", "4", true));
 	}
 
 	/**
@@ -115,12 +102,12 @@ public class ContentDownloader {
 //			e.printStackTrace();
 //		}
 		try {
-			JSONArray allStories = client.request(URLallStories, "GET", null);
+			JSONArray allStories = client.getAvailableStories();
 			for(int i=0; i<allStories.length(); i++)
 			{
 				JSONObject story = (JSONObject) allStories.get(i);
 				Story temp = new Story();
-				temp.setId((String) story.get("id"));
+				temp.setId(Integer.valueOf((String)story.get("id")));
 				temp.setTitle((String) story.get("title"));
 				temp.setDescription((String) story.get("description"));
 				temp.setAuthor((String) story.get("author"));
@@ -135,6 +122,9 @@ public class ContentDownloader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -201,36 +191,4 @@ public class ContentDownloader {
 		return downloadedStories;
 	}
 	
-	private void readMetaData() {
-		downloadedStories.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
-		JSONParser parser = new JSONParser(); 
-		try {
-			org.json.simple.JSONArray stories = (org.json.simple.JSONArray)parser.parse(new FileReader(storyMetas));
-			for(int i=0; i<stories.size(); i++)
-			{
-				org.json.simple.JSONObject story = (org.json.simple.JSONObject) stories.get(i);
-				Story temp = new Story();
-				temp.setId((String) story.get("id"));
-				temp.setTitle((String) story.get("title"));
-				temp.setDescription((String) story.get("description"));
-				temp.setAuthor((String) story.get("author"));
-				temp.setSize((String) story.get("size"));
-				temp.setCreation_date((String) story.get("creation_date"));
-				temp.setLocation((String) story.get("location"));
-				temp.setRadius((String) story.get("radius"));
-				
-				downloadedStories.add(temp);
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 }
