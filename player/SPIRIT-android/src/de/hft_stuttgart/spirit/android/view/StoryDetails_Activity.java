@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -85,6 +86,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 			try {
 				final LatLng point = new LatLng(coord1, coord2);
 				Marker markr = map.addMarker(new MarkerOptions().position(point).title("Position"));
+				map.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 16));
 				logmessage += "Set creation date by intent to \"" + markr.getPosition().toString() + "\"\n";
 			} catch (Exception e) {
 				// This error may be thrown because the smartphone/emulator can't display the map
@@ -95,6 +97,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 			try {
 				final LatLng point = new LatLng(48.775846 , 9.182932);
 				Marker markr = map.addMarker(new MarkerOptions().position(point).title("Position"));
+				map.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 16));
 				logmessage += "Set creation date by default to \"" + markr.getPosition().toString() + "\"\n";
 			} catch (Exception e) {
 				// This error may be thrown because the smartphone/emulator can't display the map
