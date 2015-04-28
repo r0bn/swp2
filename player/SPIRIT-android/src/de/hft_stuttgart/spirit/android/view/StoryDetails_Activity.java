@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.hft_stuttgart.spirit.android.AndroidLauncher;
 import de.hft_stuttgart.spirit.android.R;
 
 public class StoryDetails_Activity extends ActionBarActivity {
@@ -141,12 +142,10 @@ public class StoryDetails_Activity extends ActionBarActivity {
         Toast toast;
         switch (id) {
 		case R.id.action_start:
-        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Start!",Toast.LENGTH_SHORT);
-        	toast.show();
+        	startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
 			return true;
 		case R.id.action_restart:
-        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Neustart!",Toast.LENGTH_SHORT);
-        	toast.show();
+			startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
 			return true;
 		case R.id.action_delete:
         	toast = Toast.makeText(getApplicationContext(),"Work in progress for Löschen!",Toast.LENGTH_SHORT);
