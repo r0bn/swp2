@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.hft_stuttgart.spirit.android.AndroidLauncher;
 import de.hft_stuttgart.spirit.android.R;
 
 public class StoryDetails_Activity extends ActionBarActivity {
@@ -84,6 +86,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 			try {
 				final LatLng point = new LatLng(coord1, coord2);
 				Marker markr = map.addMarker(new MarkerOptions().position(point).title("Position"));
+				map.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 16));
 				logmessage += "Set creation date by intent to \"" + markr.getPosition().toString() + "\"\n";
 			} catch (Exception e) {
 				// This error may be thrown because the smartphone/emulator can't display the map
@@ -94,6 +97,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 			try {
 				final LatLng point = new LatLng(48.775846 , 9.182932);
 				Marker markr = map.addMarker(new MarkerOptions().position(point).title("Position"));
+				map.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 16));
 				logmessage += "Set creation date by default to \"" + markr.getPosition().toString() + "\"\n";
 			} catch (Exception e) {
 				// This error may be thrown because the smartphone/emulator can't display the map
@@ -141,17 +145,18 @@ public class StoryDetails_Activity extends ActionBarActivity {
         Toast toast;
         switch (id) {
 		case R.id.action_start:
-        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Start!",Toast.LENGTH_SHORT);
-        	toast.show();
+        	startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
 			return true;
 		case R.id.action_restart:
-        	toast = Toast.makeText(getApplicationContext(),"Work in progress for Neustart!",Toast.LENGTH_SHORT);
-        	toast.show();
+			startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
 			return true;
 		case R.id.action_delete:
         	toast = Toast.makeText(getApplicationContext(),"Work in progress for Löschen!",Toast.LENGTH_SHORT);
         	toast.show();
 			return true;
+		case R.id.action_download:
+			toast = Toast.makeText(getApplicationContext(),"Work in progress for Herunterladen!",Toast.LENGTH_SHORT);
+        	toast.show();
 		default:
 			return false;
 		}

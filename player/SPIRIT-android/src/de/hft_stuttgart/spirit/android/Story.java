@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *and media data of the story. 
  */
 public class Story {
-	private String id;
+	private Integer id;
 	private String title;
 	private String description;
 	private String author;
@@ -30,9 +30,9 @@ public class Story {
 	 * @param size size of the story in MB (meta data)
 	 * @param creation_date creation date of the story (meta data)
 	 * @param location location in GPS coordinates (meta data)
-	 * @param radius radius (meta data)
+	 * @param radius radius in km (meta data)
 	 */
-	public Story(String id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
+	public Story(Integer id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
 	
 		this.setId(id);
 		this.setTitle(title);
@@ -45,16 +45,16 @@ public class Story {
 		this.setAlreadyDownloaded(alreadyDownloaded);
 	}
 	
-	public Story(){
+	public Story() {
 		
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(Integer integer) {
+		this.id = integer;
 	}
 
 	public String getTitle() {

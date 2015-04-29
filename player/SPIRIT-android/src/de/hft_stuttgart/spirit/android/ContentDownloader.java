@@ -1,25 +1,17 @@
 
 package de.hft_stuttgart.spirit.android;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
-
-import javax.ws.rs.core.UriBuilder;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import restClient.AndrestClient;
+import restClient.RESTClient;
 import restClient.RESTException;
-import android.os.Environment;
 
 
 
@@ -29,37 +21,24 @@ import android.os.Environment;
  */
 public class ContentDownloader {
 	
-	private static ContentDownloader instance = null;
-	private AndrestClient client = null;
-	public String URLsingleStory = "http://api.storytellar.de/story/";
-	public String URLallStories = "http://api.storytellar.de/story";
+	private static ContentDownloader instance;
+	private RESTClient client;
 
-	private ArrayList<Story> allStoriesData = new ArrayList<Story>();
-	private ArrayList<Story> downloadedStories = new ArrayList<Story>();
+	private ArrayList<Story> allStoriesData;
+	private ArrayList<Story> downloadedStories;
 	
-	private File rootDir;
-	private File storyMetas;
 	
 	/**
 	 * Protected constructor for ContentDownloader
 	 */
 	protected ContentDownloader() {
-		//26.04 Lukas Aberle added another restClient
-		//ClientConfig config = new DefaultClientConfig();
-		//client = Client.create(config);
+
+		allStoriesData = new ArrayList<Story>();
+		downloadedStories = new ArrayList<Story>();
+		client = new RESTClient();
 		
-		client = new AndrestClient();
-		
-		File extRoot = Environment.getExternalStorageDirectory();
-		rootDir = new File(extRoot.getAbsolutePath()+"/StorytellAR");
-		storyMetas = new File(rootDir, "storyMeta.json");
-		try {
-			storyMetas.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		readMetaData();
+		/*DummyDaten*/
+		downloadedStories.add(new Story(1, "Dummy", "Beschreibung Dummy", "Lukas", "42", "24.05.2014", "9.484 45.457", "4", true));
 	}
 
 	/**
@@ -79,48 +58,14 @@ public class ContentDownloader {
 	 * 'already_downloaded' which marks downloaded stories.
 	 */
 	public void requestAllStories() {
-// 26.04 Lukas Aberle added another RestClient
-//		try {
-//		WebResource resource = client.resource(getBaseURI(URLallStories));
-//		//Get JSON from server
-//		String data = resource.accept(MediaType.APPLICATION_JSON).get(String.class);
-//		System.out.println(data);
-//
-//		JSONParser parser = new JSONParser();
-//		Object obj = parser.parse(data);
-//		JSONArray allStories = (JSONArray) obj;
-//		System.out.println(allStories.size());
-//		
-//		for(int i=0; i<allStories.size(); i++)
-//		{
-//			JSONObject story = (JSONObject) allStories.get(0);
-//			HashMap<String, String> temp = new HashMap<String, String>();
-//			temp.put("id", (String) story.get("id"));
-//			temp.put("title", (String) story.get("title"));
-//			temp.put("description", (String) story.get("description"));
-//			temp.put("author", (String) story.get("author"));
-//			temp.put("size", (String) story.get("size"));
-//			temp.put("creation_date", (String) story.get("creation_date"));
-//			temp.put("location", (String) story.get("location"));
-//			temp.put("radius", (String) story.get("radius"));
-//			temp.put("already_downloaded", "0");
-//			
-//			allStoriesData.add(temp);
-//		}
-//		
-//		markDownloadedStories();
-//		
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		try {
-			JSONArray allStories = client.request(URLallStories, "GET", null);
+			allStoriesData.clear();
+			JSONArray allStories = client.getAvailableStories();
 			for(int i=0; i<allStories.length(); i++)
 			{
 				JSONObject story = (JSONObject) allStories.get(i);
 				Story temp = new Story();
-				temp.setId((String) story.get("id"));
+				temp.setId(Integer.valueOf((String)story.get("id")));
 				temp.setTitle((String) story.get("title"));
 				temp.setDescription((String) story.get("description"));
 				temp.setAuthor((String) story.get("author"));
@@ -131,15 +76,17 @@ public class ContentDownloader {
 				
 				allStoriesData.add(temp);
 			}
+			markDownloadedStories();
 		} catch (RESTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	/**
@@ -162,7 +109,17 @@ public class ContentDownloader {
 	 * @param id id of the story to download
 	 */
 	public void downloadStory(int id) {
-		//WebResource resource = client.resource(getBaseURI(URLsingleStory, id));
+		requestAllStories();
+		Story temp = null;
+		for (Story x : allStoriesData) {
+			if(x.getId() == id)
+				temp = x;
+		}
+		if(temp == null) {
+			throw new RuntimeException("Story with ID: "+id+" can't be found on server! Download is cancelled.");
+		}
+		//String xml = client.getStoryXML(id);
+		
 		
 		//Get XML with absolute URI for media data from server
 		//System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
@@ -176,14 +133,6 @@ public class ContentDownloader {
 		//Add story object to list downloadedStories
 		//call markDownloadedStories()
 		
-	}
-	
-	public URI getBaseURI(String URL) {
-		return UriBuilder.fromUri(URL).build();
-	}
-	
-	public URI getBaseURI(String URL, int id) {
-		return UriBuilder.fromUri(URL+id).build();
 	}
 	
 	/**
@@ -201,36 +150,17 @@ public class ContentDownloader {
 		return downloadedStories;
 	}
 	
-	private void readMetaData() {
-		downloadedStories.add(new Story("1", "Installiert", "Dummy", "Lukas", "40", "54.54.8777", "12.12 7.4565", "5", true));
-		JSONParser parser = new JSONParser(); 
+	public HashMap<String,String> parseMediaDataFormXML(String node, String xml){
+		HashMap<String,String> mediaMap = new HashMap<String,String>();
 		try {
-			org.json.simple.JSONArray stories = (org.json.simple.JSONArray)parser.parse(new FileReader(storyMetas));
-			for(int i=0; i<stories.size(); i++)
-			{
-				org.json.simple.JSONObject story = (org.json.simple.JSONObject) stories.get(i);
-				Story temp = new Story();
-				temp.setId((String) story.get("id"));
-				temp.setTitle((String) story.get("title"));
-				temp.setDescription((String) story.get("description"));
-				temp.setAuthor((String) story.get("author"));
-				temp.setSize((String) story.get("size"));
-				temp.setCreation_date((String) story.get("creation_date"));
-				temp.setLocation((String) story.get("location"));
-				temp.setRadius((String) story.get("radius"));
-				
-				downloadedStories.add(temp);
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
+		XmlPullParser parser = xmlFactoryObject.newPullParser();
+		
+		} catch (Exception e){
+			
 		}
 		
+		return mediaMap;
 	}
+	
 }

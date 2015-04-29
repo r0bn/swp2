@@ -601,9 +601,11 @@ int layout radar 0x7f03001c
 int layout support_simple_spinner_dropdown_item 0x7f03001d
 int menu main_ 0x7f0e0000
 int menu story_details_ 0x7f0e0001
-int menu story_list_installed_ 0x7f0e0002
-int menu story_list_store_ 0x7f0e0003
-int menu swipe_view_ 0x7f0e0004
+int menu story_details_installed 0x7f0e0002
+int menu story_details_store 0x7f0e0003
+int menu story_list_installed_ 0x7f0e0004
+int menu story_list_store_ 0x7f0e0005
+int menu swipe_view_ 0x7f0e0006
 int raw film_texture_fragment_shader 0x7f060000
 int raw film_texture_vertex_shader 0x7f060001
 int raw gtm_analytics 0x7f060002
