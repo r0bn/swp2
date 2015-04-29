@@ -9,7 +9,6 @@
         <Title>Kneipentour</Title>
         <Description>Die Legände von Block 4</Description>
         <Author>Arno Claus</Author>
-        <CreationDate>2015-04-01</CreationDate>
         <Size uom="MB">40</Size>
         <Location>
             <gml:Point gml:id="Location">

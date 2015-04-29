@@ -5,8 +5,8 @@
             version="2.0.0">
     <xsd:annotation>
         <xsd:documentation>
-            <Revision>5</Revision>
-            <Last_Update>27.04.2015</Last_Update>
+            <Revision>6</Revision>
+            <Last_Update>29.04.2015</Last_Update>
             <Last_Editor>Yasin Abdelmonem</Last_Editor>
             <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
         </xsd:documentation>
