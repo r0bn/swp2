@@ -45,14 +45,10 @@
                 stuff.scrollIntoView(true)
 
         $scope.tabbed_pain = (activeTabID,activeContentID, passiveTabID, passiveContentID) ->
-                activeTab=document.getElementById(activeTabID)
-                activeTab.classList.add("active")
-                activeContent=document.getElementById(activeContentID)
-                activeContent.style.display="block"
-                passiveTab=document.getElementById(passiveTabID)
-                passiveTab.classList.remove("active")
-                passiveContent=document.getElementById(passiveContentID)
-                passiveContent.style.display="none"
+                jQuery(activeTabID).addClass("active")
+                jQuery(activeContentID).css(display, "block")
+                jQuery(passiveTabID).removeClass("active")
+                jQuery(passiveContentID).css(display,"none")
 
         $scope.mediaData = [
             {

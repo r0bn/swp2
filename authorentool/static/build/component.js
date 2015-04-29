@@ -43,8 +43,8 @@ mainApp.controller("mainCtrl", [
     };
     $scope.tabbed_pain = function(activeTabID, activeContentID, passiveTabID, passiveContentID) {
       var activeContent, activeTab, passiveContent, passiveTab;
-      activeTab = document.getElementById(activeTabID);
-      activeTab.classList.add("active");
+      activeTab = jQuery(activeTabID);
+      jQuery(activeTabID).addClass("active");
       activeContent = document.getElementById(activeContentID);
       activeContent.style.display = "block";
       passiveTab = document.getElementById(passiveTabID);
