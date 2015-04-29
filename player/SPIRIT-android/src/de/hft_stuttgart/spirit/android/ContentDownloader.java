@@ -1,25 +1,17 @@
 
 package de.hft_stuttgart.spirit.android;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
-
-import javax.ws.rs.core.UriBuilder;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import restClient.RESTClient;
 import restClient.RESTException;
-import android.os.Environment;
 
 
 
@@ -66,42 +58,8 @@ public class ContentDownloader {
 	 * 'already_downloaded' which marks downloaded stories.
 	 */
 	public void requestAllStories() {
-// 26.04 Lukas Aberle added another RestClient
-//		try {
-//		WebResource resource = client.resource(getBaseURI(URLallStories));
-//		//Get JSON from server
-//		String data = resource.accept(MediaType.APPLICATION_JSON).get(String.class);
-//		System.out.println(data);
-//
-//		JSONParser parser = new JSONParser();
-//		Object obj = parser.parse(data);
-//		JSONArray allStories = (JSONArray) obj;
-//		System.out.println(allStories.size());
-//		
-//		for(int i=0; i<allStories.size(); i++)
-//		{
-//			JSONObject story = (JSONObject) allStories.get(0);
-//			HashMap<String, String> temp = new HashMap<String, String>();
-//			temp.put("id", (String) story.get("id"));
-//			temp.put("title", (String) story.get("title"));
-//			temp.put("description", (String) story.get("description"));
-//			temp.put("author", (String) story.get("author"));
-//			temp.put("size", (String) story.get("size"));
-//			temp.put("creation_date", (String) story.get("creation_date"));
-//			temp.put("location", (String) story.get("location"));
-//			temp.put("radius", (String) story.get("radius"));
-//			temp.put("already_downloaded", "0");
-//			
-//			allStoriesData.add(temp);
-//		}
-//		
-//		markDownloadedStories();
-//		
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		try {
+			allStoriesData.clear();
 			JSONArray allStories = client.getAvailableStories();
 			for(int i=0; i<allStories.length(); i++)
 			{
@@ -118,6 +76,7 @@ public class ContentDownloader {
 				
 				allStoriesData.add(temp);
 			}
+			markDownloadedStories();
 		} catch (RESTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,9 +86,7 @@ public class ContentDownloader {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		}	
 	}
 	
 	/**
@@ -152,7 +109,17 @@ public class ContentDownloader {
 	 * @param id id of the story to download
 	 */
 	public void downloadStory(int id) {
-		//WebResource resource = client.resource(getBaseURI(URLsingleStory, id));
+		requestAllStories();
+		Story temp = null;
+		for (Story x : allStoriesData) {
+			if(x.getId() == id)
+				temp = x;
+		}
+		if(temp == null) {
+			throw new RuntimeException("Story with ID: "+id+" can't be found on server! Download is cancelled.");
+		}
+		//String xml = client.getStoryXML(id);
+		
 		
 		//Get XML with absolute URI for media data from server
 		//System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
@@ -168,14 +135,6 @@ public class ContentDownloader {
 		
 	}
 	
-	public URI getBaseURI(String URL) {
-		return UriBuilder.fromUri(URL).build();
-	}
-	
-	public URI getBaseURI(String URL, int id) {
-		return UriBuilder.fromUri(URL+id).build();
-	}
-	
 	/**
 	 * Method returns the list of all requested stories (with meta data). If this method was called and no list
 	 * of stories were requested before, the stories will be requested from the server and the list will be returned.
@@ -189,6 +148,19 @@ public class ContentDownloader {
 	
 	public ArrayList<Story> getDownloadedStories() {
 		return downloadedStories;
+	}
+	
+	public HashMap<String,String> parseMediaDataFormXML(String node, String xml){
+		HashMap<String,String> mediaMap = new HashMap<String,String>();
+		try {
+		XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
+		XmlPullParser parser = xmlFactoryObject.newPullParser();
+		
+		} catch (Exception e){
+			
+		}
+		
+		return mediaMap;
 	}
 	
 }

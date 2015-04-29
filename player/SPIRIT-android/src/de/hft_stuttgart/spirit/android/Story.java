@@ -30,7 +30,7 @@ public class Story {
 	 * @param size size of the story in MB (meta data)
 	 * @param creation_date creation date of the story (meta data)
 	 * @param location location in GPS coordinates (meta data)
-	 * @param radius radius (meta data)
+	 * @param radius radius in km (meta data)
 	 */
 	public Story(Integer id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
 	
@@ -45,7 +45,7 @@ public class Story {
 		this.setAlreadyDownloaded(alreadyDownloaded);
 	}
 	
-	public Story(){
+	public Story() {
 		
 	}
 
