@@ -11,9 +11,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import restClient.RESTClient;
-import restClient.RESTException;
-
-
 
 /**
  * @author Mirjam
@@ -77,9 +74,6 @@ public class ContentDownloader {
 				allStoriesData.add(temp);
 			}
 			markDownloadedStories();
-		} catch (RESTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
