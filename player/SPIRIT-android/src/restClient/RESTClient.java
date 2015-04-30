@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -57,9 +58,10 @@ public class RESTClient {
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    public void getStoryXML(int id) {
+    public String getStoryXML(int id) {
         
         URL url;
+        StringBuilder xmlBuilder = new StringBuilder();
 		try {
 			url = new URL(URLallStories+"/"+id);
 			HttpURLConnection connection
@@ -67,7 +69,14 @@ public class RESTClient {
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", "application/xml");
 			
-			InputStream xml = connection.getInputStream();
+			BufferedReader xmlReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			
+			String xmlLine = xmlReader.readLine();
+			while(xmlLine != null) {
+				xmlBuilder.append(xmlLine);
+			}
+			
+			
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -77,6 +86,7 @@ public class RESTClient {
 			e.printStackTrace();
 		}
 
+		return xmlBuilder.toString();
     }
 
     /**
