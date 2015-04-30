@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -138,29 +137,9 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
             
-            Geocoder gc = new Geocoder(getActivity());
-            try {
-				List<Address> address = gc.getFromLocation(item.getLatitude(), item.getLongitude(), 1);
-				String city = address.get(0).getLocality();
-				if(city == null) {
-					city = address.get(0).getAdminArea();
-					if(city == null){
-						city = address.get(0).getCountryName();
-						if(city == null) {
-							textRegion.setText("Where is this !!!!");
-						} else {
-							textRegion.setText(city);
-						}
-					} else {						
-						textRegion.setText(city);						
-					}
-				} else {					
-					textRegion.setText(city);
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            task.execute(item);
+
 
             textTitel.setText(item.getTitle());
             textAutor.setText(item.getAuthor());
