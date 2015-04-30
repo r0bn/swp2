@@ -20,6 +20,8 @@ public class Story {
 	private String pathToXML;
 	private boolean alreadyDownloaded;
 	private ArrayList<String> storyMediaData;
+	private double longitude;
+	private double latitude;
 
 	/**
 	 * Constructor of the class 'Story'. A story can only be created when the following attributes are given.
@@ -43,9 +45,9 @@ public class Story {
 		this.setLocation(location);
 		this.setRadius(radius);
 		this.setAlreadyDownloaded(alreadyDownloaded);
-	}
-	
-	public Story() {
+		String[] longLat = location.split("[ ]+");
+		latitude = Double.valueOf(longLat[0]);
+		longitude = Double.valueOf(longLat[1]);
 		
 	}
 
@@ -135,6 +137,14 @@ public class Story {
 
 	public void setAlreadyDownloaded(boolean alreadyDownloaded) {
 		this.alreadyDownloaded = alreadyDownloaded;
+	}
+	
+	public double getLongitude(){
+		return longitude;
+	}
+	
+	public double  getLatitude(){
+		return latitude;
 	}
 
 }

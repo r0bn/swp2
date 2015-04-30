@@ -1,10 +1,15 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,6 +25,11 @@ import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.Story;
 
+/**
+ * 
+ * @author Lukas
+ *
+ */
 public class StoryListInstalled_Fragment extends Fragment {
 
 	List<Story> items;
@@ -65,13 +75,6 @@ public class StoryListInstalled_Fragment extends Fragment {
         return rootView;
     }
 
-    class ListViewItem{  //------
-        public int ThumbnailResource;
-        public String Titel;
-        public String Region;
-        public String Autor;
-    }
-
     public class CustomListViewAdapter extends BaseAdapter
     {
 
@@ -115,8 +118,32 @@ public class StoryListInstalled_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
 
+            Geocoder gc = new Geocoder(getActivity());
+            try {
+				List<Address> address = gc.getFromLocation(item.getLatitude(), item.getLongitude(), 1);
+				String city = address.get(0).getLocality();
+				if(city == null) {
+					city = address.get(0).getAdminArea();
+					if(city == null){
+						city = address.get(0).getCountryName();
+						if(city == null) {
+							textRegion.setText("Where is this !!!!");
+						} else {
+							textRegion.setText(city);
+						}
+					} else {						
+						textRegion.setText(city);						
+					}
+				} else {					
+					textRegion.setText(city);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
             textTitel.setText(item.getTitle());
-            textRegion.setText(item.getLocation());
+            
             textAutor.setText(item.getAuthor());
 
             return vi;
