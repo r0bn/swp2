@@ -61,15 +61,16 @@ public class ContentDownloader {
 			for(int i=0; i<allStories.length(); i++)
 			{
 				JSONObject story = (JSONObject) allStories.get(i);
-				Story temp = new Story();
-				temp.setId(Integer.valueOf((String)story.get("id")));
-				temp.setTitle((String) story.get("title"));
-				temp.setDescription((String) story.get("description"));
-				temp.setAuthor((String) story.get("author"));
-				temp.setSize((String) story.get("size"));
-				temp.setCreation_date((String) story.get("creation_date"));
-				temp.setLocation((String) story.get("location"));
-				temp.setRadius((String) story.get("radius"));
+				Story temp = new Story(
+				Integer.valueOf((String)story.get("id")),
+				(String) story.get("title"),
+				(String) story.get("description"),
+				(String) story.get("author"),
+				(String) story.get("size"),
+				(String) story.get("creation_date"),
+				(String) story.get("location"),
+				(String) story.get("radius"),
+				false);
 				
 				allStoriesData.add(temp);
 			}
