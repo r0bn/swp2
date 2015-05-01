@@ -1,5 +1,6 @@
 block vars
     - var featureCounter = 0
+    - var poiCounter = 0
 block content
 
     .container
@@ -44,42 +45,63 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for"location") Ort
                             .col-lg-8
-                                input.form-control(type="date", id="location", placeholder="Mittels Map?")
-
-
-                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnFeature", style="",ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
+                form.form-horizontal(id="POIS")
+                    fieldset
+                        legend POIs
+                            .form-group(id="btnPOIS")
+                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="poiCounter=poiCounter+1;getNewPoiElement(poiCounter)") Neuen POI erstellen
+                form.form-horizontal(id="NeuerPOI", style="display: none")
+                    fieldset
+                        .form-group
+                            label.col-lg-2.control-label(for"inputPOI") POI
+                            .col-lg-8
+                                input.form-control(type="text", id="inputPOI", placeholder="POI ID")
+                            .col-lg-6
+                                label.col-lg-2.control-label POI Einstellungen
+                            .col-lg-6
+                                .checkbox
+                                    input(id="inputAccessable", type='checkbox', placeholder="POI Erreichbar")
+                                    label(id="lblAccessable", for='inputAccessable') POI Erreichbar
+                                .checkbox
+                                    input(id="inputInternet", type='checkbox', placeholder="POI Internet")
+                                    label(id="lblInternet", for='inputInternet') POI Internet
+                
+                form.form-horizontal(id="Features")
+                    fieldset
+                        legend Features
+                            .form-group(id="btnFeature")
+                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
                 form.form-horizontal(id="NeuesFeature", style="display: none")
                     fieldset
-                        legend Storydaten
-                            .form-group
-                                .col-lg-4
-                                    label.col-lg-2.control-label(for="inputFeature") Feature
-                                .col-lg-8
-                                    input.form-control(type="text", id="inputFeature", placeholder="Featurename")
-                            .form-group
-                                .col-lg-4
-                                    label.col-lg-2.control-label(for="anchorPoint") Ort
-                                .col-lg-8
-                                    input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
-                            .form-group
-                                .col-lg-4
-                                    label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
-                                .col-lg-8
-                                    input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
-                            .form-group
-                                .col-lg-10
-                                    label.col-lg-2.control-label(for="interactions") Interaktion wählen
-                                .col-lg-2
-                                    .dropup
-                                        button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
-                                            span.caret 
-                                        ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                            li(role='presentation')
-                                                a(role='menuitem', tabindex='0', href='#') WayChooser
-                                            li(role='presentation')
-                                                a(role='menuitem', tabindex='1', href='#') Quiz
-                                            li(role='presentation')
-                                                a(role='menuitem', tabindex='2', href='#') Item
+                        .form-group
+                            .col-lg-4
+                                label.col-lg-2.control-label(for="inputFeature") Feature
+                            .col-lg-8
+                                input.form-control(type="text", id="inputFeature", placeholder="Featurename")
+                        .form-group
+                            .col-lg-4
+                                label.col-lg-2.control-label(for="anchorPoint") Ort
+                            .col-lg-8
+                                input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
+                        .form-group
+                            .col-lg-4
+                                label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
+                            .col-lg-8
+                                input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
+                        .form-group
+                            .col-lg-10
+                                label.col-lg-2.control-label(for="interactions") Interaktion wählen
+                            .col-lg-2
+                                .dropup
+                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
+                                        span.caret 
+                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='0', href='#') WayChooser
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='1', href='#') Quiz
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='2', href='#') Item
                                 
                                 
 

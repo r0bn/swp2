@@ -41,10 +41,34 @@
                 stuff.style.display="block"
                 counter = 1 if counter == undefined
                 stuff.id="NeuesFeature_" + counter
-                document.getElementById("column").appendChild(stuff)
+                document.getElementById("Features").appendChild(stuff)
                 button = document.getElementById("btnFeature");
                 button.parentNode.removeChild(button);
-                document.getElementById("column").appendChild(button)
+                document.getElementById("Features").appendChild(button)
+                button.scrollIntoView(true)
+
+        $scope.getNewPoiElement = (counter) ->
+                copyForm = document.getElementById("NeuerPOI")
+                stuff = copyForm.cloneNode(true)
+                stuff.style.display="block"
+                counter = 1 if counter == undefined
+                stuff.id="POI_" + counter
+                document.getElementById("POIS").appendChild(stuff)
+                childs= document.getElementById(stuff.id).childNodes
+                childs = childs[0].childNodes
+                childs = childs[0].childNodes
+                childs = childs[3].childNodes
+                checkBox1 = childs[0].childNodes
+                checkBox1[0].id = "inputAccessable_" +counter
+                checkBox1[1].id = "lblAccessable_" +counter
+                checkBox1[1].setAttribute("for", "inputAccessable_" +counter)
+                checkBox2 = childs[1].childNodes
+                checkBox2[0].id = "inputInternet_" +counter
+                checkBox2[1].id = "lblInternet_" +counter
+                checkBox2[1].setAttribute("for", "inputInternet_" +counter)
+                button = document.getElementById("btnPOIS");
+                button.parentNode.removeChild(button);
+                document.getElementById("POIS").appendChild(button)
                 button.scrollIntoView(true)
 
         $scope.tabbed_pain = (activeTabID,activeContentID, passiveTabID, passiveContentID) ->
