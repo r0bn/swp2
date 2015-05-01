@@ -9,7 +9,8 @@ use App\Story;
 
 use App\PostStory;
 
-class StorytellarController extends Controller {
+class StorytellarController extends Controller
+{
 
     /**
      * Get all stories.
@@ -20,7 +21,32 @@ class StorytellarController extends Controller {
     {
         $stories = array();
 
-        foreach(Story::all() as $entry) {
+        foreach (Story::all() as $entry) {
+            $story = array();
+
+            $story['id'] = $entry->id;
+            $story['title'] = $entry->title;
+            $story['description'] = $entry->description;
+            $story['author'] = $entry->author;
+            $story['size'] = $entry->size;
+            $story['creation_date'] = $entry->creation_date;
+            $story['location'] = $entry->location;
+            $story['radius'] = $entry->radius;
+
+            $stories[] = $story;
+        }
+
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+
+        return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
+    }
+
+
+    public function getStoriesTemp()
+    {
+        $stories = array();
+
+        foreach (PostStory::all() as $entry) {
             $story = array();
 
             $story['id'] = $entry->id;
@@ -44,7 +70,7 @@ class StorytellarController extends Controller {
     /**
      * Get a specific story by id.
      *
-     * @param  Story  $id
+     * @param  Story $id
      * @return xml
      */
     public function getStory($id)
@@ -58,7 +84,7 @@ class StorytellarController extends Controller {
     /**
      * Create a new story.
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @return string
      */
     public function createStory(Request $request)
@@ -83,15 +109,22 @@ class StorytellarController extends Controller {
         $files = $request->file('media');
 
         if (count($files) != 0) {
-            foreach($files as $file) {
+            foreach ($files as $file) {
                 $mediaPath = 'media/' . $storyId;
                 $filename = $file->getClientOriginalName();
-                $upload = $file->move($mediaPath, $filename);
+                $mimeType = $file->getClientMimeType();
+                $filesize = $file->getClientSize();
+                $fileextension = $file->guessClientExtension();
+                if ((($mimeType == 'image/jpeg' || $mimeType == 'image/png' || $mimeType == 'video/mp4') && $filesize <= 5000000) &&
+                    ($fileextension == 'jpg' || $fileextension == 'jpeg' || $fileextension == 'png' || $fileextension == 'mp4')) {
+                    $upload = $file->move($mediaPath, $filename);
+                } else {
+                    return "invalid attempt for fileupload!";
+                }
             }
         }
 
-        return "check http://www.storytellar.de/media/" . $storyId . "/<filename> if the uploaded file is available!";
-
+        return "check http://api.storytellar.de/media/" . $storyId . "/<filename> if the uploaded file is available!";
     }
 
 }

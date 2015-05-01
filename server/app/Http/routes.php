@@ -18,7 +18,9 @@
  * This determines the routes for downloading all story
  * metadata and a specific story by id.
  */
-Route::get('stories', 'StorytellarController@getStories');// deprecated
+Route::get('stories', 'StorytellarController@getStories'); // deprecated
+
+Route::get('tempstories', 'StorytellarController@getStoriesTemp'); // temporary
 
 Route::get('story', 'StorytellarController@getStories');
 
@@ -31,5 +33,7 @@ Route::get('story/{id}', 'StorytellarController@getStory');
  * This determines the routes for uploading story files.
  */
 Route::post('createstory', 'StorytellarController@createStory'); // deprecated
+
+Route::get('testupload', function() { return View::make('test'); }); // temporary
 
 Route::post('story', 'StorytellarController@createStory');
