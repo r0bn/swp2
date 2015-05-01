@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit;
 
+
 /*
  * GhostLocation:
  * enthält die Location eines Geistes und zusätzlich Daten zur Darstellung auf dem Radar.

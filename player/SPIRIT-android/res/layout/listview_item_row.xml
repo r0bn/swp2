@@ -18,7 +18,7 @@
 
     <TextView
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text=""
         android:layout_width="wrap_content"
         android:id="@+id/textRegion"
         android:layout_below="@+id/textTitel"

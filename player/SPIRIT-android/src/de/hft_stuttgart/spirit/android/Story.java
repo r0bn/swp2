@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *and media data of the story. 
  */
 public class Story {
-	private String id;
+	private Integer id;
 	private String title;
 	private String description;
 	private String author;
@@ -20,6 +20,8 @@ public class Story {
 	private String pathToXML;
 	private boolean alreadyDownloaded;
 	private ArrayList<String> storyMediaData;
+	private double longitude;
+	private double latitude;
 
 	/**
 	 * Constructor of the class 'Story'. A story can only be created when the following attributes are given.
@@ -30,9 +32,9 @@ public class Story {
 	 * @param size size of the story in MB (meta data)
 	 * @param creation_date creation date of the story (meta data)
 	 * @param location location in GPS coordinates (meta data)
-	 * @param radius radius (meta data)
+	 * @param radius radius in km (meta data)
 	 */
-	public Story(String id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
+	public Story(Integer id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
 	
 		this.setId(id);
 		this.setTitle(title);
@@ -43,18 +45,18 @@ public class Story {
 		this.setLocation(location);
 		this.setRadius(radius);
 		this.setAlreadyDownloaded(alreadyDownloaded);
-	}
-	
-	public Story(){
+		String[] longLat = location.split("[ ]+");
+		latitude = Double.valueOf(longLat[0]);
+		longitude = Double.valueOf(longLat[1]);
 		
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(Integer integer) {
+		this.id = integer;
 	}
 
 	public String getTitle() {
@@ -135,6 +137,14 @@ public class Story {
 
 	public void setAlreadyDownloaded(boolean alreadyDownloaded) {
 		this.alreadyDownloaded = alreadyDownloaded;
+	}
+	
+	public double getLongitude(){
+		return longitude;
+	}
+	
+	public double  getLatitude(){
+		return latitude;
 	}
 
 }

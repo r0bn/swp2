@@ -34,6 +34,12 @@ import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 
+/**
+ * 
+ * @author Lukas
+ *	This Activity is the Main Activity of the StorytellAR Application.
+ *	It contains the two fragments which hold the installed stories and the stories which can be downloaded.
+ */
 @SuppressWarnings("deprecation")
 public class Main_Activity extends ActionBarActivity implements ActionBar.TabListener{
     /**
@@ -51,6 +57,9 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
      */
     ViewPager mViewPager;
 
+    /**
+     * This method is called, when the Activity is created.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +101,12 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
     }
 
 
+    /**
+     * This method is called when the OptionsMenu is created.
+     * This method does nothing, because the underlying Fragments will initialize the OptionsMenu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_, menu);
         return true;
     }
 

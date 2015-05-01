@@ -1,13 +1,26 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
+
+
+import java.util.concurrent.ExecutionException;
+
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,9 +31,25 @@ import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.Story;
 
+/**
+ * 
+ * @author Lukas
+ *
+ */
 public class StoryListInstalled_Fragment extends Fragment {
 
 	List<Story> items;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setHasOptionsMenu(true);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    inflater.inflate(R.menu.main_installed, menu);
+	}
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,13 +79,6 @@ public class StoryListInstalled_Fragment extends Fragment {
 
 
         return rootView;
-    }
-
-    class ListViewItem{  //------
-        public int ThumbnailResource;
-        public String Titel;
-        public String Region;
-        public String Autor;
     }
 
     public class CustomListViewAdapter extends BaseAdapter
@@ -102,8 +124,10 @@ public class StoryListInstalled_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
 
+            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            task.execute(item);
+            
             textTitel.setText(item.getTitle());
-            textRegion.setText(item.getLocation());
             textAutor.setText(item.getAuthor());
 
             return vi;

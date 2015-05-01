@@ -6,11 +6,11 @@
             version="2.0.0">
     <xsd:annotation>
         <xsd:documentation>
-            <Revision>4</Revision>
-            <Last_Update>13.04.2015</Last_Update>
+            <Revision>6</Revision>
+            <Last_Update>29.04.2015</Last_Update>
             <Last_Editor>Yasin Abdelmonem</Last_Editor>
             <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
-        </xsd:documentation> 
+        </xsd:documentation>
     </xsd:annotation>
     
     <xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml/gml.xsd"  />
@@ -20,8 +20,23 @@
             <xsd:element name="Title" type="xsd:string" maxOccurs="1" minOccurs="0" />
             <xsd:element name="Description" type="xsd:string" maxOccurs="1" minOccurs="1" />
             <xsd:element name="Author" type="xsd:string" maxOccurs="1" minOccurs="1" />
-            <xsd:element name="CreationDate" type="xsd:date" maxOccurs="1" minOccurs="1" />
-            <xsd:element name="Size" type="xsd:string"  />
+            <xsd:element name="Size"  maxOccurs="1" minOccurs="1">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:float" >
+                            <xsd:attribute name="uom" use="required" >
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string"> 
+                                        <xsd:enumeration value="KB" />
+                                        <xsd:enumeration value="MB" />
+                                        <xsd:enumeration value="GB" />
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:attribute>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
             <xsd:element name="Location" maxOccurs="1" minOccurs="1"> 
                 <xsd:complexType>
                     <xsd:sequence>
@@ -29,7 +44,22 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
-            <xsd:element name="Radius" type="xsd:integer" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="Radius" maxOccurs="1" minOccurs="1">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:float" >
+                            <xsd:attribute name="uom" use="required" >
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string"> 
+                                        <xsd:enumeration value="m" />
+                                        <xsd:enumeration value="km" />
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:attribute>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
             <xsd:element name="POI" minOccurs="1" maxOccurs="unbounded">
                 <xsd:complexType> 
                     <xsd:sequence>

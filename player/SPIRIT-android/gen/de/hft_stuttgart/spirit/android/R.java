@@ -2286,11 +2286,14 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
-        public static final int main_=0x7f0e0000;
-        public static final int story_details_=0x7f0e0001;
-        public static final int story_list_installed_=0x7f0e0002;
-        public static final int story_list_store_=0x7f0e0003;
-        public static final int swipe_view_=0x7f0e0004;
+        public static final int main_installed=0x7f0e0000;
+        public static final int main_store=0x7f0e0001;
+        public static final int story_details_=0x7f0e0002;
+        public static final int story_details_installed=0x7f0e0003;
+        public static final int story_details_store=0x7f0e0004;
+        public static final int story_list_installed_=0x7f0e0005;
+        public static final int story_list_store_=0x7f0e0006;
+        public static final int swipe_view_=0x7f0e0007;
     }
     public static final class raw {
         public static final int film_texture_fragment_shader=0x7f060000;

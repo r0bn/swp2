@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit;
 
+
 public class GeoTools {
 	// core implementierung -> schnittstelle zu android benötigt
 

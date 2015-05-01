@@ -1,37 +1,29 @@
 package de.hft_stuttgart.spirit.android.view;
 
-import de.hft_stuttgart.spirit.android.ContentDownloader;
-import de.hft_stuttgart.spirit.android.R;
-import de.hft_stuttgart.spirit.android.R.id;
-import de.hft_stuttgart.spirit.android.R.layout;
-import de.hft_stuttgart.spirit.android.R.menu;
-import de.hft_stuttgart.spirit.android.Story;
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.app.Activity;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import de.hft_stuttgart.spirit.android.ContentDownloader;
+import de.hft_stuttgart.spirit.android.R;
+import de.hft_stuttgart.spirit.android.Story;
 
 /**
  * 
@@ -41,6 +33,17 @@ import java.util.concurrent.ExecutionException;
 public class StoryListStore_Fragment extends Fragment {
 
 	List<Story> items;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setHasOptionsMenu(true);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    inflater.inflate(R.menu.main_store, menu);
+	}
 	
 	/**
 	 * Method is called when Fragment is created. It will do the following things:
@@ -91,7 +94,7 @@ public class StoryListStore_Fragment extends Fragment {
 	 * 
 	 * @author Lukas
 	 *
-	 * This class handles the listview and fills the items with the data from the downloaded stories.
+	 * This class handles the ListView and fills the items with the data from the downloaded stories.
 	 */
     public class CustomListViewAdapter extends BaseAdapter
     {
@@ -123,7 +126,6 @@ public class StoryListStore_Fragment extends Fragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
 
             Story item = items.get(position);
             View vi=convertView;
@@ -134,11 +136,17 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
+            
+            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            task.execute(item);
+
 
             textTitel.setText(item.getTitle());
-            textRegion.setText(item.getLocation());
             textAutor.setText(item.getAuthor());
 
+            if(item.isAlreadyDownloaded()){            	
+            	vi.setBackgroundColor(0xA040eb12);
+            }
             return vi;
         }
     }
