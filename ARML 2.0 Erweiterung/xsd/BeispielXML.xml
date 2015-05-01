@@ -9,14 +9,13 @@
         <Title>Kneipentour</Title>
         <Description>Die Legände von Block 4</Description>
         <Author>Arno Claus</Author>
-        <CreationDate>2015-04-01</CreationDate> <!-- Format: yyyy-mm-dd -->
-        <Size>40 MB</Size>
+        <Size uom="MB">40</Size>
         <Location>
             <gml:Point gml:id="Location">
                 <gml:pos>48.780332 9.172515</gml:pos>
             </gml:Point>
         </Location><!-- GML POINT -->
-        <Radius>5</Radius><!-- ALS KILOMETER-->
+        <Radius uom="km">5</Radius>
         
         <POI id="Punkt_A">
             <Accessible>true</Accessible>
