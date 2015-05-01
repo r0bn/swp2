@@ -1,9 +1,10 @@
 /**
  * 
  */
-package de.hft_stuttgart.spirit;
+package de.hft_stuttgart.storytellar;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -27,6 +28,25 @@ public class PlayableStory {
 	Map<String,Scene> scenes;
 	String initialScene;
 	String currentScene;
+	
+	public PlayableStory(){
+		scenes = new HashMap<String, Scene>();
+	}
+	
+	public PlayableStory(String title, String description, Double size,	String author, Date creationDate, Double latitude, 
+			Double longitude, Double radius, Map<String,Scene> scenes, String initialScene, String currentScene){
+		this.title = title;
+		this.description = description;
+		this.size = size;
+		this.author = author;
+		this.creationDate = creationDate;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.radius = radius;
+		this.scenes = scenes;
+		this.initialScene = initialScene;
+		this.currentScene = currentScene;
+	}
 	
 	// Get & Set
 	public String getTitle() {
