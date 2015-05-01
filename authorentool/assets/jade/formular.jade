@@ -27,15 +27,20 @@ block content
                                 input.form-control(type="text", id="inputAutor", placeholder="Name des Autors")
 
                         .form-group
-                            label.col-lg-2.control-label(for"creationDate") Datum
-                            .col-lg-8
-                                input.form-control(type="date", id="creationDate", placeholder="Mit akt. Datum füllen.")
-
-                        .form-group
                             label.col-lg-2.control-label(for"size") Größe der Story
-                            .col-lg-8
-                                input.form-control(type="date", id="size", placeholder="Berechnen aus Mediendatein?")
-
+                            .col-lg-6
+                                input.form-control(type="number", id="size",step="1", placeholder="Berechnen aus Mediendatein?")
+                            .col-lg-1
+                                .dropdown
+                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit 
+                                        span.caret 
+                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='0', href='#') KB
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='1', href='#') MB
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='2', href='#') GB
                         .form-group
                             label.col-lg-2.control-label(for"location") Ort
                             .col-lg-8
@@ -47,24 +52,36 @@ block content
                     fieldset
                         legend Storydaten
                             .form-group
-                                label.col-lg-2.control-label(for="inputFeature") Feature
+                                .col-lg-4
+                                    label.col-lg-2.control-label(for="inputFeature") Feature
                                 .col-lg-8
                                     input.form-control(type="text", id="inputFeature", placeholder="Featurename")
                             .form-group
-                                label.col-lg-2.control-label(for="anchorPoint") Ort
+                                .col-lg-4
+                                    label.col-lg-2.control-label(for="anchorPoint") Ort
                                 .col-lg-8
                                     input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
                             .form-group
-                                label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
+                                .col-lg-4
+                                    label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
                                 .col-lg-8
                                     input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
                             .form-group
-                                label-col-lg-2.control-label(for="interactions") Interaktion wählen
-                                .col-lg-8
-                                    select(name="Interaction")
-                                        option Quiz
-                                        option Waychooser
-                                        option Item
+                                .col-lg-10
+                                    label.col-lg-2.control-label(for="interactions") Interaktion wählen
+                                .col-lg-2
+                                    .dropup
+                                        button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
+                                            span.caret 
+                                        ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='0', href='#') WayChooser
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='1', href='#') Quiz
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='2', href='#') Item
+                                
+                                
 
             .col-md-4
                 .page-header
@@ -72,6 +89,6 @@ block content
 
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter
-
+    p   
 block scripts 
 

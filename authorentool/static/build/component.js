@@ -30,7 +30,7 @@ mainApp.controller("mainCtrl", [
       return document.getElementById("Formular").style.display = "block";
     };
     $scope.getNewFeatureElement = function(counter) {
-      var copyForm, stuff;
+      var button, copyForm, stuff;
       copyForm = document.getElementById("NeuesFeature");
       stuff = copyForm.cloneNode(true);
       stuff.style.display = "block";
@@ -39,18 +39,16 @@ mainApp.controller("mainCtrl", [
       }
       stuff.id = "NeuesFeature_" + counter;
       document.getElementById("column").appendChild(stuff);
-      return stuff.scrollIntoView(true);
+      button = document.getElementById("btnFeature");
+      button.parentNode.removeChild(button);
+      document.getElementById("column").appendChild(button);
+      return button.scrollIntoView(true);
     };
     $scope.tabbed_pain = function(activeTabID, activeContentID, passiveTabID, passiveContentID) {
-      var activeContent, activeTab, passiveContent, passiveTab;
-      activeTab = jQuery(activeTabID);
       jQuery(activeTabID).addClass("active");
-      activeContent = document.getElementById(activeContentID);
-      activeContent.style.display = "block";
-      passiveTab = document.getElementById(passiveTabID);
-      passiveTab.classList.remove("active");
-      passiveContent = document.getElementById(passiveContentID);
-      return passiveContent.style.display = "none";
+      jQuery(activeContentID).css(display, "block");
+      jQuery(passiveTabID).removeClass("active");
+      return jQuery(passiveContentID).css(display, "none");
     };
     return $scope.mediaData = [
       {

@@ -42,7 +42,10 @@
                 counter = 1 if counter == undefined
                 stuff.id="NeuesFeature_" + counter
                 document.getElementById("column").appendChild(stuff)
-                stuff.scrollIntoView(true)
+                button = document.getElementById("btnFeature");
+                button.parentNode.removeChild(button);
+                document.getElementById("column").appendChild(button)
+                button.scrollIntoView(true)
 
         $scope.tabbed_pain = (activeTabID,activeContentID, passiveTabID, passiveContentID) ->
                 jQuery(activeTabID).addClass("active")
