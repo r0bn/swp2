@@ -32,6 +32,26 @@ http://api.storytellar.de/story
  * Fields: title, description, author, size, creation_date, location, radius, xml
  * Media: media[]
 
+Media files restrictions:
+
+ * MIME types
+   * image/jpeg
+   * image/png
+   * image/mp4
+
+ * Maximum filesize 5000000 bytes (5 MB)
+
+ * File extensions
+   * .jpg
+   * .jpeg
+   * .png
+   * .mp4
+
+
+Media files are accessible in an media folder, with the story id as sub-folder. Filenames remain unchanged.
+
+Example for story id 201934 and file 'hello.jpg': http://api.storytellar.de/media/201934/hello.jpg
+
 ### Filter concept for stories
 ```
 http://api.storytellar.de/story?<query parameters>
@@ -44,5 +64,5 @@ http://api.storytellar.de/story?<query parameters>
  * Response format: JSON
  * Character encoding (header): utf-8
 
-Example: http://api.storytellar.de/story?author=arno+claus&size_max=20
+Example for author and maximum size filtering: http://api.storytellar.de/story?author=arno+claus&size_max=20
  
