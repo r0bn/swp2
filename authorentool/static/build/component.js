@@ -78,7 +78,7 @@ mainApp.controller("mainCtrl", [
       $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter);
       $("#btnCreateInteraction_" + counter).click(function() {
         var interactionCounter;
-        if ($("#ddnInteractions_" + counter).val() !== "Interaction") {
+        if ($("#ddnInteractions_" + counter).val() === "Item") {
           copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val());
           interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
           interactionCounter++;
@@ -104,6 +104,7 @@ mainApp.controller("mainCtrl", [
           $("#lblItemIsCollected_" + interactionCounter).attr("for", "itemIsCollected_" + interactionCounter);
           $("#lblItemDescription_" + interactionCounter).attr("for", "itemDescription_" + interactionCounter);
           $("#lblItemFeatureRef_" + interactionCounter).attr("for", "itemFeatureRef_" + interactionCounter);
+          $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter);
           $("#btnItemDelete_" + interactionCounter).click(function() {
             if (confirm('Möchten Sie das Item wirklich löschen?')) {
               return $("#Neu_Item_" + interactionCounter).remove();
@@ -122,6 +123,66 @@ mainApp.controller("mainCtrl", [
             var text;
             text = "Item: " + $("#itemID_" + interactionCounter).val();
             return $("#NeuesItemFieldset_" + interactionCounter).text(text);
+          });
+        } else if ($("#ddnInteractions_" + counter).val() === "Quiz") {
+          copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val());
+          interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
+          interactionCounter++;
+          $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+          stuff = copyForm.cloneNode(true);
+          stuff.id = stuff.id + "_" + interactionCounter;
+          stuff.style.display = "block";
+          document.getElementById("NeuesFeatureContent_" + counter).appendChild(stuff);
+          $("#" + stuff.id).find("#NeuesQuizFieldset").attr("id", "NeuesQuizFieldset_" + interactionCounter);
+          $("#" + stuff.id).find("#NeuesQuizContent").attr("id", "NeuesQuizContent_" + interactionCounter);
+          $("#" + stuff.id).find("#btnQuizControlGroup").attr("id", "btnQuizControlGroup_" + interactionCounter);
+          $("#" + stuff.id).find("#btnQuizEinklappen").attr("id", "btnQuizEinklappen_" + interactionCounter);
+          $("#" + stuff.id).find("#btnQuizDelete").attr("id", "btnQuizDelete_" + interactionCounter);
+          $("#" + stuff.id).find("#quizID").attr("id", "quizID_" + interactionCounter);
+          $("#" + stuff.id).find("#quizFeatureRef").attr("id", "quizFeatureRef_" + interactionCounter);
+          $("#" + stuff.id).find("#quizOnTrue").attr("id", "quizOnTrue_" + interactionCounter);
+          $("#" + stuff.id).find("#quizOnFalse").attr("id", "quizOnFalse_" + interactionCounter);
+          $("#" + stuff.id).find("#quizQuestion").attr("id", "quizQuestion_" + interactionCounter);
+          $("#" + stuff.id).find("#btnQuizAnswer").attr("id", "btnQuizAnswer_" + interactionCounter);
+          $("#btnQuizDelete_" + interactionCounter).click(function() {
+            if (confirm('Möchten Sie das Quiz wirklich löschen?')) {
+              return $("#Neu_Quiz_" + interactionCounter).remove();
+            }
+          });
+          $("#btnQuizEinklappen_" + interactionCounter).click(function() {
+            if ($("#NeuesQuizContent_" + interactionCounter).is(":hidden")) {
+              $("#NeuesQuizContent_" + interactionCounter).show("slow");
+              return $("#btnQuizControlGroup_" + interactionCounter).addClass("dropup");
+            } else {
+              $("#NeuesQuizContent_" + interactionCounter).slideUp("slow");
+              return $("#btnQuizControlGroup_" + interactionCounter).removeClass("dropup");
+            }
+          });
+          $("#quizID_" + interactionCounter).keyup(function() {
+            var text;
+            text = "Quiz: " + $("#quizID_" + interactionCounter).val();
+            return $("#NeuesQuizFieldset_" + interactionCounter).text(text);
+          });
+          return $("#btnQuizAnswer_" + interactionCounter).click(function() {
+            var answer, copyAnswer, quizAnswerCounter;
+            quizAnswerCounter = $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter");
+            quizAnswerCounter++;
+            $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter", quizAnswerCounter);
+            copyAnswer = document.getElementById("Answer");
+            answer = copyAnswer.cloneNode(true);
+            answer.id = answer.id + "_" + quizAnswerCounter;
+            answer.style.display = "block";
+            document.getElementById("NeuesQuizContent_" + interactionCounter).appendChild(answer);
+            $("#" + answer.id).find("#lblQuizAnswerID").attr("id", "lblQuizAnswerID_" + quizAnswerCounter);
+            $("#" + answer.id).find("#quizAnswerID").attr("id", "quizAnswerID_" + quizAnswerCounter);
+            $("#" + answer.id).find("#lblQuizAnswerText").attr("id", "lblQuizAnswerText_" + quizAnswerCounter);
+            $("#" + answer.id).find("#quizAnswerText").attr("id", "quizAnswerText_" + quizAnswerCounter);
+            $("#" + answer.id).find("#btnQuizAnswerDelete").attr("id", "btnQuizAnswerDelete_" + quizAnswerCounter);
+            return $("#btnQuizAnswerDelete_" + quizAnswerCounter).click(function() {
+              if (confirm('Möchten Sie die Antwort wirklich löschen?')) {
+                return $("#" + answer.id).remove();
+              }
+            });
           });
         }
       });

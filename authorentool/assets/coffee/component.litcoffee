@@ -85,7 +85,7 @@
                 $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter)
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
-                    if ($("#ddnInteractions_" + counter).val() != "Interaction")
+                    if ($("#ddnInteractions_" + counter).val() == "Item")
                         copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val())
                         interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
                         interactionCounter++
@@ -112,7 +112,7 @@
                         $("#lblItemIsCollected_" + interactionCounter).attr("for", "itemIsCollected_"+interactionCounter)
                         $("#lblItemDescription_" + interactionCounter).attr("for", "itemDescription_"+interactionCounter)
                         $("#lblItemFeatureRef_" + interactionCounter).attr("for", "itemFeatureRef_"+interactionCounter)
-
+                        $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter)
                         # Click Event für btnItemDelete
                         $("#btnItemDelete_" + interactionCounter).click ->
                            $("#Neu_Item_" + interactionCounter).remove() if (confirm('Möchten Sie das Item wirklich löschen?'))
@@ -129,8 +129,64 @@
                         $("#itemID_"+interactionCounter).keyup ->
                             text = "Item: " + $("#itemID_"+interactionCounter).val()
                             $("#NeuesItemFieldset_"+interactionCounter).text(text)
+                    else if ($("#ddnInteractions_" + counter).val() == "Quiz")
+                        copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val())
+                        interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
+                        interactionCounter++
+                        $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+                        stuff = copyForm.cloneNode(true)
+                        stuff.id = stuff.id + "_" + interactionCounter
+                        stuff.style.display="block"
+                        document.getElementById("NeuesFeatureContent_"+counter).appendChild(stuff)
+                        
+                        $("#" + stuff.id).find("#NeuesQuizFieldset").attr("id", "NeuesQuizFieldset_" +interactionCounter)
+                        $("#" + stuff.id).find("#NeuesQuizContent").attr("id", "NeuesQuizContent_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnQuizControlGroup").attr("id", "btnQuizControlGroup_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnQuizEinklappen").attr("id", "btnQuizEinklappen_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnQuizDelete").attr("id", "btnQuizDelete_" +interactionCounter)
+                        $("#" + stuff.id).find("#quizID").attr("id", "quizID_" +interactionCounter)
+                        $("#" + stuff.id).find("#quizFeatureRef").attr("id", "quizFeatureRef_" +interactionCounter)
+                        $("#" + stuff.id).find("#quizOnTrue").attr("id", "quizOnTrue_" +interactionCounter)
+                        $("#" + stuff.id).find("#quizOnFalse").attr("id", "quizOnFalse_" +interactionCounter)
+                        $("#" + stuff.id).find("#quizQuestion").attr("id", "quizQuestion_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnQuizAnswer").attr("id", "btnQuizAnswer_" +interactionCounter)
+                        # Click Event für btnQuizDelete
+                        $("#btnQuizDelete_" + interactionCounter).click ->
+                           $("#Neu_Quiz_" + interactionCounter).remove() if (confirm('Möchten Sie das Quiz wirklich löschen?'))
+                
+                        # Click Event für btnItemEinklappen
+                        $("#btnQuizEinklappen_" + interactionCounter).click ->
+                            if $("#NeuesQuizContent_" + interactionCounter).is( ":hidden" )
+                                $("#NeuesQuizContent_" + interactionCounter).show( "slow" )
+                                $("#btnQuizControlGroup_"  +interactionCounter).addClass("dropup")
+                            else
+                                $("#NeuesQuizContent_" + interactionCounter).slideUp("slow")
+                                $("#btnQuizControlGroup_"  +interactionCounter).removeClass("dropup")
+                        # ItemName Trigger
+                        $("#quizID_"+interactionCounter).keyup ->
+                            text = "Quiz: " + $("#quizID_"+interactionCounter).val()
+                            $("#NeuesQuizFieldset_"+interactionCounter).text(text)
+                        
+                        # Click Event für btnQuizAnswer
 
-                       
+                        
+                        $("#btnQuizAnswer_" + interactionCounter).click ->
+                            quizAnswerCounter = $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter")
+                            quizAnswerCounter++
+                            $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter", quizAnswerCounter)
+                            copyAnswer = document.getElementById("Answer")
+                            answer = copyAnswer.cloneNode(true)
+                            answer.id = answer.id + "_" + quizAnswerCounter
+                            answer.style.display="block"
+                            document.getElementById("NeuesQuizContent_" + interactionCounter).appendChild(answer)
+                            $("#" + answer.id).find("#lblQuizAnswerID").attr("id", "lblQuizAnswerID_" +quizAnswerCounter)
+                            $("#" + answer.id).find("#quizAnswerID").attr("id", "quizAnswerID_" +quizAnswerCounter)
+                            $("#" + answer.id).find("#lblQuizAnswerText").attr("id", "lblQuizAnswerText_" +quizAnswerCounter)
+                            $("#" + answer.id).find("#quizAnswerText").attr("id", "quizAnswerText_" +quizAnswerCounter)
+                            $("#" + answer.id).find("#btnQuizAnswerDelete").attr("id", "btnQuizAnswerDelete_" + quizAnswerCounter)
+                            # Click Event für btnQuizDelete
+                            $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
+                                $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
                 # Click Events für ddnInteraction
                 $("#ddnWayChooser_" + counter).click ->
                     $("#ddnInteractions_" + counter).val("WayChooser")

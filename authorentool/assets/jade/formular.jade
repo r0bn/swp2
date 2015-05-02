@@ -33,7 +33,7 @@ block content
                                 input.form-control(type="number", id="size",step="1", placeholder="Berechnen aus Mediendatein?")
                             .col-lg-1
                                 .dropdown
-                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit 
+                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
                                         span.caret 
                                     ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                         li(role='presentation')
@@ -112,7 +112,7 @@ block content
                                             li(role='presentation')
                                                 a(role='menuitem', id="ddnQuiz", tabindex='1', value="Quiz") Quiz
                                             li(role='presentation')
-                                                a(role='menuitem', id="ddnItem", tabindex='2', value="NeuesItem") Item
+                                                a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
                                 .col-lg-2
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnCreateInteraction",interactionCounter="1", type="button") Interaktion erstellen
 
@@ -129,25 +129,78 @@ block content
                                                 span Löschen  
                                 fieldset(id="NeuesItemContent")                          
                                     .form-group
-                                        .col-lg-6
+                                        .col-lg-8
                                             label.col-lg-2.control-label(id="lblItemID", for="itemID") Item ID
-                                        .col-lg-6
+                                        .col-lg-4
                                             input.form-control(type="text", id="itemID", placeholder="ITEM ID")
                                     .form-group
-                                        .col-lg-6
+                                        .col-lg-8
                                             label.col-lg-2.control-label(id="lblItemDescription", for="itemDescription") Beschreibung
-                                        .col-lg-6
+                                        .col-lg-4
                                             input.form-control(type="text", id="itemDescription", placeholder="ITEM Description")
                                     .form-group
-                                        .col-lg-6
+                                        .col-lg-8
                                             label.col-lg-2.control-label(id="lblItemFeatureRef", for="itemFeatureRef") FeatureRef
-                                        .col-lg-6
+                                        .col-lg-4
                                             input.form-control(type="text", id="itemFeatureRef", placeholder="ITEM FEATUREREF")
                                     .form-group
-                                        .col-lg-6
+                                        .col-lg-8
+                                        .col-lg-4
                                             .checkbox
                                                 input(id="itemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
                                                 label(id="lblItemIsCollected", for='itemIsCollected') Item Is Collected
+                            .form-group(id="Neu_Quiz", style="display: none") 
+                                fieldset                      
+                                    .col-lg-10
+                                        legend(id="NeuesQuizFieldset") Neues Quiz 
+                                    .col-lg-2
+                                        .btn-group.dropup(id="btnQuizControlGroup", role="group" aria-label="...")
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnQuizEinklappen", type='button')
+                                                span.caret
+                                                 
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizDelete", type='button') 
+                                                span Löschen  
+                                fieldset(id="NeuesQuizContent")
+                                    .form-group
+                                        .col-lg-8
+                                            label.col-lg-2.control-label(id="lblQuizID", for="quizID") Quiz ID
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizID", placeholder="Quiz ID")   
+                                    .form-group
+                                        .col-lg-8
+                                            label.col-lg-2.control-label(id="lblQuizFeatureRef", for="quizFeatureRef") FeatureRef
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizFeatureRef", placeholder="QUIZ FEATUREREF")
+                                    .form-group
+                                        .col-lg-8
+                                            label.col-lg-2.control-label(id="lblQuizOnTrue", for="quizOnTrue") Quiz OnTrue
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizOnTrue", placeholder="Quiz On True FeatureRef")
+                                    .form-group
+                                        .col-lg-8
+                                            label.col-lg-2.control-label(id="lblQuizOnFalse", for="quizOnFalse") Quiz OnFalse
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizOnFalse", placeholder="Quiz On False FeatureRef")
+                                    .form-group
+                                        .col-lg-8
+                                            label.col-lg-2.control-label(id="lblQuizQuestion", for="quizQuestion") Question
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizQuestion", placeholder="Quiz Question")
+                                    .form-group
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
+                                                span Antwort hinzufügen
+                                    .form-group(id="Answer", style="display: none")
+                                        .col-lg-2
+                                            label.col-lg-2.control-label(id="lblQuizAnswerID", for="quizAnswerID") Antwort ID
+                                        .col-lg-2
+                                            input.form-control(type="text", id="quizAnswerID", placeholder="Quiz Answer ID")
+                                        .col-lg-2
+                                            label.col-lg-2.control-label(id="lblQuizAnswerText", for="quizAnswerText") Antwort Text
+                                        .col-lg-4
+                                            input.form-control(type="text", id="quizAnswerText", placeholder="Quiz Answer Text")
+                                        .col-lg-2
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
+                                                span Löschen
             .col-md-4
                 .page-header
                     h3 Media Library
