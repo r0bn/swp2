@@ -1,6 +1,13 @@
 
 package de.hft_stuttgart.spirit.android;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +17,10 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.app.Application;
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
 import restClient.RESTClient;
 
 /**
@@ -35,7 +46,7 @@ public class ContentDownloader {
 		client = new RESTClient();
 		
 		/*DummyDaten*/
-		downloadedStories.add(new Story(1, "Dummy", "Beschreibung Dummy", "Lukas", "42", "24.05.2014", "9.484 45.457", "4", true));
+		//downloadedStories.add(new Story(1, "Dummy", "Beschreibung Dummy", "Lukas", "42", "24.05.2014", "9.484 45.457", "4", true));
 	}
 
 	/**
@@ -104,7 +115,8 @@ public class ContentDownloader {
 	 * @param id id of the story to download
 	 */
 	public void downloadStory(int id) {
-		requestAllStories();
+		try {
+		//requestAllStories();
 		Story temp = null;
 		for (Story x : allStoriesData) {
 			if(x.getId() == id)
@@ -113,8 +125,34 @@ public class ContentDownloader {
 		if(temp == null) {
 			throw new RuntimeException("Story with ID: "+id+" can't be found on server! Download is cancelled.");
 		}
-		//String xml = client.getStoryXML(id);
+		String xml = client.getStoryXML(id);
 		
+		Log.d(ContentDownloader.class.toString(), Environment.getExternalStorageDirectory()+"/StorytellAR/Content/"+id+"/arml.xml");
+		String pathFolder = Environment.getExternalStorageDirectory()+"/StorytellAR/Content/"+id;
+		File folder = new File(pathFolder);
+		if (!folder.exists()) {
+            folder.mkdirs();
+        }
+		
+		File file = new File(folder.getAbsolutePath(), "arml.xml");
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(xml.getBytes());
+		fos.close();
+		
+		temp.setPathToXML("/StorytellAR/Content/"+id+"/arml.xml");
+		temp.setStoryMediaData(parseMediaDataFromXML(temp.getPathToXML()));
+		
+		
+		downloadedStories.add(temp);
+		markDownloadedStories();
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Get XML with absolute URI for media data from server
 		//System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
@@ -145,11 +183,54 @@ public class ContentDownloader {
 		return downloadedStories;
 	}
 	
-	public HashMap<String,String> parseMediaDataFormXML(String node, String xml){
+	public HashMap<String,String> parseMediaDataFromXML(String path){
 		HashMap<String,String> mediaMap = new HashMap<String,String>();
 		try {
 		XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
 		XmlPullParser parser = xmlFactoryObject.newPullParser();
+		
+		File file = new File(Environment.getExternalStorageDirectory()+path);
+		FileInputStream stream = new FileInputStream(file);
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+        parser.setInput(stream, null);
+        
+        int event = parser.getEventType();
+        String name = null;
+        String video = null;
+        String image = null;
+        String pathToFile = null;
+        
+        while(event != parser.END_DOCUMENT) {
+        	switch(event){
+        	case XmlPullParser.START_TAG:
+        		name = parser.getName();
+        		if(name.equals("Video")){
+        			video = parser.getAttributeValue(0);
+        			Log.d(ContentDownloader.class.toString(), "Video-ID: "+video);
+        		} else if (name.equals("Image")){
+        			image = parser.getAttributeValue(0);
+        			Log.d(ContentDownloader.class.toString(), "Image-ID: "+image);
+        		}
+        		if(video != null){
+        			if(name.equals("Href")){
+        				pathToFile = parser.getAttributeValue(0);
+        				Log.d(ContentDownloader.class.toString(), "Video-ID: "+video+"  Path: "+pathToFile);
+        				mediaMap.put(video, pathToFile);
+        				video = null;
+        			}
+        		}
+        		if(image != null){
+        			if(name.equals("href")){
+        				pathToFile = parser.getAttributeValue(0);
+        				Log.d(ContentDownloader.class.toString(), "Image-ID: "+image+"  Path: "+pathToFile);
+        				mediaMap.put(image, pathToFile);
+        				image = null;
+        			}
+        		}
+        		break;
+        	}
+        	event = parser.next();
+        }
 		
 		} catch (Exception e){
 			

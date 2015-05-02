@@ -1,6 +1,7 @@
 package de.hft_stuttgart.spirit.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 /**
  * 
  * @author Mirjam
@@ -19,7 +20,7 @@ public class Story {
 	private String radius;
 	private String pathToXML;
 	private boolean alreadyDownloaded;
-	private ArrayList<String> storyMediaData;
+	private HashMap<String,String> storyMediaData;
 	private double longitude;
 	private double latitude;
 
@@ -123,11 +124,11 @@ public class Story {
 		this.pathToXML = pathToXML;
 	}
 
-	public ArrayList<String> getStoryMediaData() {
+	public HashMap<String,String> getStoryMediaData() {
 		return storyMediaData;
 	}
 
-	public void setStoryMediaData(ArrayList<String> storyMediaData) {
+	public void setStoryMediaData(HashMap<String,String> storyMediaData) {
 		this.storyMediaData = storyMediaData;
 	}
 

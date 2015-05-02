@@ -1,5 +1,8 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -7,7 +10,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,10 +21,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.AndroidLauncher;
+import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
+import de.hft_stuttgart.spirit.android.Story;
+import de.hft_stuttgart.spirit.android.view.StoryListStore_Fragment.GetStoreStories;
 
 public class StoryDetails_Activity extends ActionBarActivity {
 
+	public final static String EXTRA_STORYID = "de.hft_stuttgart.spirit.android.view.STORYID";
 	public final static String EXTRA_STORYNAME = "de.hft_stuttgart.spirit.android.view.STORYNAME";
 	public final static String EXTRA_DESCRIPTION = "de.hft_stuttgart.spirit.android.view.DESCRIPTION";
 	public final static String EXTRA_LOCATION = "de.hft_stuttgart.spirit.android.view.LOCATION";
@@ -142,6 +151,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Intent intent = getIntent();
         Toast toast;
         switch (id) {
 		case R.id.action_start:
@@ -155,10 +165,34 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	toast.show();
 			return true;
 		case R.id.action_download:
-			toast = Toast.makeText(getApplicationContext(),"Work in progress for Herunterladen!",Toast.LENGTH_SHORT);
+			toast = Toast.makeText(getApplicationContext(),"Download Story "+intent.getStringExtra(EXTRA_STORYNAME)+" (ID: "+intent.getIntExtra(EXTRA_STORYID, -1)+")",Toast.LENGTH_SHORT);
         	toast.show();
+        	DownloadStory task = new DownloadStory();
+        	task.execute();
+	        try {
+				task.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		default:
 			return false;
 		}
     }
+    
+    public class DownloadStory extends AsyncTask<Void, Void, Void> {
+
+    	@Override
+    	protected Void doInBackground(
+    			Void... params) {
+            Intent intent = getIntent();
+    		ContentDownloader.getInstance().downloadStory(intent.getIntExtra(EXTRA_STORYID, -1));
+			return null;
+    	}
+    	
+    }
 }
+

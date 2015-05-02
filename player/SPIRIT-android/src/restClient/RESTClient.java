@@ -76,7 +76,7 @@ public class RESTClient {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String result = "", line;
         while ((line = br.readLine()) != null) {
-            result += line;
+            result += line+"\n";
         }
         return result;
     }

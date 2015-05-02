@@ -74,6 +74,7 @@ public class StoryListStore_Fragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Story selectedStory = items.get(position);
                 Intent i = new Intent(getActivity().getApplicationContext(),StoryDetails_Activity.class);
+                i.putExtra(StoryDetails_Activity.EXTRA_STORYID, selectedStory.getId());
                 i.putExtra(StoryDetails_Activity.EXTRA_STORYNAME, selectedStory.getTitle());
                 i.putExtra(StoryDetails_Activity.EXTRA_DESCRIPTION, selectedStory.getDescription());
                 i.putExtra(StoryDetails_Activity.EXTRA_LOCATION, selectedStory.getLocation());
