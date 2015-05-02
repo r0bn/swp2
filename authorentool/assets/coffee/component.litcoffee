@@ -1,5 +1,5 @@
 # Component #
-
+    
     mainApp = angular.module "mainApp", ['ui.codemirror']
 
     mainApp.controller "mainCtrl", ["$scope", "$http", ($scope, $http) ->
@@ -43,6 +43,7 @@
             document.getElementById("Formular").style.display="block"
      
         $scope.getNewFeatureElement = (counter) ->
+                
                 copyForm = document.getElementById("NeuesFeature")
                 stuff = copyForm.cloneNode(true)
                 counter = 1 if counter == undefined
@@ -59,7 +60,9 @@
                 $("#" + stuff.id).find("#btnControlGroup").attr("id","btnControlGroup_" + counter)
                 $("#" + stuff.id).find("#btnCreateInteraction").attr("id","btnCreateInteraction_" + counter)
                 $("#" + stuff.id).find("#ddnInteractions").attr("id","ddnInteractions_" + counter)
-
+                $("#" + stuff.id).find("#ddnWayChooser").attr("id","ddnWayChooser_" + counter)
+                $("#" + stuff.id).find("#ddnQuiz").attr("id","ddnQuiz_" + counter)
+                $("#" + stuff.id).find("#ddnItem").attr("id","ddnItem_" + counter)
                 # Labels neu setzen
                 $("#lblInputFeature_" + counter).attr("for","inputFeature_" + counter)
                 # FeatureName Trigger
@@ -79,10 +82,65 @@
                     else
                         $("#NeuesFeatureContent_" + counter).slideUp("slow")
                         $("#btnControlGroup_"  +counter).removeClass("dropup")
-
+                $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter)
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
-                    $("#" + $("#ddnInteractions_" + counter).val()).show("slow")
+                    if ($("#ddnInteractions_" + counter).val() != "Interaction")
+                        copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val())
+                        interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
+                        interactionCounter++
+                        $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+                        stuff = copyForm.cloneNode(true)
+                        stuff.id = stuff.id + "_" + interactionCounter
+                        stuff.style.display="block"
+                        document.getElementById("NeuesFeatureContent_"+counter).appendChild(stuff)
+                        
+                        $("#" + stuff.id).find("#NeuesItemFieldset").attr("id", "NeuesItemFieldset_" +interactionCounter)
+                        $("#" + stuff.id).find("#NeuesItemContent").attr("id", "NeuesItemContent_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnItemControlGroup").attr("id", "btnItemControlGroup_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnItemEinklappen").attr("id", "btnItemEinklappen_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnItemDelete").attr("id", "btnItemDelete_" +interactionCounter)
+                        $("#" + stuff.id).find("#itemID").attr("id", "itemID_" +interactionCounter)
+                        $("#" + stuff.id).find("#itemDescription").attr("id", "itemDescription_" +interactionCounter)
+                        $("#" + stuff.id).find("#itemFeatureRef").attr("id", "itemFeatureRef_" +interactionCounter)
+                        $("#" + stuff.id).find("#itemIsCollected").attr("id", "itemIsCollected_" +interactionCounter)
+                        $("#" + stuff.id).find("#lblItemID").attr("id", "lblItemID_" +interactionCounter)
+                        $("#" + stuff.id).find("#lblItemIsCollected").attr("id", "lblItemIsCollected_" +interactionCounter)
+                        $("#" + stuff.id).find("#lblItemDescription").attr("id", "lblItemDescription_" +interactionCounter)
+                        $("#" + stuff.id).find("#lblItemFeatureRef").attr("id", "lblItemFeatureRef_" +interactionCounter)
+                        $("#lblItemID_" + interactionCounter).attr("for", "itemID_"+interactionCounter)
+                        $("#lblItemIsCollected_" + interactionCounter).attr("for", "itemIsCollected_"+interactionCounter)
+                        $("#lblItemDescription_" + interactionCounter).attr("for", "itemDescription_"+interactionCounter)
+                        $("#lblItemFeatureRef_" + interactionCounter).attr("for", "itemFeatureRef_"+interactionCounter)
+
+                        # Click Event für btnItemDelete
+                        $("#btnItemDelete_" + interactionCounter).click ->
+                           $("#Neu_Item_" + interactionCounter).remove() if (confirm('Möchten Sie das Item wirklich löschen?'))
+                
+                        # Click Event für btnItemEinklappen
+                        $("#btnItemEinklappen_" + interactionCounter).click ->
+                            if $("#NeuesItemContent_" + interactionCounter).is( ":hidden" )
+                                $("#NeuesItemContent_" + interactionCounter).show( "slow" )
+                                $("#btnItemControlGroup_"  +interactionCounter).addClass("dropup")
+                            else
+                                $("#NeuesItemContent_" + interactionCounter).slideUp("slow")
+                                $("#btnItemControlGroup_"  +interactionCounter).removeClass("dropup")
+                        # ItemName Trigger
+                        $("#itemID_"+interactionCounter).keyup ->
+                            text = "Item: " + $("#itemID_"+interactionCounter).val()
+                            $("#NeuesItemFieldset_"+interactionCounter).text(text)
+
+                       
+                # Click Events für ddnInteraction
+                $("#ddnWayChooser_" + counter).click ->
+                    $("#ddnInteractions_" + counter).val("WayChooser")
+                    $("#ddnInteractions_" + counter).html("WayChooser <span class='caret'/>")
+                $("#ddnQuiz_" + counter).click ->
+                    $("#ddnInteractions_" + counter).val("Quiz")
+                    $("#ddnInteractions_" + counter).html("Quiz <span class='caret'/>")
+                $("#ddnItem_" + counter).click ->
+                    $("#ddnInteractions_" + counter).val("Item")
+                    $("#ddnInteractions_" + counter).html("Item <span class='caret'/>")
                 button = document.getElementById("btnFeature");
                 button.parentNode.removeChild(button);
                 document.getElementById("Features").appendChild(button)

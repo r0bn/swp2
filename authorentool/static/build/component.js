@@ -52,6 +52,9 @@ mainApp.controller("mainCtrl", [
       $("#" + stuff.id).find("#btnControlGroup").attr("id", "btnControlGroup_" + counter);
       $("#" + stuff.id).find("#btnCreateInteraction").attr("id", "btnCreateInteraction_" + counter);
       $("#" + stuff.id).find("#ddnInteractions").attr("id", "ddnInteractions_" + counter);
+      $("#" + stuff.id).find("#ddnWayChooser").attr("id", "ddnWayChooser_" + counter);
+      $("#" + stuff.id).find("#ddnQuiz").attr("id", "ddnQuiz_" + counter);
+      $("#" + stuff.id).find("#ddnItem").attr("id", "ddnItem_" + counter);
       $("#lblInputFeature_" + counter).attr("for", "inputFeature_" + counter);
       $("#inputFeature_" + counter).keyup(function() {
         var text;
@@ -72,8 +75,67 @@ mainApp.controller("mainCtrl", [
           return $("#btnControlGroup_" + counter).removeClass("dropup");
         }
       });
+      $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter);
       $("#btnCreateInteraction_" + counter).click(function() {
-        return $("#" + $("#ddnInteractions_" + counter).val()).show("slow");
+        var interactionCounter;
+        if ($("#ddnInteractions_" + counter).val() !== "Interaction") {
+          copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val());
+          interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
+          interactionCounter++;
+          $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+          stuff = copyForm.cloneNode(true);
+          stuff.id = stuff.id + "_" + interactionCounter;
+          stuff.style.display = "block";
+          document.getElementById("NeuesFeatureContent_" + counter).appendChild(stuff);
+          $("#" + stuff.id).find("#NeuesItemFieldset").attr("id", "NeuesItemFieldset_" + interactionCounter);
+          $("#" + stuff.id).find("#NeuesItemContent").attr("id", "NeuesItemContent_" + interactionCounter);
+          $("#" + stuff.id).find("#btnItemControlGroup").attr("id", "btnItemControlGroup_" + interactionCounter);
+          $("#" + stuff.id).find("#btnItemEinklappen").attr("id", "btnItemEinklappen_" + interactionCounter);
+          $("#" + stuff.id).find("#btnItemDelete").attr("id", "btnItemDelete_" + interactionCounter);
+          $("#" + stuff.id).find("#itemID").attr("id", "itemID_" + interactionCounter);
+          $("#" + stuff.id).find("#itemDescription").attr("id", "itemDescription_" + interactionCounter);
+          $("#" + stuff.id).find("#itemFeatureRef").attr("id", "itemFeatureRef_" + interactionCounter);
+          $("#" + stuff.id).find("#itemIsCollected").attr("id", "itemIsCollected_" + interactionCounter);
+          $("#" + stuff.id).find("#lblItemID").attr("id", "lblItemID_" + interactionCounter);
+          $("#" + stuff.id).find("#lblItemIsCollected").attr("id", "lblItemIsCollected_" + interactionCounter);
+          $("#" + stuff.id).find("#lblItemDescription").attr("id", "lblItemDescription_" + interactionCounter);
+          $("#" + stuff.id).find("#lblItemFeatureRef").attr("id", "lblItemFeatureRef_" + interactionCounter);
+          $("#lblItemID_" + interactionCounter).attr("for", "itemID_" + interactionCounter);
+          $("#lblItemIsCollected_" + interactionCounter).attr("for", "itemIsCollected_" + interactionCounter);
+          $("#lblItemDescription_" + interactionCounter).attr("for", "itemDescription_" + interactionCounter);
+          $("#lblItemFeatureRef_" + interactionCounter).attr("for", "itemFeatureRef_" + interactionCounter);
+          $("#btnItemDelete_" + interactionCounter).click(function() {
+            if (confirm('Möchten Sie das Item wirklich löschen?')) {
+              return $("#Neu_Item_" + interactionCounter).remove();
+            }
+          });
+          $("#btnItemEinklappen_" + interactionCounter).click(function() {
+            if ($("#NeuesItemContent_" + interactionCounter).is(":hidden")) {
+              $("#NeuesItemContent_" + interactionCounter).show("slow");
+              return $("#btnItemControlGroup_" + interactionCounter).addClass("dropup");
+            } else {
+              $("#NeuesItemContent_" + interactionCounter).slideUp("slow");
+              return $("#btnItemControlGroup_" + interactionCounter).removeClass("dropup");
+            }
+          });
+          return $("#itemID_" + interactionCounter).keyup(function() {
+            var text;
+            text = "Item: " + $("#itemID_" + interactionCounter).val();
+            return $("#NeuesItemFieldset_" + interactionCounter).text(text);
+          });
+        }
+      });
+      $("#ddnWayChooser_" + counter).click(function() {
+        $("#ddnInteractions_" + counter).val("WayChooser");
+        return $("#ddnInteractions_" + counter).html("WayChooser <span class='caret'/>");
+      });
+      $("#ddnQuiz_" + counter).click(function() {
+        $("#ddnInteractions_" + counter).val("Quiz");
+        return $("#ddnInteractions_" + counter).html("Quiz <span class='caret'/>");
+      });
+      $("#ddnItem_" + counter).click(function() {
+        $("#ddnInteractions_" + counter).val("Item");
+        return $("#ddnInteractions_" + counter).html("Item <span class='caret'/>");
       });
       button = document.getElementById("btnFeature");
       button.parentNode.removeChild(button);
