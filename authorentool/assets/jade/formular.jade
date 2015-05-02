@@ -71,40 +71,81 @@ block content
                         legend Features
                             .form-group(id="btnFeature")
                                 button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
-                form.form-horizontal(id="NeuesFeature", style="display: none")
+                form.form-horizontal(id="NeuesFeature", style="display: none")         
                     fieldset
-                        .form-group
-                            .col-lg-4
-                                label.col-lg-2.control-label(for="inputFeature") Feature
-                            .col-lg-8
-                                input.form-control(type="text", id="inputFeature", placeholder="Featurename")
-                        .form-group
-                            .col-lg-4
-                                label.col-lg-2.control-label(for="anchorPoint") Ort
-                            .col-lg-8
-                                input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
-                        .form-group
-                            .col-lg-4
-                                label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
-                            .col-lg-8
-                                input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
-                        .form-group
+                        .form-group                        
                             .col-lg-10
-                                label.col-lg-2.control-label(for="interactions") Interaktion wählen
+                                legend(id="NeuesFeatureFieldset") Neues Feature 
                             .col-lg-2
-                                .dropup
-                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
-                                        span.caret 
-                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                        li(role='presentation')
-                                            a(role='menuitem', tabindex='0', href='#') WayChooser
-                                        li(role='presentation')
-                                            a(role='menuitem', tabindex='1', href='#') Quiz
-                                        li(role='presentation')
-                                            a(role='menuitem', tabindex='2', href='#') Item
-                                
-                                
+                                .btn-group.dropup(id="btnControlGroup", role="group" aria-label="...")
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnFeatureEinklappen", type='button')
+                                        span.caret
+                                             
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesFeatureDelete", type='button') 
+                                        span Löschen
+                        fieldset(id="NeuesFeatureContent")
+                            .form-group
+                                .col-lg-4
+                                    label.col-lg-2.control-label(id="lblInputFeature", for="inputFeature") Feature
+                                .col-lg-8
+                                    input.form-control(type="text", id="inputFeature", placeholder="Featurename")
+                            .form-group
+                                .col-lg-4
+                                    label.col-lg-2.control-label(for="anchorPoint") Ort
+                                .col-lg-8
+                                    input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
+                            .form-group
+                                .col-lg-4
+                                    label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
+                                .col-lg-8
+                                    input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
+                            .form-group
+                                .col-lg-6
+                                    label.col-lg-2.control-label(for="interactions") Interaktion wählen
+                                .col-lg-4
+                                    .dropup
+                                        button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
+                                            span.caret 
+                                        ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='0', aria-label="WayChooser", value="WayChooser") WayChooser
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='1', value="Quiz") Quiz
+                                            li(role='presentation')
+                                                a(role='menuitem', tabindex='2', value="NeuesItem") Item
+                                .col-lg-2
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnCreateInteraction",type="button") Interaktion erstellen
 
+                            .form-group(id="NeuesItem")                       
+                                .col-lg-10
+                                    legend(id="NeuesItemFieldset") Neues Item 
+                                .col-lg-2
+                                    .btn-group.dropup(id="btnItemControlGroup", role="group" aria-label="...")
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnItemEinklappen", type='button')
+                                            span.caret
+                                                 
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnItemFeatureDelete", type='button') 
+                                            span Löschen                            
+                                .form-group
+                                    .col-lg-6
+                                        label.col-lg-2.control-label(for="itemID") Item ID
+                                    .col-lg-6
+                                        input.form-control(type="text", id="itemID", placeholder="ITEM ID")
+                                .form-group
+                                    .col-lg-6
+                                        label.col-lg-2.control-label(for="itemDescription") Beschreibung
+                                    .col-lg-6
+                                        input.form-control(type="text", id="itemDescription", placeholder="ITEM Description")
+                                .form-group
+                                    .col-lg-6
+                                        label.col-lg-2.control-label(for="itemFeatureRef") FeatureRef
+                                    .col-lg-6
+                                        input.form-control(type="text", id="itemFeatureRef", placeholder="ITEM FEATUREREF")
+                                .form-group
+                                    .col-lg-6
+                                        .checkbox
+                                            input(id="itemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
+                                            label(id="lblItemIsCollected", for='itemIsCollected') Item Is Collected
             .col-md-4
                 .page-header
                     h3 Media Library

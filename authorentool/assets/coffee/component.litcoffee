@@ -25,6 +25,13 @@
             .success (data) ->
                 $scope.storys = data
 
+        #jQuery Namespace Binding
+        (($) ->
+            ) jQuery
+        #Test ob jQuery erfolgreich gebunden wurde (Siehe log im Browser)
+        $ ->
+            console.log("DOM is ready")
+
         $scope.createStory = () ->
             window.location.href='../createStory.html'
 
@@ -34,19 +41,53 @@
         $scope.getFormulars = () ->
             document.getElementById("createStoryRow").style.display="none"
             document.getElementById("Formular").style.display="block"
-
+     
         $scope.getNewFeatureElement = (counter) ->
                 copyForm = document.getElementById("NeuesFeature")
                 stuff = copyForm.cloneNode(true)
-                stuff.style.display="block"
                 counter = 1 if counter == undefined
                 stuff.id="NeuesFeature_" + counter
+                stuff.style.display="block"
                 document.getElementById("Features").appendChild(stuff)
+                # Setze die IDs neu
+                $("#" + stuff.id).find("#NeuesFeatureFieldset").attr("id","NeuesFeatureFieldset_" + counter)
+                $("#" + stuff.id).find("#btnNeuesFeatureDelete").attr("id","btnNeuesFeatureDelete_" + counter)
+                $("#" + stuff.id).find("#btnFeatureEinklappen").attr("id","btnFeatureEinklappen_" + counter)
+                $("#" + stuff.id).find("#NeuesFeatureContent").attr("id","NeuesFeatureContent_" + counter)
+                $("#" + stuff.id).find("#lblInputFeature").attr("id","lblInputFeature_" + counter)
+                $("#" + stuff.id).find("#inputFeature").attr("id","inputFeature_" + counter)
+                $("#" + stuff.id).find("#btnControlGroup").attr("id","btnControlGroup_" + counter)
+                $("#" + stuff.id).find("#btnCreateInteraction").attr("id","btnCreateInteraction_" + counter)
+                $("#" + stuff.id).find("#ddnInteractions").attr("id","ddnInteractions_" + counter)
+
+                # Labels neu setzen
+                $("#lblInputFeature_" + counter).attr("for","inputFeature_" + counter)
+                # FeatureName Trigger
+                $("#inputFeature_"+counter).keyup ->
+                    text = "Feature: " + $("#inputFeature_"+counter).val()
+                    $("#NeuesFeatureFieldset_"+counter).text(text)
+
+                # Click Event für btnNeuesFeatureDelete
+                $("#btnNeuesFeatureDelete_" + counter).click ->
+                   $("#NeuesFeature_" + counter).remove() if (confirm('Möchten Sie das Feature wirklich löschen?'))
+        
+                # Click Event für btnFeatureEinklappen
+                $("#btnFeatureEinklappen_" + counter).click ->
+                    if $("#NeuesFeatureContent_" + counter).is( ":hidden" )
+                        $("#NeuesFeatureContent_" + counter).show( "slow" )
+                        $("#btnControlGroup_"  +counter).addClass("dropup")
+                    else
+                        $("#NeuesFeatureContent_" + counter).slideUp("slow")
+                        $("#btnControlGroup_"  +counter).removeClass("dropup")
+
+                # Click Event für btnCreateInteraction
+                $("#btnCreateInteraction_" + counter).click ->
+                    $("#" + $("#ddnInteractions_" + counter).val()).show("slow")
                 button = document.getElementById("btnFeature");
                 button.parentNode.removeChild(button);
                 document.getElementById("Features").appendChild(button)
                 button.scrollIntoView(true)
-
+        
         $scope.getNewPoiElement = (counter) ->
                 copyForm = document.getElementById("NeuerPOI")
                 stuff = copyForm.cloneNode(true)
@@ -70,6 +111,9 @@
                 button.parentNode.removeChild(button);
                 document.getElementById("POIS").appendChild(button)
                 button.scrollIntoView(true)
+
+        $scope.createInteraction = () ->
+                alert("Your book is overdue.");
 
         $scope.tabbed_pain = (activeTabID,activeContentID, passiveTabID, passiveContentID) ->
                 jQuery(activeTabID).addClass("active")

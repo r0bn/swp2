@@ -62,6 +62,7 @@
       .pipe stylus()
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
+      
 
     gulp.task 'css-vendor', () ->
         gulp.src [
