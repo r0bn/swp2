@@ -141,7 +141,7 @@ public class ContentDownloader {
 		
 		temp.setPathToXML("/StorytellAR/Content/"+id+"/arml.xml");
 		temp.setStoryMediaData(parseMediaDataFromXML(temp.getPathToXML()));
-		
+		client.downloadMediaFiles(temp.getStoryMediaData(), temp);
 		
 		downloadedStories.add(temp);
 		markDownloadedStories();
@@ -153,19 +153,6 @@ public class ContentDownloader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//Get XML with absolute URI for media data from server
-		//System.out.println(resource.accept(MediaType.TEXT_XML).get(String.class));
-
-		//Parse media data from xml
-		//Download media data
-		
-		//Save XML
-		
-		//Create story object and copy existing meta data + set references (XML, media data)
-		//Add story object to list downloadedStories
-		//call markDownloadedStories()
-		
 	}
 	
 	/**
@@ -179,10 +166,20 @@ public class ContentDownloader {
 		return allStoriesData;
 	}
 	
+	/**
+	 * Method returns the list with all downloaded stories.
+	 * @return list of all downloaded stories
+	 */
 	public ArrayList<Story> getDownloadedStories() {
 		return downloadedStories;
 	}
 	
+	/**
+	 * Media data from the given xml is parsed. The image or video files are returned in a map with 
+	 * their id and the path to the respective file.
+	 * @param path path to the xml file
+	 * @return map with id and path to the respective media file
+	 */
 	public HashMap<String,String> parseMediaDataFromXML(String path){
 		HashMap<String,String> mediaMap = new HashMap<String,String>();
 		try {

@@ -1,14 +1,22 @@
 package restClient;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.json.JSONArray;
+
+import android.os.Environment;
+import android.util.Log;
+import de.hft_stuttgart.spirit.android.ContentDownloader;
+import de.hft_stuttgart.spirit.android.Story;
 
 /**
  * 
@@ -21,6 +29,7 @@ public class RESTClient {
      * The URL to use for requests
      */
     private final String URLallStories = "http://api.storytellar.de/story";
+    private final String URLmediaData = "http://api.storytellar.de/media";
 
     /**
      * 
@@ -80,4 +89,38 @@ public class RESTClient {
         }
         return result;
     }
+    
+    /**
+     * All media files of a story will be downloaded form the server. Media files are given in a HashMap with their id and the path
+     * to the respective file. 
+     * @param mediaMap Map with media files (id and path to file)
+     * @param story story object to which the media data belongs
+     */
+	public void downloadMediaFiles(HashMap<String,String> mediaMap, Story story){
+		URL url;
+		try {
+			for (String value : mediaMap.values()){
+				url = new URL(URLmediaData+"/"+story.getId()+"/"+value);
+				Log.d(RESTClient.class.toString(), "Download File: "+URLmediaData+"/"+story.getId()+"/"+value);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+				connection.setDoOutput(true);                   
+				connection.connect();
+				File file = new File(Environment.getExternalStorageDirectory()+"/StorytellAR/Content/"+story.getId(), value);
+				
+				FileOutputStream fos = new FileOutputStream(file);
+				InputStream stream = connection.getInputStream();
+				byte[] buffer = new byte[1024];
+				int bufferLength = 0;
+				
+				while ( (bufferLength = stream.read(buffer)) > 0 ) {                 
+				    fos.write(buffer, 0, bufferLength);                                  
+				  }             
+				  fos.close();
+			}	
+			
+		} catch (Exception e) {
+			
+		}
+	}
 }
