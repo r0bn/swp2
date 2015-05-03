@@ -41,7 +41,8 @@
                 lat = event.latLng.lat()
                 lng = event.latLng.lng()
                 $("#inputMapSearch").val(lat + ", " + lng)
-                $("#location").val(lat + ", " + lng)
+                $("#LngLocation").val(lng)
+                $("#LatLocation").val(lat)
             $lightbox = $('#lightbox')
             $('[data-target="#lightbox"]').on 'click', (event) ->
               $img = $(this).find('gmeg_map_canvas')

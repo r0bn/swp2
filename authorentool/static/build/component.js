@@ -35,7 +35,8 @@ mainApp.controller("mainCtrl", [
         lat = event.latLng.lat();
         lng = event.latLng.lng();
         $("#inputMapSearch").val(lat + ", " + lng);
-        return $("#location").val(lat + ", " + lng);
+        $("#LngLocation").val(lng);
+        return $("#LatLocation").val(lat);
       });
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {

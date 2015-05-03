@@ -47,8 +47,11 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for"location") Ort
 
-                            .col-lg-8
-                                input.form-control( id="location", placeholder="Map GPS Daten")
+                            .col-lg-4
+                                input.form-control( id="LatLocation", placeholder="Breitengrad")
+                            .col-lg-4
+                                input.form-control( id="LngLocation", placeholder="Längengrad")
+
                                 #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
                                     .modal-dialog   
                                         .modal-content
