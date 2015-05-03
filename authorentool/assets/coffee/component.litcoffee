@@ -30,6 +30,36 @@
             ) jQuery
         #Test ob jQuery erfolgreich gebunden wurde (Siehe log im Browser)
         $ ->
+            mapOptions = 
+              zoom: 8
+              center: new (google.maps.LatLng)(48.80415, 9.22228)
+            map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
+            $(window).resize ->
+              google.maps.event.trigger map, 'resize'
+              return
+
+            
+            $lightbox = $('#lightbox')
+            $('[data-target="#lightbox"]').on 'click', (event) ->
+              $img = $(this).find('gmeg_map_canvas')
+              src = $img.attr('src')
+              alt = $img.attr('alt')
+              css = 
+                'maxWidth': $(window).width() - 100
+                'maxHeight': $(window).height() - 100
+              $lightbox.find('.close').addClass 'hidden'
+              $lightbox.find('gmeg_map_canvas').attr 'src', src
+              $lightbox.find('gmeg_map_canvas').attr 'alt', alt
+              $lightbox.find('gmeg_map_canvas').css css
+              google.maps.event.trigger map, 'resize'
+              return
+            $lightbox.on 'shown.bs.modal', (e) ->
+              $img = $lightbox.find('gmeg_map_canvas')
+              $lightbox.find('.modal-dialog').css 'width': $img.width()
+              $lightbox.find('.close').removeClass 'hidden'
+              google.maps.event.trigger map, 'resize'
+              return
+               
             console.log("DOM is ready")
 
         $scope.createStory = () ->
@@ -235,6 +265,8 @@
                 jQuery(passiveTabID).removeClass("active")
                 jQuery(passiveContentID).css(display,"none")
 
+
+                
         $scope.mediaData = [
             {
                 id : 1

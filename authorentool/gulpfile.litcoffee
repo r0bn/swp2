@@ -43,12 +43,15 @@
 
     gulp.task 'js-vendor', () ->
         gulp.src [
+            './bower_components/jquery/dist/google.api.js'
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/angular/angular.js'
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
             './bower_components/jquery/dist/jquery.min.js'
             './bower_components/bootswatch-dist/js/bootstrap.min.js'  
+            './bower_components/bootswatch-dist/js/bootstrap-lightbox.min.js'
+            
         ]
         .pipe concat 'vendor.js'
         .pipe uglify()

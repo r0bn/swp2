@@ -21,6 +21,40 @@ mainApp.controller("mainCtrl", [
     });
     (function($) {})(jQuery);
     $(function() {
+      var $lightbox, map, mapOptions;
+      mapOptions = {
+        zoom: 8,
+        center: new google.maps.LatLng(48.80415, 9.22228)
+      };
+      map = new google.maps.Map($('#gmeg_map_canvas')[0], mapOptions);
+      $(window).resize(function() {
+        google.maps.event.trigger(map, 'resize');
+      });
+      $lightbox = $('#lightbox');
+      $('[data-target="#lightbox"]').on('click', function(event) {
+        var $img, alt, css, src;
+        $img = $(this).find('gmeg_map_canvas');
+        src = $img.attr('src');
+        alt = $img.attr('alt');
+        css = {
+          'maxWidth': $(window).width() - 100,
+          'maxHeight': $(window).height() - 100
+        };
+        $lightbox.find('.close').addClass('hidden');
+        $lightbox.find('gmeg_map_canvas').attr('src', src);
+        $lightbox.find('gmeg_map_canvas').attr('alt', alt);
+        $lightbox.find('gmeg_map_canvas').css(css);
+        google.maps.event.trigger(map, 'resize');
+      });
+      $lightbox.on('shown.bs.modal', function(e) {
+        var $img;
+        $img = $lightbox.find('gmeg_map_canvas');
+        $lightbox.find('.modal-dialog').css({
+          'width': $img.width()
+        });
+        $lightbox.find('.close').removeClass('hidden');
+        google.maps.event.trigger(map, 'resize');
+      });
       return console.log("DOM is ready");
     });
     $scope.createStory = function() {

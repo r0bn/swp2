@@ -1,3 +1,5 @@
+block scripts 
+    
 block vars
     - var featureCounter = 0
     - var poiCounter = 0
@@ -44,7 +46,25 @@ block content
                                             a(role='menuitem', tabindex='2', href='#') GB
                         .form-group
                             label.col-lg-2.control-label(for"location") Ort
+
                             .col-lg-8
+                                input.form-control( id="location", placeholder="Map GPS Daten")
+                                #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                                    .modal-dialog   
+                                        .modal-content
+                                            .modal-body
+                                                .form-group
+                                                    .col-lg-6
+                                                        input.form-control(id="inputMapSearch", placeholder="Map GPS Suche")
+                                                    .col-lg-4
+                                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnMapSearch", type="button") Suche
+                                                    button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                                                .form-group  
+                                                    #gmeg_map_canvas(style='width:500px;height:400px')
+                            .col-lg-2
+                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(href='#', data-toggle='modal', data-target='#lightbox') Map
+
+                            
                 form.form-horizontal(id="POIS")
                     fieldset
                         legend POIs
@@ -208,5 +228,4 @@ block content
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter
     p   
-block scripts 
 
