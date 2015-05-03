@@ -37,8 +37,11 @@
             $(window).resize ->
               google.maps.event.trigger map, 'resize'
               return
-
-            
+            google.maps.event.addListener map, 'click', (event) ->
+                lat = event.latLng.lat()
+                lng = event.latLng.lng()
+                #populate yor box/field with lat, lng
+                alert 'Lat=' + lat + '; Lng=' + lng
             $lightbox = $('#lightbox')
             $('[data-target="#lightbox"]').on 'click', (event) ->
               $img = $(this).find('gmeg_map_canvas')

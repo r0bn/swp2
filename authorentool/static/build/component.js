@@ -30,6 +30,12 @@ mainApp.controller("mainCtrl", [
       $(window).resize(function() {
         google.maps.event.trigger(map, 'resize');
       });
+      google.maps.event.addListener(map, 'click', function(event) {
+        var lat, lng;
+        lat = event.latLng.lat();
+        lng = event.latLng.lng();
+        return alert('Lat=' + lat + '; Lng=' + lng);
+      });
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {
         var $img, alt, css, src;
