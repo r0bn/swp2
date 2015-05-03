@@ -24,7 +24,7 @@ mainApp.controller("mainCtrl", [
       var $lightbox, map, mapOptions;
       mapOptions = {
         zoom: 8,
-        center: new google.maps.LatLng(48.80415, 9.22228)
+        center: new google.maps.LatLng(48.7760745003604, 9.172875881195068)
       };
       map = new google.maps.Map($('#gmeg_map_canvas')[0], mapOptions);
       $(window).resize(function() {
@@ -34,7 +34,8 @@ mainApp.controller("mainCtrl", [
         var lat, lng;
         lat = event.latLng.lat();
         lng = event.latLng.lng();
-        return alert('Lat=' + lat + '; Lng=' + lng);
+        $("#inputMapSearch").val(lat + ", " + lng);
+        return $("#location").val(lat + ", " + lng);
       });
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {
