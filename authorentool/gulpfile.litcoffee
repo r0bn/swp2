@@ -43,7 +43,7 @@
 
     gulp.task 'js-vendor', () ->
         gulp.src [
-            './bower_components/jquery/dist/google.api.js'
+            './assets/js/google.api.js'
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/angular/angular.js'
