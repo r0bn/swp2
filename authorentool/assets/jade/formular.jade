@@ -1,41 +1,36 @@
 block scripts 
     
 block vars
-    - var featureCounter = 0
+    - var storypointCounter = 0
     - var poiCounter = 0
 block content
 
     .container
-
-        .row(id="createStoryRow")
-            br
-            br
-            .col-md-12
-                    button.btn.btn-primary.btn-lg.pull-primary(style="",ng-click="getFormulars()") Neue Story erstellen
-        .row(id="Formular",style="display: none")
-            .col-md-9.column(id="column")
+        br
+        .row(id="rowFormular")
+            .col-md-9.column(id="colColumn")
                 form.form-horizontal
                     fieldset
                         legend Storydaten
                         .form-group
-                            label.col-lg-2.control-label(for="inputTitel") Titel
+                            label.col-lg-2.control-label(for="inTitel") Titel
                             .col-lg-8
-                                input.form-control(type="text", id="inputTitel", placeholder="Titel")
+                                input.form-control(type="text", id="inTitel", placeholder="Titel")
 
                         .form-group
-                            label.col-lg-2.control-label(for="textAreaDescription") Beschreibung
+                            label.col-lg-2.control-label(for="ttaDescription") Beschreibung
                             .col-lg-8
-                                textarea.form-control(rows="3", id="textAreaDescription", placeholder="Bitte geben Sie die Beschreibung der Story ein")
+                                textarea.form-control(rows="3", id="ttaDescription", placeholder="Bitte geben Sie die Beschreibung der Story ein")
 
                         .form-group
-                            label.col-lg-2.control-label(for="inputAutor") Autor
+                            label.col-lg-2.control-label(for="inAutor") Autor
                             .col-lg-8
-                                input.form-control(type="text", id="inputAutor", placeholder="Name des Autors")
+                                input.form-control(type="text", id="inAutor", placeholder="Name des Autors")
 
                         .form-group
-                            label.col-lg-2.control-label(for="size") Größe der Story
+                            label.col-lg-2.control-label(for="inSize") Größe der Story
                             .col-lg-6
-                                input.form-control(type="number", id="size",step="1", placeholder="Gesamte Größe der Story?")
+                                input.form-control(type="number", id="inSize",step="1", placeholder="Gesamte Größe der Story?")
                             .col-lg-1
                                 .dropdown
                                     button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
@@ -48,21 +43,17 @@ block content
                                         li(role='presentation')
                                             a(id="ddngb", role='menuitem', tabindex='2') GB
                         .form-group
-                            label.col-lg-2.control-label(for="location") Ort
+                            label.col-lg-2.control-label(for="inLatLngLocation") Ort
 
-                            .col-lg-4
-                                input.form-control( id="LatLocation", placeholder="Breitengrad")
-                            .col-lg-4
-                                input.form-control( id="LngLocation", placeholder="Längengrad")
-
+                            .col-lg-8
+                                input.form-control( id="inLatLngLocation", placeholder="Breitengrad")
                                 #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
                                     .modal-dialog   
                                         .modal-content
                                             .modal-body
                                                 .form-group
                                                     .col-lg-6
-                                                        input#inputMapSearch.controls(type='text', placeholder='Search Box', autocomplete='off', style='z-index: 0; position: absolute; left: 0px; top: 0px;')
-
+                                                        input.form-control(id="inMapSearch", placeholder="Map GPS Suche")
                                                     .col-lg-4
                                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnMapSearch", type="button") Suche
                                                     button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
@@ -72,9 +63,9 @@ block content
                                 button.btn.btn-primary.btn-lg.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#lightbox') Map
 
                         .form-group
-                            label.col-lg-2.control-label(for="radius") Radius um den Ort
+                            label.col-lg-2.control-label(for="inRadius") Radius um den Ort
                             .col-lg-6
-                                input.form-control(type="number", id="radius",step="1", placeholder="Umkreis?")
+                                input.form-control(type="number", id="inRadius",step="1", placeholder="Umkreis?")
                             .col-lg-1
                                 .dropdown
                                     button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
@@ -86,72 +77,72 @@ block content
                                             a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
 
                 
-                form.form-horizontal(id="Features")
+                form.form-horizontal(id="fhlStorypoints")
                     fieldset
-                        legend Features
-                            .form-group(id="btnFeature")
-                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;createNewFeature(featureCounter)") Neues Feature erstellen
-                form.form-horizontal(id="NeuesFeature", style="display: none")
+                        legend Storypoints
+                            .form-group(id="fgpStorypoint")
+                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="storypointCounter=storypointCounter+1;createNewFeature(storypointCounter)") Neuen Storypoint erstellen
+                form.form-horizontal(id="fhlNeuerStorypoint", style="display: none")
                     .col-lg-1
                     fieldset
                         .form-group
                             .col-lg-10
-                                legend(id="NeuesFeatureFieldset") Neues Feature 
+                                legend(id="lgdNeuerStorypointFieldset") Neuer Storypoint 
                             .col-2
-                                .btn-group.dropup(id="btnControlGroup", role="group" aria-label="...")
-                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnFeatureEinklappen", type='button')
+                                .btn-group.dropup(id="bgpControlGroup", role="group" aria-label="...")
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnStorypointEinklappen", type='button')
                                         span.glyphicon.glyphicon-resize-small(id="resize")
                                              
-                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesFeatureDelete", type='button') 
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesStorypointDelete", type='button') 
                                         span.glyphicon.glyphicon-trash
                         .col-lg-1
-                        fieldset(id="NeuesFeatureContent")
+                        fieldset(id="fstNeuesStorypointContent")
                             .form-group
                                                 // ----------------------------Hier die Punkteeinstellungen
                                 .col-3
-                                    label.control-label Featureeinstellungen
+                                    label.control-label Storypointeinstellungen
                                 .col-lg-4
                                     .checkbox
-                                        input(id="inputInternet", type='checkbox', placeholder="Feature Internet")
-                                        label(id="lblInternet", for='inputInternet') Feature verfügt über Internet
+                                        input(id="inInternet", type='checkbox', placeholder="Internet?")
+                                        label(id="lblInternet", for='inInternet') Storypoint verfügt über Internet
                                 .col-lg-5
                                     .checkbox
-                                        input(id="inputAccessable", type='checkbox', placeholder="Feature Erreichbar")
-                                        label(id="lblAccessable", for='inputAccessable') Feature ist erreichbar
+                                        input(id="inAccessable", type='checkbox', placeholder="Erreichbar?")
+                                        label(id="lblAccessable", for='inAccessable') Storypoint ist erreichbar
                                 
                                                 // -----------------------------ENDE
                             br
                             br
                             .form-group
                                 .col-lg-4
-                                    label.control-label(id="lblInputFeature", for="inputFeature") Feature
+                                    label.control-label(id="lblInputStorypoint", for="inStorypoint") Storypoint
                                 .col-lg-8
-                                    input.form-control(type="text", id="inputFeature", placeholder="Featurename")
+                                    input.form-control(type="text", id="inStorypoint", placeholder="Storypointname")
 
 
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="anchorPoint") Ort
+                                    label.control-label(for="inAnchorPoint") Ort
                                 .col-lg-6
-                                    input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
+                                    input.form-control(type="text", id="inAnchorPoint", placeholder="Über map realisieren?")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') Map
 
                                                     // ------------ANCHOR-IMAGE
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="anchorImg") Auslösebild bestimmen
+                                    label.control-label(for="inAnchorImg") Auslösebild bestimmen
                                 .col-lg-6
-                                    input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
+                                    input.form-control(type="text", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') MBib
 
                                                     // -------------ASSETS
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="asset") Anzeigbares Objekt
+                                    label.control-label(for="inAsset") Anzeigbares Objekt
                                 .col-lg-6
-                                    input.form-control(type="text", id="asset", placeholder="Bild/Video aus Bib holen")
+                                    input.form-control(type="text", id="inAsset", placeholder="Bild/Video aus Bib holen")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') MBib
 
@@ -166,7 +157,7 @@ block content
                                             span.caret 
                                         ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                             li(role='presentation')
-                                                a(role='menuitem', id="ddnWayChooser", tabindex='0', aria-label="WayChooser", value="WayChooser") WayChooser
+                                                a(role='menuitem', id="ddnChooser", tabindex='0', aria-label="Chooser", value="Chooser") Chooser
                                             li(role='presentation')
                                                 a(role='menuitem', id="ddnQuiz", tabindex='1', value="Quiz") Quiz
                                             li(role='presentation')
@@ -175,13 +166,13 @@ block content
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnCreateInteraction",interactionCounter="1", type="button") Interaktion erstellen
                               
                                  // -------------------- ITEM
-                            .form-group(id="Neu_Item", style="display: none")
+                            .form-group(id="fgpNeu_Item", style="display: none")
                                 .col-lg-1
                                 fieldset
                                     .col-lg-10
-                                        legend(id="NeuesItemFieldset") Neues Item 
+                                        legend(id="lgdNeuesItemFieldset") Neues Item 
                                     .col-lg-2
-                                        .btn-group.dropup(id="btnItemControlGroup", role="group" aria-label="...")
+                                        .btn-group.dropup(id="bgpItemControlGroup", role="group" aria-label="...")
                                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
                                                 span.glyphicon.glyphicon-menu-up  
                                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
@@ -191,146 +182,146 @@ block content
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnItemDelete", type='button') 
                                                 span.glyphicon.glyphicon-trash
                                 .col-lg-1
-                                fieldset(id="NeuesItemContent")                          
+                                fieldset(id="fstNeuesItemContent")                          
                                     .form-group
                                         .col-lg-6
-                                            label.col-2.control-label(id="lblItemID", for="itemID") Item ID
+                                            label.col-2.control-label(id="lblItemID", for="inItemID") Item ID
                                         .col-lg-6
-                                            input.form-control(type="text", id="itemID", placeholder="ITEM ID")
+                                            input.form-control(type="text", id="inItemID", placeholder="ITEM ID")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblItemDescription", for="itemDescription") Beschreibung
+                                            label.col-lg-2.control-label(id="lblItemDescription", for="inItemDescription") Beschreibung
                                         .col-lg-6
-                                            input.form-control(type="text", id="itemDescription", placeholder="ITEM Description")
+                                            input.form-control(type="text", id="inItemDescription", placeholder="ITEM Description")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblItemFeatureRef", for="itemFeatureRef") FeatureRef
+                                            label.col-lg-2.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
                                         .col-lg-6
-                                            input.form-control(type="text", id="itemFeatureRef", placeholder="ITEM FEATUREREF")
+                                            input.form-control(type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
                                     .form-group
                                         .col-lg-6
                                         .col-lg-6
                                             .checkbox
-                                                input(id="itemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
-                                                label(id="lblItemIsCollected", for='itemIsCollected') Item Is Collected
+                                                input(id="inItemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
+                                                label(id="lblItemIsCollected", for='inItemIsCollected') Item Is Collected
 
                                                                             // ------------------- QUIZ
-                            .form-group(id="Neu_Quiz", style="display: none") 
+                            .form-group(id="fgpNeu_Quiz", style="display: none") 
                                 .col-lg-1
                                 fieldset                      
                                     .col-lg-11
-                                        legend(id="NeuesQuizFieldset") Neues Quiz 
+                                        legend(id="lgdNeuesQuizFieldset") Neues Quiz 
                                     .col-2
-                                        .btn-group.dropup(id="btnQuizControlGroup", role="group" aria-label="...")
+                                        .btn-group.dropup(id="bgpQuizControlGroup", role="group" aria-label="...")
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnQuizEinklappen", type='button')
                                                 span.glyphicon.glyphicon-resize-small(id="resize")
                                                  
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizDelete", type='button') 
                                                 span.glyphicon.glyphicon-trash
                                 .col-lg-1
-                                fieldset(id="NeuesQuizContent")
+                                fieldset(id="fstNeuesQuizContent")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblQuizID", for="quizID") Quiz ID
+                                            label.col-lg-2.control-label(id="lblQuizID", for="inQuizID") Quiz ID
                                         .col-lg-6
-                                            input.form-control(type="text", id="quizID", placeholder="Quiz ID")   
+                                            input.form-control(type="text", id="inQuizID", placeholder="Quiz ID")   
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblQuizFeatureRef", for="quizFeatureRef") FeatureRef
+                                            label.col-lg-2.control-label(id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
                                         .col-lg-6
-                                            input.form-control(type="text", id="quizFeatureRef", placeholder="QUIZ FEATUREREF")
+                                            input.form-control(type="text", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblQuizOnTrue", for="quizOnTrue") Quiz OnTrue
+                                            label.col-lg-2.control-label(id="lblQuizOnTrue", for="inQuizOnTrue") Quiz OnTrue
                                         .col-lg-6
-                                            input.form-control(type="text", id="quizOnTrue", placeholder="Quiz On True FeatureRef")
+                                            input.form-control(type="text", id="inQuizOnTrue", placeholder="Quiz On True StorypointRef")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblQuizOnFalse", for="quizOnFalse") Quiz OnFalse
+                                            label.col-lg-2.control-label(id="lblQuizOnFalse", for="inQuizOnFalse") Quiz OnFalse
                                         .col-lg-6
-                                            input.form-control(type="text", id="quizOnFalse", placeholder="Quiz On False FeatureRef")
+                                            input.form-control(type="text", id="inQuizOnFalse", placeholder="Quiz On False StorypointRef")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblQuizQuestion", for="quizQuestion") Question
+                                            label.col-lg-2.control-label(id="lblQuizQuestion", for="inQuizQuestion") Question
                                         .col-lg-6
-                                            input.form-control(type="text", id="quizQuestion", placeholder="Quiz Question")
+                                            input.form-control(type="text", id="inQuizQuestion", placeholder="Quiz Question")
                                     .form-group
                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                                 span Antwort hinzufügen
-                                    .form-group(id="Answer", style="display: none")
+                                    .form-group(id="fgpAnswer", style="display: none")
                                         .col-lg-2
-                                            label.col-lg-2.control-label(id="lblQuizAnswerID", for="quizAnswerID") Antwort ID
+                                            label.col-lg-2.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") Antwort ID
                                         .col-lg-2
-                                            input.form-control(type="text", id="quizAnswerID", placeholder="Quiz Answer ID")
+                                            input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
                                         .col-lg-2
-                                            label.col-lg-2.control-label(id="lblQuizAnswerText", for="quizAnswerText") Antwort Text
+                                            label.col-lg-2.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Antwort Text
                                         .col-lg-4
-                                            input.form-control(type="text", id="quizAnswerText", placeholder="Quiz Answer Text")
+                                            input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
                                         .col-lg-2
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
                                                 span.glyphicon.glyphicon-trash
-                                                                        // ------------------------- WAYCHOOSER
-                            .form-group(id="Neu_WayChooser", style="display: none")
+                                                                        // ------------------------- Chooser
+                            .form-group(id="fgpNeu_Chooser", style="display: none")
                                 .col-lg-1
                                 fieldset                      
                                     .col-lg-10
-                                        legend(id="NeuerWaychooserFieldset") Neuer Waychooser 
+                                        legend(id="lgdNeuerChooserFieldset") Neuer Chooser 
                                     .col-lg-2
-                                        .btn-group.dropup(id="btnWaychooserControlGroup", role="group" aria-label="...")
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnWaychooserEinklappen", type='button')
+                                        .btn-group.dropup(id="bgpChooserControlGroup", role="group" aria-label="...")
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnChooserEinklappen", type='button')
                                                 span.glyphicon.glyphicon-resize-small(id="resize")
                                                  
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnWaychooserDelete", type='button') 
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserDelete", type='button') 
                                                 span.glyphicon.glyphicon-trash
 
                                 .col-lg-1
-                                fieldset(id="NeuerWaychooserContent")
+                                fieldset(id="fstNeuerChooserContent")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblWaychooserID", for="waychooserID") Quiz ID
+                                            label.col-lg-2.control-label(id="lblChooserID", for="inChooserID") Quiz ID
                                         .col-lg-6
-                                            input.form-control(type="text", id="waychooserID", placeholder="Waychooser ID")   
+                                            input.form-control(type="text", id="inChooserID", placeholder="Chooser ID")   
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblWayChooserFeatureRef", for="waychooserFeatureRef") FeatureRef
+                                            label.col-lg-2.control-label(id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
                                         .col-lg-6
-                                            input.form-control(type="text", id="waychooserFeatureRef", placeholder="Waychooser FEATUREREF")
+                                            input.form-control(type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
                                     .form-group
                                         .col-lg-6
-                                            label.col-lg-2.control-label(id="lblWaychooserQuestion", for="waychooserQuestion") Frage
+                                            label.col-lg-2.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage
                                         .col-lg-6
-                                            input.form-control(type="text", id="waychooserQuestion", placeholder="Waychooser Question")
+                                            input.form-control(type="text", id="inChooserQuestion", placeholder="Chooser Question")
                                     .form-group
-                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnWaychooserAnswer", type='button', waychooserAnswerCounter="0") 
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
                                                 span Antwort hinzufügen
 
-                                    .form-group(id="WaychooserAnswer", style="display: none")
+                                    .form-group(id="fgpChooserAnswer", style="display: none")
                                         .row
                                             .col-lg-2
-                                                label.col-2.control-label(id="lblWaychooserAnswerID", for="waychooserAnswerID") Antwort ID
+                                                label.col-2.control-label(id="lblChooserAnswerID", for="inChooserAnswerID") Antwort ID
                                             .col-lg-2
-                                                input.form-control(type="text", id="waychooserAnswerID", placeholder="Waychooser Answer ID")
+                                                input.form-control(type="text", id="inChooserAnswerID", placeholder="Chooser Answer ID")
                                             .col-lg-2
-                                                label.col-2.control-label(id="lblWaychooserAnswerText", for="waychooserAnswerText") Antwort Text
+                                                label.col-2.control-label(id="lblChooserAnswerText", for="inChooserAnswerText") Antwort Text
                                             .col-lg-4
-                                                input.form-control(type="text", id="waychooserAnswerText", placeholder="Waychooser Answer Text")
+                                                input.form-control(type="text", id="inChooserAnswerText", placeholder="Chooser Answer Text")
                                         .row
                                             .col-lg-2
-                                                label.col-2.control-label(id="lblWaychooserAnswerItemRef", for="waychooserAnswerItemRef") ItemRef
+                                                label.col-2.control-label(id="lblChooserAnswerItemRef", for="inChooserAnswerItemRef") ItemRef
                                             .col-lg-4
-                                                input.form-control(type="text", id="waychooserAnswerItemRef", placeholder="Waychooser Answer ItemREF")
+                                                input.form-control(type="text", id="inChooserAnswerItemRef", placeholder="Chooser Answer ItemREF")
                                             .col-lg-2
-                                                label.col-2.control-label(id="lblWaychooserAnswerFeatureRef", for="waychooserAnswerFeatureRef") FeatureRef
+                                                label.col-2.control-label(id="lblChooserAnswerStorypointRef", for="inChooserAnswerStorypointRef") StorypointRef
                                             .col-lg-4
-                                                input.form-control(type="text", id="waychooserAnswerFeatureRef", placeholder="Waychooser Answer FeatureREF")
+                                                input.form-control(type="text", id="inChooserAnswerStorypointRef", placeholder="Chooser Answer STORYPOINTREF")
                                         .col-lg-2
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnWaychooserAnswerDelete", type='button')
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserAnswerDelete", type='button')
                                                 span.glyphicon.glyphicon-trash
 
                             br
                             br
 
-            .col-lg-3.column(id="column")
+            .col-lg-3.column(id="colColumn")
                             form.form-horizontal
                                 fieldset
                                     legend Hilfe
