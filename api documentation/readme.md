@@ -8,7 +8,7 @@ http://api.storytellar.de/story
  
  * Method: GET
  * Response format: JSON
- * Data: id, title, description, author, size, creation_date, location, radius
+ * Data: id, xsd_revision, title, description, author, size, size_uom, location, radius, radius_uom, created_at, updated_at
  * Character encoding (header): utf-8
 
 ### Story XML download by ID
@@ -19,6 +19,7 @@ http://api.storytellar.de/story/<id>
  
  * Method: GET
  * Response type: XML
+ * Media data: See next paragraph
 
 Example for ID 2: http://api.storytellar.de/story/2
 
@@ -52,6 +53,15 @@ Media files are accessible in an media folder, with the story id as sub-folder. 
 
 Example for story id 201934 and file 'hello.jpg': http://api.storytellar.de/media/201934/hello.jpg
 
+Directory tree:
+
+```
+ api.storytellar.de
+ | /media
+         | /<id>
+                 | /<filename>
+```
+
 ### Filter concept for stories
 ```
 http://api.storytellar.de/story?<query parameters>
@@ -60,7 +70,7 @@ http://api.storytellar.de/story?<query parameters>
  
  * Method: GET
  * Query Parameter (optional): id, title, description, author, size_min, size_max, creation_date_min, creation_date_max, location, radius
- * Data: id, title, description, author, size, creation_date, location, radius 
+ * Data: id, xsd_revision, title, description, author, size, size_uom, location, radius, radius_uom, created_at, updated_at 
  * Response format: JSON
  * Character encoding (header): utf-8
 
