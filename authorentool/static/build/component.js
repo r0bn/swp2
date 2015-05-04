@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var createItem, createQuiz;
+    var addMarker, createItem, createQuiz, setAllMap;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -20,9 +20,25 @@ mainApp.controller("mainCtrl", [
     $http.get("http://api.dev.la/stories").success(function(data) {
       return $scope.storys = data;
     });
+    addMarker = function(location, markers, map) {
+      var marker;
+      marker = new google.maps.Marker({
+        position: location,
+        map: map
+      });
+      markers.push(marker);
+    };
+    setAllMap = function(map, markers) {
+      var i;
+      i = 0;
+      while (i < markers.length) {
+        markers[i].setMap(map);
+        i++;
+      }
+    };
     (function($) {})(jQuery);
     $(function() {
-      var $lightbox, map, mapOptions;
+      var $lightbox, input, map, mapOptions, markers, searchBox;
       $("#ddnme").click(function() {
         $("#ddnradius").val("Meter");
         return $("#ddnradius").html("Meter <span class='caret' />");
@@ -48,16 +64,68 @@ mainApp.controller("mainCtrl", [
         center: new google.maps.LatLng(48.7760745003604, 9.172875881195068)
       };
       map = new google.maps.Map($('#gmeg_map_canvas')[0], mapOptions);
+      input = document.getElementById('inputMapSearch');
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      searchBox = new google.maps.places.SearchBox(input);
+      markers = [];
+      google.maps.event.addListener(searchBox, 'places_changed', function() {
+        var marker;
+        var i;
+        var bounds, i, image, marker, place, places;
+        places = searchBox.getPlaces();
+        if (places.length === 0) {
+          return;
+        }
+        i = 0;
+        marker = void 0;
+        if (typeof markers !== 'undefined') {
+          while (marker = markers[i]) {
+            marker.setMap(null);
+            i++;
+          }
+        }
+        markers = [];
+        bounds = new google.maps.LatLngBounds;
+        i = 0;
+        place = void 0;
+        while (place = places[i]) {
+          image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+          setAllMap(null, markers);
+          markers = [];
+          marker = new google.maps.Marker({
+            map: map,
+            icon: image,
+            title: place.name,
+            position: place.geometry.location
+          });
+          markers.push(marker);
+          bounds.extend(place.geometry.location);
+          i++;
+        }
+        map.fitBounds(bounds);
+      });
       $(window).resize(function() {
         google.maps.event.trigger(map, 'resize');
       });
       google.maps.event.addListener(map, 'click', function(event) {
-        var lat, lng;
+        var i, lat, lng;
         lat = event.latLng.lat();
         lng = event.latLng.lng();
         $("#inputMapSearch").val(lat + ", " + lng);
         $("#LngLocation").val(lng);
-        return $("#LatLocation").val(lat);
+        $("#LatLocation").val(lat);
+        i = 0;
+        while (i < markers.length) {
+          markers[i].setMap(null);
+          i++;
+        }
+        addMarker(event.latLng, markers, map);
       });
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {

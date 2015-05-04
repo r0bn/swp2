@@ -25,6 +25,22 @@
             .success (data) ->
                 $scope.storys = data
 
+        addMarker = (location, markers, map) ->
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker)
+            return
+
+
+        setAllMap = (map, markers) ->
+          i = 0
+          while i < markers.length
+            markers[i].setMap map
+            i++
+          return
+
         #jQuery Namespace Binding
         (($) ->
             ) jQuery
@@ -53,6 +69,54 @@
               zoom: 8
               center: new (google.maps.LatLng)(48.7760745003604, 9.172875881195068)
             map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
+            input = document.getElementById('inputMapSearch')
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push input
+            searchBox = new (google.maps.places.SearchBox)(input)
+            markers = []
+
+            google.maps.event.addListener searchBox, 'places_changed', ->
+              `var marker`
+              `var i`
+              places = searchBox.getPlaces()
+              if places.length == 0
+                return
+              i = 0
+              marker = undefined
+              if typeof markers != 'undefined'
+                while marker = markers[i]
+                    marker.setMap null
+                    i++
+              # For each place, get the icon, place name, and location.
+              markers = []
+              bounds = new (google.maps.LatLngBounds)
+              i = 0
+              place = undefined
+              while place = places[i]
+                image = 
+                  url: place.icon
+                  size: new (google.maps.Size)(71, 71)
+                  origin: new (google.maps.Point)(0, 0)
+                  anchor: new (google.maps.Point)(17, 34)
+                  scaledSize: new (google.maps.Size)(25, 25)
+                # Create a marker for each place.
+                setAllMap(null, markers)
+                markers = []
+                marker = new (google.maps.Marker)(
+                  map: map
+                  icon: image
+                  title: place.name
+                  position: place.geometry.location)
+                markers.push marker
+                bounds.extend place.geometry.location
+                i++
+              map.fitBounds bounds
+              return
+
+
+
+
+
+
             $(window).resize ->
               google.maps.event.trigger map, 'resize'
               return
@@ -62,6 +126,12 @@
                 $("#inputMapSearch").val(lat + ", " + lng)
                 $("#LngLocation").val(lng)
                 $("#LatLocation").val(lat)
+                i = 0
+                while i < markers.length
+                    markers[i].setMap null
+                    i++
+                addMarker(event.latLng, markers, map);
+                return
             $lightbox = $('#lightbox')
             $('[data-target="#lightbox"]').on 'click', (event) ->
               $img = $(this).find('gmeg_map_canvas')

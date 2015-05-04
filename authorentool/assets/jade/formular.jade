@@ -61,7 +61,8 @@ block content
                                             .modal-body
                                                 .form-group
                                                     .col-lg-6
-                                                        input.form-control(id="inputMapSearch", placeholder="Map GPS Suche")
+                                                        input#inputMapSearch.controls(type='text', placeholder='Search Box', autocomplete='off', style='z-index: 0; position: absolute; left: 0px; top: 0px;')
+
                                                     .col-lg-4
                                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnMapSearch", type="button") Suche
                                                     button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
