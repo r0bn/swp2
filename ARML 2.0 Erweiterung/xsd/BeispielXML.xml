@@ -6,6 +6,7 @@
       xsi:schemaLocation="http://www.opengis.net/arml/2.0 schema/ExARML.xsd">
 	  
     <Story>
+        <Revision>7</Revision>
         <Title>Kneipentour</Title>
         <Description>Die Legände von Block 4</Description>
         <Author>Arno Claus</Author>
