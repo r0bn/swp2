@@ -14,11 +14,16 @@ block content
                             a(ng-click="tabbed_pain('XMLTab','XML','GraEditorTab','GraEditor')", href="#XML", data-toggle="tab") XML Editor
                         li.active(id="GraEditorTab")
                             a(ng-click="tabbed_pain('GraEditorTab','GraEditor','XMLTab','XML')",href="#GraEditor", data-toggle="tab") Graphischer Editor
+                        li.active(id="MedienBibTab")
+                            a(href="#MedienEditor", data-toggle="tab") Medienbibliothek
+
 
 
                     .tab-content(id="myTabContent")
                         .tab-pane.fade.active.in(id="GraEditor") 
                             include ./formular.jade
                         .tab-pane.fade.active.in(id="XML", style="display:none")
-                            p XML EDITOR WIRD HIER PLAZIERT
+                            p hallo1
+                        .tab-pane.fade(id="MedienEditor", sytle="display:none")
+                            p hallo
 

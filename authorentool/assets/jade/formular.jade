@@ -6,11 +6,14 @@ block vars
 block content
 
     .container
+
         .row(id="createStoryRow")
+            br
+            br
             .col-md-12
                     button.btn.btn-primary.btn-lg.pull-primary(style="",ng-click="getFormulars()") Neue Story erstellen
         .row(id="Formular",style="display: none")
-            .col-md-8.column(id="column")
+            .col-md-9.column(id="column")
                 form.form-horizontal
                     fieldset
                         legend Storydaten
@@ -25,27 +28,27 @@ block content
                                 textarea.form-control(rows="3", id="textAreaDescription", placeholder="Bitte geben Sie die Beschreibung der Story ein")
 
                         .form-group
-                            label.col-lg-2.control-label(for"inputAutor") Autor
+                            label.col-lg-2.control-label(for="inputAutor") Autor
                             .col-lg-8
                                 input.form-control(type="text", id="inputAutor", placeholder="Name des Autors")
 
                         .form-group
-                            label.col-lg-2.control-label(for"size") Größe der Story
+                            label.col-lg-2.control-label(for="size") Größe der Story
                             .col-lg-6
-                                input.form-control(type="number", id="size",step="1", placeholder="Berechnen aus Mediendatein?")
+                                input.form-control(type="number", id="size",step="1", placeholder="Gesamte Größe der Story?")
                             .col-lg-1
                                 .dropdown
-                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
+                                    button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
                                         span.caret 
                                     ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='0', href='#') KB
+                                            a(id="ddnkb", role='menuitem', tabindex='0') KB
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='1', href='#') MB
+                                            a(id="ddnmb", role='menuitem', tabindex='1') MB
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='2', href='#') GB
+                                            a(id="ddngb", role='menuitem', tabindex='2') GB
                         .form-group
-                            label.col-lg-2.control-label(for"location") Ort
+                            label.col-lg-2.control-label(for="location") Ort
 
                             .col-lg-4
                                 input.form-control( id="LatLocation", placeholder="Breitengrad")
@@ -65,66 +68,118 @@ block content
                                                 .form-group  
                                                     #gmeg_map_canvas(style='width:500px;height:400px')
                             .col-lg-2
-                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(href='#', data-toggle='modal', data-target='#lightbox') Map
+                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#lightbox') Map
 
-                            
-                form.form-horizontal(id="POIS")
-                    fieldset
-                        legend POIs
-                            .form-group(id="btnPOIS")
-                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="poiCounter=poiCounter+1;getNewPoiElement(poiCounter)") Neuen POI erstellen
-                form.form-horizontal(id="NeuerPOI", style="display: none")
-                    fieldset
                         .form-group
-                            label.col-lg-2.control-label(for"inputPOI") POI
-                            .col-lg-8
-                                input.form-control(type="text", id="inputPOI", placeholder="POI ID")
+                            label.col-lg-2.control-label(for="radius") Radius um den Ort
                             .col-lg-6
-                                label.col-lg-2.control-label POI Einstellungen
-                            .col-lg-6
-                                .checkbox
-                                    input(id="inputAccessable", type='checkbox', placeholder="POI Erreichbar")
-                                    label(id="lblAccessable", for='inputAccessable') POI Erreichbar
-                                .checkbox
-                                    input(id="inputInternet", type='checkbox', placeholder="POI Internet")
-                                    label(id="lblInternet", for='inputInternet') POI Internet
+                                input.form-control(type="number", id="radius",step="1", placeholder="Umkreis?")
+                            .col-lg-1
+                                .dropdown
+                                    button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
+                                        span.caret 
+                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                        li(role='presentation')
+                                            a(id="ddnme", role='menuitem', tabindex='0') Meter
+                                        li(role='presentation')
+                                            a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
+                            
+                            
+                                    //                form.form-horizontal(id="POIS")
+                                    //                    fieldset
+                                    //                        legend POIs
+                                    //                            .form-group(id="btnPOIS")
+                                    //                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="poiCounter=poiCounter+1;getNewPoiElement(poiCounter)") Neuen POI erstellen
+                                    //                form.form-horizontal(id="NeuerPOI", style="display: none")
+                                    //                    fieldset
+                                    //                        .form-group
+                                    //                            label.col-lg-2.control-label(for="inputPOI") POI
+                                    //                            .col-lg-8
+                                    //                                input.form-control(type="text", id="inputPOI", placeholder="POI ID")
+                                    //                            .col-lg-6
+                                    //                                label.col-lg-2.control-label POI Einstellungen
+                                    //                            .col-lg-6
+                                    //                                .checkbox
+                                    //                                    input(id="inputAccessable", type='checkbox', placeholder="POI Erreichbar")
+                                    //                                    label(id="lblAccessable", for='inputAccessable') POI Erreichbar
+                                    //                                .checkbox
+                                    //                                    input(id="inputInternet", type='checkbox', placeholder="POI Internet")
+                                    //                                    label(id="lblInternet", for='inputInternet') POI Internet
                 
                 form.form-horizontal(id="Features")
                     fieldset
                         legend Features
                             .form-group(id="btnFeature")
-                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
-                form.form-horizontal(id="NeuesFeature", style="display: none")         
+                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
+                form.form-horizontal(id="NeuesFeature", style="display: none")
+                    .col-lg-1
                     fieldset
-                        .form-group                        
-                            .col-lg-10
+                        .form-group
+                            .col-lg-11
                                 legend(id="NeuesFeatureFieldset") Neues Feature 
-                            .col-lg-2
+                            .col-lg-1
                                 .btn-group.dropup(id="btnControlGroup", role="group" aria-label="...")
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnFeatureEinklappen", type='button')
                                         span.caret
                                              
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesFeatureDelete", type='button') 
-                                        span Löschen
+                                        span.glyphicon.glyphicon-trash
+                        .col-lg-1
                         fieldset(id="NeuesFeatureContent")
                             .form-group
+                                                // ----------------------------Hier die Punkteeinstellungen
+                                .col-3
+                                    label.control-label Featureeinstellungen
                                 .col-lg-4
-                                    label.col-lg-2.control-label(id="lblInputFeature", for="inputFeature") Feature
+                                    .checkbox
+                                        input(id="inputInternet", type='checkbox', placeholder="Feature Internet")
+                                        label(id="lblInternet", for='inputInternet') Feature verfügt über Internet
+                                .col-lg-5
+                                    .checkbox
+                                        input(id="inputAccessable", type='checkbox', placeholder="Feature Erreichbar")
+                                        label(id="lblAccessable", for='inputAccessable') Feature ist erreichbar
+                                
+                                                // -----------------------------ENDE
+                            br
+                            br
+                            .form-group
+                                .col-lg-4
+                                    label.control-label(id="lblInputFeature", for="inputFeature") Feature
                                 .col-lg-8
                                     input.form-control(type="text", id="inputFeature", placeholder="Featurename")
+
+
                             .form-group
                                 .col-lg-4
-                                    label.col-lg-2.control-label(for="anchorPoint") Ort
-                                .col-lg-8
+                                    label.control-label(for="anchorPoint") Ort
+                                .col-lg-6
                                     input.form-control(type="text", id="anchorPoint", placeholder="Über map realisieren?")
+                                .col-lg-2
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') Map
+
+                                                    // ------------ANCHOR-IMAGE
                             .form-group
                                 .col-lg-4
-                                    label.col-lg-2.control-label(for="anchorImg") Auslösebild bestimmen
-                                .col-lg-8
+                                    label.control-label(for="anchorImg") Auslösebild bestimmen
+                                .col-lg-6
                                     input.form-control(type="text", id="anchorImg", placeholder="Bild auswählen können aus Bib")
+                                .col-lg-2
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') MBib
+
+                                                    // -------------ASSETS
+                            .form-group
+                                .col-lg-4
+                                    label.control-label(for="asset") Anzeigbares Objekt
+                                .col-lg-6
+                                    input.form-control(type="text", id="asset", placeholder="Bild/Video aus Bib holen")
+                                .col-lg-2
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign(data-toggle='modal', data-target='#lightbox') MBib
+
+
+                            br
                             .form-group
                                 .col-lg-6
-                                    label.col-lg-2.control-label(for="interactions") Interaktion wählen
+                                    label.control-label(for="interactions") Interaktion wählen
                                 .col-lg-4
                                     .dropup
                                         button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
@@ -138,9 +193,10 @@ block content
                                                 a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
                                 .col-lg-2
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnCreateInteraction",interactionCounter="1", type="button") Interaktion erstellen
-
-                            .form-group(id="Neu_Item", style="display: none") 
-                                fieldset                      
+                                                                        // -------------------- ITEM
+                            .form-group(id="Neu_Item", style="display: none")
+                                .col-lg-1
+                                fieldset
                                     .col-lg-10
                                         legend(id="NeuesItemFieldset") Neues Item 
                                     .col-lg-2
@@ -149,30 +205,34 @@ block content
                                                 span.caret
                                                  
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnItemDelete", type='button') 
-                                                span Löschen  
+                                                span.glyphicon.glyphicon-trash
+                                .col-lg-1
                                 fieldset(id="NeuesItemContent")                          
                                     .form-group
-                                        .col-lg-8
-                                            label.col-lg-2.control-label(id="lblItemID", for="itemID") Item ID
-                                        .col-lg-4
+                                        .col-lg-6
+                                            label.col-2.control-label(id="lblItemID", for="itemID") Item ID
+                                        .col-lg-6
                                             input.form-control(type="text", id="itemID", placeholder="ITEM ID")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblItemDescription", for="itemDescription") Beschreibung
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="itemDescription", placeholder="ITEM Description")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblItemFeatureRef", for="itemFeatureRef") FeatureRef
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="itemFeatureRef", placeholder="ITEM FEATUREREF")
                                     .form-group
-                                        .col-lg-8
-                                        .col-lg-4
+                                        .col-lg-6
+                                        .col-lg-6
                                             .checkbox
                                                 input(id="itemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
                                                 label(id="lblItemIsCollected", for='itemIsCollected') Item Is Collected
+
+                                                                            // ------------------- QUIZ
                             .form-group(id="Neu_Quiz", style="display: none") 
+                                .col-lg-1
                                 fieldset                      
                                     .col-lg-10
                                         legend(id="NeuesQuizFieldset") Neues Quiz 
@@ -182,32 +242,33 @@ block content
                                                 span.caret
                                                  
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizDelete", type='button') 
-                                                span Löschen  
+                                                span.glyphicon.glyphicon-trash
+                                .col-lg-1
                                 fieldset(id="NeuesQuizContent")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblQuizID", for="quizID") Quiz ID
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="quizID", placeholder="Quiz ID")   
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblQuizFeatureRef", for="quizFeatureRef") FeatureRef
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="quizFeatureRef", placeholder="QUIZ FEATUREREF")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblQuizOnTrue", for="quizOnTrue") Quiz OnTrue
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="quizOnTrue", placeholder="Quiz On True FeatureRef")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblQuizOnFalse", for="quizOnFalse") Quiz OnFalse
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="quizOnFalse", placeholder="Quiz On False FeatureRef")
                                     .form-group
-                                        .col-lg-8
+                                        .col-lg-6
                                             label.col-lg-2.control-label(id="lblQuizQuestion", for="quizQuestion") Question
-                                        .col-lg-4
+                                        .col-lg-6
                                             input.form-control(type="text", id="quizQuestion", placeholder="Quiz Question")
                                     .form-group
                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
@@ -223,10 +284,74 @@ block content
                                             input.form-control(type="text", id="quizAnswerText", placeholder="Quiz Answer Text")
                                         .col-lg-2
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
-                                                span Löschen
-            .col-md-4
-                .page-header
-                    h3 Media Library
+                                                span.glyphicon.glyphicon-trash
+
+                                                                        // ------------------------- WAYCHOOSER
+                            .form-group(id="Neu_WayChooser", style="display: none")
+                                .col-lg-1
+                                fieldset                      
+                                    .col-lg-10
+                                        legend(id="NeuerWaychooserFieldset") Neuer Waychooser 
+                                    .col-lg-2
+                                        .btn-group.dropup(id="btnWaychooserControlGroup", role="group" aria-label="...")
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnWaychooserEinklappen", type='button')
+                                                span.caret
+                                                 
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnWaychooserDelete", type='button') 
+                                                span.glyphicon.glyphicon-trash
+
+                                .col-lg-1
+                                fieldset(id="NeuerWaychooserContent")
+                                    .form-group
+                                        .col-lg-6
+                                            label.col-lg-2.control-label(id="lblWaychooserID", for="waychooserID") Quiz ID
+                                        .col-lg-6
+                                            input.form-control(type="text", id="waychooserID", placeholder="Waychooser ID")   
+                                    .form-group
+                                        .col-lg-6
+                                            label.col-lg-2.control-label(id="lblWayChooserFeatureRef", for="waychooserFeatureRef") FeatureRef
+                                        .col-lg-6
+                                            input.form-control(type="text", id="waychooserFeatureRef", placeholder="Waychooser FEATUREREF")
+                                    .form-group
+                                        .col-lg-6
+                                            label.col-lg-2.control-label(id="lblWaychooserQuestion", for="waychooserQuestion") Frage
+                                        .col-lg-6
+                                            input.form-control(type="text", id="waychooserQuestion", placeholder="Waychooser Question")
+                                    .form-group
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnWaychooserAnswer", type='button', waychooserAnswerCounter="0") 
+                                                span Antwort hinzufügen
+
+                                    .form-group(id="WaychooserAnswer", style="display: none")
+                                        .row
+                                            .col-lg-2
+                                                label.col-2.control-label(id="lblWaychooserAnswerID", for="waychooserAnswerID") Antwort ID
+                                            .col-lg-2
+                                                input.form-control(type="text", id="waychooserAnswerID", placeholder="Waychooser Answer ID")
+                                            .col-lg-2
+                                                label.col-2.control-label(id="lblWaychooserAnswerText", for="waychooserAnswerText") Antwort Text
+                                            .col-lg-4
+                                                input.form-control(type="text", id="waychooserAnswerText", placeholder="Waychooser Answer Text")
+                                        .row
+                                            .col-lg-2
+                                                label.col-2.control-label(id="lblWaychooserAnswerItemRef", for="waychooserAnswerItemRef") ItemRef
+                                            .col-lg-4
+                                                input.form-control(type="text", id="waychooserAnswerItemRef", placeholder="Waychooser Answer ItemREF")
+                                            .col-lg-2
+                                                label.col-2.control-label(id="lblWaychooserAnswerFeatureRef", for="waychooserAnswerFeatureRef") FeatureRef
+                                            .col-lg-4
+                                                input.form-control(type="text", id="waychooserAnswerFeatureRef", placeholder="Waychooser Answer FeatureREF")
+                                        .col-lg-2
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnWaychooserAnswerDelete", type='button')
+                                                span.glyphicon.glyphicon-trash
+
+                            br
+                            br
+
+            .col-lg-3.column(id="column")
+                            form.form-horizontal
+                                fieldset
+                                    legend Hilfe
+                    
 
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter
