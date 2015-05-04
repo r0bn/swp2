@@ -16,7 +16,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             lineWrapping : true
             lineNumbers: true
             #readOnly: 'nocursor'
-            mode: 'xml'
+            mode: 'application/xml'
             #indentUnit : 2
             theme : "eclipse"
             foldGutter : true
