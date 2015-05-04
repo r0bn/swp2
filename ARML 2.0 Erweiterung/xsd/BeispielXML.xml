@@ -14,46 +14,28 @@
             <gml:Point gml:id="Location">
                 <gml:pos>48.780332 9.172515</gml:pos>
             </gml:Point>
-        </Location><!-- GML POINT -->
+        </Location>
         <Radius uom="km">5</Radius>
         
-        <POI id="Punkt_A">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_B">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_C_1">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_C_2">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_D_1">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_D_2">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
-        <POI id="Punkt_E">
-            <Accessible>true</Accessible>
-            <Internet>true</Internet>
-        </POI>
     </Story>
     <Dependency>
         <Storypoint id="A" >
+            <FeatureRef xlink:href="Punkt_A_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist />
                 <Itemlist />
             </Container>
         </Storypoint>
         <Storypoint id="B" >
+            <FeatureRef xlink:href="Punkt_B_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="#A" />
@@ -62,6 +44,11 @@
             </Container>
         </Storypoint>
         <Storypoint id="C1" >
+            <FeatureRef xlink:href="Punkt_C_1_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="#B" />
@@ -72,6 +59,11 @@
             </Container>
         </Storypoint>
         <Storypoint id="C2" >
+            <FeatureRef xlink:href="Punkt_C_2_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="#B" />
@@ -82,6 +74,11 @@
             </Container>
         </Storypoint>
         <Storypoint id="D1">
+            <FeatureRef xlink:href="Punkt_D_1_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="C1" />
@@ -92,6 +89,11 @@
             </Container>
         </Storypoint>
         <Storypoint id="D2">
+            <FeatureRef xlink:href="Punkt_D_2_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="C2" />
@@ -102,6 +104,11 @@
             </Container>
         </Storypoint>
         <Storypoint id="E">
+            <FeatureRef xlink:href="Punkt_E_Feature" />
+            <Metadaten>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadaten>
             <Container>
                 <Storypointlist>
                     <StorypointRef xlink:href="D1" />
@@ -114,6 +121,7 @@
             </Container>
         </Storypoint>
     </Dependency>
+
     <ARElements>
         <Feature id="Punkt_A_Feature">
             <name> Startpunkt </name>
@@ -242,7 +250,7 @@
             </anchors>
         </Feature>
 		
-        <Feature id="Punkt_D_1_Feature1">
+        <Feature id="Punkt_D_2_Feature">
             <name> Student </name>
             <anchors>
                 <Geometry>
@@ -258,7 +266,7 @@
             </anchors>
         </Feature>
 		
-        <Feature>
+        <Feature id="Punkt_E_Feature">
             <name>Ende</name>
             <anchors>
                 <Geometry>
@@ -291,7 +299,7 @@
                 </Answer>
 				
             </Quiz>
-            <!-- waychooser musste erst erfunden werden am 1.4. April april -->
+
             <WayChooser id="Punkt_B_Waychooser">
                 <FeatureRef xlink:href="#Punkt_B_Feature" />
                 <Question> Wohin willst du gehen? </Question>
@@ -315,7 +323,7 @@
                 <FeatureRef xlink:href="#Punkt_B_Feature" />
                 <IsCollected>true</IsCollected>
             </Item>
-            <!-- ... Nach 28.30 Min keinen Bock mehr -->
+
             <Item id="Punkt_C_1_Item">
                 <Description> Priatenzeug </Description>
                 <FeatureRef xlink:href="#Punkt_C_1_Feature" />
@@ -328,5 +336,5 @@
             </Item>
         </Interactions>	
     </ARElements>
-    <!-- Dauer: 28.30 + 15 + 13 Min +15 Min= 71.30 Min -->
+
 </arml>
