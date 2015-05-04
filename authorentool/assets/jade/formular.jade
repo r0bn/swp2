@@ -90,7 +90,7 @@ block content
                     fieldset
                         legend Features
                             .form-group(id="btnFeature")
-                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;getNewFeatureElement(featureCounter)") Neues Feature erstellen
+                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="featureCounter=featureCounter+1;createNewFeature(featureCounter)") Neues Feature erstellen
                 form.form-horizontal(id="NeuesFeature", style="display: none")
                     .col-lg-1
                     fieldset
@@ -334,6 +334,15 @@ block content
                             form.form-horizontal
                                 fieldset
                                     legend Hilfe
+                                        div(id="divHelpBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
+
+
+                            form.form-horizontal
+                                fieldset
+                                    legend Abhängigkeiten
+                                        div(id="divDependencyBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
+
+
 
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter

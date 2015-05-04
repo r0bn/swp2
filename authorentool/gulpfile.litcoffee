@@ -40,6 +40,7 @@
       .pipe coffee({bare : true}).on('error', gutil.log)
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
+      
 
     gulp.task 'js-vendor', () ->
         gulp.src [
@@ -47,6 +48,7 @@
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/angular/angular.js'
+            './assets/js/vis.min.js'
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
             './bower_components/jquery/dist/jquery.min.js'
             './bower_components/bootswatch-dist/js/bootstrap.min.js'  
@@ -72,11 +74,12 @@
             './bower_components/codemirror/lib/codemirror.css'
             './bower_components/codemirror/theme/eclipse.css'
             './bower_components/bootswatch-dist/css/bootstrap.css'
+            './assets/js/vis.min.css'
         ]
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
-
+##
 ## Build all
 
     gulp.task 'build', ['js', 'css', 'html', 'js-vendor', 'css-vendor'], () ->
