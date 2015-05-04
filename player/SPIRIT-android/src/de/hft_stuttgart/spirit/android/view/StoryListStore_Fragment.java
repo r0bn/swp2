@@ -71,7 +71,7 @@ public class StoryListStore_Fragment extends Fragment {
             	String adjustedQuery = bundle.getString("query");
             	//task = new GetStoreStories();
             	task = new GetStoreStoriesWithParameter();
-            	Toast.makeText(getActivity(), "query = ", Toast.LENGTH_LONG).show();	
+            	Toast.makeText(getActivity(), "query = "+adjustedQuery, Toast.LENGTH_LONG).show();	
             	task.execute(adjustedQuery);
 
         }else {

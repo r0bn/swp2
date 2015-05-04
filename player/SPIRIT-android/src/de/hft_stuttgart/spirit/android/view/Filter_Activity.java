@@ -50,9 +50,9 @@ public class Filter_Activity extends ActionBarActivity {
     private TextView radiusValueTextView;
 
 
-    int min_year, min_month, min_day;
-    int max_year, max_month, max_day; //initialize them to current date in onStart()/onCreate()
-
+    private int min_year, min_month, min_day;
+    private int max_year, max_month, max_day; //initialize them to current date in onStart()/onCreate()
+    private String dateDefault = "Datum festlegen";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,13 +87,14 @@ public class Filter_Activity extends ActionBarActivity {
         max_month = calendar.get(Calendar.MONTH);
         max_day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        creationDateMaxButton.setText(new StringBuilder().append(max_day).append(". ").append(max_month).append(". ").append(max_year));
-
+        //creationDateMaxButton.setText(new StringBuilder().append(max_day).append(". ").append(max_month).append(". ").append(max_year));
+        creationDateMaxButton.setText(dateDefault);
         min_year = max_year-2;
         min_month = max_month;
         min_day = max_day;
-        creationDateMinButton.setText(new StringBuilder().append(min_day).append(". ").append(min_month).append(". ").append(min_year));
-
+        
+        //creationDateMinButton.setText(new StringBuilder().append(min_day).append(". ").append(min_month).append(". ").append(min_year));
+        creationDateMinButton.setText(dateDefault);
         //set listener to show the radius components only if a city is specified
         cityEditText.addTextChangedListener(textWatcher);
 
@@ -144,11 +145,11 @@ public class Filter_Activity extends ActionBarActivity {
             if (!titleEditText.getText().toString().matches("")) getQuery.append("title=" + titleEditText.getText().toString()+"&");
             if (!authorEditText.getText().toString().matches("")) getQuery.append("author=" + authorEditText.getText().toString()+"&");
             if (!sizeMaxEditText.getText().toString().matches("")) getQuery.append("size_max=" + sizeMaxEditText.getText().toString()+"&");
-            if (!creationDateMinButton.getText().toString().matches("")) getQuery.append("creation_date_min="
+            if (!creationDateMinButton.getText().toString().matches("")&&!creationDateMinButton.getText().toString().matches(dateDefault)) getQuery.append("creation_date_min="
                     + creationDateMinButton.getText().toString().replaceAll("\\.", "")+"&");
-            if (!creationDateMaxButton.getText().toString().matches("")) getQuery.append("creation_date_max="
+            if (!creationDateMaxButton.getText().toString().matches("")&&!creationDateMaxButton.getText().toString().matches(dateDefault)) getQuery.append("creation_date_max="
                    + creationDateMaxButton.getText().toString().replaceAll("\\.", "")+"&");
-
+            
             if (!cityEditText.getText().toString().matches("")){
                 try {
                     Address address = geoLocate(cityEditText.getText().toString());
