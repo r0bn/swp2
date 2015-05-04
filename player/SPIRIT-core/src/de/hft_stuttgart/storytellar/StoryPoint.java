@@ -11,7 +11,7 @@ import java.util.List;
  * @author Marcel
  *That part of the Story that plays at a certain Location with Videos, images, etc.
  */
-public class Scene {
+public class StoryPoint {
 	
 	//maybe change status codes
 	Status status;
@@ -20,13 +20,13 @@ public class Scene {
 	Interaction interaction;
 	Boolean isEndScene;
 	
-	public Scene(){
+	public StoryPoint(){
 		this.dependencies = new ArrayList<Dependency>();
 		this.video = new File("");
 		this.interaction = new Quiz(); // Default for interaction is quiz
 	}
 	
-	public Scene(Status status,	List<Dependency> dependencies, File video, Interaction interaction, Boolean isEndScene){
+	public StoryPoint(Status status,	List<Dependency> dependencies, File video, Interaction interaction, Boolean isEndScene){
 		this.status = status;
 		this.dependencies = dependencies;
 		this.video = video;
