@@ -34,7 +34,7 @@ public class ContentDownloader {
 
 	private ArrayList<Story> allStoriesData;
 	private ArrayList<Story> downloadedStories;
-	
+	private ArrayList<Story> allStoriesWithParameterData;
 	
 	/**
 	 * Protected constructor for ContentDownloader
@@ -42,6 +42,7 @@ public class ContentDownloader {
 	protected ContentDownloader() {
 
 		allStoriesData = new ArrayList<Story>();
+		allStoriesWithParameterData = new ArrayList<Story>();
 		downloadedStories = new ArrayList<Story>();
 		client = new RESTClient();
 		
@@ -94,6 +95,54 @@ public class ContentDownloader {
 			e.printStackTrace();
 		}	
 	}
+	
+	
+/**
+ * Requests the meta data from all stories with a given paramenter. See API documentation for the returned attributes of each existing story.
+ * Requested meta data will be saved in the ArrayList allStoriesData. This includes a map with the meta data of each story and the parameter
+ * 'already_downloaded' which marks downloaded stories.
+ * @param queryParameter the Query Parameter, can be for example: id, title, author, size_max, creation_date_min, creation_date_max, location or radius.
+ * @return 
+ */
+	public ArrayList<Story> requestAllStoriesWithParameter(String queryParameter) {
+		
+		try {
+			allStoriesWithParameterData.clear();
+			JSONArray allStories = client.getAvailableStoriesWithParamenter(queryParameter);
+			for(int i=0; i<allStories.length(); i++)
+			{
+				JSONObject story = (JSONObject) allStories.get(i);
+				Story temp = new Story(
+				Integer.valueOf((String)story.get("id")),
+				(String) story.get("title"),
+				(String) story.get("description"),
+				(String) story.get("author"),
+				(String) story.get("size"),
+				(String) story.get("creation_date"),
+				(String) story.get("location"),
+				(String) story.get("radius"),false);
+				
+				allStoriesWithParameterData.add(temp);
+	
+			}
+			markDownloadedStories();
+			return allStoriesWithParameterData;
+			
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (allStoriesWithParameterData != null){
+			return allStoriesWithParameterData;
+		}else {
+			return allStoriesData;
+		}
+	}
+	
 	
 	/**
 	 * Method compares the list of all requested stories with the list of the already downloaded stories and sets

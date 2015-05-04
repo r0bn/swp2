@@ -48,6 +48,23 @@ public class RESTClient {
 
     /**
      * 
+     * @return Returns an JSONArray containing the metadata for all available stories with a given id, title, author, size_max, 
+     * creation_date_min, creation_date_max, location or radius.
+     * 
+     * @throws Exception
+     */
+    public JSONArray getAvailableStoriesWithParamenter(String queryParameter) throws Exception {
+        //URL url = new URL(URLallStories + "?" + queryParameter);
+        URL url = new URL(queryParameter);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/string");
+        InputStream stream = connection.getInputStream();
+        return new JSONArray(readInput(stream));
+    }
+    
+    /**
+     * 
      * @param id The id of the story.
      * @return Returns the XMLFile for the story with the given id as a String.
      */
