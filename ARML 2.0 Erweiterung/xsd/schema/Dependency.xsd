@@ -5,8 +5,8 @@
             version="2.0.0">
     <xsd:annotation>
         <xsd:documentation>
-            <Revision>6</Revision>
-            <Last_Update>29.04.2015</Last_Update>
+            <Revision>7</Revision>
+            <Last_Update>04.05.2015</Last_Update>
             <Last_Editor>Yasin Abdelmonem</Last_Editor>
             <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
         </xsd:documentation>
@@ -18,6 +18,19 @@
             <xsd:element name="Storypoint" minOccurs="1" maxOccurs="unbounded">
                 <xsd:complexType>
                     <xsd:sequence>
+                        <xsd:element name="FeatureRef" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:attribute ref="xlink:href" />
+                            </xsd:complexType>
+                        </xsd:element> 
+                        <xsd:element name="Metadata" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="Accessible" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                                    <xsd:element name="Internet" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
                         <xsd:element name="Container" minOccurs="0" maxOccurs="unbounded" >
                             <xsd:complexType>
                                 <xsd:sequence>
