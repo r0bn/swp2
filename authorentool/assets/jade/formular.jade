@@ -25,27 +25,27 @@ block content
                                 textarea.form-control(rows="3", id="textAreaDescription", placeholder="Bitte geben Sie die Beschreibung der Story ein")
 
                         .form-group
-                            label.col-lg-2.control-label(for"inputAutor") Autor
+                            label.col-lg-2.control-label(for="inputAutor") Autor
                             .col-lg-8
                                 input.form-control(type="text", id="inputAutor", placeholder="Name des Autors")
 
                         .form-group
-                            label.col-lg-2.control-label(for"size") Größe der Story
+                            label.col-lg-2.control-label(for="size") Größe der Story
                             .col-lg-6
                                 input.form-control(type="number", id="size",step="1", placeholder="Berechnen aus Mediendatein?")
                             .col-lg-1
                                 .dropdown
-                                    button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
+                                    button.btn.btn-default.dropdown-toggle(id="ddnSize", type='button', data-toggle='dropdown', aria-expanded='true') Einheit
                                         span.caret 
                                     ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='0', href='#') KB
+                                            a(role='menuitem', id="ddnKB", tabindex='0') KB
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='1', href='#') MB
+                                            a(role='menuitem', id="ddnMB", tabindex='1') MB
                                         li(role='presentation')
-                                            a(role='menuitem', tabindex='2', href='#') GB
+                                            a(role='menuitem', id="ddnGB", tabindex='2') GB
                         .form-group
-                            label.col-lg-2.control-label(for"location") Ort
+                            label.col-lg-2.control-label(for="location") Ort
 
                             .col-lg-4
                                 input.form-control( id="LatLocation", placeholder="Breitengrad")
@@ -76,7 +76,7 @@ block content
                 form.form-horizontal(id="NeuerPOI", style="display: none")
                     fieldset
                         .form-group
-                            label.col-lg-2.control-label(for"inputPOI") POI
+                            label.col-lg-2.control-label(for="inputPOI") POI
                             .col-lg-8
                                 input.form-control(type="text", id="inputPOI", placeholder="POI ID")
                             .col-lg-6
@@ -97,15 +97,15 @@ block content
                 form.form-horizontal(id="NeuesFeature", style="display: none")         
                     fieldset
                         .form-group                        
-                            .col-lg-10
+                            .col-lg-11
                                 legend(id="NeuesFeatureFieldset") Neues Feature 
-                            .col-lg-2
+                            .col-2
                                 .btn-group.dropup(id="btnControlGroup", role="group" aria-label="...")
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnFeatureEinklappen", type='button')
-                                        span.caret
+                                        span.glyphicon.glyphicon-resize-small(id="resize")
                                              
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesFeatureDelete", type='button') 
-                                        span Löschen
+                                        span.glyphicon.glyphicon-trash
                         fieldset(id="NeuesFeatureContent")
                             .form-group
                                 .col-lg-4
@@ -141,16 +141,20 @@ block content
 
                             .form-group(id="Neu_Item", style="display: none") 
                                 fieldset                      
-                                    .col-lg-10
-                                        legend(id="NeuesItemFieldset") Neues Item 
-                                    .col-lg-2
+                                    .col-sm-9
+                                        legend(id="NeuesItemFieldset") Neues Item          
+                                    .col-sm-3
                                         .btn-group.dropup(id="btnItemControlGroup", role="group" aria-label="...")
+                                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
+                                                span.glyphicon.glyphicon-menu-up  
+                                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
+                                                span.glyphicon.glyphicon-menu-down
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnItemEinklappen", type='button')
-                                                span.caret
-                                                 
+                                                span.glyphicon.glyphicon-resize-small(id="resize")
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnItemDelete", type='button') 
-                                                span Löschen  
-                                fieldset(id="NeuesItemContent")                          
+                                                span.glyphicon.glyphicon-trash  
+                                fieldset(id="NeuesItemContent")
+                    
                                     .form-group
                                         .col-lg-8
                                             label.col-lg-2.control-label(id="lblItemID", for="itemID") Item ID
@@ -174,15 +178,15 @@ block content
                                                 label(id="lblItemIsCollected", for='itemIsCollected') Item Is Collected
                             .form-group(id="Neu_Quiz", style="display: none") 
                                 fieldset                      
-                                    .col-lg-10
+                                    .col-lg-11
                                         legend(id="NeuesQuizFieldset") Neues Quiz 
-                                    .col-lg-2
+                                    .col-2
                                         .btn-group.dropup(id="btnQuizControlGroup", role="group" aria-label="...")
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnQuizEinklappen", type='button')
-                                                span.caret
+                                                span.glyphicon.glyphicon-resize-small(id="resize")
                                                  
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizDelete", type='button') 
-                                                span Löschen  
+                                                span.glyphicon.glyphicon-trash  
                                 fieldset(id="NeuesQuizContent")
                                     .form-group
                                         .col-lg-8
@@ -223,7 +227,7 @@ block content
                                             input.form-control(type="text", id="quizAnswerText", placeholder="Quiz Answer Text")
                                         .col-lg-2
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
-                                                span Löschen
+                                                span.glyphicon.glyphicon-trash
             .col-md-4
                 .page-header
                     h3 Media Library
