@@ -11,14 +11,19 @@ block content
             .col-md-12
                     ul.nav.nav-tabs(id="myTabs")
                         li(id="XMLTab")
-                            a(ng-click="tabbed_pain('XMLTab','XML','GraEditorTab','GraEditor')", href="#XML", data-toggle="tab") XML Editor
+                            a(ng-click="tabbed_pain('XMLTab')", href="#XML", data-toggle="tab") XML Editor
                         li.active(id="GraEditorTab")
-                            a(ng-click="tabbed_pain('GraEditorTab','GraEditor','XMLTab','XML')",href="#GraEditor", data-toggle="tab") Graphischer Editor
+                            a(ng-click="tabbed_pain('GraEditorTab')",href="#GraEditor", data-toggle="tab") Graphischer Editor
+                        li(id="MedienBibTab")
+                            a(ng-click="tabbed_pain('MedienBibTab')", href="#MedienEditor", data-toggle="tab") Medienbibliothek
+
 
 
                     .tab-content(id="myTabContent")
                         .tab-pane.fade.active.in(id="GraEditor") 
                             include ./formular.jade
                         .tab-pane.fade.active.in(id="XML", style="display:none")
-                            p XML EDITOR WIRD HIER PLAZIERT
+                            p hallo1
+                        .tab-pane.fade.active.in(id="MedienEditor", style="display:none")
+                            p hallo
 

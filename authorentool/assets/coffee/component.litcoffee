@@ -30,16 +30,24 @@
             ) jQuery
         #Test ob jQuery erfolgreich gebunden wurde (Siehe log im Browser)
         $ ->
-            $("#ddnKB").click ->
-                $("#ddnSize").val("KB")
-                $("#ddnSize").html("KB <span class='caret'/>")
-            $("#ddnMB").click ->
-                $("#ddnSize").val("MB")
-                $("#ddnSize").html("MB <span class='caret'/>")            
-            $("#ddnGB").click ->
-                $("#ddnSize").val("GB")
-                $("#ddnSize").html("GB <span class='caret'/>")
+            #DropdownMenu Radius
+            $("#ddnme").click -> 
+                $("#ddnradius").val("Meter")
+                $("#ddnradius").html("Meter <span class='caret' />")
+            $("#ddnkm").click -> 
+                $("#ddnradius").val("Kilometer")
+                $("#ddnradius").html("Kilometer <span class='caret' />")
 
+            #DropdownMenu Size
+            $("#ddnkb").click -> 
+                $("#ddnsize").val("KB")
+                $("#ddnsize").html("KB <span class='caret' />")
+            $("#ddnmb").click -> 
+                $("#ddnsize").val("MB")
+                $("#ddnsize").html("MB <span class='caret' />")
+            $("#ddngb").click -> 
+                $("#ddnsize").val("KB")
+                $("#ddnsize").html("GB <span class='caret' />")
 
             mapOptions = 
               zoom: 8
@@ -131,10 +139,77 @@
                 $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter)
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
+                        ##################################### ITEM
                     if ($("#ddnInteractions_" + counter).val() == "Item")
                         createItem(counter)
                     else if ($("#ddnInteractions_" + counter).val() == "Quiz")
                         createQuiz(counter)
+                       
+                    ######################################### Waychooser
+                    else if ($("#ddnInteractions_" + counter).val() == "WayChooser")
+                        copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val())
+                        interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
+                        interactionCounter++
+                        $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+                        stuff = copyForm.cloneNode(true)
+                        stuff.id = stuff.id + "_" + interactionCounter
+                        stuff.style.display="block"
+                        document.getElementById("NeuesFeatureContent_"+counter).appendChild(stuff)
+                        $("#" + stuff.id).find("#NeuerWaychooserFieldset").attr("id", "NeuerWaychooserFieldset_" +interactionCounter)
+                        $("#" + stuff.id).find("#NeuerWaychooserContent").attr("id", "NeuerWaychooserContent_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnWaychooserControlGroup").attr("id", "btnWaychooserControlGroup_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnWaychooserEinklappen").attr("id", "btnWaychooserEinklappen_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnWaychooserDelete").attr("id", "btnWaychooserDelete_" +interactionCounter)
+                        $("#" + stuff.id).find("#waychooserID").attr("id", "waychooserID_" +interactionCounter)
+                        $("#" + stuff.id).find("#waychooserFeatureRef").attr("id", "waychooserFeatureRef_" +interactionCounter)
+                        $("#" + stuff.id).find("#waychooserQuestion").attr("id", "waychooserQuestion_" +interactionCounter)
+                        $("#" + stuff.id).find("#btnWaychooserAnswer").attr("id", "btnWaychooserAnswer_" +interactionCounter)
+
+
+                        # Click Event für btnWaychooserDelete
+                        $("#btnWaychooserDelete_" + interactionCounter).click ->
+                           $("#Neu_Waychooser_" + interactionCounter).remove() if (confirm('Möchten Sie den Waychooser wirklich löschen?'))
+                
+                        # Click Event für btnWaychooserEinklappen
+                        $("#btnWaychooserEinklappen_" + interactionCounter).click ->
+                            if $("#NeuerWaychooserContent_" + interactionCounter).is( ":hidden" )
+                                $("#NeuerWaychooserContent_" + interactionCounter).show( "slow" )
+                                $("#btnWaychooserEinklappen_"  +interactionCounter).find("#resize").addClass("glyphicon-resize-small")
+                                $("#btnWaychooserEinklappen_"  +interactionCounter).find("#resize").removeClass("glyphicon-resize-full")
+                            else
+                                $("#NeuerWaychooserContent_" + interactionCounter).slideUp("slow")
+                                $("#btnWaychooserEinklappen_"  +interactionCounter).find("#resize").removeClass('glyphicon-resize-small')
+                                $("#btnWaychooserEinklappen_"  +interactionCounter).find("#resize").addClass('glyphicon-resize-full')
+
+                        # WaychooserName Trigger
+                        $("#waychooserID_"+interactionCounter).keyup ->
+                            text = "Waychooser: " + $("#waychooserID_"+interactionCounter).val()
+                            $("#NeuerWaychooserFieldset_"+interactionCounter).text(text)
+                        
+                        # Click Event für btnWaychooserAnswer
+                        $("#btnWaychooserAnswer_" + interactionCounter).click ->
+                            waychooserAnswerCounter = $("#btnWaychooserAnswer_" + interactionCounter).attr("waychooserAnswerCounter")
+                            waychooserAnswerCounter++
+                            $("#btnWaychooserAnswer_" + interactionCounter).attr("waychooserAnswerCounter", waychooserAnswerCounter)
+                            copyAnswer = document.getElementById("WaychooserAnswer")
+                            answer = copyAnswer.cloneNode(true)
+                            answer.id = answer.id + "_" + waychooserAnswerCounter
+                            answer.style.display="block"
+                            document.getElementById("NeuerWaychooserContent_" + interactionCounter).appendChild(answer)
+                            $("#" + answer.id).find("#lblWaychooserAnswerID").attr("id", "lblWaychooserAnswerID_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#waychooserAnswerID").attr("id", "waychooserAnswerID_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#lblWaychooserAnswerText").attr("id", "lblWaychooserAnswerText_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#waychooserAnswerText").attr("id", "waychooserAnswerText_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#lblWaychooserAnswerItemRef").attr("id", "lblWaychooserAnswerItemRef_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#waychooserAnswerItemRef").attr("id", "waychooserAnswerItemRef_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#lblWaychooserAnswerFeatureRef").attr("id", "lblWaychooserAnswerFeatureRef_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#waychooserAnswerFeatureRef").attr("id", "waychooserAnswerFeatureRef_" +waychooserAnswerCounter)
+                            $("#" + answer.id).find("#btnWaychooserAnswerDelete").attr("id", "btnWaychooserAnswerDelete_" + waychooserAnswerCounter)
+
+                            # Click Event für btnWaychooserDelete
+                            $("#btnWaychooserAnswerDelete_" + waychooserAnswerCounter).click ->
+                                $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
+
                 # Click Events für ddnInteraction
                 $("#ddnWayChooser_" + counter).click ->
                     $("#ddnInteractions_" + counter).val("WayChooser")
@@ -145,6 +220,8 @@
                 $("#ddnItem_" + counter).click ->
                     $("#ddnInteractions_" + counter).val("Item")
                     $("#ddnInteractions_" + counter).html("Item <span class='caret'/>")
+
+                # Neues Feature Button machen.
                 button = document.getElementById("btnFeature");
                 button.parentNode.removeChild(button);
                 document.getElementById("Features").appendChild(button)
@@ -285,12 +362,55 @@
         $scope.createInteraction = () ->
                 alert("Your book is overdue.");
 
-        $scope.tabbed_pain = (activeTabID,activeContentID, passiveTabID, passiveContentID) ->
-                jQuery(activeTabID).addClass("active")
-                jQuery(activeContentID).css(display, "block")
-                jQuery(passiveTabID).removeClass("active")
-                jQuery(passiveContentID).css(display,"none")
+        $scope.tabbed_pain = (activeTabID) ->
+                if (activeTabID == "MedienBibTab") 
+                    # Active Tabs
+                    $("#MedienBibTab").addClass("active")
 
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+
+                    # Active Content
+                    $("#MedienEditor").css("display", "block")
+                    
+                    # Passive Content
+                    $("#GraEditor").css("display","none")
+                    $("#XML").css("display","none")
+                    
+                    return
+                else if (activeTabID == "GraEditorTab") 
+                    # Active Tabs
+                    $("#GraEditorTab").addClass("active")
+
+                    # Passive Tabs
+                    $("#MedienBibTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+                    
+                    # Active Content
+                    $("#GraEditor").css("display", "block")
+
+                    # Passive Content
+                    $("#XML").css("display","none")
+                    $("#MedienEditor").css("display","none")
+                    
+                    return
+                else if (activeTabID == "XMLTab") 
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+
+                    # Active Content
+                    $("#XML").css("display", "block")
+
+                    # Passive Content
+                    $("#MedienEditor").css("display","none")
+                    $("#GraEditor").css("display","none")
+                    return
+            
 
                 
         $scope.mediaData = [

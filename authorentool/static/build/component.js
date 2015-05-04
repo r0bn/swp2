@@ -23,17 +23,25 @@ mainApp.controller("mainCtrl", [
     (function($) {})(jQuery);
     $(function() {
       var $lightbox, map, mapOptions;
-      $("#ddnKB").click(function() {
-        $("#ddnSize").val("KB");
-        return $("#ddnSize").html("KB <span class='caret'/>");
+      $("#ddnme").click(function() {
+        $("#ddnradius").val("Meter");
+        return $("#ddnradius").html("Meter <span class='caret' />");
       });
-      $("#ddnMB").click(function() {
-        $("#ddnSize").val("MB");
-        return $("#ddnSize").html("MB <span class='caret'/>");
+      $("#ddnkm").click(function() {
+        $("#ddnradius").val("Kilometer");
+        return $("#ddnradius").html("Kilometer <span class='caret' />");
       });
-      $("#ddnGB").click(function() {
-        $("#ddnSize").val("GB");
-        return $("#ddnSize").html("GB <span class='caret'/>");
+      $("#ddnkb").click(function() {
+        $("#ddnsize").val("KB");
+        return $("#ddnsize").html("KB <span class='caret' />");
+      });
+      $("#ddnmb").click(function() {
+        $("#ddnsize").val("MB");
+        return $("#ddnsize").html("MB <span class='caret' />");
+      });
+      $("#ddngb").click(function() {
+        $("#ddnsize").val("KB");
+        return $("#ddnsize").html("GB <span class='caret' />");
       });
       mapOptions = {
         zoom: 8,
@@ -134,10 +142,75 @@ mainApp.controller("mainCtrl", [
       });
       $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter);
       $("#btnCreateInteraction_" + counter).click(function() {
+        var interactionCounter;
         if ($("#ddnInteractions_" + counter).val() === "Item") {
           return createItem(counter);
         } else if ($("#ddnInteractions_" + counter).val() === "Quiz") {
           return createQuiz(counter);
+        } else if ($("#ddnInteractions_" + counter).val() === "WayChooser") {
+          copyForm = document.getElementById("Neu_" + $("#ddnInteractions_" + counter).val());
+          interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
+          interactionCounter++;
+          $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+          stuff = copyForm.cloneNode(true);
+          stuff.id = stuff.id + "_" + interactionCounter;
+          stuff.style.display = "block";
+          document.getElementById("NeuesFeatureContent_" + counter).appendChild(stuff);
+          $("#" + stuff.id).find("#NeuerWaychooserFieldset").attr("id", "NeuerWaychooserFieldset_" + interactionCounter);
+          $("#" + stuff.id).find("#NeuerWaychooserContent").attr("id", "NeuerWaychooserContent_" + interactionCounter);
+          $("#" + stuff.id).find("#btnWaychooserControlGroup").attr("id", "btnWaychooserControlGroup_" + interactionCounter);
+          $("#" + stuff.id).find("#btnWaychooserEinklappen").attr("id", "btnWaychooserEinklappen_" + interactionCounter);
+          $("#" + stuff.id).find("#btnWaychooserDelete").attr("id", "btnWaychooserDelete_" + interactionCounter);
+          $("#" + stuff.id).find("#waychooserID").attr("id", "waychooserID_" + interactionCounter);
+          $("#" + stuff.id).find("#waychooserFeatureRef").attr("id", "waychooserFeatureRef_" + interactionCounter);
+          $("#" + stuff.id).find("#waychooserQuestion").attr("id", "waychooserQuestion_" + interactionCounter);
+          $("#" + stuff.id).find("#btnWaychooserAnswer").attr("id", "btnWaychooserAnswer_" + interactionCounter);
+          $("#btnWaychooserDelete_" + interactionCounter).click(function() {
+            if (confirm('Möchten Sie den Waychooser wirklich löschen?')) {
+              return $("#Neu_Waychooser_" + interactionCounter).remove();
+            }
+          });
+          $("#btnWaychooserEinklappen_" + interactionCounter).click(function() {
+            if ($("#NeuerWaychooserContent_" + interactionCounter).is(":hidden")) {
+              $("#NeuerWaychooserContent_" + interactionCounter).show("slow");
+              $("#btnWaychooserEinklappen_" + interactionCounter).find("#resize").addClass("glyphicon-resize-small");
+              return $("#btnWaychooserEinklappen_" + interactionCounter).find("#resize").removeClass("glyphicon-resize-full");
+            } else {
+              $("#NeuerWaychooserContent_" + interactionCounter).slideUp("slow");
+              $("#btnWaychooserEinklappen_" + interactionCounter).find("#resize").removeClass('glyphicon-resize-small');
+              return $("#btnWaychooserEinklappen_" + interactionCounter).find("#resize").addClass('glyphicon-resize-full');
+            }
+          });
+          $("#waychooserID_" + interactionCounter).keyup(function() {
+            var text;
+            text = "Waychooser: " + $("#waychooserID_" + interactionCounter).val();
+            return $("#NeuerWaychooserFieldset_" + interactionCounter).text(text);
+          });
+          return $("#btnWaychooserAnswer_" + interactionCounter).click(function() {
+            var answer, copyAnswer, waychooserAnswerCounter;
+            waychooserAnswerCounter = $("#btnWaychooserAnswer_" + interactionCounter).attr("waychooserAnswerCounter");
+            waychooserAnswerCounter++;
+            $("#btnWaychooserAnswer_" + interactionCounter).attr("waychooserAnswerCounter", waychooserAnswerCounter);
+            copyAnswer = document.getElementById("WaychooserAnswer");
+            answer = copyAnswer.cloneNode(true);
+            answer.id = answer.id + "_" + waychooserAnswerCounter;
+            answer.style.display = "block";
+            document.getElementById("NeuerWaychooserContent_" + interactionCounter).appendChild(answer);
+            $("#" + answer.id).find("#lblWaychooserAnswerID").attr("id", "lblWaychooserAnswerID_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#waychooserAnswerID").attr("id", "waychooserAnswerID_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#lblWaychooserAnswerText").attr("id", "lblWaychooserAnswerText_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#waychooserAnswerText").attr("id", "waychooserAnswerText_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#lblWaychooserAnswerItemRef").attr("id", "lblWaychooserAnswerItemRef_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#waychooserAnswerItemRef").attr("id", "waychooserAnswerItemRef_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#lblWaychooserAnswerFeatureRef").attr("id", "lblWaychooserAnswerFeatureRef_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#waychooserAnswerFeatureRef").attr("id", "waychooserAnswerFeatureRef_" + waychooserAnswerCounter);
+            $("#" + answer.id).find("#btnWaychooserAnswerDelete").attr("id", "btnWaychooserAnswerDelete_" + waychooserAnswerCounter);
+            return $("#btnWaychooserAnswerDelete_" + waychooserAnswerCounter).click(function() {
+              if (confirm('Möchten Sie die Antwort wirklich löschen?')) {
+                return $("#" + answer.id).remove();
+              }
+            });
+          });
         }
       });
       $("#ddnWayChooser_" + counter).click(function() {
@@ -301,11 +374,29 @@ mainApp.controller("mainCtrl", [
     $scope.createInteraction = function() {
       return alert("Your book is overdue.");
     };
-    $scope.tabbed_pain = function(activeTabID, activeContentID, passiveTabID, passiveContentID) {
-      jQuery(activeTabID).addClass("active");
-      jQuery(activeContentID).css(display, "block");
-      jQuery(passiveTabID).removeClass("active");
-      return jQuery(passiveContentID).css(display, "none");
+    $scope.tabbed_pain = function(activeTabID) {
+      if (activeTabID === "MedienBibTab") {
+        $("#MedienBibTab").addClass("active");
+        $("#GraEditorTab").removeClass("active");
+        $("#XMLTab").removeClass("active");
+        $("#MedienEditor").css("display", "block");
+        $("#GraEditor").css("display", "none");
+        $("#XML").css("display", "none");
+      } else if (activeTabID === "GraEditorTab") {
+        $("#GraEditorTab").addClass("active");
+        $("#MedienBibTab").removeClass("active");
+        $("#XMLTab").removeClass("active");
+        $("#GraEditor").css("display", "block");
+        $("#XML").css("display", "none");
+        $("#MedienEditor").css("display", "none");
+      } else if (activeTabID === "XMLTab") {
+        $("#XMLTab").addClass("active");
+        $("#GraEditorTab").removeClass("active");
+        $("#MedienBibTab").removeClass("active");
+        $("#XML").css("display", "block");
+        $("#MedienEditor").css("display", "none");
+        $("#GraEditor").css("display", "none");
+      }
     };
     return $scope.mediaData = [
       {
