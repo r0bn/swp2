@@ -6,8 +6,8 @@
             version="2.0.0">
     <xsd:annotation>
         <xsd:documentation>
-            <Revision>6</Revision>
-            <Last_Update>29.04.2015</Last_Update>
+            <Revision>7</Revision>
+            <Last_Update>04.05.2015</Last_Update>
             <Last_Editor>Yasin Abdelmonem</Last_Editor>
             <Last_Editor_EMail>31abya1bif@hft-stuttgart.de</Last_Editor_EMail>
         </xsd:documentation>
@@ -17,6 +17,13 @@
     
     <xsd:complexType name="StoryType">
         <xsd:sequence>
+            <xsd:element name="Revision" maxOccurs="1" minOccurs="1" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:enumeration value="7"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
             <xsd:element name="Title" type="xsd:string" maxOccurs="1" minOccurs="0" />
             <xsd:element name="Description" type="xsd:string" maxOccurs="1" minOccurs="1" />
             <xsd:element name="Author" type="xsd:string" maxOccurs="1" minOccurs="1" />
@@ -58,15 +65,6 @@
                             </xsd:attribute>
                         </xsd:extension>
                     </xsd:simpleContent>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="POI" minOccurs="1" maxOccurs="unbounded">
-                <xsd:complexType> 
-                    <xsd:sequence>
-                        <xsd:element name="Accessible" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
-                        <xsd:element name="Internet" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
-                    </xsd:sequence>
-                    <xsd:attribute name="id" type="xsd:ID" />
                 </xsd:complexType>
             </xsd:element>
         </xsd:sequence>
