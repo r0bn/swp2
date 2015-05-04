@@ -10,20 +10,19 @@
 
 ### Database Blueprint
   - id (DBMS Auto-Increment Value)
-  - title (string (255))
-  - description (string (255))
-  - author (string (255))
-  - size (string (255))
-  - **not final:** size_uom (string (255)) may be added
-  - creation_date (string (255))
-  - location (string (255))
-  - radius (string (255))
-  - **not final:** radius_uom (string (255)) may be added
-  - xml_file (blob)
+  - title (VARCHAR (255))
+  - description (TEXT (65,535))
+  - author (VARCHAR (255))
+  - size (INT)
+  - size_uom (VARCHAR (255))
+  - location (VARCHAR (255))
+  - radius (INT)
+  - radius_uom (VARCHAR (255))
+  - xml_file (BLOB)
   - created_at (timestamp - framework related)
   - updated_at (timestamp - framework related)
 
-### Create syntax
+### Create syntax (DEPRECATED)
 ```
 CREATE TABLE `stories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
