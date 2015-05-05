@@ -431,6 +431,7 @@
                       title: place.name
                       position: place.geometry.location)
                     markers.push marker
+                    $("#inLatLngLocation").val(place.geometry.location.A + ", " + place.geometry.location.F)
                     bounds.extend place.geometry.location
                     i++
                   map.fitBounds bounds

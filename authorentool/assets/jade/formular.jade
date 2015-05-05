@@ -53,12 +53,10 @@ block content
                                             .modal-body
                                                 .form-group
                                                     .col-lg-6
-                                                        input.form-control(id="inMapSearch", placeholder="Map GPS Suche")
-                                                    .col-lg-4
-                                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign(id="btnMapSearch", type="button") Suche
+                                                        input.form-control.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
                                                     button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
                                                 .form-group  
-                                                    #gmeg_map_canvas(style='width:500px;height:400px')
+                                                    #gmeg_map_canvas(style='width:900px;height:400px')
                             .col-lg-2
                                 button.btn.btn-primary.btn-lg.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#lightbox') Map
 
