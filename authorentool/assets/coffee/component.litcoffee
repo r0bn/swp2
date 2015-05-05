@@ -152,15 +152,21 @@
             $("#" + stuff.id).find("#lblItemIsCollected").attr("id", "lblItemIsCollected_" +interactionCounter)
             $("#" + stuff.id).find("#lblItemDescription").attr("id", "lblItemDescription_" +interactionCounter)
             $("#" + stuff.id).find("#lblItemFeatureRef").attr("id", "lblItemStorypointRef_" +interactionCounter)
+            
             $("#lblinItemID_" + interactionCounter).attr("for", "inItemID_"+interactionCounter)
             $("#lblItemIsCollected_" + interactionCounter).attr("for", "inItemIsCollected_"+interactionCounter)
             $("#lblItemDescription_" + interactionCounter).attr("for", "inItemDescription_"+interactionCounter)
             $("#lblItemStorypointRef_" + interactionCounter).attr("for", "itemFeatureRef_"+interactionCounter)
             $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter)
+            
+            $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
+            $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+            btnSwitchDown("#btnSwitchDown_" + interactionCounter)
+            btnSwitchUp("#btnSwitchUp_" + interactionCounter)
             # Click Event für btnItemDelete
             $("#btnItemDelete_" + interactionCounter).click ->
                $("#fgpNeu_Item_" + interactionCounter).remove() if (confirm('Möchten Sie das Item wirklich löschen?'))
-    
+
             # Click Event für btnItemEinklappen
             btnEinklappen("#btnItemEinklappen_" + interactionCounter, "#fstNeuesItemContent_" + interactionCounter)
                     
@@ -276,6 +282,42 @@
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
                         $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
+        btnSwitchDown = (button) ->
+            $(button).click ->
+                nextObject = $(button).parent().parent().parent().parent().next()
+                if typeof nextObject.attr("id") == 'undefined'
+                    obj = $(button).parent().parent().parent().parent()
+                    obj.animate { opacity: 0.25 }, "fast"
+                    obj.animate { opacity: 1 }, "fast"
+                    obj.animate { opacity: 0.25 }, "fast"
+                    obj.animate { opacity: 1 }, "fast"
+                    return
+                else
+                    currentObject = $(button).parent().parent().parent().parent()
+                    currentObject.animate {opacity: 0.25}, 400, () ->
+                        nextObject.insertBefore("#" + currentObject.attr("id"))
+                    currentObject.animate {opacity: 1}, 500
+                return
+            return
+
+        btnSwitchUp = (button) ->
+            $(button).click ->
+                prevObject = $(button).parent().parent().parent().parent().prev()
+                if typeof prevObject.attr("id") == 'undefined'
+                    obj = $(button).parent().parent().parent().parent()
+                    obj.animate { opacity: 0.25 }, "fast"
+                    obj.animate { opacity: 1 }, "fast"
+                    obj.animate { opacity: 0.25 }, "fast"
+                    obj.animate { opacity: 1 }, "fast"
+                    return
+                else
+                    currentObject = $(button).parent().parent().parent().parent()
+                    currentObject.animate {opacity: 0.25}, 400, () ->
+                        prevObject.insertAfter("#" + currentObject.attr("id"))
+                    currentObject.animate {opacity: 1}, 500
+                return
+            return
+
         btnEinklappen = (button, content) ->
             # Click Event für btnQuizEinklappen
             $(button).click ->
@@ -358,6 +400,10 @@
                   {
                     id: 5
                     label: 'Node 5'
+                  }
+                  {
+                    id: 6
+                    label: 'Node 6'
                   }
             ]
                 # create an array with edges

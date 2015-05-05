@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, createChooser, createItem, createQuiz, googleMap, graph, initDdnInteraction, initDropdownClicks, lightBox, setAllMap;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, googleMap, graph, initDdnInteraction, initDropdownClicks, lightBox, setAllMap;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -150,6 +150,10 @@ mainApp.controller("mainCtrl", [
       $("#lblItemDescription_" + interactionCounter).attr("for", "inItemDescription_" + interactionCounter);
       $("#lblItemStorypointRef_" + interactionCounter).attr("for", "itemFeatureRef_" + interactionCounter);
       $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter);
+      $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter);
+      $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter);
+      btnSwitchDown("#btnSwitchDown_" + interactionCounter);
+      btnSwitchUp("#btnSwitchUp_" + interactionCounter);
       $("#btnItemDelete_" + interactionCounter).click(function() {
         if (confirm('Möchten Sie das Item wirklich löschen?')) {
           return $("#fgpNeu_Item_" + interactionCounter).remove();
@@ -272,6 +276,70 @@ mainApp.controller("mainCtrl", [
         });
       });
     };
+    btnSwitchDown = function(button) {
+      $(button).click(function() {
+        var currentObject, nextObject, obj;
+        nextObject = $(button).parent().parent().parent().parent().next();
+        if (typeof nextObject.attr("id") === 'undefined') {
+          obj = $(button).parent().parent().parent().parent();
+          obj.animate({
+            opacity: 0.25
+          }, "fast");
+          obj.animate({
+            opacity: 1
+          }, "fast");
+          obj.animate({
+            opacity: 0.25
+          }, "fast");
+          obj.animate({
+            opacity: 1
+          }, "fast");
+          return;
+        } else {
+          currentObject = $(button).parent().parent().parent().parent();
+          currentObject.animate({
+            opacity: 0.25
+          }, 400, function() {
+            return nextObject.insertBefore("#" + currentObject.attr("id"));
+          });
+          currentObject.animate({
+            opacity: 1
+          }, 500);
+        }
+      });
+    };
+    btnSwitchUp = function(button) {
+      $(button).click(function() {
+        var currentObject, obj, prevObject;
+        prevObject = $(button).parent().parent().parent().parent().prev();
+        if (typeof prevObject.attr("id") === 'undefined') {
+          obj = $(button).parent().parent().parent().parent();
+          obj.animate({
+            opacity: 0.25
+          }, "fast");
+          obj.animate({
+            opacity: 1
+          }, "fast");
+          obj.animate({
+            opacity: 0.25
+          }, "fast");
+          obj.animate({
+            opacity: 1
+          }, "fast");
+          return;
+        } else {
+          currentObject = $(button).parent().parent().parent().parent();
+          currentObject.animate({
+            opacity: 0.25
+          }, 400, function() {
+            return prevObject.insertAfter("#" + currentObject.attr("id"));
+          });
+          currentObject.animate({
+            opacity: 1
+          }, 500);
+        }
+      });
+    };
     btnEinklappen = function(button, content) {
       return $(button).click(function() {
         if ($(content).is(":hidden")) {
@@ -327,6 +395,9 @@ mainApp.controller("mainCtrl", [
         }, {
           id: 5,
           label: 'Node 5'
+        }, {
+          id: 6,
+          label: 'Node 6'
         }
       ];
       edges = [
