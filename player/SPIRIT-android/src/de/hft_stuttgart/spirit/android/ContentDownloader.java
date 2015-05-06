@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,12 +16,9 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import de.hft_stuttgart.storytellar.PlayableStory;
-import android.app.Application;
-import android.content.Context;
+import restClient.RESTClient;
 import android.os.Environment;
 import android.util.Log;
-import restClient.RESTClient;
 
 /**
  * @author Mirjam
@@ -352,6 +347,11 @@ public class ContentDownloader {
 		os.close();
 	}
 	
+	/**
+	 * This method parses the meta Data out of the xml File given by the id of the story.
+	 * @param id The id of the Story to parse
+	 * @return Returns a Story-object with metadata parsed from the xmlFile.
+	 */
 	private Story parseMetaDataFromXML(String id) {
 		Story story;
 		String title ="";
@@ -417,6 +417,7 @@ public class ContentDownloader {
 		}
 
 		story = new Story(Integer.valueOf(id), title, description, author, size, creation_date, location, radius, true);
+		story.setStoryMediaData(parseMediaDataFromXML(pathToAppDir + "/Content/" + id));
 		return story;
 	}
 }
