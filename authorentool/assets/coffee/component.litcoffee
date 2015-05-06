@@ -442,6 +442,7 @@
                 input = document.getElementById('inMapSearch')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push input
                 searchBox = new (google.maps.places.SearchBox)(input)
+                
                 markers = []
 
                 google.maps.event.addListener searchBox, 'places_changed', ->
@@ -484,7 +485,9 @@
                   return
 
                 $(window).resize ->
+                  autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
                   google.maps.event.trigger map, 'resize'
+                  
                   return
                 google.maps.event.addListener map, 'click', (event) ->
                     lat = event.latLng.lat()

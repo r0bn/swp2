@@ -477,6 +477,10 @@ mainApp.controller("mainCtrl", [
         map.fitBounds(bounds);
       });
       $(window).resize(function() {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete(input, {
+          types: ['geocode']
+        });
         google.maps.event.trigger(map, 'resize');
       });
       google.maps.event.addListener(map, 'click', function(event) {
