@@ -446,6 +446,7 @@
             return
 
         googleMap = () ->
+                
                 mapOptions = 
                   zoom: 8
                   center: new (google.maps.LatLng)(48.7760745003604, 9.172875881195068)
@@ -453,9 +454,9 @@
                 input = document.getElementById('inMapSearch')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push input
                 searchBox = new (google.maps.places.SearchBox)(input)
-                
+                autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
+                autocomplete.bindTo('bounds', map);
                 markers = []
-
                 google.maps.event.addListener searchBox, 'places_changed', ->
                   `var marker`
                   `var i`
@@ -496,7 +497,7 @@
                   return
 
                 $(window).resize ->
-                  autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
+
                   google.maps.event.trigger map, 'resize'
                   
                   return

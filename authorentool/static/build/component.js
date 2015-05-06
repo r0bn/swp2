@@ -433,7 +433,7 @@ mainApp.controller("mainCtrl", [
       network = new vis.Network(container, data, {});
     };
     googleMap = function() {
-      var input, map, mapOptions, markers, searchBox;
+      var autocomplete, input, map, mapOptions, markers, searchBox;
       mapOptions = {
         zoom: 8,
         center: new google.maps.LatLng(48.7760745003604, 9.172875881195068)
@@ -442,6 +442,10 @@ mainApp.controller("mainCtrl", [
       input = document.getElementById('inMapSearch');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
       searchBox = new google.maps.places.SearchBox(input);
+      autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ['geocode']
+      });
+      autocomplete.bindTo('bounds', map);
       markers = [];
       google.maps.event.addListener(searchBox, 'places_changed', function() {
         var marker;
@@ -487,10 +491,6 @@ mainApp.controller("mainCtrl", [
         map.fitBounds(bounds);
       });
       $(window).resize(function() {
-        var autocomplete;
-        autocomplete = new google.maps.places.Autocomplete(input, {
-          types: ['geocode']
-        });
         google.maps.event.trigger(map, 'resize');
       });
       google.maps.event.addListener(map, 'click', function(event) {
