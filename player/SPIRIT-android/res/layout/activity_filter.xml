@@ -1,0 +1,238 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.swp2.storytellar.Filter_Activity"
+    android:id="@+id/scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:layout_weight="0"
+    android:background="#ffbdd4ff">
+
+
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+             >
+
+            <TableRow
+                android:id="@+id/tableRow0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+                <TextView
+
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/filterFor"
+                    android:id="@+id/topicTextView"
+                    android:layout_weight="1">
+                </TextView>
+
+
+            </TableRow>
+
+
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/title"
+                    android:id="@+id/titleTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/titleEditText"
+                    android:inputType="text"
+                    android:digits="abcdefghijklmnopqrstuvwxyzäöü "
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/author"
+                    android:id="@+id/authorTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/authorEditText"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:digits="abcdefghijklmnopqrstuvwxyzäöü "/>
+
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/maxDataSize"
+                    android:id="@+id/maxSizeTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/sizeMaxEditText"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"/>
+
+            </TableRow>
+
+
+
+
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/createdAfter"
+                    android:id="@+id/creationDateMinTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/creationDateMinButton"
+                    android:onClick="setMinDate"
+                    android:text="@string/changeDate"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+            </Button>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/createdBefore"
+                    android:id="@+id/creationDateMaxTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/creationDateMaxButton"
+                    android:onClick="setMaxDate"
+                    android:text="@string/changeDate"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+                </Button>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/city"
+                    android:id="@+id/cityTextView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/cityEditText"
+                    android:inputType="text"
+                    android:digits="abcdefghijklmnopqrstuvwxyzäöü "
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+
+
+                <TextView
+                    android:id="@+id/radiusValueTextView"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/radius"
+                    android:layout_weight="1"
+                    android:layout_span="2" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip">
+
+
+
+                <SeekBar
+                    android:id="@+id/radiusSeekbar"
+                    android:max="199"
+                    android:progress="99"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_span="2">
+
+                </SeekBar>
+
+            </TableRow>
+
+
+        </TableLayout>
+
+
+
+</ScrollView>

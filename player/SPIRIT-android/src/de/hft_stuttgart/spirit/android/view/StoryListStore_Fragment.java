@@ -21,9 +21,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.Story;
+import android.content.Context;
 
 /**
  * 
@@ -57,15 +59,44 @@ public class StoryListStore_Fragment extends Fragment {
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         items = new ArrayList<Story>();
-        GetStoreStories task = new GetStoreStories();
-        task.execute();
+        
+        //Intent intent = getIntent();
+        //String value = intent.getStringExtra("key");
+        
+        GetStoreStoriesWithParameter task;
+        
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if(bundle != null && bundle.getString("query") != null) {
+
+            	String adjustedQuery = bundle.getString("query");
+            	//task = new GetStoreStories();
+            	task = new GetStoreStoriesWithParameter();
+            	Toast.makeText(getActivity(), "query = "+adjustedQuery, Toast.LENGTH_LONG).show();	
+            	task.execute(adjustedQuery);
+
+        }else {
+        	task = new GetStoreStoriesWithParameter();
+
+        	task.execute("allStories");
+        	//task = new GetStoreStories();	
+        }
+        
+      //  GetStoreStories task = new GetStoreStories("");
+        
+        
+      //  task= new GetStoreStories();
+      //  task.execute();
+        
+       
         try {
 			items = task.get();
 		} catch (InterruptedException e) {
 			//TODO Better implementation(maybe give Toast that stories could not been downloaded)
+			Toast.makeText(getActivity(), "Stories konnten nicht heruntergeladen werden.", Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			//TODO Better implementation(maybe give Toast that stories could not been downloaded)
+			Toast.makeText(getActivity(), "Stories konnten nicht heruntergeladen werden.", Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
        
@@ -139,7 +170,7 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
             
             GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-            task.execute(item);
+            task.execute(item); //Array out of bound Exception
 
 
             textTitel.setText(item.getTitle());
@@ -160,10 +191,41 @@ public class StoryListStore_Fragment extends Fragment {
     public class GetStoreStories extends AsyncTask<Void, Void, ArrayList<Story>> {
 
 		@Override
-		protected ArrayList<Story> doInBackground(
-				Void... params) {
-			return ContentDownloader.getInstance().getAllStoriesData();
+		protected ArrayList<Story> doInBackground(Void... params) {
+
+				return ContentDownloader.getInstance().getAllStoriesData();
+
 		}
-    	
+   	
     }
+    
+    /**
+     * 
+     * @author Stefan
+     * This class requests the filtered stories from the ContentDownloader
+     */
+    public class GetStoreStoriesWithParameter extends AsyncTask<String, Void, ArrayList<Story>> {
+
+		@Override
+		protected ArrayList<Story> doInBackground(String... params) {
+			if (params[0].equals("allStories")){
+				return ContentDownloader.getInstance().getAllStoriesData();
+				
+				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://api.storytellar.de/story?author=arno+claus&size_max=20");
+				//http://api.storytellar.de/story?author=arno+claus&size_max=20
+			}else{
+				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://somethingThatDoesntWorkToTestThisCrappyFunction");
+				//return ContentDownloader.getInstance().getAllStoriesData();
+				//return ContentDownloader.getInstance().getAllStoriesData();
+				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://api.storytellar.de/story?author=arno+claus&size_max=20");
+				
+				return ContentDownloader.getInstance().requestAllStoriesWithParameter(params[0]);
+			}
+		}
+		
+		
+
+    }
+    
+
 }

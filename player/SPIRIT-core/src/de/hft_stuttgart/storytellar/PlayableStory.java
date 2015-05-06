@@ -25,16 +25,16 @@ public class PlayableStory {
 	Double radius;
 	
 	// Other Data:
-	Map<String,Scene> scenes;
+	Map<String,StoryPoint> scenes;
 	String initialScene;
 	String currentScene;
 	
 	public PlayableStory(){
-		scenes = new HashMap<String, Scene>();
+		scenes = new HashMap<String, StoryPoint>();
 	}
 	
 	public PlayableStory(String title, String description, Double size,	String author, Date creationDate, Double latitude, 
-			Double longitude, Double radius, Map<String,Scene> scenes, String initialScene, String currentScene){
+			Double longitude, Double radius, Map<String,StoryPoint> scenes, String initialScene, String currentScene){
 		this.title = title;
 		this.description = description;
 		this.size = size;
@@ -97,10 +97,10 @@ public class PlayableStory {
 	public void setRadius(Double radius) {
 		this.radius = radius;
 	}
-	public Map<String, Scene> getScenes() {
+	public Map<String, StoryPoint> getScenes() {
 		return scenes;
 	}
-	public void setScenes(Map<String, Scene> scenes) {
+	public void setScenes(Map<String, StoryPoint> scenes) {
 		this.scenes = scenes;
 	}
 	public String getInitialScene() {

@@ -19,10 +19,30 @@
     <string name="action_download">Herunterladen</string>
     <string name="filtern">Filtern</string>
     <string name="showAll">alle anzeigen</string>
-    <string name="enterCity">Bitte Stadt eingeben</string>
-    <string name="radius">Einzugsradius (bei Ort)</string>
     <string name="seekbarStartvalue">50</string>
     <string name="km">km</string>
-    <string name="buzzword">Bitte Schlagwort eingeben</string>
+    <string name="title_activity_filter">StorytellAR</string>
+    
+    
+    <string name="filterFor">Filtern nach:</string>
+    <string name="title">Titel</string>
+    <string name="author">Autor</string>
+    <string name="maxDataSize">Max Dateigröße (MB)</string>
+    <string name="createdAfter">Erstellt nach</string>
+    <string name="createdBefore">Erstellt vor</string>
+     <string name="changeDate">Datum ändern</string>
+    <string name="city">Stadt</string>
+    <string name="radius">Einzugsradius 100 km</string>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 </resources>
