@@ -86,6 +86,10 @@ mainApp.controller("mainCtrl", [
         text = "Storypoint: " + $("#inStorypoint_" + counter).val();
         return $("#lgdNeuerStorypointFieldset_" + counter).text(text);
       });
+      $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter);
+      $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter);
+      btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
+      btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm('Möchten Sie den Storypoint wirklich löschen?')) {
           return $("#fhlNeuerStorypoint_" + counter).remove();
@@ -152,8 +156,8 @@ mainApp.controller("mainCtrl", [
       $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter);
       $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter);
       $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter);
-      btnSwitchDown("#btnSwitchDown_" + interactionCounter);
-      btnSwitchUp("#btnSwitchUp_" + interactionCounter);
+      btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id);
+      btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id);
       $("#btnItemDelete_" + interactionCounter).click(function() {
         if (confirm('Möchten Sie das Item wirklich löschen?')) {
           return $("#fgpNeu_Item_" + interactionCounter).remove();
@@ -187,6 +191,10 @@ mainApp.controller("mainCtrl", [
       $("#" + stuff.id).find("#inQuizOnFalse").attr("id", "inQuizOnFalse_" + interactionCounter);
       $("#" + stuff.id).find("#inQuizQuestion").attr("id", "inQuizQuestion_" + interactionCounter);
       $("#" + stuff.id).find("#btnQuizAnswer").attr("id", "btnQuizAnswer_" + interactionCounter);
+      $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter);
+      $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter);
+      btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id);
+      btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id);
       $("#btnQuizDelete_" + interactionCounter).click(function() {
         if (confirm('Möchten Sie das Quiz wirklich löschen?')) {
           return $("#fgpNeu_Quiz_" + interactionCounter).remove();
@@ -239,6 +247,10 @@ mainApp.controller("mainCtrl", [
       $("#" + stuff.id).find("#inChooserStorypointRef").attr("id", "inChooserStorypointRef_" + interactionCounter);
       $("#" + stuff.id).find("#inChooserQuestion").attr("id", "inChooserQuestion_" + interactionCounter);
       $("#" + stuff.id).find("#btnChooserAnswer").attr("id", "btnChooserAnswer_" + interactionCounter);
+      $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter);
+      $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter);
+      btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id);
+      btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id);
       $("#btnChooserDelete_" + interactionCounter).click(function() {
         if (confirm('Möchten Sie den Chooser wirklich löschen?')) {
           return $("#fgpNeu_Chooser_" + interactionCounter).remove();
@@ -276,27 +288,26 @@ mainApp.controller("mainCtrl", [
         });
       });
     };
-    btnSwitchDown = function(button) {
-      $(button).click(function() {
-        var currentObject, nextObject, obj;
-        nextObject = $(button).parent().parent().parent().parent().next();
-        if (typeof nextObject.attr("id") === 'undefined') {
-          obj = $(button).parent().parent().parent().parent();
-          obj.animate({
+    btnSwitchDown = function(buttonID, currentObjID) {
+      $(buttonID).click(function() {
+        var currentObject, nextObject;
+        nextObject = $(currentObjID).next();
+        currentObject = $(currentObjID);
+        if (typeof nextObject.attr("id") === 'undefined' || nextObject.prop('tagName') !== currentObject.prop('tagName')) {
+          currentObject.animate({
             opacity: 0.25
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 1
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 0.25
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 1
           }, "fast");
           return;
         } else {
-          currentObject = $(button).parent().parent().parent().parent();
           currentObject.animate({
             opacity: 0.25
           }, 400, function() {
@@ -308,27 +319,26 @@ mainApp.controller("mainCtrl", [
         }
       });
     };
-    btnSwitchUp = function(button) {
-      $(button).click(function() {
-        var currentObject, obj, prevObject;
-        prevObject = $(button).parent().parent().parent().parent().prev();
-        if (typeof prevObject.attr("id") === 'undefined') {
-          obj = $(button).parent().parent().parent().parent();
-          obj.animate({
+    btnSwitchUp = function(buttonID, currentObjID) {
+      $(buttonID).click(function() {
+        var currentObject, prevObject;
+        prevObject = $(currentObjID).prev();
+        currentObject = $(currentObjID);
+        if (typeof prevObject.attr("id") === 'undefined' || prevObject.prop('tagName') !== currentObject.prop('tagName')) {
+          currentObject.animate({
             opacity: 0.25
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 1
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 0.25
           }, "fast");
-          obj.animate({
+          currentObject.animate({
             opacity: 1
           }, "fast");
           return;
         } else {
-          currentObject = $(button).parent().parent().parent().parent();
           currentObject.animate({
             opacity: 0.25
           }, 400, function() {

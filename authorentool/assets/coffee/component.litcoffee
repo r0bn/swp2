@@ -93,6 +93,11 @@
                     text = "Storypoint: " + $("#inStorypoint_"+counter).val()
                     $("#lgdNeuerStorypointFieldset_"+counter).text(text)
 
+                $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter)
+                $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter)
+                btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
+                btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
+
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                    $("#fhlNeuerStorypoint_" + counter).remove() if (confirm('Möchten Sie den Storypoint wirklich löschen?'))
@@ -161,8 +166,8 @@
             
             $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
             $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
-            btnSwitchDown("#btnSwitchDown_" + interactionCounter)
-            btnSwitchUp("#btnSwitchUp_" + interactionCounter)
+            btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
+            btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
             # Click Event für btnItemDelete
             $("#btnItemDelete_" + interactionCounter).click ->
                $("#fgpNeu_Item_" + interactionCounter).remove() if (confirm('Möchten Sie das Item wirklich löschen?'))
@@ -197,6 +202,11 @@
             $("#" + stuff.id).find("#inQuizOnFalse").attr("id", "inQuizOnFalse_" +interactionCounter)
             $("#" + stuff.id).find("#inQuizQuestion").attr("id", "inQuizQuestion_" +interactionCounter)
             $("#" + stuff.id).find("#btnQuizAnswer").attr("id", "btnQuizAnswer_" +interactionCounter)
+            $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
+            $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+            btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
+            btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
+
             # Click Event für btnQuizDelete
             $("#btnQuizDelete_" + interactionCounter).click ->
                $("#fgpNeu_Quiz_" + interactionCounter).remove() if (confirm('Möchten Sie das Quiz wirklich löschen?'))
@@ -244,7 +254,10 @@
                 $("#" + stuff.id).find("#inChooserStorypointRef").attr("id", "inChooserStorypointRef_" +interactionCounter)
                 $("#" + stuff.id).find("#inChooserQuestion").attr("id", "inChooserQuestion_" +interactionCounter)
                 $("#" + stuff.id).find("#btnChooserAnswer").attr("id", "btnChooserAnswer_" +interactionCounter)
-
+                $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
+                $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+                btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
+                btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
 
                 # Click Event für btnChooserDelete
                 $("#btnChooserDelete_" + interactionCounter).click ->
@@ -282,36 +295,34 @@
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
                         $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
-        btnSwitchDown = (button) ->
-            $(button).click ->
-                nextObject = $(button).parent().parent().parent().parent().next()
-                if typeof nextObject.attr("id") == 'undefined'
-                    obj = $(button).parent().parent().parent().parent()
-                    obj.animate { opacity: 0.25 }, "fast"
-                    obj.animate { opacity: 1 }, "fast"
-                    obj.animate { opacity: 0.25 }, "fast"
-                    obj.animate { opacity: 1 }, "fast"
+        btnSwitchDown = (buttonID, currentObjID) ->
+            $(buttonID).click ->
+                nextObject = $(currentObjID).next()
+                currentObject = $(currentObjID)
+                if typeof nextObject.attr("id") == 'undefined' || nextObject.prop('tagName') != currentObject.prop('tagName')
+                    currentObject.animate { opacity: 0.25 }, "fast"
+                    currentObject.animate { opacity: 1 }, "fast"
+                    currentObject.animate { opacity: 0.25 }, "fast"
+                    currentObject.animate { opacity: 1 }, "fast"
                     return
                 else
-                    currentObject = $(button).parent().parent().parent().parent()
                     currentObject.animate {opacity: 0.25}, 400, () ->
                         nextObject.insertBefore("#" + currentObject.attr("id"))
                     currentObject.animate {opacity: 1}, 500
                 return
             return
 
-        btnSwitchUp = (button) ->
-            $(button).click ->
-                prevObject = $(button).parent().parent().parent().parent().prev()
-                if typeof prevObject.attr("id") == 'undefined'
-                    obj = $(button).parent().parent().parent().parent()
-                    obj.animate { opacity: 0.25 }, "fast"
-                    obj.animate { opacity: 1 }, "fast"
-                    obj.animate { opacity: 0.25 }, "fast"
-                    obj.animate { opacity: 1 }, "fast"
+        btnSwitchUp = (buttonID, currentObjID) ->
+            $(buttonID).click ->
+                prevObject = $(currentObjID).prev()
+                currentObject = $(currentObjID)
+                if typeof prevObject.attr("id") == 'undefined' || prevObject.prop('tagName') != currentObject.prop('tagName')
+                    currentObject.animate { opacity: 0.25 }, "fast"
+                    currentObject.animate { opacity: 1 }, "fast"
+                    currentObject.animate { opacity: 0.25 }, "fast"
+                    currentObject.animate { opacity: 1 }, "fast"
                     return
                 else
-                    currentObject = $(button).parent().parent().parent().parent()
                     currentObject.animate {opacity: 0.25}, 400, () ->
                         prevObject.insertAfter("#" + currentObject.attr("id"))
                     currentObject.animate {opacity: 1}, 500
