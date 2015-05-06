@@ -490,6 +490,8 @@
                       title: place.name
                       position: place.geometry.location)
                     markers.push marker
+            
+                    
                     $("#inLatLngLocation").val(place.geometry.location.A + ", " + place.geometry.location.F)
                     bounds.extend place.geometry.location
                     i++
@@ -533,11 +535,27 @@
                   return
 
         addMarker = (location, markers, map) ->
+            center = new google.maps.LatLng(location.A, location.F)
             marker = new google.maps.Marker({
                 position: location,
                 map: map
             });
             markers.push(marker)
+            
+            rad = $("#inRadius").val()
+            if $("#ddnradius").val() == "Einheit"
+                rad = 0
+            else if $("#ddnradius").val() == "Kilometer"
+                rad = rad * 1000
+            circle = new (google.maps.Circle)(
+              center: center
+              map: map
+              radius: parseInt(rad)
+              strokeColor: 'red'
+              strokeOpacity: 0.8
+              strokeWeight: 2
+              fillColor: 'red')
+            markers.push(circle)
             return
 
 
