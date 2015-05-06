@@ -178,6 +178,8 @@ public class StoryDetails_Activity extends ActionBarActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+        	Intent i = new Intent(getApplicationContext(),Main_Activity.class);
+        	startActivity(i);
 		default:
 			return false;
 		}
