@@ -71,6 +71,7 @@ public class StoryListInstalled_Fragment extends Fragment {
                 i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, selectedStory.getAuthor());
                 i.putExtra(StoryDetails_Activity.EXTRA_CREATIONDATE, selectedStory.getCreation_date());
                 i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "INSTALLED");
+                i.putExtra(StoryDetails_Activity.EXTRA_STORYID, selectedStory.getId());
                 startActivity(i);
             }
         });

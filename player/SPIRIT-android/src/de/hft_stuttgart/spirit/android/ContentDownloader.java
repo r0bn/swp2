@@ -334,17 +334,25 @@ public class ContentDownloader {
 		return mediaMap;
 	}
 
-	private void saveDownloadedStories() throws IOException {
+	private void saveDownloadedStories() {
 		fileDownloadedStories.delete();
 		fileDownloadedStories = new File(pathToAppDir, "StoriesDownloaded");
-		FileOutputStream os = new FileOutputStream(fileDownloadedStories);
-		String result = "";
-		for(Story s : downloadedStories) {
-			result += s.getId() + ";";
+		FileOutputStream os;
+		try {
+			os = new FileOutputStream(fileDownloadedStories);
+			String result = "";
+			for(Story s : downloadedStories) {
+				result += s.getId() + ";";
+			}
+			if(!result.equals("")){				
+				result = result.substring(0, result.length()-1);
+				os.write(result.getBytes());
+			}
+			os.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		result = result.substring(0, result.length()-1);
-		os.write(result.getBytes());
-		os.close();
 	}
 	
 	/**
@@ -419,5 +427,29 @@ public class ContentDownloader {
 		story = new Story(Integer.valueOf(id), title, description, author, size, creation_date, location, radius, true);
 		story.setStoryMediaData(parseMediaDataFromXML(pathToAppDir + "/Content/" + id));
 		return story;
+	}
+	
+	private void deleteStoryRecursive(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory())
+	        for (File child : fileOrDirectory.listFiles())
+	            deleteStoryRecursive(child);
+
+	    fileOrDirectory.delete();
+	}
+	
+	public void deleteStory(int id) {
+		for(Story s : downloadedStories) {
+			if(s.getId() == id) {
+				downloadedStories.remove(s);
+				deleteStoryRecursive(new File(pathToAppDir + "/Content/" + id));
+				saveDownloadedStories();
+				for(Story st : allStoriesData){
+					if(st.getId() == id){
+						st.setAlreadyDownloaded(false);
+					}
+				}
+				break;
+			}
+		}
 	}
 }
