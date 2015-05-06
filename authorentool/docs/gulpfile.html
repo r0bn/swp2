@@ -30,8 +30,36 @@
               
                 
                 <li>
+                  <a class="source" href="app.html">
+                    app.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="component.html">
                     component.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="controller.html">
+                    controller.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="editor.html">
+                    editor.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="home.html">
+                    home.jade
                   </a>
                 </li>
               
@@ -148,6 +176,7 @@ exec =            <span class="hljs-built_in">require</span>(<span class="hljs-s
           <div class='highlight'><pre>gulp.task <span class="hljs-string">'js'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
   gulp.src <span class="hljs-string">'./assets/coffee/**/*.litcoffee'</span>
   .pipe coffee({bare : <span class="hljs-literal">true</span>}).<span class="hljs-literal">on</span>(<span class="hljs-string">'error'</span>, gutil.log)
+  .pipe concat <span class="hljs-string">'main.js'</span>
   .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
   .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})
 
@@ -155,12 +184,19 @@ gulp.task <span class="hljs-string">'js-vendor'</span>, <span class="hljs-functi
     gulp.src [
         <span class="hljs-string">'./bower_components/codemirror/lib/codemirror.js'</span>
         <span class="hljs-string">'./bower_components/codemirror/mode/xml/xml.js'</span>
+        <span class="hljs-string">'./bower_components/codemirror/addon/fold/*.js'</span>
         <span class="hljs-string">'./bower_components/angular/angular.js'</span>
+        <span class="hljs-string">'./bower_components/angular-route/angular-route.js'</span>
         <span class="hljs-string">'./bower_components/angular-ui-codemirror/ui-codemirror.js'</span>
     ]
-    .pipe concat <span class="hljs-string">'vendor.js'</span>
-    .pipe uglify()
-    .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
+    .pipe concat <span class="hljs-string">'vendor.js'</span></pre></div>
+        
+      
+        
+        <p>.pipe uglify()</p>
+
+        
+          <div class='highlight'><pre>    .pipe gulp.dest <span class="hljs-string">'./static/build'</span>
     .pipe reload({<span class="hljs-attribute">stream</span>:<span class="hljs-literal">true</span>})</pre></div>
         
       
@@ -177,6 +213,7 @@ gulp.task <span class="hljs-string">'js-vendor'</span>, <span class="hljs-functi
 gulp.task <span class="hljs-string">'css-vendor'</span>, <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     gulp.src [
         <span class="hljs-string">'./bower_components/codemirror/lib/codemirror.css'</span>
+        <span class="hljs-string">'./bower_components/codemirror/addon/fold/foldgutter.css'</span>
         <span class="hljs-string">'./bower_components/codemirror/theme/eclipse.css'</span>
         <span class="hljs-string">'./bower_components/bootswatch-dist/css/bootstrap.css'</span>
     ]

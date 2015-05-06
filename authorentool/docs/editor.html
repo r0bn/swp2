@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Authorentool</title>
+  <title>editor.jade</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,54 +13,7 @@
 
       <div class="header">
         
-          
-          <h1 id="authorentool">Authorentool</h1>
-<h2 id="live-website">Live Website</h2>
-<p><a href="http://storytellar.de">http://storytellar.de</a></p>
-<h2 id="documentation">Documentation</h2>
-<p>To view the automatic generated documentation you need to
-check out the repository.
-Then open the README.html in Browser.</p>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>NodeJS installieren <a href="https://nodejs.org/">https://nodejs.org/</a></li>
-</ul>
-<p>Dependencies installieren</p>
-<pre><code>cd authorentool
-npm install
-</code></pre><ul>
-<li>ggf. mit sudo ausführen</li>
-</ul>
-<h3 id="global-path-variable-problem">Global Path Variable Problem</h3>
-<p>Sicherstellen das <code>node</code> in der Konsole ausführbar ist.</p>
-<h2 id="development-server">Development Server</h2>
-<p>Starten</p>
-<pre><code>npm start
-</code></pre><h2 id="css-klassen">CSS Klassen</h2>
-<p><a href="https://bootswatch.com/readable/">https://bootswatch.com/readable/</a></p>
-<h2 id="used-technologies">Used Technologies</h2>
-<ul>
-<li>GulpJS (a streaming build system)</li>
-<li>NPM (Library Managment)</li>
-<li><p>Bower (Library Managment)</p>
-</li>
-<li><p>AngularJS (Client side JS Framework)</p>
-</li>
-<li><p>Bootstrap (CSS Framework)</p>
-</li>
-<li><p>Jade (HTML Template Language) </p>
-</li>
-<li>Coffee Script (Javascript Precompiler)</li>
-<li><p>Stylus (CSS Precompiler)</p>
-</li>
-<li><p>Browser-Sync (Watcher and Browser reloading)</p>
-</li>
-<li><p>Karma (Test Runner)</p>
-</li>
-<li>Mocha (Test Framework)</li>
-</ul>
-
-          
+          <h1>editor.jade</h1>
         
 
         
@@ -150,6 +103,59 @@ npm install
         
       </div>
 
+      
+        
+        
+        
+          <div class='highlight'><pre>
+.container-fluid
+    .row
+        .col-md-8
+            .row
+                .col-md-12
+                    .page-header
+                        h3 XML Editor</pre></div>
+        
+      
+        
+        <p>This initializes the codemirror plugin
+more infos <a href="https://codemirror.net">https://codemirror.net</a></p>
+
+        
+          <div class='highlight'><pre>                    div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
+            .row
+                .col-md-4.col-md-offset-8
+                    button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save</pre></div>
+        
+      
+        
+        <p>This is an demo example for the media library</p>
+
+        
+          <div class='highlight'><pre>        .col-md-4
+            .row
+                .col-md-12
+                    .page-header
+                        h3 Media Library
+                        input(type="file",file-model="selectedFile")
+                        input(type="file",file-model="selectedFile2")
+            .row
+                .col-md-12
+                    table.table.table-striped.table-hover
+                        thead
+                            tr
+                                th Name 
+                                th Type
+                                th Action
+                        tbody
+                            tr(ng-repeat="obj in mediaData")
+                                td {{ obj.name }}
+                                td 
+                                    span.label.label-default {{ obj.type }}
+                                td
+                                    button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
+                                    button.btn.btn-danger.btn-xs Delete</pre></div>
+        
       
       <div class="fleur">h</div>
     </div>

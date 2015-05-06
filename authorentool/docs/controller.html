@@ -18,7 +18,13 @@
 <p>The following code is a angularJS (<a href="https://angularjs.org/">https://angularjs.org/</a>) Application.</p>
 
           
-            <div class='highlight'><pre>mainApp = angular.<span class="hljs-built_in">module</span> <span class="hljs-string">"mainApp"</span>, [<span class="hljs-string">'ui.codemirror'</span>]</pre></div>
+            <div class='highlight'><pre>storyTellarCtrl = angular.<span class="hljs-built_in">module</span> <span class="hljs-string">"storyTellarCtrl"</span>, []
+
+storyTellarCtrl.controller <span class="hljs-string">"editorCtrl"</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">"$routeParams"</span>, <span class="hljs-string">"$http"</span>, <span class="hljs-string">"storytellerServer"</span>, <span class="hljs-function"><span class="hljs-params">($scope, $routeParams, $http, server)</span> -&gt;</span>
+
+    $scope.selectedFile = <span class="hljs-string">""</span>
+    $scope.selectedFile2 = <span class="hljs-string">""</span>
+    $scope.storyId = $routeParams.story</pre></div>
           
         
 
@@ -111,16 +117,6 @@
 
       
         
-        <p>the main controller</p>
-
-        
-          <div class='highlight'><pre>mainApp.controller <span class="hljs-string">"mainCtrl"</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">"$http"</span>, <span class="hljs-string">"storytellerServer"</span>, <span class="hljs-function"><span class="hljs-params">($scope, $http, server)</span> -&gt;</span>
-
-    $scope.selectedFile = <span class="hljs-string">""</span>
-    $scope.selectedFile2 = <span class="hljs-string">""</span></pre></div>
-        
-      
-        
         <p>Codemirror Options
 Details: <a href="https://codemirror.net/doc/manual.html#config">https://codemirror.net/doc/manual.html#config</a></p>
 
@@ -134,7 +130,7 @@ Details: <a href="https://codemirror.net/doc/manual.html#config">https://codemir
         <p>readOnly: ‘nocursor’</p>
 
         
-          <div class='highlight'><pre>        <span class="hljs-attribute">mode</span>: <span class="hljs-string">'application/xml'</span></pre></div>
+          <div class='highlight'><pre>        <span class="hljs-attribute">mode</span>: <span class="hljs-string">'xml'</span></pre></div>
         
       
         
@@ -143,30 +139,20 @@ Details: <a href="https://codemirror.net/doc/manual.html#config">https://codemir
         
           <div class='highlight'><pre>        theme : <span class="hljs-string">"eclipse"</span>
         foldGutter : <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">gutters</span>: [<span class="hljs-string">"CodeMirror-linenumbers"</span>, <span class="hljs-string">"CodeMirror-foldgutter"</span>]</pre></div>
-        
-      
-        
-        <p>handles the event if a user choose a story to edit</p>
+        <span class="hljs-attribute">gutters</span>: [<span class="hljs-string">"CodeMirror-linenumbers"</span>, <span class="hljs-string">"CodeMirror-foldgutter"</span>]
 
-        
-          <div class='highlight'><pre>    $scope.storySelected = <span class="hljs-literal">false</span>
-    $scope.handleStorySelected = <span class="hljs-function"><span class="hljs-params">(story)</span> -&gt;</span>
-        $scope.storySelected = <span class="hljs-literal">true</span>
-
-    $http.get(<span class="hljs-string">"http://api.dev.la/story/1"</span>)
+    $http.get(<span class="hljs-string">"http://api.storytellar.de/story/<span class="hljs-subst">#{$scope.storyId}</span>"</span>)
         .success (data) -&gt;
             $scope.xmlFile = data</pre></div>
         
       
         
-        <p>Creates a story on the server</p>
+        <p>this will be initial executed and get all available story’s</p>
 
         
-          <div class='highlight'><pre>    $scope.createStory = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-        $http.post(<span class="hljs-string">"http://api.dev.la/createstory"</span>, $scope.storys[<span class="hljs-number">0</span>])
-            .success () -&gt;
-                <span class="hljs-built_in">console</span>.log <span class="hljs-string">"created"</span></pre></div>
+          <div class='highlight'><pre>    $http.get(<span class="hljs-string">"http://api.storytellar.de/story"</span>)
+        .success (data) -&gt;
+            $scope.storys = data</pre></div>
         
       
         
@@ -175,19 +161,10 @@ Details: <a href="https://codemirror.net/doc/manual.html#config">https://codemir
         
           <div class='highlight'><pre>    $scope.saveXML = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
         <span class="hljs-built_in">console</span>.log $scope.selectedFile
-        test = $scope.storys[<span class="hljs-number">0</span>]
+        test = $scope.storys[$scope.storyId]
         test.xml = $scope.xmlFile
         <span class="hljs-keyword">delete</span> test.id
         server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test</pre></div>
-        
-      
-        
-        <p>this will be initial executed and get all available story’s</p>
-
-        
-          <div class='highlight'><pre>    $http.get(<span class="hljs-string">"http://api.dev.la/stories"</span>)
-        .success (data) -&gt;
-            $scope.storys = data</pre></div>
         
       
         
@@ -216,11 +193,34 @@ Details: <a href="https://codemirror.net/doc/manual.html#config">https://codemir
             type : <span class="hljs-string">"movie"</span>
         }
     ]
-
 ]
 
+storyTellarCtrl.controller <span class="hljs-string">"homeCtrl"</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">"$location"</span>, <span class="hljs-string">"$http"</span>, <span class="hljs-string">"storytellerServer"</span>, <span class="hljs-function"><span class="hljs-params">($scope, $location, $http, server)</span> -&gt;</span></pre></div>
+        
+      
+        
+        <p>this will be initial executed and get all available story’s</p>
 
-mainApp.directive <span class="hljs-string">'fileModel'</span>, [ () -&gt;
+        
+          <div class='highlight'><pre>    $http.get(<span class="hljs-string">"http://api.storytellar.de/story"</span>)
+        .success (data) -&gt;
+            $scope.storys = data</pre></div>
+        
+      
+        
+        <p>Creates a story on the server</p>
+
+        
+          <div class='highlight'><pre>    $scope.createStory = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+        $http.post(<span class="hljs-string">"http://api.storytellar.de/story"</span>, $scope.storys[<span class="hljs-number">0</span>])
+            .success () -&gt;
+                <span class="hljs-built_in">console</span>.log <span class="hljs-string">"created"</span>
+
+    $scope.select = <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+        $location.path(<span class="hljs-string">"/story/<span class="hljs-subst">#{id}</span>"</span>)
+]
+
+storyTellarCtrl.directive <span class="hljs-string">'fileModel'</span>, [ () -&gt;
     {
         <span class="hljs-attribute">restrict</span>: <span class="hljs-string">'A'</span>
         scope :
@@ -234,12 +234,12 @@ mainApp.directive <span class="hljs-string">'fileModel'</span>, [ () -&gt;
     }
 ]
 
-mainApp.factory <span class="hljs-string">'storytellerServer'</span>, [<span class="hljs-string">'$http'</span>, <span class="hljs-function"><span class="hljs-params">($http)</span> -&gt;</span>
+storyTellarCtrl.factory <span class="hljs-string">'storytellerServer'</span>, [<span class="hljs-string">'$http'</span>, <span class="hljs-function"><span class="hljs-params">($http)</span> -&gt;</span>
     {
         uploadMediaFile : <span class="hljs-function"><span class="hljs-params">(files, data)</span> -&gt;</span>
             $http({
                 method : <span class="hljs-string">'POST'</span>
-                url : <span class="hljs-string">'http://api.dev.la/createstory'</span>
+                url : <span class="hljs-string">'http://api.storytellar.de/story'</span>
                 <span class="hljs-attribute">headers</span>: {<span class="hljs-string">'Content-Type'</span>: <span class="hljs-literal">undefined</span>}
                 transformRequest : <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
                     formData = <span class="hljs-keyword">new</span> FormData()

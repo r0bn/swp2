@@ -1,4 +1,7 @@
 # Authorentool Testing
 
-to be continued
+To execute tests run
 
+```
+npm test 
+```

@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Authorentool</title>
+  <title>home.jade</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,54 +13,7 @@
 
       <div class="header">
         
-          
-          <h1 id="authorentool">Authorentool</h1>
-<h2 id="live-website">Live Website</h2>
-<p><a href="http://storytellar.de">http://storytellar.de</a></p>
-<h2 id="documentation">Documentation</h2>
-<p>To view the automatic generated documentation you need to
-check out the repository.
-Then open the README.html in Browser.</p>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>NodeJS installieren <a href="https://nodejs.org/">https://nodejs.org/</a></li>
-</ul>
-<p>Dependencies installieren</p>
-<pre><code>cd authorentool
-npm install
-</code></pre><ul>
-<li>ggf. mit sudo ausführen</li>
-</ul>
-<h3 id="global-path-variable-problem">Global Path Variable Problem</h3>
-<p>Sicherstellen das <code>node</code> in der Konsole ausführbar ist.</p>
-<h2 id="development-server">Development Server</h2>
-<p>Starten</p>
-<pre><code>npm start
-</code></pre><h2 id="css-klassen">CSS Klassen</h2>
-<p><a href="https://bootswatch.com/readable/">https://bootswatch.com/readable/</a></p>
-<h2 id="used-technologies">Used Technologies</h2>
-<ul>
-<li>GulpJS (a streaming build system)</li>
-<li>NPM (Library Managment)</li>
-<li><p>Bower (Library Managment)</p>
-</li>
-<li><p>AngularJS (Client side JS Framework)</p>
-</li>
-<li><p>Bootstrap (CSS Framework)</p>
-</li>
-<li><p>Jade (HTML Template Language) </p>
-</li>
-<li>Coffee Script (Javascript Precompiler)</li>
-<li><p>Stylus (CSS Precompiler)</p>
-</li>
-<li><p>Browser-Sync (Watcher and Browser reloading)</p>
-</li>
-<li><p>Karma (Test Runner)</p>
-</li>
-<li>Mocha (Test Framework)</li>
-</ul>
-
-          
+          <h1>home.jade</h1>
         
 
         
@@ -150,6 +103,33 @@ npm install
         
       </div>
 
+      
+        
+        
+        
+          <div class='highlight'><pre>.container-fluid</pre></div>
+        
+      
+        
+        <p>this view’s an initial menu with all available story’s</p>
+
+        
+          <div class='highlight'><pre>    .row
+        .col-md-3.col-centered(style="margin-top:100px")
+            .list-group(ng-repeat="story in storys")
+                a.list-group-item(href="#",ng-click="select(story.id)")
+                    h4.list-group-item-heading {{ story.title }}
+                    p.list-group-item-text 
+                        | {{ story.description }}
+                        br
+                        br
+                        | Author: {{ story.author }}
+                        br
+                        | Erstellt: {{ story.creation_date }}
+
+            .list-group
+                    button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story</pre></div>
+        
       
       <div class="fleur">h</div>
     </div>

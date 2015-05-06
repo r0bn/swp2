@@ -33,8 +33,36 @@
               
                 
                 <li>
+                  <a class="source" href="app.html">
+                    app.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="component.html">
                     component.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="controller.html">
+                    controller.litcoffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="editor.html">
+                    editor.jade
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="home.html">
+                    home.jade
                   </a>
                 </li>
               
@@ -86,84 +114,13 @@
           <div class='highlight'><pre>extend layout/base
 
 block vars
-    - var title = "Storyteller - Authorentool"
+    - var title = "Storytellar - Authorentool"
 
 block scripts
-    script(src="build/component.js")
+    script(src="build/main.js")
 
 block content
-    .container-fluid(ng-app="mainApp",ng-controller="mainCtrl")</pre></div>
-        
-      
-        
-        <p>This Block show’s if a story is selected by the user</p>
-
-        
-          <div class='highlight'><pre>        .row(ng-if="storySelected")
-            .col-md-8
-                .row
-                    .col-md-12
-                        .page-header
-                            h3 XML Editor</pre></div>
-        
-      
-        
-        <p>This initializes the codemirror plugin
-more infos <a href="https://codemirror.net">https://codemirror.net</a></p>
-
-        
-          <div class='highlight'><pre>                        div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
-                .row
-                    .col-md-4.col-md-offset-8
-                        button.btn.btn-primary.btn-lg.pull-right Save</pre></div>
-        
-      
-        
-        <p>This is an demo example for the media library</p>
-
-        
-          <div class='highlight'><pre>            .col-md-4
-                .row
-                    .col-md-12
-                        .page-header
-                            h3 Media Library
-                .row
-                    .col-md-12
-                        table.table.table-striped.table-hover
-                            thead
-                                tr
-                                    th Name 
-                                    th Type
-                                    th Action
-                            tbody
-                                tr(ng-repeat="obj in mediaData")
-                                    td {{ obj.name }}
-                                    td 
-                                        span.label.label-default {{ obj.type }}
-                                    td
-                                        button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
-                                        button.btn.btn-danger.btn-xs Delete</pre></div>
-        
-      
-        
-        <p>this view’s an initial menu with all available story’s</p>
-
-        
-          <div class='highlight'><pre>        .row(ng-if="!storySelected")
-            .col-md-3.col-centered(style="margin-top:100px")
-                .list-group(ng-repeat="story in storys")
-                    a.list-group-item(href="#",ng-click="handleStorySelected(story)")
-                        h4.list-group-item-heading {{ story.title }}
-                        p.list-group-item-text 
-                            | {{ story.description }}
-                            br
-                            br
-                            | Author: {{ story.author }}
-                            br
-                            | Erstellt: {{ story.creation_date }}
-
-                .list-group
-                        button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story</pre></div>
+    div(ng-view)</pre></div>
         
       
       <div class="fleur">h</div>

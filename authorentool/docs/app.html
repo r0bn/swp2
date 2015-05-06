@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Authorentool</title>
+  <title>Client Logic</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -14,52 +14,30 @@
       <div class="header">
         
           
-          <h1 id="authorentool">Authorentool</h1>
-<h2 id="live-website">Live Website</h2>
-<p><a href="http://storytellar.de">http://storytellar.de</a></p>
-<h2 id="documentation">Documentation</h2>
-<p>To view the automatic generated documentation you need to
-check out the repository.
-Then open the README.html in Browser.</p>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>NodeJS installieren <a href="https://nodejs.org/">https://nodejs.org/</a></li>
-</ul>
-<p>Dependencies installieren</p>
-<pre><code>cd authorentool
-npm install
-</code></pre><ul>
-<li>ggf. mit sudo ausführen</li>
-</ul>
-<h3 id="global-path-variable-problem">Global Path Variable Problem</h3>
-<p>Sicherstellen das <code>node</code> in der Konsole ausführbar ist.</p>
-<h2 id="development-server">Development Server</h2>
-<p>Starten</p>
-<pre><code>npm start
-</code></pre><h2 id="css-klassen">CSS Klassen</h2>
-<p><a href="https://bootswatch.com/readable/">https://bootswatch.com/readable/</a></p>
-<h2 id="used-technologies">Used Technologies</h2>
-<ul>
-<li>GulpJS (a streaming build system)</li>
-<li>NPM (Library Managment)</li>
-<li><p>Bower (Library Managment)</p>
-</li>
-<li><p>AngularJS (Client side JS Framework)</p>
-</li>
-<li><p>Bootstrap (CSS Framework)</p>
-</li>
-<li><p>Jade (HTML Template Language) </p>
-</li>
-<li>Coffee Script (Javascript Precompiler)</li>
-<li><p>Stylus (CSS Precompiler)</p>
-</li>
-<li><p>Browser-Sync (Watcher and Browser reloading)</p>
-</li>
-<li><p>Karma (Test Runner)</p>
-</li>
-<li>Mocha (Test Framework)</li>
-</ul>
+          <h1 id="client-logic">Client Logic</h1>
+<p>The following code is a angularJS (<a href="https://angularjs.org/">https://angularjs.org/</a>) Application.</p>
 
+          
+            <div class='highlight'><pre>storyTellarApp = angular.<span class="hljs-built_in">module</span> <span class="hljs-string">"storyTellarApp"</span>, [
+    <span class="hljs-string">'ngRoute'</span>
+    <span class="hljs-string">'storyTellarCtrl'</span>
+    <span class="hljs-string">'ui.codemirror'</span>
+]
+
+storyTellarApp.config [<span class="hljs-string">'$routeProvider'</span>, <span class="hljs-string">'$locationProvider'</span>
+    ($routeProvider, $locationProvider) -&gt;
+        $routeProvider
+            .<span class="hljs-keyword">when</span>(<span class="hljs-string">'/'</span>, {
+                <span class="hljs-attribute">templateUrl</span>: <span class="hljs-string">'home.html'</span>
+                controller : <span class="hljs-string">'homeCtrl'</span>
+            })
+            .<span class="hljs-keyword">when</span>(<span class="hljs-string">'/story/:story'</span>, {
+                <span class="hljs-attribute">templateUrl</span>: <span class="hljs-string">'editor.html'</span>
+                controller : <span class="hljs-string">'editorCtrl'</span>
+            })
+            .otherwise {
+                <span class="hljs-attribute">redirectTo</span>: <span class="hljs-string">"/"</span>
+            }</pre></div>
           
         
 
@@ -150,6 +128,14 @@ npm install
         
       </div>
 
+      
+        
+        <p>use the HTML5 History API</p>
+
+        
+          <div class='highlight'><pre>        $locationProvider.html5Mode(<span class="hljs-literal">true</span>)
+]</pre></div>
+        
       
       <div class="fleur">h</div>
     </div>

@@ -2,7 +2,7 @@
 
 ## Live Website
 
-http://storytellar.dev.la/authorentool/
+http://storytellar.de
 
 ## Documentation
 
@@ -24,13 +24,13 @@ npm install
 
 ### Global Path Variable Problem
 
-Sicherstellen das `node`, `bower` und `gulp` in der Konsole ausführbar sind.
+Sicherstellen das `node` in der Konsole ausführbar ist.
 
 ## Development Server
 
 Starten
 ```
-gulp
+npm start
 ```
 
 ## CSS Klassen
@@ -51,5 +51,8 @@ https://bootswatch.com/readable/
 * Stylus (CSS Precompiler)
 
 * Browser-Sync (Watcher and Browser reloading)
+
+* Karma (Test Runner)
+* Mocha (Test Framework)
 
 
