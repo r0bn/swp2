@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Content>
+
+
+<inTitle> Hier wird der Titel der Story eingegeben. Dieser kann von Ihnen frei gewählt werden. </inTitle>
+<ttaDescription> Hier wird die Beschreibung der Story eingegeben. Diese kann von Ihnen frei gewählt werden </ttaDescription>
+<inAutor> Bitte geben Sie hier Ihren (Künstler-)Namen ein </inAutor>
+<inSize> Hier soll die gesamte Größe Ihrer Story eingegeben werden. Die Größe berechnet sich durch die Größe aller Mediendateien, sowie der XML-Datei </inSize>
+<inLatLngLocation> Sie können mit Hilfe der Map die Längen- und Breitengrade des Ortes (der Stadt) angeben, wo die Story spielt. Sie können in der Map nach Ihrem Punkt suchen und diesen mittels einem Klick auf die Map bestimmen. </inLatLngLocation>
+<inRadius> Der Radius gibt dem Endbenutzer die Information, wie weit die Story um den "Ort" herum spielt. Der Radius wird von Ihnen bestimmt werden. </inRadius>
+
+
+</Content>
