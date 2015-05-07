@@ -535,25 +535,25 @@ mainApp.controller("mainCtrl", [
       });
     };
     lightMedienBox = function() {
-      var $lightMedienbox;
-      $lightMedienbox = $('#lightMedienbox');
-      $('[data-target="#lightMedienbox"]').on('click', function(event) {
+      var $medien;
+      $medien = $('#medienLightbox');
+      $('[data-target="#medienLightbox"]').on('click', function(event) {
         var $medienBib, css;
         $medienBib = $(this).find('medienBib');
         css = {
           'maxWidth': $(window).width() - 100,
           'maxHeight': $(window).height() - 100
         };
-        $lightMedienbox.find('.close').addClass('show');
+        $medien.find('.close').addClass('hidden');
         $medienBib.css(css);
       });
-      return $lightMedienbox.on('shown.bs.modal', function(e) {
+      return $medien.on('shown.bs.modal', function(e) {
         var $medienBib;
         $medienBib = $(this).find('medienBib');
-        $lightMedienbox.find('.modal-dialog').css({
+        $medien.find('.modal-dialog').css({
           'width': $medienBib.width()
         });
-        $lightMedienbox.find('.close').removeClass('hidden');
+        $medien.find('.close').removeClass('hidden');
       });
     };
     addMarker = function(location, markers, map) {
