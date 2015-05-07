@@ -449,7 +449,8 @@
                 
                 mapOptions = 
                   zoom: 8
-                  center: new (google.maps.LatLng)(48.7760745003604, 9.172875881195068)
+                  center: new (google.maps.LatLng)(48.7758459, 9.182932100000016)
+                  scaleControl: true
                 map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
                 input = document.getElementById('inMapSearch')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push input
