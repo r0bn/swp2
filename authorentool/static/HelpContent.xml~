@@ -10,16 +10,16 @@
 <inRadius> Der Radius gibt dem Endbenutzer die Information, wie weit die Story um den "Ort" herum spielt. Der Radius wird von Ihnen bestimmt werden. </inRadius>
 <inInternet> Sollte dieser Storypoint über eine Internetverbindung verfügen selektieren Sie "Storypoint verfügt über Internet" an </inInternet>
 <inAccessable> Sollte dieser Storypoint erreichbar sein selektieren Sie "Storypoint ist erreichbar" an </inAccessable>
-<inStorypoint> Sie können in diesem Feld Ihrem Storypunkt einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Storypoins. Der Name wird nicht (!) in der APP angezeigt. Dabei ist zu beachten: Es dürfen keine Leerzeichen verwendet werden. </inStorypoint>
+<inStorypoint> Sie können in diesem Feld Ihrem Storypunkt einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Storypoins. Der Name wird nicht (!) in der APP angezeigt. </inStorypoint>
 <inAnchorPoint> Geben Sie hier bitte die genauen GPS-Koordinaten des Storypoins an. Dazu können Sie auch die Map verwenden, indem sie dort auf den gewünschten Ort klicken </inAnchorPoint>
 <inAnchorImg> Bestimmen Sie, aus der von Ihnen angelegten Medien Bibliothek, eine Bild, dass neben den GPS-Koordinaten als Auslöser für den Effekt des Augmented Reality dienen soll. </inAnchorImg>
 <inAsset> Bestimmen Sie, aus der von Ihnen angelegten Medien Bibliothek, eine Datei, die beim auslösen des Storypoins dem Benutzer angezeigt werden soll. </inAsset>
 <btnSetReferences> Bestimmen Sie hier, welche Punkte VOR diesem Punkt abgehandelt sein müssen. </btnSetReferences>
 <ddnInteractions> Bestimmen Sie hier, welche Interaktionen diesem Asset folgen sollen </ddnInteractions>
-<inItemID> Sie können in diesem Feld Ihrem Item einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Items. Der Name wird u.U. in der APP angezeigt. Dabei ist zu beachten: Es dürfen keine Leerzeichen verwendet werden. </inItemID>
+<inItemID> Sie können in diesem Feld Ihrem Item einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Items. Der Name wird u.U. in der APP angezeigt. </inItemID>
 <inItemDescription> Bitte geben sie eine kurze Beschreibung des Items an </inItemDescription>
 <inItemIsCollected> Soll das Item direkt aufgenommen werden wählen Sie diese Option aus </inItemIsCollected>
-<inQuizID> Sie können in diesem Feld Ihrem Quiz einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Storypoins. Der Name wird nicht (!) in der APP angezeigt. Dabei ist zu beachten: Es dürfen keine Leerzeichen verwendet werden. </inQuizID>
+<inQuizID> Sie können in diesem Feld Ihrem Quiz einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Storypoins. Der Name wird nicht (!) in der APP angezeigt. </inQuizID>
 <ddnQuizOnTrueReference> **OPTIONAL** Man kann optional angeben, welches Feature aufgerufen werden soll, sollte der Benutzer bei dem Quiz die richtige Antwort geben </ddnQuizOnTrueReference>
 <ddnQuizOnFalseReference> ** OPTIONAL** Man kann optional angeben, welches Feature aufgerufen werden soll, sollte der Benutzer bei dem Quiz die falsche Antwort geben. Sollte dieses Feld nicht angegeben werden, so kann das Quiz so lange ausgeführt werden, bis der Benutzer die richtige Antwort gibt. </ddnQuizOnFalseReference>
 <inQuizQuestion> Geben Sie hier Ihre Frage ein, welches bei dem Storypunkt gefragt werden soll </inQuizQuestion>

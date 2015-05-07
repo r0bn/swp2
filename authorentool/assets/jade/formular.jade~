@@ -79,7 +79,7 @@ block content
                     fieldset
                         legend Storypoints
                             .form-group(id="fgpStorypoint")
-                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="storypointCounter=storypointCounter+1;createNewFeature(storypointCounter)") Neuen Storypoint erstellen
+                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(id="btnCreateNewStorypoint", ng-click="storypointCounter=storypointCounter+1;createNewFeature(storypointCounter)") Neuen Storypoint erstellen
                 form.form-horizontal(id="fhlNeuerStorypoint", style="display: none")
                     .col-lg-1
                     fieldset
@@ -127,7 +127,7 @@ block content
 
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAnchorPoint") Ort
+                                    label.control-label(id="lblAnchorPoint", for="inAnchorPoint") Ort
                                 .col-lg-6
                                     input.form-control(type="text", id="inAnchorPoint", placeholder="Über map realisieren?")
                                 .col-lg-2
@@ -136,59 +136,26 @@ block content
                                                     // ------------ANCHOR-IMAGE
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAnchorImg") Auslösebild bestimmen
+                                    label.control-label(id="lblAnchorImg", for="inAnchorImg") Auslösebild bestimmen
                                 .col-lg-6
                                     input.form-control(disabled, type="text", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
-<<<<<<< HEAD
                                 .col-lg-2
-                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button") MBib
-=======
-                                    #lightMedienbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-                                        .modal-dialog   
-                                            .modal-content
-                                                .modal-body    
-                                                    .form-group
-                                                        button.close.hidden(type='button', data-dismiss='modal') &times;
-                                                        #medienBib(style='width:900px;height:400px')
-                                                            .col-md-4
-                                                                .row
-                                                                    .col-md-12
-                                                                        .page-header
-                                                                            h3 Media Library
-                                                                .row
-                                                                    .col-md-12
-                                                                        table.table.table-striped.table-hover
-                                                                            thead
-                                                                                tr
-                                                                                    th Name 
-                                                                                    th Type
-                                                                                    th Action
-                                                                            tbody
-                                                                                tr(ng-repeat="obj in mediaData")
-                                                                                    td {{ obj.name }}
-                                                                                    td 
-                                                                                        span.label.label-default {{ obj.type }}
-                                                                                    td
-                                                                                        button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
-                                                                                        button.btn.btn-danger.btn-xs Delete
->>>>>>> 3ba12947c2ff7c3f958e30a44da47056804cda49
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
-                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#lightMedienbox') MBib
                                                                                          // -------------ASSETS
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAsset") Anzeigbares Objekt
+                                    label.control-label(id="lblAsset", for="inAsset") Anzeigbares Objekt
                                 .col-lg-6
                                     input.form-control(disabled, type="text", id="inAsset", placeholder="Bild/Video aus Bib holen")
                                 .col-lg-2
-                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button") MBib
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
                             .form-group
                                 .col-lg-9
                                 .col-lg-3
                                     .dropdown(id="ddnStorypointReference")
                                         button.btn.btn-info.btn-block.pull-primary.btnDesign(id="btnSetReferences", referenceStorypointCounter="0", type="button") Referenzen setzen
-                                            span.caret
                                         
                                         ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu1")
                                             li(id="NEU_Storypoint_Ref_", role="presentation")
@@ -198,7 +165,7 @@ block content
 
                             .form-group
                                 .col-lg-5
-                                    label.control-label(for="interactions") Interaktion wählen
+                                    label.control-label(id="lblInteractions", for="ddnInteractions") Interaktion wählen
                                 .col-lg-4
                                     .dropup
                                         button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
@@ -245,7 +212,7 @@ block content
                                         .col-lg-5
                                             label.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
                                         .col-lg-7
-                                            input.form-control(type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
+                                            input.form-control(disabled, type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
                                     .form-group
                                         .col-lg-6
                                         .col-lg-6
@@ -316,12 +283,23 @@ block content
                                     .form-group(id="fgpAnswer", style="display: none")
                                         .col-lg-1
                                             label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
-                                        .col-lg-3
+                                        .col-lg-2
                                             input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
                                         .col-lg-1
                                             label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
-                                        .col-lg-6
+                                        .col-lg-5
                                             input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
+                                        .col-lg-1
+                                            .dropdown
+                                                button.btn.btn-default.dropdown-toggle(id='ddnstate', type='button', data-toggle='dropdown', aria-expanded='true') Status
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddntrue", role='menuitem', tabindex='0', value='Wahr') Wahr
+                                                    li(role='presentation')
+                                                        a(id="ddnfalse", role='menuitem', tabindex='1', value='Falsch') Falsch
+
+                                        .col-lg-1
                                         .col-lg-1
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
                                                 span.glyphicon.glyphicon-trash
@@ -416,8 +394,9 @@ block content
                                         div(id="divDependencyBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
 
 
-
+                
+            include ./medienLibrary.jade
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter
-    p   
+    p           
 

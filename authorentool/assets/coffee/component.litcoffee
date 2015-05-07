@@ -68,6 +68,9 @@
             $("#ddngb").click -> 
                 $("#ddnsize").val("KB")
                 $("#ddnsize").html("GB <span class='caret' />")
+
+
+
             
         $scope.createNewFeature = (counter) ->
                 copyForm = document.getElementById("fhlNeuerStorypoint")
@@ -176,11 +179,13 @@
             setIDs($("#" + stuff.id), interactionCounter)
             btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
             btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
+            
 
             # Click Event für btnQuizDelete
             $("#btnQuizDelete_" + interactionCounter).click ->
                $("#fgpNeu_Quiz_" + interactionCounter).remove() if (confirm('Möchten Sie das Quiz wirklich löschen?'))
-    
+
+
             btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter)
             # quizID Trigger
             $("#inQuizID_"+interactionCounter).keyup ->
@@ -201,6 +206,21 @@
                 # Click Event für btnQuizDelete
                 $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
+
+            # Click event für ddnstate
+            createQuizDropdown( counter )  
+
+
+
+        createQuizDropdown = (counter) ->
+            #DropdownMenu QuizStatus
+            $("#ddnTrue_" + counter).click ->
+                $("#ddnState_" + counter).val("Wahr")
+                $("#ddnState_" + counter).html("Wahr <span class='caret' />")
+            $("#ddnFalse_" + counter).click ->
+                $("#ddnState_" + counter).val("Falsch")
+                $("#ddnState_" + counter).html("Falsch <span class='caret' />")
+
 
         createChooser = (counter) ->
                 copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())

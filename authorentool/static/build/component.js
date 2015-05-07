@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, googleMap, graph, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -181,7 +181,7 @@ mainApp.controller("mainCtrl", [
         text = "Quiz: " + $("#inQuizID_" + interactionCounter).val();
         return $("#lgdNeuesQuizFieldset_" + interactionCounter).text(text);
       });
-      return $("#btnQuizAnswer_" + interactionCounter).click(function() {
+      $("#btnQuizAnswer_" + interactionCounter).click(function() {
         var answer, copyAnswer, quizAnswerCounter;
         quizAnswerCounter = $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter");
         quizAnswerCounter++;
@@ -197,6 +197,17 @@ mainApp.controller("mainCtrl", [
             return $("#" + answer.id).remove();
           }
         });
+      });
+      return createQuizDropdown(counter);
+    };
+    createQuizDropdown = function(counter) {
+      $("#ddnTrue_" + counter).click(function() {
+        $("#ddnState_" + counter).val("Wahr");
+        return $("#ddnState_" + counter).html("Wahr <span class='caret' />");
+      });
+      return $("#ddnFalse_" + counter).click(function() {
+        $("#ddnState_" + counter).val("Falsch");
+        return $("#ddnState_" + counter).html("Falsch <span class='caret' />");
       });
     };
     createChooser = function(counter) {
