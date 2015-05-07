@@ -351,7 +351,7 @@ block content
                                             .col-lg-1
                                                 button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserAnswerDelete", type='button')
                                                     span.glyphicon.glyphicon-trash
-                                        .row(style="margin-top:1%")
+                                        .row
                                             .col-lg-1
                                                 label.control-label(id="lblChooserAnswerText", for="inChooserAnswerText") Text
                                             .col-lg-3
