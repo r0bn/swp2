@@ -79,7 +79,7 @@ block content
                     fieldset
                         legend Storypoints
                             .form-group(id="fgpStorypoint")
-                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(ng-click="storypointCounter=storypointCounter+1;createNewFeature(storypointCounter)") Neuen Storypoint erstellen
+                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(id="btnCreateNewStorypoint", ng-click="storypointCounter=storypointCounter+1;createNewFeature(storypointCounter)") Neuen Storypoint erstellen
                 form.form-horizontal(id="fhlNeuerStorypoint", style="display: none")
                     .col-lg-1
                     fieldset
@@ -127,7 +127,7 @@ block content
 
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAnchorPoint") Ort
+                                    label.control-label(id="lblAnchorPoint", for="inAnchorPoint") Ort
                                 .col-lg-6
                                     input.form-control(type="text", id="inAnchorPoint", placeholder="Über map realisieren?")
                                 .col-lg-2

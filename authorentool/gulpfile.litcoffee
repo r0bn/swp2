@@ -53,6 +53,7 @@
             './bower_components/jquery/dist/jquery.min.js'
             './bower_components/bootswatch-dist/js/bootstrap.min.js'  
             './bower_components/bootswatch-dist/js/bootstrap-lightbox.min.js'
+            './assets/js/jQueryUI/jquery-ui.min.js'
             
         ]
         .pipe concat 'vendor.js'
@@ -75,6 +76,7 @@
             './bower_components/codemirror/theme/eclipse.css'
             './bower_components/bootswatch-dist/css/bootstrap.css'
             './assets/js/vis.min.css'
+            './assets/js/jQueryUI/jquery-ui.min.css'
         ]
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'

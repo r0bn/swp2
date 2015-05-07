@@ -45,9 +45,10 @@
             initDropdownClicks()
             googleMap() 
             graph()
-            
             return
 
+   
+            
         initDropdownClicks = () ->
             #DropdownMenu Radius
             $("#ddnme").click -> 
@@ -67,7 +68,7 @@
             $("#ddngb").click -> 
                 $("#ddnsize").val("KB")
                 $("#ddnsize").html("GB <span class='caret' />")
-
+            
         $scope.createNewFeature = (counter) ->
                 copyForm = document.getElementById("fhlNeuerStorypoint")
                 stuff = copyForm.cloneNode(true)
@@ -76,18 +77,7 @@
                 stuff.style.display="block"
                 document.getElementById("fhlStorypoints").appendChild(stuff)
                 # Setze die IDs neu
-                $("#" + stuff.id).find("#lgdNeuerStorypointFieldset").attr("id","lgdNeuerStorypointFieldset_" + counter)
-                $("#" + stuff.id).find("#btnNeuesStorypointDelete").attr("id","btnNeuesStorypointDelete_" + counter)
-                $("#" + stuff.id).find("#btnStorypointEinklappen").attr("id","btnStorypointEinklappen_" + counter)
-                $("#" + stuff.id).find("#fstNeuesStorypointContent").attr("id","fstNeuesStorypointContent_" + counter)
-                $("#" + stuff.id).find("#lblInputStorypoint").attr("id","lblInputStorypoint_" + counter)
-                $("#" + stuff.id).find("#inStorypoint").attr("id","inStorypoint_" + counter)
-                $("#" + stuff.id).find("#bgpControlGroup").attr("id","bgpControlGroup_" + counter)
-                $("#" + stuff.id).find("#btnCreateInteraction").attr("id","btnCreateInteraction_" + counter)
-                $("#" + stuff.id).find("#ddnInteractions").attr("id","ddnInteractions_" + counter)
-                $("#" + stuff.id).find("#ddnChooser").attr("id","ddnChooser_" + counter)
-                $("#" + stuff.id).find("#ddnQuiz").attr("id","ddnQuiz_" + counter)
-                $("#" + stuff.id).find("#ddnItem").attr("id","ddnItem_" + counter)
+                setIDs($("#" + stuff.id), counter)
                 # Labels neu setzen
                 $("#lblInputStorypoint_" + counter).attr("for","inStorypoint_" + counter)
                 # FeatureName Trigger
@@ -102,7 +92,8 @@
 
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
-                   $("#fhlNeuerStorypoint_" + counter).remove() if (confirm('Möchten Sie den Storypoint wirklich löschen?'))
+                   $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 50}, 2500, () ->
+                        $("#fhlNeuerStorypoint_" + counter).remove()
         
                 # Click Event für btnStorypointEinklappen
                 btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)
@@ -136,6 +127,17 @@
                     $("#ddnInteractions_" + counter).val("Item")
                     $("#ddnInteractions_" + counter).html("Item <span class='caret'/>")
 
+        setIDs = (node, counter) ->
+            node.children().each () ->
+                if typeof $(this).attr("id") != "undefined"
+                    newID =  $(this).attr("id") + "_" + counter
+                    $(this).attr("id", newID)
+                    if typeof $(this).attr("for") != "undefined"
+                        newFor = $(this).attr("for") + "_" + counter
+                        $(this).attr("for", newFor)
+                setIDs($(this), counter)
+            return
+                
         createItem = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
             interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
@@ -145,29 +147,8 @@
             stuff.id = stuff.id + "_" + interactionCounter
             stuff.style.display="block"
             document.getElementById("fstNeuesStorypointContent_"+counter).appendChild(stuff)
-            
-            $("#" + stuff.id).find("#lgdNeuesItemFieldset").attr("id", "lgdNeuesItemFieldset_" +interactionCounter)
-            $("#" + stuff.id).find("#fstNeuesItemContent").attr("id", "fstNeuesItemContent_" +interactionCounter)
-            $("#" + stuff.id).find("#btnItemControlGroup").attr("id", "btnItemControlGroup_" +interactionCounter)
-            $("#" + stuff.id).find("#btnItemEinklappen").attr("id", "btnItemEinklappen_" +interactionCounter)
-            $("#" + stuff.id).find("#btnItemDelete").attr("id", "btnItemDelete_" +interactionCounter)
-            $("#" + stuff.id).find("#inItemID").attr("id", "inItemID_" +interactionCounter)
-            $("#" + stuff.id).find("#inItemDescription").attr("id", "itemDescription_" +interactionCounter)
-            $("#" + stuff.id).find("#itemFeatureRef").attr("id", "itemFeatureRef_" +interactionCounter)
-            $("#" + stuff.id).find("#inItemIsCollected").attr("id", "inItemIsCollected_" +interactionCounter)
-            $("#" + stuff.id).find("#lblinItemID").attr("id", "lblinItemID_" +interactionCounter)
-            $("#" + stuff.id).find("#lblItemIsCollected").attr("id", "lblItemIsCollected_" +interactionCounter)
-            $("#" + stuff.id).find("#lblItemDescription").attr("id", "lblItemDescription_" +interactionCounter)
-            $("#" + stuff.id).find("#lblItemFeatureRef").attr("id", "lblItemStorypointRef_" +interactionCounter)
-            
-            $("#lblinItemID_" + interactionCounter).attr("for", "inItemID_"+interactionCounter)
-            $("#lblItemIsCollected_" + interactionCounter).attr("for", "inItemIsCollected_"+interactionCounter)
-            $("#lblItemDescription_" + interactionCounter).attr("for", "inItemDescription_"+interactionCounter)
-            $("#lblItemStorypointRef_" + interactionCounter).attr("for", "itemFeatureRef_"+interactionCounter)
-            $("#itemFeatureRef_" + interactionCounter).val("NeuesFeature_" + counter)
-            
-            $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
-            $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+            setIDs($("#" + stuff.id), interactionCounter)
+
             btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
             btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
             # Click Event für btnItemDelete
@@ -192,20 +173,7 @@
             stuff.id = stuff.id + "_" + interactionCounter
             stuff.style.display="block"
             document.getElementById("fstNeuesStorypointContent_"+counter).appendChild(stuff)
-            
-            $("#" + stuff.id).find("#lgdNeuesQuizFieldset").attr("id", "lgdNeuesQuizFieldset_" +interactionCounter)
-            $("#" + stuff.id).find("#fstNeuesQuizContent").attr("id", "fstNeuesQuizContent_" +interactionCounter)
-            $("#" + stuff.id).find("#btnQuizControlGroup").attr("id", "btnQuizControlGroup_" +interactionCounter)
-            $("#" + stuff.id).find("#btnQuizEinklappen").attr("id", "btnQuizEinklappen_" +interactionCounter)
-            $("#" + stuff.id).find("#btnQuizDelete").attr("id", "btnQuizDelete_" +interactionCounter)
-            $("#" + stuff.id).find("#inQuizID").attr("id", "inQuizID_" +interactionCounter)
-            $("#" + stuff.id).find("#inQuizStorypointRef").attr("id", "inQuizStorypointRef_" +interactionCounter)
-            $("#" + stuff.id).find("#inQuizOnTrue").attr("id", "inQuizOnTrue_" +interactionCounter)
-            $("#" + stuff.id).find("#inQuizOnFalse").attr("id", "inQuizOnFalse_" +interactionCounter)
-            $("#" + stuff.id).find("#inQuizQuestion").attr("id", "inQuizQuestion_" +interactionCounter)
-            $("#" + stuff.id).find("#btnQuizAnswer").attr("id", "btnQuizAnswer_" +interactionCounter)
-            $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
-            $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+            setIDs($("#" + stuff.id), interactionCounter)
             btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
             btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
 
@@ -229,11 +197,7 @@
                 answer.id = answer.id + "_" + quizAnswerCounter
                 answer.style.display="block"
                 document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer)
-                $("#" + answer.id).find("#lblQuizAnswerID").attr("id", "lblQuizAnswerID_" +quizAnswerCounter)
-                $("#" + answer.id).find("#inQuizAnswerID").attr("id", "inQuizAnswerID_" +quizAnswerCounter)
-                $("#" + answer.id).find("#lblQuizAnswerText").attr("id", "lblQuizAnswerText_" +quizAnswerCounter)
-                $("#" + answer.id).find("#inQuizAnswerText").attr("id", "inQuizAnswerText_" +quizAnswerCounter)
-                $("#" + answer.id).find("#btnQuizAnswerDelete").attr("id", "btnQuizAnswerDelete_" + quizAnswerCounter)
+                setIDs($("#" + answer.id), quizAnswerCounter)
                 # Click Event für btnQuizDelete
                 $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
@@ -247,17 +211,7 @@
                 stuff.id = stuff.id + "_" + interactionCounter
                 stuff.style.display="block"
                 document.getElementById("fstNeuesStorypointContent_"+counter).appendChild(stuff)
-                $("#" + stuff.id).find("#lgdNeuerChooserFieldset").attr("id", "lgdNeuerChooserFieldset_" +interactionCounter)
-                $("#" + stuff.id).find("#fstNeuerChooserContent").attr("id", "fstNeuerChooserContent_" +interactionCounter)
-                $("#" + stuff.id).find("#bgpChooserControlGroup").attr("id", "bgpChooserControlGroup_" +interactionCounter)
-                $("#" + stuff.id).find("#btnChooserEinklappen").attr("id", "btnChooserEinklappen_" +interactionCounter)
-                $("#" + stuff.id).find("#btnChooserDelete").attr("id", "btnChooserDelete_" +interactionCounter)
-                $("#" + stuff.id).find("#inChooserID").attr("id", "inChooserID_" +interactionCounter)
-                $("#" + stuff.id).find("#inChooserStorypointRef").attr("id", "inChooserStorypointRef_" +interactionCounter)
-                $("#" + stuff.id).find("#inChooserQuestion").attr("id", "inChooserQuestion_" +interactionCounter)
-                $("#" + stuff.id).find("#btnChooserAnswer").attr("id", "btnChooserAnswer_" +interactionCounter)
-                $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + interactionCounter)
-                $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + interactionCounter)
+                setIDs($("#" + stuff.id), interactionCounter)
                 btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
 
@@ -283,15 +237,7 @@
                     answer.id = answer.id + "_" + ChooserAnswerCounter
                     answer.style.display="block"
                     document.getElementById("fstNeuerChooserContent_" + interactionCounter).appendChild(answer)
-                    $("#" + answer.id).find("#lblChooserAnswerID").attr("id", "lblChooserAnswerID_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#inChooserAnswerID").attr("id", "inChooserAnswerID_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#lblChooserAnswerText").attr("id", "lblChooserAnswerText_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#inChooserAnswerText").attr("id", "inChooserAnswerText_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#lblChooserAnswerItemRef").attr("id", "lblChooserAnswerItemRef_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#inChooserAnswerItemRef").attr("id", "inChooserAnswerItemRef_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#lblChooserAnswerFeatureRef").attr("id", "lblChooserAnswerFeatureRef_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#inChooserAnswerStorypointRef").attr("id", "inChooserAnswerStorypointRef_" +ChooserAnswerCounter)
-                    $("#" + answer.id).find("#btnChooserAnswerDelete").attr("id", "btnChooserAnswerDelete_" + ChooserAnswerCounter)
+                    setIDs($("#" + answer.id), ChooserAnswerCounter)
 
                     # Click Event für btnChooserDelete
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
@@ -302,10 +248,7 @@
                 nextObject = $(currentObjID).next()
                 currentObject = $(currentObjID)
                 if typeof nextObject.attr("id") == 'undefined' || nextObject.prop('tagName') != currentObject.prop('tagName')
-                    currentObject.animate { opacity: 0.25 }, "fast"
-                    currentObject.animate { opacity: 1 }, "fast"
-                    currentObject.animate { opacity: 0.25 }, "fast"
-                    currentObject.animate { opacity: 1 }, "fast"
+                    currentObject.effect("shake")
                     return
                 else
                     currentObject.animate {opacity: 0.25}, 400, () ->
@@ -319,10 +262,7 @@
                 prevObject = $(currentObjID).prev()
                 currentObject = $(currentObjID)
                 if typeof prevObject.attr("id") == 'undefined' || prevObject.prop('tagName') != currentObject.prop('tagName')
-                    currentObject.animate { opacity: 0.25 }, "fast"
-                    currentObject.animate { opacity: 1 }, "fast"
-                    currentObject.animate { opacity: 0.25 }, "fast"
-                    currentObject.animate { opacity: 1 }, "fast"
+                    currentObject.effect("shake")
                     return
                 else
                     currentObject.animate {opacity: 0.25}, 400, () ->
