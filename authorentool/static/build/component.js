@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, googleMap, graph, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -72,9 +72,7 @@ mainApp.controller("mainCtrl", [
       setIDs($("#" + stuff.id), counter);
       $("#lblInputStorypoint_" + counter).attr("for", "inStorypoint_" + counter);
       $("#inStorypoint_" + counter).keyup(function() {
-        var text;
-        text = "Storypoint: " + $("#inStorypoint_" + counter).val();
-        return $("#lgdNeuerStorypointFieldset_" + counter).text(text);
+        return inIDSetter($("#inStorypoint_" + counter), $("#lgdNeuerStorypointFieldset_" + counter), "Storypoint: ", "Neuer Storypoint");
       });
       $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter);
       $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter);
@@ -103,6 +101,15 @@ mainApp.controller("mainCtrl", [
       button.parentNode.removeChild(button);
       document.getElementById("fhlStorypoints").appendChild(button);
       return button.scrollIntoView(true);
+    };
+    inIDSetter = function(objectInput, objectFieldset, text, alternativeText) {
+      objectInput.val(objectInput.val().replace(/\s+/, ""));
+      if (objectInput.val() !== "") {
+        text = text + objectInput.val();
+        return objectFieldset.text(text);
+      } else {
+        return objectFieldset.text(alternativeText);
+      }
     };
     initDdnInteraction = function(counter) {
       $("#ddnChooser_" + counter).click(function() {
@@ -151,10 +158,15 @@ mainApp.controller("mainCtrl", [
         }
       });
       btnEinklappen("#btnItemEinklappen_" + interactionCounter, "#fstNeuesItemContent_" + interactionCounter);
-      return $("#inItemID_" + interactionCounter).keyup(function() {
-        var text;
-        text = "Item: " + $("#inItemID_" + interactionCounter).val();
-        return $("#lgdNeuesItemFieldset_" + interactionCounter).text(text);
+      $("#inItemID_" + interactionCounter).keyup(function() {
+        return inIDSetter($("#inItemID_" + interactionCounter), $("#lgdNeuesItemFieldset_" + interactionCounter), "Item: ", "Neues Item");
+      });
+      $("#inItemStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val());
+      return $("#inStorypoint_" + counter).on('input', function() {
+        var objectInput;
+        objectInput = $("#inItemStorypointRef_" + interactionCounter);
+        objectInput.val($("#inStorypoint_" + counter).val());
+        return objectInput.val(objectInput.val().replace(/\s+/, ""));
       });
     };
     createQuiz = function(counter) {
@@ -177,9 +189,14 @@ mainApp.controller("mainCtrl", [
       });
       btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter);
       $("#inQuizID_" + interactionCounter).keyup(function() {
-        var text;
-        text = "Quiz: " + $("#inQuizID_" + interactionCounter).val();
-        return $("#lgdNeuesQuizFieldset_" + interactionCounter).text(text);
+        return inIDSetter($("#inQuizID_" + interactionCounter), $("#lgdNeuesQuizFieldset_" + interactionCounter), "Quiz: ", "Neues Quiz");
+      });
+      $("#inQuizStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val());
+      $("#inStorypoint_" + counter).on('input', function() {
+        var objectInput;
+        objectInput = $("#inQuizStorypointRef_" + interactionCounter);
+        objectInput.val($("#inStorypoint_" + counter).val());
+        return objectInput.val(objectInput.val().replace(/\s+/, ""));
       });
       return $("#btnQuizAnswer_" + interactionCounter).click(function() {
         var answer, copyAnswer, quizAnswerCounter;
@@ -219,9 +236,14 @@ mainApp.controller("mainCtrl", [
       });
       btnEinklappen("#btnChooserEinklappen_" + interactionCounter, "#fstNeuerChooserContent_" + interactionCounter);
       $("#inChooserID_" + interactionCounter).keyup(function() {
-        var text;
-        text = "Chooser: " + $("#inChooserID_" + interactionCounter).val();
-        return $("#lgdNeuerChooserFieldset_" + interactionCounter).text(text);
+        return inIDSetter($("#inChooserID_" + interactionCounter), $("#lgdNeuerChooserFieldset_" + interactionCounter), "Chooser: ", "Neuer Chooser");
+      });
+      $("#inChooserStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val());
+      $("#inStorypoint_" + counter).on('input', function() {
+        var objectInput;
+        objectInput = $("#inChooserStorypointRef_" + interactionCounter);
+        objectInput.val($("#inStorypoint_" + counter).val());
+        return objectInput.val(objectInput.val().replace(/\s+/, ""));
       });
       return $("#btnChooserAnswer_" + interactionCounter).click(function() {
         var ChooserAnswerCounter, answer, copyAnswer;
