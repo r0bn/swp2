@@ -198,7 +198,7 @@ mainApp.controller("mainCtrl", [
           }
         });
       });
-      return createQuizDropdown(counter);
+      return createQuizDropdown(quizAnswerCounter);
     };
     createQuizDropdown = function(counter) {
       $("#ddnTrue_" + counter).click(function() {

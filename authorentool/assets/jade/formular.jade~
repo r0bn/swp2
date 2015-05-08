@@ -246,7 +246,7 @@ block content
                                             input.form-control(type="text", id="inQuizID", placeholder="Quiz ID")   
                                     .form-group
                                         .col-lg-5
-                                            label.control-label(id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
+                                            label.control-label(disabled, id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
                                         .col-lg-7
                                             input.form-control(type="text", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
                                     .form-group
@@ -291,13 +291,13 @@ block content
                                             input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
                                         .col-lg-1
                                             .dropdown
-                                                button.btn.btn-default.dropdown-toggle(id='ddnstate', type='button', data-toggle='dropdown', aria-expanded='true') Status
+                                                button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
                                                     span.caret 
                                                 ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                                     li(role='presentation')
-                                                        a(id="ddntrue", role='menuitem', tabindex='0', value='Wahr') Wahr
+                                                        a(id="ddnTrue", role='menuitem', tabindex='0', value='Wahr') Wahr
                                                     li(role='presentation')
-                                                        a(id="ddnfalse", role='menuitem', tabindex='1', value='Falsch') Falsch
+                                                        a(id="ddnFalse", role='menuitem', tabindex='1', value='Falsch') Falsch
 
                                         .col-lg-1
                                         .col-lg-1
@@ -332,7 +332,7 @@ block content
                                         .col-lg-5
                                             label.control-label(id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
                                         .col-lg-7
-                                            input.form-control(type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
+                                            input.form-control(disabled, type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
                                     .form-group
                                         .col-lg-5
                                             label.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage

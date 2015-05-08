@@ -208,7 +208,7 @@
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
             # Click event für ddnstate
-            createQuizDropdown( counter )  
+            createQuizDropdown( quizAnswerCounter )  
 
 
 

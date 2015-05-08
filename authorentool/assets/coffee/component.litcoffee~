@@ -167,9 +167,6 @@
                 $("#lgdNeuesItemFieldset_"+interactionCounter).text(text)
 
 
-
-        
-
         createQuiz = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
             interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
@@ -211,7 +208,7 @@
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
             # Click event für ddnstate
-            createQuizDropdown(interactionCounter-1)  
+            createQuizDropdown( counter )  
 
 
 
