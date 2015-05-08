@@ -76,3 +76,73 @@ http://api.storytellar.de/story?<query parameters>
 
 Example for author and maximum size filtering: http://api.storytellar.de/story?author=arno+claus&size_max=20
  
+### Temporary route for stories
+```
+http://api.storytellar.de/temp
+```
+> **Note:** This route is for testing purposes, it will stay excluded from the main route for stories. 3 different stories available! Go get them now!
+
+ * Method: GET
+ * Response format: JSON
+ * Data: id, title, description, author, revision, size, size_uom, location, radius, radius_uom, created_at, updated_at
+ * Character encoding (header): utf-8
+
+Response (pretty):
+```JSON
+[
+    {
+        "id": "1",
+        "title": "Schneewittchen und die sieben Zwerge",
+        "description": "Die halbwüchsigen kehren zurück",
+        "author": "Grimm",
+        "revision": "7",
+        "size": "10",
+        "size_uom": "MB",
+        "location": "48.783375 9.181187",
+        "radius": "2",
+        "radius_uom": "km",
+        "created_at": "2015-05-01 17:08:31",
+        "updated_at": "2015-05-01 18:09:37"
+    },
+    {
+        "id": "2",
+        "title": "Aschenputtel",
+        "description": "Das arme Ding",
+        "author": "Lukas",
+        "revision": "7",
+        "size": "20",
+        "size_uom": "MB",
+        "location": "48.799353 9.003754",
+        "radius": "2",
+        "radius_uom": "km",
+        "created_at": "2015-05-02 12:32:58",
+        "updated_at": "2015-05-02 14:37:44"
+    },
+    {
+        "id": "3",
+        "title": "Schneewittchen",
+        "description": "Das arme Ding",
+        "author": "Lukas",
+        "revision": "7",
+        "size": "30",
+        "size_uom": "MB",
+        "location": "53.552647 10.007829",
+        "radius": "2",
+        "radius_uom": "km",
+        "created_at": "2015-05-03 13:02:19",
+        "updated_at": "2015-05-03 16:45:02"
+    }
+]
+```
+
+### Temporary route for story download
+```
+http://api.storytellar.de/temp/<id>
+```
+> **Note:** Similar to main story download.
+
+ * Method: GET
+ * Response type: XML
+ * Media data: Filenames included & available
+
+Example for ID 2: http://api.storytellar.de/temp/2
