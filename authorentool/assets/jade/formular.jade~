@@ -246,7 +246,7 @@ block content
                                             input.form-control(type="text", id="inQuizID", placeholder="Quiz ID")   
                                     .form-group
                                         .col-lg-5
-                                            label.control-label(disabled, id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
+                                            label.control-label(id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
                                         .col-lg-7
                                             input.form-control(type="text", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
                                     .form-group
@@ -280,29 +280,7 @@ block content
                                     .form-group
                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                                 span Antwort hinzufügen
-                                    .form-group(id="fgpAnswer", style="display: none")
-                                        .col-lg-1
-                                            label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
-                                        .col-lg-2
-                                            input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
-                                        .col-lg-1
-                                            label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
-                                        .col-lg-5
-                                            input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
-                                        .col-lg-1
-                                            .dropdown
-                                                button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
-                                                    span.caret 
-                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                                    li(role='presentation')
-                                                        a(id="ddnTrue", role='menuitem', tabindex='0', value='Wahr') Wahr
-                                                    li(role='presentation')
-                                                        a(id="ddnFalse", role='menuitem', tabindex='1', value='Falsch') Falsch
-
-                                        .col-lg-1
-                                        .col-lg-1
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
-                                                span.glyphicon.glyphicon-trash
+                                    
                                                                         // ------------------------- Chooser
                             .form-group(id="fgpNeu_Chooser", style="display: none")
                                 .col-lg-1
@@ -332,7 +310,7 @@ block content
                                         .col-lg-5
                                             label.control-label(id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
                                         .col-lg-7
-                                            input.form-control(disabled, type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
+                                            input.form-control(type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
                                     .form-group
                                         .col-lg-5
                                             label.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage
@@ -394,7 +372,28 @@ block content
                                         div(id="divDependencyBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
 
 
-                
+            .form-group(id="fgpAnswer", style="display: none")
+                                        .col-lg-1
+                                            label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
+                                        .col-lg-2
+                                            input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
+                                        .col-lg-1
+                                            label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
+                                        .col-lg-5
+                                            input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
+                                        .col-lg-1
+                                            .dropdown
+                                                button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnTrue", role='menuitem', tabindex='0', value='Wahr') Wahr
+                                                    li(role='presentation')
+                                                        a(id="ddnFalse", role='menuitem', tabindex='1', value='Falsch') Falsch
+                                        .col-lg-1
+                                        .col-lg-1
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
+                                                span.glyphicon.glyphicon-trash    
             include ./medienLibrary.jade
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter
