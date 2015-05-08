@@ -58,7 +58,7 @@ block content
                                                 .form-group  
                                                     #gmeg_map_canvas(style='width:900px;height:400px')
                             .col-lg-2
-                                button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
+                                button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
 
                         .form-group
                             label.col-lg-2.control-label(for="inRadius") Radius um den Ort
@@ -131,7 +131,7 @@ block content
                                 .col-lg-6
                                     input.form-control(type="text", id="inAnchorPoint", placeholder="Über map realisieren?")
                                 .col-lg-2
-                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", gpsField="inAnchorPoint", data-toggle='modal', data-target='#lightbox') Map
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnStorypointMap", type="button", gpsField="inAnchorPoint", data-toggle='modal', data-target='#lightbox') Map
 
                                                     // ------------ANCHOR-IMAGE
                             .form-group
