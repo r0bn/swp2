@@ -232,9 +232,6 @@
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
 
-
-
-
         createQuizDropdown = (counter) ->
             #DropdownMenu QuizStatus
             $("#ddnTrue_" + counter).click ->
