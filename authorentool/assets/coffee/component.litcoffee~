@@ -85,7 +85,8 @@
                 $("#lblInputStorypoint_" + counter).attr("for","inStorypoint_" + counter)
                 # FeatureName Trigger
                 $("#inStorypoint_"+counter).keyup ->
-                    inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
+                    text = "Storypoint: " + $("#inStorypoint_"+counter).val()
+                    $("#lgdNeuerStorypointFieldset_"+counter).text(text)
 
                 $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter)
                 $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter)
@@ -117,14 +118,6 @@
                 button.parentNode.removeChild(button);
                 document.getElementById("fhlStorypoints").appendChild(button)
                 button.scrollIntoView(true)
-        
-        inIDSetter = (objectInput, objectFieldset, text, alternativeText) ->
-                    objectInput.val(objectInput.val().replace(/\s+/, "") )
-                    if objectInput.val() != ""
-                        text = text + objectInput.val()
-                        objectFieldset.text(text)
-                    else
-                        objectFieldset.text(alternativeText)
 
         initDdnInteraction = (counter) ->
                 $("#ddnChooser_" + counter).click ->
@@ -167,18 +160,15 @@
 
             # Click Event für btnItemEinklappen
             btnEinklappen("#btnItemEinklappen_" + interactionCounter, "#fstNeuesItemContent_" + interactionCounter)
-            
+                    
             # ItemName Trigger
             $("#inItemID_"+interactionCounter).keyup ->
-                inIDSetter($("#inItemID_"+interactionCounter), $("#lgdNeuesItemFieldset_"+interactionCounter), "Item: ", "Neues Item")
+                text = "Item: " + $("#inItemID_"+interactionCounter).val()
+                $("#lgdNeuesItemFieldset_"+interactionCounter).text(text)
 
-            # inItemStorypointRef Text setzen
-            $("#inItemStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val())   
-            # inItemStorypointRef Trigger
-            $("#inStorypoint_" + counter).on 'input', () ->
-                objectInput = $("#inItemStorypointRef_" + interactionCounter)
-                objectInput.val($("#inStorypoint_" + counter).val())
-                objectInput.val(objectInput.val().replace(/\s+/, "") )
+
+
+        
 
         createQuiz = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
@@ -202,15 +192,8 @@
             btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter)
             # quizID Trigger
             $("#inQuizID_"+interactionCounter).keyup ->
-                inIDSetter($("#inQuizID_"+interactionCounter), $("#lgdNeuesQuizFieldset_"+interactionCounter), "Quiz: ", "Neues Quiz")
-             
-            # inQuizStorypointRef Text setzen
-            $("#inQuizStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val())   
-            # inItemStorypointRef Trigger
-            $("#inStorypoint_" + counter).on 'input', () ->
-                objectInput = $("#inQuizStorypointRef_" + interactionCounter)
-                objectInput.val($("#inStorypoint_" + counter).val())
-                objectInput.val(objectInput.val().replace(/\s+/, "") )
+                text = "Quiz: " + $("#inQuizID_"+interactionCounter).val()
+                $("#lgdNeuesQuizFieldset_"+interactionCounter).text(text)
             
             # Click Event für btnQuizAnswer
             $("#btnQuizAnswer_" + interactionCounter).click ->
@@ -223,15 +206,12 @@
                 answer.style.display="block"
                 document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer)
                 setIDs($("#" + answer.id), quizAnswerCounter)
-
-                # Click event für ddnstate
-                createQuizDropdown( quizAnswerCounter ) 
-
                 # Click Event für btnQuizDelete
                 $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
 
-
+            # Click event für ddnstate
+            createQuizDropdown(interactionCounter-1)  
 
 
 
@@ -267,16 +247,9 @@
 
                 # ChooserName Trigger
                 $("#inChooserID_"+interactionCounter).keyup ->
-                   inIDSetter($("#inChooserID_"+interactionCounter), $("#lgdNeuerChooserFieldset_"+interactionCounter), "Chooser: ", "Neuer Chooser")
-
-                # inChooserStorypointRef Text setzen
-                $("#inChooserStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val())   
-                # inItemStorypointRef Trigger
-                $("#inStorypoint_" + counter).on 'input', () ->
-                    objectInput = $("#inChooserStorypointRef_" + interactionCounter)
-                    objectInput.val($("#inStorypoint_" + counter).val())
-                    objectInput.val(objectInput.val().replace(/\s+/, "") )
-
+                    text = "Chooser: " + $("#inChooserID_"+interactionCounter).val()
+                    $("#lgdNeuerChooserFieldset_"+interactionCounter).text(text)
+                
                 # Click Event für btnChooserAnswer
                 $("#btnChooserAnswer_" + interactionCounter).click ->
                     ChooserAnswerCounter = $("#btnChooserAnswer_" + interactionCounter).attr("ChooserAnswerCounter")

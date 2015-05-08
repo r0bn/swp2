@@ -136,7 +136,7 @@ block content
                                                     // ------------ANCHOR-IMAGE
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAnchorImg") Auslösebild bestimmen
+                                    label.control-label(id="lblAnchorImg", for="inAnchorImg") Auslösebild bestimmen
                                 .col-lg-6
                                     input.form-control(disabled, type="text", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
                                 .col-lg-2
@@ -145,7 +145,7 @@ block content
                                                                                          // -------------ASSETS
                             .form-group
                                 .col-lg-4
-                                    label.control-label(for="inAsset") Anzeigbares Objekt
+                                    label.control-label(id="lblAsset", for="inAsset") Anzeigbares Objekt
                                 .col-lg-6
                                     input.form-control(disabled, type="text", id="inAsset", placeholder="Bild/Video aus Bib holen")
                                 .col-lg-2
@@ -156,7 +156,6 @@ block content
                                 .col-lg-3
                                     .dropdown(id="ddnStorypointReference")
                                         button.btn.btn-info.btn-block.pull-primary.btnDesign(id="btnSetReferences", referenceStorypointCounter="0", type="button") Referenzen setzen
-                                            span.caret
                                         
                                         ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu1")
                                             li(id="NEU_Storypoint_Ref_", role="presentation")
@@ -166,7 +165,7 @@ block content
 
                             .form-group
                                 .col-lg-5
-                                    label.control-label(for="interactions") Interaktion wählen
+                                    label.control-label(id="lblInteractions", for="ddnInteractions") Interaktion wählen
                                 .col-lg-4
                                     .dropup
                                         button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
@@ -213,7 +212,7 @@ block content
                                         .col-lg-5
                                             label.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
                                         .col-lg-7
-                                            input.form-control(type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
+                                            input.form-control(disabled, type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
                                     .form-group
                                         .col-lg-6
                                         .col-lg-6
@@ -281,18 +280,7 @@ block content
                                     .form-group
                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                                 span Antwort hinzufügen
-                                    .form-group(id="fgpAnswer", style="display: none")
-                                        .col-lg-1
-                                            label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
-                                        .col-lg-3
-                                            input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
-                                        .col-lg-1
-                                            label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
-                                        .col-lg-6
-                                            input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
-                                        .col-lg-1
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
-                                                span.glyphicon.glyphicon-trash
+                                    
                                                                         // ------------------------- Chooser
                             .form-group(id="fgpNeu_Chooser", style="display: none")
                                 .col-lg-1
@@ -384,7 +372,28 @@ block content
                                         div(id="divDependencyBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
 
 
-                
+            .form-group(id="fgpAnswer", style="display: none")
+                                        .col-lg-1
+                                            label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
+                                        .col-lg-2
+                                            input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
+                                        .col-lg-1
+                                            label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
+                                        .col-lg-5
+                                            input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
+                                        .col-lg-1
+                                            .dropdown
+                                                button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnTrue", role='menuitem', tabindex='0', value='Wahr') Wahr
+                                                    li(role='presentation')
+                                                        a(id="ddnFalse", role='menuitem', tabindex='1', value='Falsch') Falsch
+                                        .col-lg-1
+                                        .col-lg-1
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
+                                                span.glyphicon.glyphicon-trash    
             include ./medienLibrary.jade
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter

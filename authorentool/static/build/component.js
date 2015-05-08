@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -209,11 +209,22 @@ mainApp.controller("mainCtrl", [
         answer.style.display = "block";
         document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer);
         setIDs($("#" + answer.id), quizAnswerCounter);
+        createQuizDropdown(quizAnswerCounter);
         return $("#btnQuizAnswerDelete_" + quizAnswerCounter).click(function() {
           if (confirm('Möchten Sie die Antwort wirklich löschen?')) {
             return $("#" + answer.id).remove();
           }
         });
+      });
+    };
+    createQuizDropdown = function(counter) {
+      $("#ddnTrue_" + counter).click(function() {
+        $("#ddnState_" + counter).val("Wahr");
+        return $("#ddnState_" + counter).html("Wahr <span class='caret' />");
+      });
+      return $("#ddnFalse_" + counter).click(function() {
+        $("#ddnState_" + counter).val("Falsch");
+        return $("#ddnState_" + counter).html("Falsch <span class='caret' />");
       });
     };
     createChooser = function(counter) {
