@@ -39,10 +39,16 @@ mainApp.controller("mainCtrl", [
     });
     initDropdownClicks = function() {
       $("#ddnme").click(function() {
+        if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Kilometer") {
+          $("#inRadius").val($("#inRadius").val() * 1000);
+        }
         $("#ddnradius").val("Meter");
         return $("#ddnradius").html("Meter <span class='caret' />");
       });
       $("#ddnkm").click(function() {
+        if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Meter") {
+          $("#inRadius").val($("#inRadius").val() / 1000);
+        }
         $("#ddnradius").val("Kilometer");
         return $("#ddnradius").html("Kilometer <span class='caret' />");
       });
@@ -79,11 +85,13 @@ mainApp.controller("mainCtrl", [
       btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
       btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
-        return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
-          pieces: 50
-        }, 2500, function() {
-          return $("#fhlNeuerStorypoint_" + counter).remove();
-        });
+        if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
+          return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
+            pieces: 25
+          }, 2000, function() {
+            return $("#fhlNeuerStorypoint_" + counter).remove();
+          });
+        }
       });
       btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter);
       $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter);
@@ -540,9 +548,28 @@ mainApp.controller("mainCtrl", [
         strokeColor: 'red',
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: 'red'
+        fillColor: 'blue',
+        fillOpacity: 0.35,
+        editable: true
       });
       markers.push(circle);
+      google.maps.event.addListener(circle, 'radius_changed', function() {
+        rad = circle.getRadius();
+        if ($("#ddnradius").val() === "Meter") {
+          return $("#inRadius").val(rad);
+        } else if ($("#ddnradius").val() === "Kilometer") {
+          return $("#inRadius").val(rad / 1000);
+        }
+      });
+      google.maps.event.addListener(circle, 'center_changed', function() {
+        return marker.setPosition(circle.center);
+      });
+      google.maps.event.addListener(marker, 'position_changed', function() {
+        var lat, lng;
+        lat = marker.position.A;
+        lng = marker.position.F;
+        return $("#inLatLngLocation").val(lat + ", " + lng);
+      });
     };
     setAllMap = function(map, markers) {
       var i;
