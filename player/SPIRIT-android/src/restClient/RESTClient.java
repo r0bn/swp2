@@ -104,6 +104,9 @@ public class RESTClient {
         while ((line = br.readLine()) != null) {
             result += line+"\n";
         }
+        if(result != ""){        	
+        	result = result.substring(0,result.lastIndexOf('\n'));
+        }
         return result;
     }
     
