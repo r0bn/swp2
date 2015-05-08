@@ -129,7 +129,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo">
-                            <Href xlink:href="http://server.de/Anfangsvideo" />
+                            <Href xlink:href="Anfangsvideo" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4">
@@ -148,7 +148,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo_E1"> <!-- bei ja -->
-                            <Href xlink:href="http://server.de/Anfangsvideo_E1" />
+                            <Href xlink:href="Anfangsvideo_E1" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4_1">
@@ -164,7 +164,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo_E2"> <!-- bei nein -->
-                            <Href xlink:href="http://server.de/Anfangsvideo_E2" />
+                            <Href xlink:href="Anfangsvideo_E2" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4_2">
@@ -180,7 +180,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentenvideo">
-                            <Href xlink:href="http://server.de/Studentenvideo" />
+                            <Href xlink:href="Studentenvideo" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_B_PdR">
@@ -202,7 +202,7 @@
                     <assets>
                         <!-- Wie mache ich ein Image genau? -->
                         <Image id="Piratenzeugs">
-                            <href xlink:href="http://server.de/Piratenzeugs" />
+                            <href xlink:href="Piratenzeugs" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_KT">
@@ -221,7 +221,7 @@
                 <Geometry>
                     <assets>
                         <Image id="gebrauchter_Rucksack">
-                            <href xlink:href="http://server.de/Rucksack" />
+                            <href xlink:href="Rucksack" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_OTC">
@@ -240,7 +240,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Piratengespraech">
-                            <Href xlink:href="http://server.de/Piratengespraech" />
+                            <Href xlink:href="Piratengespraech" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Pirat">
@@ -256,7 +256,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentengespraech">
-                            <Href xlink:href="http://server.de/Studentengespraech" />
+                            <Href xlink:href="Studentengespraech" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Student">
@@ -272,7 +272,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Ende">
-                            <Href xlink:href="http://server.de/Ende" />
+                            <Href xlink:href="Ende" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_E_1" >
@@ -285,8 +285,8 @@
         <Interactions>
             <Quiz id="Punkt_A_Quiz">
                 <FeatureRef xlink:href="#Punkt_A_Feature" />
-                <OnTrue xlink:href="Feature_A_1"/>
-                <OnFalse xlink:href="Feature_A_2" />
+                <OnTrue xlink:href="Punkt_A_1_Feature"/>
+                <OnFalse xlink:href="Punkt_A_2_Feature" />
                 <Question> Bist du der Auserwählte? </Question>
                                 
                 <Answer id="A1">
