@@ -46,7 +46,35 @@
             googleMap() 
             graph()
             initHelpSystem()
+            initScrollbar()
             return
+
+
+        initScrollbar = () ->
+            $header = $('#colColumn2')
+            headerPos = $header.position().top
+            $win = $(window)
+            scrollBottom = $win.scrollTop() + $win.height()
+            $win.scroll ->
+                #Hier scrollt man nach unten. Dabei gilt: immer 30px unter Top und fix
+              if $win.scrollTop() >= headerPos
+                #alert "nach unten" + $win.scrollTop()
+                $header.css
+                  'position': 'fixed'
+                  'top': '30px'
+                  'right': '20px'
+                #Hier wird für jede Position wenn man nach oben Scrollt berechnet, wie die 
+                #das Div sich anzupassen hat.
+              i = 0
+              while i <= headerPos
+                if $win.scrollTop() == i
+                    $header.css
+                        'position': 'fixed'
+                        'top': Math.abs(i-150)
+                        'right':'20px'
+                i++
+              return
+
 
    
             
