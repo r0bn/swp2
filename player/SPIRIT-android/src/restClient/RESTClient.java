@@ -28,8 +28,8 @@ public class RESTClient {
     /**
      * The URL to use for requests
      */
-    private final String URLallStories = "http://api.storytellar.de/story";
-    private final String URLmediaData = "http://api.storytellar.de/media";
+    private String URLallStories = "http://api.storytellar.de/story";
+    private String URLmediaData = "http://api.storytellar.de/media";
 
     /**
      * 
