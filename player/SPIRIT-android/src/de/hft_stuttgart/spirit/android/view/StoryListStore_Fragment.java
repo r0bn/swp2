@@ -44,7 +44,7 @@ public class StoryListStore_Fragment extends Fragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    inflater.inflate(R.menu.main_store, menu);
+	    inflater.inflate(R.menu.main, menu);
 	}
 	
 	/**

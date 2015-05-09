@@ -227,6 +227,12 @@ public class ContentDownloader {
 			temp.setStoryMediaData(parseMediaDataFromXML(temp.getPathToXML()));
 			client.downloadMediaFiles(temp.getStoryMediaData(), temp);
 
+			for(Story s : downloadedStories) {
+				if(s.getId() == id){
+					downloadedStories.remove(s);
+					break;
+				}
+			}
 			downloadedStories.add(temp);
 			saveDownloadedStories();
 			markDownloadedStories();

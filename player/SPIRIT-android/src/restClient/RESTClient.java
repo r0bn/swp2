@@ -99,7 +99,7 @@ public class RESTClient {
      * @throws IOException
      */
     private String readInput(InputStream is) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
         String result = "", line;
         while ((line = br.readLine()) != null) {
             result += line+"\n";
