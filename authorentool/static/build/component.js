@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -36,6 +36,7 @@ mainApp.controller("mainCtrl", [
       initDropdownClicks();
       googleMap();
       graph();
+      initHelpSystem();
     });
     initDropdownClicks = function() {
       $("#ddnme").click(function() {
@@ -569,6 +570,16 @@ mainApp.controller("mainCtrl", [
         lat = marker.position.A;
         lng = marker.position.F;
         return $("#inLatLngLocation").val(lat + ", " + lng);
+      });
+    };
+    initHelpSystem = function() {
+      $.ajax({
+        type: 'GET',
+        url: 'HelpContent.xml',
+        dataType: 'xml',
+        success: function(xml) {
+          $("#divHelpBox").append($(xml).find('inTitle').text());
+        }
       });
     };
     setAllMap = function(map, markers) {

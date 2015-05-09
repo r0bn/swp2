@@ -45,6 +45,7 @@
             initDropdownClicks()
             googleMap() 
             graph()
+            initHelpSystem()
             return
 
    
@@ -584,6 +585,18 @@
                 lat = marker.position.A
                 lng = marker.position.F
                 $("#inLatLngLocation").val(lat + ", " + lng)
+            return
+
+        initHelpSystem = () ->
+            $.ajax
+              type: 'GET'
+              url: 'HelpContent.xml'
+              dataType: 'xml'
+              success: (xml) ->
+                $("#divHelpBox").append($(xml).find('inTitle').text())
+                return
+            
+
             return
 
 
