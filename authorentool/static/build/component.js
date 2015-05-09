@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, lightBox, lightMedienBox, setAllMap, setIDs;
+    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -36,7 +36,36 @@ mainApp.controller("mainCtrl", [
       initDropdownClicks();
       googleMap();
       graph();
+      initScrollbar();
     });
+    initScrollbar = function() {
+      var $header, $win, headerPos, scrollBottom;
+      $header = $('#colColumn2');
+      headerPos = $header.position().top;
+      $win = $(window);
+      scrollBottom = $win.scrollTop() + $win.height();
+      return $win.scroll(function() {
+        var i;
+        if ($win.scrollTop() >= headerPos) {
+          $header.css({
+            'position': 'fixed',
+            'top': '30px',
+            'right': '20px'
+          });
+        }
+        i = 0;
+        while (i <= headerPos) {
+          if ($win.scrollTop() === i) {
+            $header.css({
+              'position': 'fixed',
+              'top': Math.abs(i - 150),
+              'right': '20px'
+            });
+          }
+          i++;
+        }
+      });
+    };
     initDropdownClicks = function() {
       $("#ddnme").click(function() {
         if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Kilometer") {
