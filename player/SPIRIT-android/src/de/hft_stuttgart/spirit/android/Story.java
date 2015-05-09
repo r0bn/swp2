@@ -15,9 +15,12 @@ public class Story {
 	private String description;
 	private String author;
 	private String size;
-	private String creation_date;
+	private String size_uom;
 	private String location;
 	private String radius;
+	private String radius_uom;
+	private String created_at;
+	private String updated_at;
 	private String pathToXML;
 	private boolean alreadyDownloaded;
 	private HashMap<String,String> storyMediaData;
@@ -35,18 +38,21 @@ public class Story {
 	 * @param location location in GPS coordinates (meta data)
 	 * @param radius radius in km (meta data)
 	 */
-	public Story(Integer id, String title, String description, String author, String size, String creation_date, String location, String radius, boolean alreadyDownloaded) {
+	public Story(Integer id, String title, String description, String author, String size, String size_uom, String location, String radius, String radius_uom, String created_at, String updated_at, boolean alreadyDownloaded) {
 	
 		this.setId(id);
 		this.setTitle(title);
 		this.setDescription(description);
 		this.setAuthor(author);
 		this.setSize(size);
-		this.setCreation_date(creation_date);
+		this.setSize_uom(size_uom);;
 		this.setLocation(location);
 		this.setRadius(radius);
+		this.setRadius_uom(radius_uom);
+		this.setCreated_at(created_at);
+		this.setUpdated_at(updated_at);
 		this.setAlreadyDownloaded(alreadyDownloaded);
-		String[] longLat = location.split("[ ]+");
+		String[] longLat = location.split(" ");
 		latitude = Double.valueOf(longLat[0]);
 		longitude = Double.valueOf(longLat[1]);
 		
@@ -90,14 +96,6 @@ public class Story {
 
 	public void setSize(String size) {
 		this.size = size;
-	}
-
-	public String getCreation_date() {
-		return creation_date;
-	}
-
-	public void setCreation_date(String creation_date) {
-		this.creation_date = creation_date;
 	}
 
 	public String getLocation() {
@@ -146,6 +144,38 @@ public class Story {
 	
 	public double  getLatitude(){
 		return latitude;
+	}
+
+	public String getSize_uom() {
+		return size_uom;
+	}
+
+	public void setSize_uom(String size_uom) {
+		this.size_uom = size_uom;
+	}
+
+	public String getRadius_uom() {
+		return radius_uom;
+	}
+
+	public void setRadius_uom(String radius_uom) {
+		this.radius_uom = radius_uom;
+	}
+
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
+
+	public String getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(String updated_at) {
+		this.updated_at = updated_at;
 	}
 
 }

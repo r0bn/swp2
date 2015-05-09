@@ -61,7 +61,16 @@ public class ContentDownloader {
 				String[] stories = result.split(";");
 				for(String id : stories){
 					Story temp = parseMetaDataFromXML(id);
-					downloadedStories.add(temp);
+					
+					//returned story could be null -> Story-XML is incompatible with actual data-structure, revision is not 7
+					//during the development, incompatible stories are deleted before the app starts (otherwise the app crashes)
+					//should we implement another behavior here?
+					if(temp != null)
+						downloadedStories.add(temp);
+					else {
+						deleteStoryRecursive(new File(pathToAppDir + "/Content/" + id));
+						saveDownloadedStories();
+					}
 				}
 				
 			} catch (IOException e) {
@@ -107,9 +116,12 @@ public class ContentDownloader {
 						(String) story.get("description"),
 						(String) story.get("author"),
 						(String) story.get("size"),
-						(String) story.get("creation_date"),
+						(String) story.get("size_uom"),
 						(String) story.get("location"),
-						(String) story.get("radius"), false);
+						(String) story.get("radius"),
+						(String) story.get("radius_uom"),
+						(String) story.get("created_at"), 
+						(String) story.get("updated_at"), false);
 
 				allStoriesData.add(temp);
 			}
@@ -150,9 +162,12 @@ public class ContentDownloader {
 						(String) story.get("description"),
 						(String) story.get("author"),
 						(String) story.get("size"),
-						(String) story.get("creation_date"),
+						(String) story.get("size_uom"),
 						(String) story.get("location"),
-						(String) story.get("radius"), false);
+						(String) story.get("radius"),
+						(String) story.get("radius_uom"),
+						(String) story.get("created_at"), 
+						(String) story.get("updated_at"), false);
 
 				allStoriesWithParameterData.add(temp);
 
@@ -367,14 +382,19 @@ public class ContentDownloader {
 	 * @return Returns a Story-object with metadata parsed from the xmlFile.
 	 */
 	private Story parseMetaDataFromXML(String id) {
+		Log.d(ContentDownloader.class.toString(), "Parse Story : "+id);
 		Story story;
+		String revision = "";
 		String title ="";
 		String description="";
 		String author="";
 		String size="";
-		String creation_date="";
+		String size_uom="";
 		String location="";
 		String radius="";
+		String radius_uom="";
+		String created_at="2015-05-01 00:00:00";
+		String updated_at="2015-05-01 00:00:00";
 		try {
 			XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory
 					.newInstance();
@@ -393,7 +413,13 @@ public class ContentDownloader {
 				switch (event) {
 				case XmlPullParser.START_TAG:
 					name = parser.getName();
-					if (name.equals("Title")) {
+					if (name.equals("Revision")) {
+						event = parser.next();
+						revision = parser.getText();
+					} else if (name.equals("Title")) {
+						Log.d(ContentDownloader.class.toString(), "Revision: "+revision);
+						if(!revision.equals("7"))
+							return null;
 						event = parser.next();
 						title = parser.getText();
 					} else if (name.equals("Description")) {
@@ -402,12 +428,14 @@ public class ContentDownloader {
 					} else if (name.equals("Author")) {
 						event = parser.next();
 						author = parser.getText();
-					} else if (name.equals("CreationDate")) {
-						event = parser.next();
-						creation_date = parser.getText();
 					} else if (name.equals("Size")) {
+						size_uom = parser.getAttributeValue(0);
 						event = parser.next();
 						size = parser.getText();
+					} else if (name.equals("Radius")) {
+						radius_uom = parser.getAttributeValue(0);
+						event = parser.next();
+						radius = parser.getText();
 					} else if (name.equals("Location")) {
 						do{
 							event = parser.next();
@@ -429,8 +457,7 @@ public class ContentDownloader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		story = new Story(Integer.valueOf(id), title, description, author, size, creation_date, location, radius, true);
+		story = new Story(Integer.valueOf(id), title, description, author, size, size_uom, location, radius, radius_uom, created_at, updated_at, true);
 		story.setStoryMediaData(parseMediaDataFromXML(pathToAppDir + "/Content/" + id));
 		return story;
 	}

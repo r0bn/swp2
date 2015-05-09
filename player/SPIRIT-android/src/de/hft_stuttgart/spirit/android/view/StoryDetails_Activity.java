@@ -33,7 +33,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 	public final static String EXTRA_DESCRIPTION = "de.hft_stuttgart.spirit.android.view.DESCRIPTION";
 	public final static String EXTRA_LOCATION = "de.hft_stuttgart.spirit.android.view.LOCATION";
 	public final static String EXTRA_AUTHOR = "de.hft_stuttgart.spirit.android.view.AUTHOR";
-	public final static String EXTRA_CREATIONDATE = "de.hft_stuttgart.spirit.android.view.CREATIONDATE";
+	public final static String EXTRA_UPDATEDAT = "de.hft_stuttgart.spirit.android.view.CREATIONDATE";
 	public final static String EXTRA_STOREORINSTALLED = "de.hft_stuttgart.spirit.android.view.STOREORINSTALLED";
 	
 	private final static String TAG = StoryDetails_Activity.class.toString();
@@ -78,8 +78,8 @@ public class StoryDetails_Activity extends ActionBarActivity {
 		
 		// Update creation date in activity
 		textv = (TextView)findViewById(R.id.CreationDateView);
-		if (intent.hasExtra(EXTRA_CREATIONDATE)) {
-			textv.setText(intent.getStringExtra(EXTRA_CREATIONDATE));
+		if (intent.hasExtra(EXTRA_UPDATEDAT)) {
+			textv.setText(intent.getStringExtra(EXTRA_UPDATEDAT));
 			logmessage += "Set creation date by intent to \"" + textv.getText() + "\"\n";
 		} else {
 			textv.setText("#UNDEF");
