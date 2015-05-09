@@ -435,20 +435,20 @@ mainApp.controller("mainCtrl", [
       network = new vis.Network(container, data, {});
     };
     googleMap = function() {
-      var autocomplete, input, map, mapOptions, markers, searchBox;
+      var autocomplete, input, mapOptions, markers, searchBox;
       mapOptions = {
         zoom: 8,
         center: new google.maps.LatLng(48.7758459, 9.182932100000016),
         scaleControl: true
       };
-      map = new google.maps.Map($('#gmeg_map_canvas')[0], mapOptions);
+      window.map = new google.maps.Map($('#gmeg_map_canvas')[0], mapOptions);
       input = document.getElementById('inMapSearch');
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      window.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
       searchBox = new google.maps.places.SearchBox(input);
       autocomplete = new google.maps.places.Autocomplete(input, {
         types: ['geocode']
       });
-      autocomplete.bindTo('bounds', map);
+      autocomplete.bindTo('bounds', window.map);
       markers = [];
       google.maps.event.addListener(searchBox, 'places_changed', function() {
         var marker;
@@ -481,7 +481,7 @@ mainApp.controller("mainCtrl", [
           setAllMap(null, markers);
           markers = [];
           marker = new google.maps.Marker({
-            map: map,
+            map: window.map,
             icon: image,
             title: place.name,
             position: place.geometry.location
@@ -491,12 +491,12 @@ mainApp.controller("mainCtrl", [
           bounds.extend(place.geometry.location);
           i++;
         }
-        map.fitBounds(bounds);
+        window.map.fitBounds(bounds);
       });
       $(window).resize(function() {
-        google.maps.event.trigger(map, 'resize');
+        google.maps.event.trigger(window.map, 'resize');
       });
-      google.maps.event.addListener(map, 'click', function(event) {
+      google.maps.event.addListener(window.map, 'click', function(event) {
         var i, lat, lng;
         lat = event.latLng.lat();
         lng = event.latLng.lng();
@@ -507,11 +507,11 @@ mainApp.controller("mainCtrl", [
           markers[i].setMap(null);
           i++;
         }
-        addMarker(event.latLng, markers, map);
+        addMarker(event.latLng, markers);
       });
-      return lightBox(map);
+      return lightBox();
     };
-    lightBox = function(map) {
+    lightBox = function() {
       var $lightbox;
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {
@@ -523,7 +523,7 @@ mainApp.controller("mainCtrl", [
         };
         $lightbox.find('.close').addClass('hidden');
         $mapDiv.css(css);
-        google.maps.event.trigger(map, 'resize');
+        google.maps.event.trigger(window.map, 'resize');
       });
       return $lightbox.on('shown.bs.modal', function(e) {
         var $mapDiv;
@@ -532,7 +532,7 @@ mainApp.controller("mainCtrl", [
           'width': $mapDiv.width()
         });
         $lightbox.find('.close').removeClass('hidden');
-        google.maps.event.trigger(map, 'resize');
+        google.maps.event.trigger(window.map, 'resize');
       });
     };
     lightMedienBox = function() {
@@ -557,12 +557,12 @@ mainApp.controller("mainCtrl", [
         $medien.find('.close').removeClass('hidden');
       });
     };
-    addMarker = function(location, markers, map) {
+    addMarker = function(location, markers) {
       var center, circle, marker, rad;
       center = new google.maps.LatLng(location.A, location.F);
       marker = new google.maps.Marker({
         position: location,
-        map: map
+        map: window.map
       });
       markers.push(marker);
       rad = $("#inRadius").val();
@@ -573,7 +573,7 @@ mainApp.controller("mainCtrl", [
       }
       circle = new google.maps.Circle({
         center: center,
-        map: map,
+        map: window.map,
         radius: parseInt(rad),
         strokeColor: 'red',
         strokeOpacity: 0.8,

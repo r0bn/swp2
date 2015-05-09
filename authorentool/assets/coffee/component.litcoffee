@@ -475,12 +475,12 @@
                   zoom: 8
                   center: new (google.maps.LatLng)(48.7758459, 9.182932100000016)
                   scaleControl: true
-                map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
+                window.map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
                 input = document.getElementById('inMapSearch')
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push input
+                window.map.controls[google.maps.ControlPosition.TOP_LEFT].push input
                 searchBox = new (google.maps.places.SearchBox)(input)
                 autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
-                autocomplete.bindTo('bounds', map);
+                autocomplete.bindTo('bounds', window.map);
                 markers = []
                 google.maps.event.addListener searchBox, 'places_changed', ->
                   `var marker`
@@ -510,7 +510,7 @@
                     setAllMap(null, markers)
                     markers = []
                     marker = new (google.maps.Marker)(
-                      map: map
+                      map: window.map
                       icon: image
                       title: place.name
                       position: place.geometry.location)
@@ -520,15 +520,15 @@
                     $("#inLatLngLocation").val(place.geometry.location.A + ", " + place.geometry.location.F)
                     bounds.extend place.geometry.location
                     i++
-                  map.fitBounds bounds
+                  window.map.fitBounds bounds
                   return
 
                 $(window).resize ->
 
-                  google.maps.event.trigger map, 'resize'
+                  google.maps.event.trigger window.map, 'resize'
 
                   return
-                google.maps.event.addListener map, 'click', (event) ->
+                google.maps.event.addListener window.map, 'click', (event) ->
                     lat = event.latLng.lat()
                     lng = event.latLng.lng()
                     $("#inMapSearch").val(lat + ", " + lng)
@@ -537,11 +537,11 @@
                     while i < markers.length
                         markers[i].setMap null
                         i++
-                    addMarker(event.latLng, markers, map);
+                    addMarker(event.latLng, markers);
                     return
-                lightBox(map)
+                lightBox()
 
-        lightBox = (map) ->
+        lightBox = () ->
                 $lightbox = $('#lightbox')
                 $('[data-target="#lightbox"]').on 'click', (event) ->
                   $mapDiv = $(this).find('gmeg_map_canvas')
@@ -550,13 +550,13 @@
                     'maxHeight': $(window).height() - 100
                   $lightbox.find('.close').addClass 'hidden'
                   $mapDiv.css css
-                  google.maps.event.trigger map, 'resize'
+                  google.maps.event.trigger window.map, 'resize'
                   return
                 $lightbox.on 'shown.bs.modal', (e) ->
                   $mapDiv = $(this).find('gmeg_map_canvas')
                   $lightbox.find('.modal-dialog').css 'width': $mapDiv.width()
                   $lightbox.find('.close').removeClass 'hidden'
-                  google.maps.event.trigger map, 'resize'
+                  google.maps.event.trigger window.map, 'resize'
                   return
 
         lightMedienBox = () ->
@@ -576,11 +576,11 @@
                   return
 
 
-        addMarker = (location, markers, map) ->
+        addMarker = (location, markers) ->
             center = new google.maps.LatLng(location.A, location.F)
             marker = new google.maps.Marker({
                 position: location,
-                map: map
+                map: window.map
             });
             markers.push(marker)
             
@@ -591,7 +591,7 @@
                 rad = rad * 1000
             circle = new (google.maps.Circle)
                 center: center
-                map: map
+                map: window.map
                 radius: parseInt(rad)
                 strokeColor: 'red'
                 strokeOpacity: 0.8
