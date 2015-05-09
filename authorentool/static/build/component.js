@@ -32,6 +32,9 @@ mainApp.controller("mainCtrl", [
     };
     (function($) {})(jQuery);
     $(function() {
+      $("#btnMap").click(function() {
+        return window.mapCaller = "btnMap";
+      });
       lightMedienBox();
       initDropdownClicks();
       googleMap();
@@ -114,6 +117,10 @@ mainApp.controller("mainCtrl", [
       $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter);
       btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
       btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
+      $("#btnStorypointMap_" + counter).click(function() {
+        window.mapCaller = "btnStorypointMap_" + counter;
+        return $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter);
+      });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
           return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
@@ -497,21 +504,32 @@ mainApp.controller("mainCtrl", [
         google.maps.event.trigger(window.map, 'resize');
       });
       google.maps.event.addListener(window.map, 'click', function(event) {
-        var i, lat, lng;
+        var currentGPSField, deleted, i, lat, lng, max;
         lat = event.latLng.lat();
         lng = event.latLng.lng();
-        $("#inMapSearch").val(lat + ", " + lng);
-        $("#inLatLngLocation").val(lat + ", " + lng);
+        currentGPSField = $("#" + window.mapCaller).attr("gpsField");
+        $("#" + currentGPSField).val(lat + ", " + lng);
         i = 0;
-        while (i < markers.length) {
+        max = markers.length;
+        deleted = [];
+        while (i < max) {
           markers[i].setMap(null);
+          if (markers[i].get("markerOwner") === window.mapCaller) {
+            deleted.push(i);
+          }
           i++;
+        }
+        i = deleted.length;
+        i--;
+        while (i > -1) {
+          markers.splice(deleted[i], 1);
+          i--;
         }
         addMarker(event.latLng, markers);
       });
-      return lightBox();
+      return lightBox(markers);
     };
-    lightBox = function() {
+    lightBox = function(markers) {
       var $lightbox;
       $lightbox = $('#lightbox');
       $('[data-target="#lightbox"]').on('click', function(event) {
@@ -525,14 +543,25 @@ mainApp.controller("mainCtrl", [
         $mapDiv.css(css);
         google.maps.event.trigger(window.map, 'resize');
       });
-      return $lightbox.on('shown.bs.modal', function(e) {
-        var $mapDiv;
+      $lightbox.on('shown.bs.modal', function(e) {
+        var $mapDiv, i;
         $mapDiv = $(this).find('gmeg_map_canvas');
         $lightbox.find('.modal-dialog').css({
           'width': $mapDiv.width()
         });
         $lightbox.find('.close').removeClass('hidden');
+        i = 0;
+        while (i < markers.length) {
+          if (markers[i].get("markerOwner") === window.mapCaller) {
+            markers[i].setMap(window.map);
+            markers[i].getMap().setCenter(markers[i].position);
+          }
+          i++;
+        }
         google.maps.event.trigger(window.map, 'resize');
+      });
+      return $lightbox.on('hide.bs.modal', function(e) {
+        return setAllMap(null, markers);
       });
     };
     lightMedienBox = function() {
@@ -564,42 +593,47 @@ mainApp.controller("mainCtrl", [
         position: location,
         map: window.map
       });
+      marker.set("markerOwner", window.mapCaller);
       markers.push(marker);
-      rad = $("#inRadius").val();
-      if ($("#ddnradius").val() === "Einheit") {
-        rad = 0;
-      } else if ($("#ddnradius").val() === "Kilometer") {
-        rad = rad * 1000;
-      }
-      circle = new google.maps.Circle({
-        center: center,
-        map: window.map,
-        radius: parseInt(rad),
-        strokeColor: 'red',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: 'blue',
-        fillOpacity: 0.35,
-        editable: true
-      });
-      markers.push(circle);
-      google.maps.event.addListener(circle, 'radius_changed', function() {
-        rad = circle.getRadius();
-        if ($("#ddnradius").val() === "Meter") {
-          return $("#inRadius").val(Math.round(rad));
+      if (window.mapCaller === "btnMap" && $("#ddnradius").val() !== "Einheit") {
+        rad = $("#inRadius").val();
+        if ($("#ddnradius").val() === "Einheit") {
+          rad = 0;
         } else if ($("#ddnradius").val() === "Kilometer") {
-          return $("#inRadius").val(Math.round(rad / 1000));
+          rad = rad * 1000;
         }
-      });
-      google.maps.event.addListener(circle, 'center_changed', function() {
-        return marker.setPosition(circle.center);
-      });
-      google.maps.event.addListener(marker, 'position_changed', function() {
-        var lat, lng;
-        lat = marker.position.A;
-        lng = marker.position.F;
-        return $("#inLatLngLocation").val(lat + ", " + lng);
-      });
+        circle = new google.maps.Circle({
+          center: center,
+          map: window.map,
+          radius: Math.round(rad),
+          strokeColor: 'red',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: 'blue',
+          fillOpacity: 0.35,
+          editable: true
+        });
+        circle.set("markerOwner", window.mapCaller);
+        markers.push(circle);
+        google.maps.event.addListener(circle, 'radius_changed', function() {
+          rad = circle.getRadius();
+          if ($("#ddnradius").val() === "Meter") {
+            return $("#inRadius").val(Math.round(rad));
+          } else if ($("#ddnradius").val() === "Kilometer") {
+            return $("#inRadius").val(Math.round(rad / 1000));
+          }
+        });
+        google.maps.event.addListener(circle, 'center_changed', function() {
+          return marker.setPosition(circle.center);
+        });
+        google.maps.event.addListener(marker, 'position_changed', function() {
+          var lat, lng;
+          lat = marker.position.A;
+          lng = marker.position.F;
+          return $("#inLatLngLocation").val(lat + ", " + lng);
+        });
+        return;
+      }
     };
     initHelpSystem = function() {
       $.ajax({
