@@ -70,14 +70,14 @@ mainApp.controller("mainCtrl", [
     initDropdownClicks = function() {
       $("#ddnme").click(function() {
         if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Kilometer") {
-          $("#inRadius").val($("#inRadius").val() * 1000);
+          $("#inRadius").val(Math.round($("#inRadius").val() * 1000));
         }
         $("#ddnradius").val("Meter");
         return $("#ddnradius").html("Meter <span class='caret' />");
       });
       $("#ddnkm").click(function() {
         if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Meter") {
-          $("#inRadius").val($("#inRadius").val() / 1000);
+          $("#inRadius").val(Math.round($("#inRadius").val() / 1000));
         }
         $("#ddnradius").val("Kilometer");
         return $("#ddnradius").html("Kilometer <span class='caret' />");
@@ -586,9 +586,9 @@ mainApp.controller("mainCtrl", [
       google.maps.event.addListener(circle, 'radius_changed', function() {
         rad = circle.getRadius();
         if ($("#ddnradius").val() === "Meter") {
-          return $("#inRadius").val(rad);
+          return $("#inRadius").val(Math.round(rad));
         } else if ($("#ddnradius").val() === "Kilometer") {
-          return $("#inRadius").val(rad / 1000);
+          return $("#inRadius").val(Math.round(rad / 1000));
         }
       });
       google.maps.event.addListener(circle, 'center_changed', function() {

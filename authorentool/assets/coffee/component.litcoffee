@@ -83,12 +83,12 @@
             $("#ddnme").click -> 
 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Kilometer"
-                    $("#inRadius").val($("#inRadius").val() * 1000)
+                    $("#inRadius").val(Math.round($("#inRadius").val() * 1000))
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
             $("#ddnkm").click -> 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Meter"
-                    $("#inRadius").val($("#inRadius").val() / 1000)
+                    $("#inRadius").val(Math.round($("#inRadius").val() / 1000))
                 $("#ddnradius").val("Kilometer")
                 $("#ddnradius").html("Kilometer <span class='caret' />")
 
@@ -604,9 +604,9 @@
             google.maps.event.addListener circle, 'radius_changed', () ->
                                 rad = circle.getRadius()
                                 if $("#ddnradius").val() == "Meter"
-                                    $("#inRadius").val(rad)
+                                    $("#inRadius").val(Math.round(rad))
                                 else if $("#ddnradius").val() == "Kilometer"
-                                    $("#inRadius").val(rad / 1000)
+                                    $("#inRadius").val(Math.round(rad / 1000))
             google.maps.event.addListener circle, 'center_changed', () ->
                 marker.setPosition(circle.center)
             google.maps.event.addListener marker, 'position_changed', () ->
