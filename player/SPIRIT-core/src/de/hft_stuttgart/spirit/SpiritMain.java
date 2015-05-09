@@ -36,6 +36,8 @@ import com.badlogic.gdx.utils.Array;
 import de.hft_stuttgart.spirit.SpiritEvent.Event;
 import de.hft_stuttgart.spirit.TextButton.positionA;
 import de.hft_stuttgart.spirit.TextButton.positionB;
+import de.hft_stuttgart.storytellar.PlayableStory;
+import de.hft_stuttgart.storytellar.StoryXMLParser;
 
 public class SpiritMain extends ApplicationAdapter implements
 		FilmStartedCallback, SpiritApp {
@@ -76,6 +78,8 @@ public class SpiritMain extends ApplicationAdapter implements
 	SignalToGhostEffect signalToGhostEffect;
 	FadeEffect fadeEffect;
 	TextButton[] customTextButton;
+	String storyXMLPath;	//Storytellar
+	PlayableStory story;	//Storytellar
 	
 	public SpiritMain(Vuforia v, SpiritFilm spiritFilm, SpiritGeoTools sgt,
 			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml) {
@@ -85,6 +89,18 @@ public class SpiritMain extends ApplicationAdapter implements
 		this.nfc = nfc;
 		this.webview = webview;
 		armlParser = arml;
+	}
+	
+	//Storytellar
+	public SpiritMain(Vuforia v, SpiritFilm spiritFilm, SpiritGeoTools sgt,
+			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, String storyXMLPath) {
+		vuforia = v;
+		this.spiritFilm = spiritFilm;
+		geoTools = new GeoTools(sgt);
+		this.nfc = nfc;
+		this.webview = webview;
+		armlParser = arml;
+		this.storyXMLPath = storyXMLPath;	
 	}
 
 	@Override
@@ -139,7 +155,7 @@ public class SpiritMain extends ApplicationAdapter implements
 		customTextButton[4] = new TextButton(guiAtlas, font,positionA.Left,positionB.BOTTOM);
 		customTextButton[5] = new TextButton(guiAtlas, font,positionA.Right,positionB.BOTTOM);
 		
-		
+		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
 		
 
 	}
@@ -654,5 +670,19 @@ public class SpiritMain extends ApplicationAdapter implements
 	@Override
 	public List<Poi> getArmlFromSdCard(String fullPath) {
 		return armlParser.getPlacesFromSdCard(fullPath);
+	}
+
+	/** Storytellar
+	 * @return the story
+	 */
+	public PlayableStory getStory() {
+		return story;
+	}
+
+	/** Storytellar
+	 * @param story the story to set
+	 */
+	public void setStory(PlayableStory story) {
+		this.story = story;
 	}
 }

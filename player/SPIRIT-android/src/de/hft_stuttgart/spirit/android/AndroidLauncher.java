@@ -20,6 +20,7 @@ import android.nfc.tech.IsoDep;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ import com.qualcomm.vuforia.TrackerManager;
 
 import de.hft_stuttgart.spirit.SpiritMain;
 import de.hft_stuttgart.spirit.SpiritWebviewHandler;
+import de.hft_stuttgart.spirit.android.view.StoryDetails_Activity;
 
 public class AndroidLauncher extends AndroidApplication implements
 		VuforiaControl, SpiritWebviewHandler {
@@ -216,10 +218,19 @@ public class AndroidLauncher extends AndroidApplication implements
 		getWindow().clearFlags(
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
+//		gameView = initializeForView(new SpiritMain(new VuforiaLibgdxInterface(
+//				this), new SpiritFilmWrapper(this), geoTools, nfcInterface,
+//				this, new ArmlLoader(this, new XmlPullParserHandler())), config);
+
+		// Generate path for xml file
+		int storyId = getIntent().getIntExtra(StoryDetails_Activity.EXTRA_STORYID, -1);
+		String pathToAppDir = Environment.getExternalStorageDirectory()
+				+ "/StorytellAR";
+		String storyXMLPath = pathToAppDir + "/Content/" + String.valueOf(storyId) + "/arml.xml";
+		
 		gameView = initializeForView(new SpiritMain(new VuforiaLibgdxInterface(
 				this), new SpiritFilmWrapper(this), geoTools, nfcInterface,
-				this, new ArmlLoader(this, new XmlPullParserHandler())), config);
-
+				this, new ArmlLoader(this, new XmlPullParserHandler()), storyXMLPath), config);
 		gameView.setId(123);
 
 		// RelativeLayout.LayoutParams params = new

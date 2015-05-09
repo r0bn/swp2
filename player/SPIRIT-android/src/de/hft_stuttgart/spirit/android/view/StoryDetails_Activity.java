@@ -155,7 +155,9 @@ public class StoryDetails_Activity extends ActionBarActivity {
         Toast toast;
         switch (id) {
 		case R.id.action_start:
-        	startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
+			Intent start_intent = new Intent(getApplicationContext(),AndroidLauncher.class);
+			start_intent.putExtra(EXTRA_STORYID, intent.getIntExtra(EXTRA_STORYID, -1));
+        	startActivity(start_intent);
 			return true;
 		case R.id.action_restart:
 			startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
