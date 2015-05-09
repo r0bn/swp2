@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,7 +49,7 @@ public class StoryListInstalled_Fragment extends Fragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    inflater.inflate(R.menu.main_installed, menu);
+	    inflater.inflate(R.menu.main, menu);
 	}
 	
     @Override
@@ -71,6 +72,7 @@ public class StoryListInstalled_Fragment extends Fragment {
                 i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, selectedStory.getAuthor());
                 i.putExtra(StoryDetails_Activity.EXTRA_CREATIONDATE, selectedStory.getCreation_date());
                 i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "INSTALLED");
+                i.putExtra(StoryDetails_Activity.EXTRA_STORYID, selectedStory.getId());
                 startActivity(i);
             }
         });

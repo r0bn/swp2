@@ -28,8 +28,8 @@ public class RESTClient {
     /**
      * The URL to use for requests
      */
-    private final String URLallStories = "http://api.storytellar.de/story";
-    private final String URLmediaData = "http://api.storytellar.de/media";
+    private String URLallStories = "http://api.storytellar.de/story";
+    private String URLmediaData = "http://api.storytellar.de/media";
 
     /**
      * 
@@ -99,10 +99,13 @@ public class RESTClient {
      * @throws IOException
      */
     private String readInput(InputStream is) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
         String result = "", line;
         while ((line = br.readLine()) != null) {
             result += line+"\n";
+        }
+        if(result != ""){        	
+        	result = result.substring(0,result.lastIndexOf('\n'));
         }
         return result;
     }

@@ -1,7 +1,5 @@
 # Softwareprojekt 2
 
-* LALALALALA
-
 Details im [Wiki](https://github.com/r0bn/swp2/wiki)
 
 ### Server

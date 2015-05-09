@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hft_stuttgart.spirit.Poi;
+
 
 /**
  * @author Marcel
@@ -25,16 +27,16 @@ public class PlayableStory {
 	Double radius;
 	
 	// Other Data:
-	Map<String,StoryPoint> scenes;
-	String initialScene;
-	String currentScene;
+	Map<String,Poi> storypoints;
+	String initialStorypoint;
+	String currentStorypoint;
 	
 	public PlayableStory(){
-		scenes = new HashMap<String, StoryPoint>();
+		storypoints = new HashMap<String, Poi>();
 	}
 	
 	public PlayableStory(String title, String description, Double size,	String author, Date creationDate, Double latitude, 
-			Double longitude, Double radius, Map<String,StoryPoint> scenes, String initialScene, String currentScene){
+			Double longitude, Double radius, Map<String,Poi> scenes, String initialScene, String currentScene){
 		this.title = title;
 		this.description = description;
 		this.size = size;
@@ -43,9 +45,9 @@ public class PlayableStory {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.radius = radius;
-		this.scenes = scenes;
-		this.initialScene = initialScene;
-		this.currentScene = currentScene;
+		this.storypoints = scenes;
+		this.initialStorypoint = initialScene;
+		this.currentStorypoint = currentScene;
 	}
 	
 	// Get & Set
@@ -97,23 +99,23 @@ public class PlayableStory {
 	public void setRadius(Double radius) {
 		this.radius = radius;
 	}
-	public Map<String, StoryPoint> getScenes() {
-		return scenes;
+	public Map<String, Poi> getStorypoints() {
+		return storypoints;
 	}
-	public void setScenes(Map<String, StoryPoint> scenes) {
-		this.scenes = scenes;
+	public void setStorypoints(Map<String, Poi> scenes) {
+		this.storypoints = scenes;
 	}
 	public String getInitialScene() {
-		return initialScene;
+		return initialStorypoint;
 	}
 	public void setInitialScene(String initialScene) {
-		this.initialScene = initialScene;
+		this.initialStorypoint = initialScene;
 	}
-	public String getCurrentScene() {
-		return currentScene;
+	public String getCurrentStorypoint() {
+		return currentStorypoint;
 	}
-	public void setCurrentScene(String currentScene) {
-		this.currentScene = currentScene;
+	public void setCurrentStorypoint(String currentScene) {
+		this.currentStorypoint = currentScene;
 	}
 
 	//Functionallity:
