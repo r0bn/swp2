@@ -137,28 +137,23 @@ public class StoryFilter implements Parcelable {
 		
 		boolean show = true;
 
-		if (this.title != "" && !item.getTitle().contains(this.title)&& !item.getTitle().toLowerCase().contains(this.title.toLowerCase())){
+		if (!this.title.equals("") && !item.getTitle().contains(this.title)&& !item.getTitle().toLowerCase().contains(this.title.toLowerCase())){
 
 			show = false;
 		}
 		
-		if (this.author != "" && !item.getAuthor().contains(this.author) && !item.getAuthor().toLowerCase().contains(this.author.toLowerCase()) && show){
+		if (!this.author.equals("") && !item.getAuthor().contains(this.author) && !item.getAuthor().toLowerCase().contains(this.author.toLowerCase()) && show){
 			show = false;
 		}
-		/*
-		if (this.size_max != "" && show){	//TODO: bugfix
-			try {
-				if(Integer.parseInt(this.size_max) > Integer.parseInt(item.getSize())){
-					show = false;
-				}
-			 }
-			 catch(NumberFormatException e) {
-				 show = true;
-			 }
+		
+		if (!this.size_max.equals("") && show){
 			
-		}*/
+			if(Integer.parseInt(this.size_max) > Integer.parseInt(item.getSize())){
+				show = false;
+			}	
+		}
 
-		if (this.creationDateMin != "Datum festlegen" && show){
+		if (!this.creationDateMin.equals("Datum festlegen") && show){
 				
 			Date dateMin = null;
 			Date itemDate = null;
@@ -182,7 +177,7 @@ public class StoryFilter implements Parcelable {
 				
 			
 			
-		if (this.creationDateMax != "Datum festlegen" && show){
+		if (!this.creationDateMax.equals("Datum festlegen") && show){
 
 			Date dateMax = null;
 			Date itemDate = null;
@@ -202,7 +197,8 @@ public class StoryFilter implements Parcelable {
 			}	
 		}
 		
-		if (this.city != "" && show){
+
+		if (!this.city.equals("") && !this.latitude.equals("") && !this.longitude.equals("") && show){
 			
 			Location filterLocation = new Location("filterLocation");
 			Location itemLocation = new Location("itemLocation");
@@ -219,6 +215,7 @@ public class StoryFilter implements Parcelable {
 				show = false;		
 			}
 		}	
+		
 		return show;
 	}
 	
