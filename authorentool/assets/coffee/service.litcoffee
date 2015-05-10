@@ -1,4 +1,5 @@
     mainApp.factory 'storytellerServer', ['$http', ($http) ->
+        serverPath = "http://api.storytellar.de"
         {
             uploadMediaFile : (files, data) ->
                 $http({
@@ -21,6 +22,16 @@
                     console.log "success"
                 .error () ->
                     console.log "error"
+
+            getStoryList : (cb) ->
+                $http.get("#{basePath}/story")
+                    .success (data) ->
+                        cb(data)
+                    .error () ->
+                        console.log "error"
+
+
+
         }
     ]
 

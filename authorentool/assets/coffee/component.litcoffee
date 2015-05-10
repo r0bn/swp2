@@ -46,9 +46,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
         # this will be initial executed and get all available story's
-        $http.get("http://api.dev.la/stories")
-            .success (data) ->
-                $scope.storys = data
+        $server.getStoryList (data) ->
+            $scope.stories = data
 
 
         # This is dummy data for demmo reasons
