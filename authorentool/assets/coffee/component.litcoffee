@@ -41,6 +41,8 @@
 
         # jQuery document.ready() function
         $ ->
+            $("#btnMap").click ->
+                window.mapCaller = "btnMap"
             lightMedienBox()
             initDropdownClicks()
             googleMap() 
@@ -83,12 +85,12 @@
             $("#ddnme").click -> 
 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Kilometer"
-                    $("#inRadius").val($("#inRadius").val() * 1000)
+                    $("#inRadius").val(Math.round($("#inRadius").val() * 1000))
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
             $("#ddnkm").click -> 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Meter"
-                    $("#inRadius").val($("#inRadius").val() / 1000)
+                    $("#inRadius").val(Math.round($("#inRadius").val() / 1000))
                 $("#ddnradius").val("Kilometer")
                 $("#ddnradius").html("Kilometer <span class='caret' />")
 
@@ -126,6 +128,14 @@
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
                 
+                # sets the gpsFieldID which is needed for the mapEvent at the Storypoint
+                $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
+
+                # Click Event für btnStorypointMap                 
+                $("#btnStorypointMap_" + counter).click ->
+                    window.mapCaller = "btnStorypointMap_" + counter
+
+
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
@@ -475,12 +485,12 @@
                   zoom: 8
                   center: new (google.maps.LatLng)(48.7758459, 9.182932100000016)
                   scaleControl: true
-                map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
+                window.map = new (google.maps.Map)($('#gmeg_map_canvas')[0], mapOptions)
                 input = document.getElementById('inMapSearch')
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push input
+                window.map.controls[google.maps.ControlPosition.TOP_LEFT].push input
                 searchBox = new (google.maps.places.SearchBox)(input)
                 autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
-                autocomplete.bindTo('bounds', map);
+                autocomplete.bindTo('bounds', window.map);
                 markers = []
                 google.maps.event.addListener searchBox, 'places_changed', ->
                   `var marker`
@@ -510,7 +520,7 @@
                     setAllMap(null, markers)
                     markers = []
                     marker = new (google.maps.Marker)(
-                      map: map
+                      map: window.map
                       icon: image
                       title: place.name
                       position: place.geometry.location)
@@ -520,28 +530,37 @@
                     $("#inLatLngLocation").val(place.geometry.location.A + ", " + place.geometry.location.F)
                     bounds.extend place.geometry.location
                     i++
-                  map.fitBounds bounds
+                  window.map.fitBounds bounds
                   return
 
                 $(window).resize ->
 
-                  google.maps.event.trigger map, 'resize'
+                  google.maps.event.trigger window.map, 'resize'
 
                   return
-                google.maps.event.addListener map, 'click', (event) ->
+                google.maps.event.addListener window.map, 'click', (event) ->
                     lat = event.latLng.lat()
                     lng = event.latLng.lng()
-                    $("#inMapSearch").val(lat + ", " + lng)
-                    $("#inLatLngLocation").val(lat + ", " + lng)
+                    currentGPSField = $("#" + window.mapCaller).attr("gpsField")
+                    $("#" + currentGPSField).val(lat + ", " + lng)
                     i = 0
-                    while i < markers.length
+                    max = markers.length
+                    deleted = []
+                    while i < max
                         markers[i].setMap null
+                        if markers[i].get("markerOwner") == window.mapCaller
+                            deleted.push(i)
                         i++
-                    addMarker(event.latLng, markers, map);
+                    i = deleted.length
+                    i--
+                    while i > -1
+                        markers.splice(deleted[i], 1);
+                        i--
+                    addMarker(event.latLng, markers);
                     return
-                lightBox(map)
+                lightBox(markers)
 
-        lightBox = (map) ->
+        lightBox = (markers) ->
                 $lightbox = $('#lightbox')
                 $('[data-target="#lightbox"]').on 'click', (event) ->
                   $mapDiv = $(this).find('gmeg_map_canvas')
@@ -550,14 +569,22 @@
                     'maxHeight': $(window).height() - 100
                   $lightbox.find('.close').addClass 'hidden'
                   $mapDiv.css css
-                  google.maps.event.trigger map, 'resize'
+                  google.maps.event.trigger window.map, 'resize'
                   return
                 $lightbox.on 'shown.bs.modal', (e) ->
                   $mapDiv = $(this).find('gmeg_map_canvas')
                   $lightbox.find('.modal-dialog').css 'width': $mapDiv.width()
                   $lightbox.find('.close').removeClass 'hidden'
-                  google.maps.event.trigger map, 'resize'
+                  i = 0
+                  while i < markers.length
+                       if markers[i].get("markerOwner") == window.mapCaller
+                            markers[i].setMap window.map
+                            markers[i].getMap().setCenter(markers[i].position);
+                       i++
+                  google.maps.event.trigger window.map, 'resize'
                   return
+                $lightbox.on 'hide.bs.modal', (e) ->
+                    setAllMap(null, markers)
 
         lightMedienBox = () ->
                 $medien = $('#medienLightbox')
@@ -576,43 +603,46 @@
                   return
 
 
-        addMarker = (location, markers, map) ->
+        addMarker = (location, markers) ->
             center = new google.maps.LatLng(location.A, location.F)
             marker = new google.maps.Marker({
                 position: location,
-                map: map
+                map: window.map
             });
+            marker.set("markerOwner", window.mapCaller)
             markers.push(marker)
-            
-            rad = $("#inRadius").val()
-            if $("#ddnradius").val() == "Einheit"
-                rad = 0
-            else if $("#ddnradius").val() == "Kilometer"
-                rad = rad * 1000
-            circle = new (google.maps.Circle)
-                center: center
-                map: map
-                radius: parseInt(rad)
-                strokeColor: 'red'
-                strokeOpacity: 0.8
-                strokeWeight: 2
-                fillColor: 'blue'
-                fillOpacity: 0.35
-                editable: true
+            if window.mapCaller == "btnMap" && $("#ddnradius").val() != "Einheit"
+                rad = $("#inRadius").val()
+                if $("#ddnradius").val() == "Einheit"
+                    rad = 0
+                else if $("#ddnradius").val() == "Kilometer"
+                    rad = rad * 1000
+                circle = new (google.maps.Circle)
+                    center: center
+                    map: window.map
+                    radius: Math.round(rad)
+                    strokeColor: 'red'
+                    strokeOpacity: 0.8
+                    strokeWeight: 2
+                    fillColor: 'blue'
+                    fillOpacity: 0.35
+                    editable: true
+                circle.set("markerOwner", window.mapCaller)
+                markers.push(circle)
 
-            markers.push(circle)
-            google.maps.event.addListener circle, 'radius_changed', () ->
-                                rad = circle.getRadius()
-                                if $("#ddnradius").val() == "Meter"
-                                    $("#inRadius").val(rad)
-                                else if $("#ddnradius").val() == "Kilometer"
-                                    $("#inRadius").val(rad / 1000)
-            google.maps.event.addListener circle, 'center_changed', () ->
-                marker.setPosition(circle.center)
-            google.maps.event.addListener marker, 'position_changed', () ->
-                lat = marker.position.A
-                lng = marker.position.F
-                $("#inLatLngLocation").val(lat + ", " + lng)
+                google.maps.event.addListener circle, 'radius_changed', () ->
+                                    rad = circle.getRadius()
+                                    if $("#ddnradius").val() == "Meter"
+                                        $("#inRadius").val(Math.round(rad))
+                                    else if $("#ddnradius").val() == "Kilometer"
+                                        $("#inRadius").val(Math.round(rad / 1000))
+                google.maps.event.addListener circle, 'center_changed', () ->
+                    marker.setPosition(circle.center)
+                google.maps.event.addListener marker, 'position_changed', () ->
+                    lat = marker.position.A
+                    lng = marker.position.F
+                    $("#inLatLngLocation").val(lat + ", " + lng)
+                return
             return
 
         initHelpSystem = () ->
