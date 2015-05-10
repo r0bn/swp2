@@ -1,16 +1,22 @@
 # http://www.smashingmagazine.com/2014/10/07/introduction-to-unit-testing-in-angularjs/
 expect = chai.expect
 
-describe 'test that mainCtrl', () ->
+describe 'test that editorCtrl', () ->
 
-    beforeEach module('mainApp')
+    beforeEach module('storyTellarCtrl')
 
     scope = {}
     ctrl = {}
+    routeParams = {}
+    serverService = {}
 
     beforeEach inject ($rootScope, $controller) ->
         scope = $rootScope.$new()
-        ctrl = $controller 'mainCtrl', { $scope : scope }
+        ctrl = $controller 'editorCtrl', {
+            $scope : scope
+            $routeParams : routeParams
+            storytellerServer : serverService
+        }
 
     it 'should initialize selectedFile', () ->
         expect(scope.selectedFile).to.equal ""
@@ -21,9 +27,3 @@ describe 'test that mainCtrl', () ->
     it 'should setup xml editor options', () ->
         expect(scope.editorOptions).exist
         
-    it 'should initialize storySelected', () ->
-        expect(scope.storySelected).to.equal false
-
-    it 'should handle story selected', () ->
-        scope.handleStorySelected()
-        expect(scope.storySelected).to.equal true
