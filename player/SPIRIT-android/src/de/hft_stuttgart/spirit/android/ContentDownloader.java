@@ -1,14 +1,17 @@
 package de.hft_stuttgart.spirit.android;
 
-import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,33 +52,16 @@ public class ContentDownloader {
 				+ "/StorytellAR";
 		fileDownloadedStories = new File(pathToAppDir, "StoriesDownloaded");
 		
-		if(fileDownloadedStories.length() != 0){
-	        BufferedReader br;
-			try {
-				br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDownloadedStories)));
-				String result = "", line;
-				while ((line = br.readLine()) != null) {
-					result += line;
-				}
-				
-				String[] stories = result.split(";");
-				for(String id : stories){
-					Story temp = parseMetaDataFromXML(id);
-					
-					//returned story could be null -> Story-XML is incompatible with actual data-structure, revision is not 7
-					//during the development, incompatible stories are deleted before the app starts (otherwise the app crashes)
-					//should we implement another behavior here?
-					if(temp != null)
-						downloadedStories.add(temp);
-					else {
-						deleteStoryRecursive(new File(pathToAppDir + "/Content/" + id));
-						saveDownloadedStories();
-					}
-				}
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(fileDownloadedStories.length() != 0){				//check if downloaded stories exist already, load and add them to list 'downloadedStories'
+			ArrayList<Story> temp = new ArrayList<Story>();
+			temp = loadDownloadedStories();
+			
+			if(temp != null) {								//if file 'StoriesDownloaded' isn't compatible with the actual version of the player, the file and all story content will be deleted
+				downloadedStories = temp;
+				Log.d(ContentDownloader.class.toString(), downloadedStories.size()+ " Stories were loaded.");
+			} else {
+				Log.e(ContentDownloader.class.toString(), "No Stories were loaded! Format of detected file isn't compatible with current version of the player!");
+				deleteStoryRecursive(new File(pathToAppDir + "/Content/"));
 			}
 		}
 
@@ -354,112 +340,76 @@ public class ContentDownloader {
 
 		return mediaMap;
 	}
+	
+	/**
+	 * All stories in list 'downloadedStories' are saved in the file 'StoriesDownloaded'.
+	 */
 
 	private void saveDownloadedStories() {
 		fileDownloadedStories.delete();
 		fileDownloadedStories = new File(pathToAppDir, "StoriesDownloaded");
-		FileOutputStream os;
+		ObjectOutputStream oStream = null;
 		try {
-			os = new FileOutputStream(fileDownloadedStories);
-			String result = "";
-			for(Story s : downloadedStories) {
-				result += s.getId() + ";";
+			oStream = new ObjectOutputStream(new FileOutputStream(fileDownloadedStories));
+			for(Story x : downloadedStories) {
+				oStream.writeObject(x);
 			}
-			if(!result.equals("")){				
-				result = result.substring(0, result.length()-1);
-				os.write(result.getBytes());
-			}
-			os.close();
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Log.e(ContentDownloader.class.toString(), "Error opening file.");
 			e.printStackTrace();
+		} catch (NoSuchElementException noSuchElementException) {
+			Log.e(ContentDownloader.class.toString(), "Invalid input");
+			noSuchElementException.printStackTrace();
+		} finally {
+			try {
+				if(oStream != null)
+					oStream.close();
+			} catch (IOException e) {
+				Log.e(ContentDownloader.class.toString(), "Error closing file");
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	/**
-	 * This method parses the meta Data out of the xml File given by the id of the story.
-	 * @param id The id of the Story to parse
-	 * @return Returns a Story-object with metadata parsed from the xmlFile.
+	 * Try to load stories from the file 'StoriesDownloaded'.
 	 */
-	private Story parseMetaDataFromXML(String id) {
-		Log.d(ContentDownloader.class.toString(), "Parse Story : "+id);
-		Story story;
-		String revision = "";
-		String title ="";
-		String description="";
-		String author="";
-		String size="";
-		String size_uom="";
-		String location="";
-		String radius="";
-		String radius_uom="";
-		String created_at="2015-05-01 00:00:00";
-		String updated_at="2015-05-01 00:00:00";
+	private ArrayList<Story> loadDownloadedStories() {
+		ObjectInputStream iStream = null;
+		ArrayList<Story> list = new ArrayList<Story>();
 		try {
-			XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory
-					.newInstance();
-			XmlPullParser parser = xmlFactoryObject.newPullParser();
-
-			File file = new File(pathToAppDir + "/Content/" + id + "/arml.xml");
-			FileInputStream stream = new FileInputStream(file);
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			parser.setInput(stream, null);
-
-			int event = parser.getEventType();
-			String name = null;
-			boolean inStoryTag = true;
-
-			while (event != parser.END_DOCUMENT && inStoryTag) {
-				switch (event) {
-				case XmlPullParser.START_TAG:
-					name = parser.getName();
-					if (name.equals("Revision")) {
-						event = parser.next();
-						revision = parser.getText();
-					} else if (name.equals("Title")) {
-						Log.d(ContentDownloader.class.toString(), "Revision: "+revision);
-						if(!revision.equals("7"))
-							return null;
-						event = parser.next();
-						title = parser.getText();
-					} else if (name.equals("Description")) {
-						event = parser.next();
-						description = parser.getText();
-					} else if (name.equals("Author")) {
-						event = parser.next();
-						author = parser.getText();
-					} else if (name.equals("Size")) {
-						size_uom = parser.getAttributeValue(0);
-						event = parser.next();
-						size = parser.getText();
-					} else if (name.equals("Radius")) {
-						radius_uom = parser.getAttributeValue(0);
-						event = parser.next();
-						radius = parser.getText();
-					} else if (name.equals("Location")) {
-						do{
-							event = parser.next();
-							name = parser.getName();
-						}while(name == null || !name.equals("gml:pos"));
-						event = parser.next();
-						location = parser.getText();
-					}
-					break;
-				case XmlPullParser.END_TAG:
-					name = parser.getName();
-					if(name.equals("Story")) {
-						inStoryTag = false;
-					}
-				}
-				event = parser.next();
+			iStream = new ObjectInputStream(new FileInputStream(fileDownloadedStories));
+			while(true){
+				Story temp = (Story) iStream.readObject();
+				list.add(temp);
 			}
-
-		} catch (Exception e) {
+		} catch (EOFException e) {
+			return list;
+		} catch (StreamCorruptedException e) {
 			e.printStackTrace();
+			return null;
+		} catch (FileNotFoundException e) {
+			Log.e(ContentDownloader.class.toString(), "File doesn't exist!");
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			Log.e(ContentDownloader.class.toString(), "Error opening file!");
+			e.printStackTrace();
+			return null;
+		} catch (ClassNotFoundException e) {
+			Log.e(ContentDownloader.class.toString(), "Object creation failed!");
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(iStream != null)
+					iStream.close();
+			} catch (IOException e) {
+				Log.e(ContentDownloader.class.toString(), "Error closing file");
+				e.printStackTrace();
+			}
 		}
-		story = new Story(Integer.valueOf(id), title, description, author, size, size_uom, location, radius, radius_uom, created_at, updated_at, true);
-		story.setStoryMediaData(parseMediaDataFromXML(pathToAppDir + "/Content/" + id));
-		return story;
 	}
 	
 	private void deleteStoryRecursive(File fileOrDirectory) {
@@ -470,6 +420,11 @@ public class ContentDownloader {
 	    fileOrDirectory.delete();
 	}
 	
+	
+	/**
+	 * The content of a story specified by its id will be deleted recursively. In the list 'allStoriesData' this story will be marked as not downloaded.
+	 * @param id Id of the story to delete
+	 */
 	public void deleteStory(int id) {
 		for(Story s : downloadedStories) {
 			if(s.getId() == id) {
