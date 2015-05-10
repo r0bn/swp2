@@ -148,7 +148,7 @@ public class StoryFilter implements Parcelable {
 		
 		if (!this.size_max.equals("") && show){
 			
-			if(Integer.parseInt(this.size_max) > Integer.parseInt(item.getSize())){
+			if(Integer.parseInt(this.size_max) < Integer.parseInt(item.getSize())){
 				show = false;
 			}	
 		}
