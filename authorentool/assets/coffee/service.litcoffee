@@ -1,5 +1,7 @@
-    mainApp.factory 'storytellerServer', ['$http', ($http) ->
-        serverPath = "http://api.storytellar.de"
+    storyTellarServices = angular.module "storyTellarServices", []
+
+    storyTellarServices.factory 'storytellerServer', ['$http', ($http) ->
+        serverUrl = "http://api.storytellar.de"
         {
             uploadMediaFile : (files, data) ->
                 $http({
@@ -24,11 +26,26 @@
                     console.log "error"
 
             getStoryList : (cb) ->
-                $http.get("#{basePath}/story")
+                $http.get("#{serverUrl}/story")
                     .success (data) ->
                         cb(data)
                     .error () ->
                         console.log "error"
+
+            getStoryXML : (id, cb) ->
+                $http.get("#{serverUrl}/story/#{id}")
+                    .success (data) ->
+                        cb(data)
+                    .error () ->
+                        console.log "error"
+
+            createStory : (story) ->
+                $http.post("#{serverUrl}/story", story)
+                    .success () ->
+                        console.log "created"
+                    .error () ->
+                        console.log "error"
+
 
 
 

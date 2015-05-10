@@ -5,6 +5,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
     storyTellarApp = angular.module "storyTellarApp", [
         'ngRoute'
         'storyTellarCtrl'
+        'storyTellarServices'
         'ui.codemirror'
     ]
 
