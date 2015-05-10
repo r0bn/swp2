@@ -145,11 +145,19 @@ public class StoryFilter implements Parcelable {
 		if (this.author != "" && !item.getAuthor().contains(this.author) && !item.getAuthor().toLowerCase().contains(this.author.toLowerCase()) && show){
 			show = false;
 		}
-		
-		if (this.size_max != "" && show && (Integer.parseInt(this.size_max) > Integer.parseInt(item.getSize())) ){			 
-			show = false;
-		}
-		//TODO size max filterung
+		/*
+		if (this.size_max != "" && show){	//TODO: bugfix
+			try {
+				if(Integer.parseInt(this.size_max) > Integer.parseInt(item.getSize())){
+					show = false;
+				}
+			 }
+			 catch(NumberFormatException e) {
+				 show = true;
+			 }
+			
+		}*/
+
 		if (this.creationDateMin != "Datum festlegen" && show){
 				
 			Date dateMin = null;
