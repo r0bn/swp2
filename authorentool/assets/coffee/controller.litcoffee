@@ -65,18 +65,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
         ]
     ]
 
-    storyTellarCtrl.controller "homeCtrl", ["$scope", "$location", "$http", "storytellerServer", ($scope, $location, $http, server) ->
+    storyTellarCtrl.controller "homeCtrl", ["$scope", "$location", "storytellerServer", ($scope, $location, $server) ->
 
         # this will be initial executed and get all available story's
-        $http.get("http://api.storytellar.de/story")
-            .success (data) ->
-                $scope.storys = data
+        $server.getStoryList (data) ->
+            $scope.storys = data
 
         # Creates a story on the server
         $scope.createStory = () ->
-            $http.post("http://api.storytellar.de/story", $scope.storys[0])
-                .success () ->
-                    console.log "created"
+            $server.createStory({})
 
         $scope.select = (id) ->
             $location.path("/story/#{id}")
@@ -96,32 +93,4 @@ The following code is a angularJS (https://angularjs.org/) Application.
         }
     ]
 
-    storyTellarCtrl.factory 'storytellerServer', ['$http', ($http) ->
-        {
-            uploadMediaFile : (files, data) ->
-                $http({
-                    method : 'POST'
-                    url : 'http://api.storytellar.de/story'
-                    headers: {'Content-Type': undefined}
-                    transformRequest : (data) ->
-                        formData = new FormData()
-
-                        for key, value of data.model
-                            formData.append key, value
-
-                        for file in data.files
-                            formData.append "media[]", file
-
-                        formData
-                    data : { files : files, model : data }
-                })
-                .success () ->
-                    console.log "success"
-                .error () ->
-                    console.log "error"
-        }
-    ]
-
-
-            
 
