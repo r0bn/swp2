@@ -5,7 +5,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
     mainApp = angular.module "mainApp", ['ui.codemirror']
 
     # the main controller
-    mainApp.controller "mainCtrl", ["$scope", "$http", "storytellerServer", ($scope, $http, server) ->
+    mainApp.controller "mainCtrl", ["$scope", "$http", "storytellerServer", ($scope, $http, $server) ->
 
         $scope.selectedFile = ""
         $scope.selectedFile2 = ""
@@ -43,7 +43,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             test = $scope.storys[0]
             test.xml = $scope.xmlFile
             delete test.id
-            server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
+            $server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
         # this will be initial executed and get all available story's
         $http.get("http://api.dev.la/stories")
@@ -89,32 +89,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     scope.$apply () ->
                         scope.fileModel = element[0].files[0]
                         console.log scope.fileModel
-        }
-    ]
-
-    mainApp.factory 'storytellerServer', ['$http', ($http) ->
-        {
-            uploadMediaFile : (files, data) ->
-                $http({
-                    method : 'POST'
-                    url : 'http://api.dev.la/createstory'
-                    headers: {'Content-Type': undefined}
-                    transformRequest : (data) ->
-                        formData = new FormData()
-
-                        for key, value of data.model
-                            formData.append key, value
-
-                        for file in data.files
-                            formData.append "media[]", file
-
-                        formData
-                    data : { files : files, model : data }
-                })
-                .success () ->
-                    console.log "success"
-                .error () ->
-                    console.log "error"
         }
     ]
 
