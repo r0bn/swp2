@@ -132,7 +132,7 @@
                 # Click Event für btnStorypointMap                 
                 $("#btnStorypointMap_" + counter).click ->
                     window.mapCaller = "btnStorypointMap_" + counter
-                    
+
 
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
