@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import junit.framework.TestCase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +19,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import android.test.AndroidTestCase;
 
-public class restClient_Test {
+public class restClient_Test extends TestCase{
 
 	RESTClient client;
 	String URLallStories = "http://api.storytellar.de/temp";

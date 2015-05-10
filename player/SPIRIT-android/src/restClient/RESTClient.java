@@ -83,6 +83,7 @@ public class RESTClient {
 			connection.setRequestProperty("Accept", "application/xml");
 			
 			result = readInput(connection.getInputStream());
+			result = result.trim();
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
