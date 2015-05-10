@@ -2,10 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.hft_stuttgart.spirit.android.Main_Activity" >
 
-    <item
-        android:id="@+id/action_filter"
+   
+     <item
+        android:id="@+id/action_installed_filter"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_filter"/>
+        android:visible="false"
+        android:title="@string/action_installed_filter"/>
+      <item
+        android:id="@+id/action_store_filter"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:visible="false"
+        android:title="@string/action_store_filter"/>
 
 </menu>

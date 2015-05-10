@@ -24,6 +24,9 @@
     <string name="title_activity_filter">StorytellAR</string>
     
     
+    <string name="action_installed_filter">Installierte Stories filtern</string>
+    <string name="action_store_filter">Store Stories filtern</string>
+    
     <string name="filterFor">Filtern nach:</string>
     <string name="title">Titel</string>
     <string name="author">Autor</string>

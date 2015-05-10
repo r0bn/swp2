@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -108,6 +109,9 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        
         return true;
     }
 
@@ -116,19 +120,49 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        
-        if (id == R.id.action_filter) {
-        	startActivity(new Intent(getApplicationContext(),Filter_Activity.class));
-            return true;
-        } else {
-        	return false;
-        }
-    }
 
-    
-    
-        
+    	switch (item.getItemId()) {
+    	 	case R.id.action_installed_filter:
+    	 		
+    	 		//Toast.makeText(this, "installedFragment", Toast.LENGTH_LONG).show();
+    	 		Intent oldIntent = this.getIntent();
+    	 		Intent installedFragmentIntent = new Intent();
+    	 		
+    	 		installedFragmentIntent.setClass(Main_Activity.this,Filter_Activity.class);
+    	 		installedFragmentIntent.putExtra("Filter_From","InstalledFragment");      	 		
+    	 		if (oldIntent.hasExtra("StoreFragmentStoryFilter")){	
+    	 			installedFragmentIntent.putExtra("StoreFragmentStoryFilter", oldIntent.getParcelableExtra("StoreFragmentStoryFilter"));
+  		        }
+    	 		if (oldIntent.hasExtra("InstalledFragmentStoryFilter")){	
+    	 			installedFragmentIntent.putExtra("InstalledFragmentStoryFilter", oldIntent.getParcelableExtra("InstalledFragmentStoryFilter"));
+   		        }  
+    	 		 
+            	startActivity(installedFragmentIntent); 
+    	        return true;
+    	        
+    	    case R.id.action_store_filter:
+    	    	
+    	    	//Toast.makeText(this, "storeFragment", Toast.LENGTH_LONG).show();
+    	 		Intent oIntent = this.getIntent();
+    	    	Intent storeFragmentIntent = new Intent();
+    	    	storeFragmentIntent.setClass(Main_Activity.this,Filter_Activity.class);
+    	    	storeFragmentIntent.putExtra("Filter_From","StoreFragment");
+    	 		if (oIntent.hasExtra("StoreFragmentStoryFilter")){	
+    	 			storeFragmentIntent.putExtra("StoreFragmentStoryFilter", oIntent.getParcelableExtra("StoreFragmentStoryFilter"));
+  		        }
+    	 		if (oIntent.hasExtra("InstalledFragmentStoryFilter")){	
+    	 			storeFragmentIntent.putExtra("InstalledFragmentStoryFilter", oIntent.getParcelableExtra("InstalledFragmentStoryFilter"));
+   		        }
+            	startActivity(storeFragmentIntent); 
+    	        return true;
+    	        
+    	    default:
+    	        break;
+    	    }
+
+    	    return false;
+    }
+   
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in

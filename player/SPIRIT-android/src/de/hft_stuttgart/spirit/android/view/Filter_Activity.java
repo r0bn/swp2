@@ -31,6 +31,8 @@ import de.hft_stuttgart.spirit.android.AndroidLauncher;
 import de.hft_stuttgart.spirit.android.R;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -40,6 +42,7 @@ import java.util.regex.Pattern;
 public class Filter_Activity extends ActionBarActivity {
 
     private Calendar calendar;
+    private TextView topicTextView;
     private EditText titleEditText;
     private EditText authorEditText;
     private EditText sizeMaxEditText;
@@ -53,12 +56,20 @@ public class Filter_Activity extends ActionBarActivity {
     private int min_year, min_month, min_day;
     private int max_year, max_month, max_day; //initialize them to current date in onStart()/onCreate()
     private String dateDefault = "Datum festlegen";
+    
+    private StoryFilter storyFilter;
+    private String filterFrom;
+    private Intent oldIntent;
+    
+    private Date creationDateMin;
+    private Date creationDateMax;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         
-
+        topicTextView = (TextView) findViewById(R.id.topicTextView);
         titleEditText = (EditText)findViewById(R.id.titleEditText);
         authorEditText = (EditText)findViewById(R.id.authorEditText);
         sizeMaxEditText = (EditText)findViewById(R.id.sizeMaxEditText);
@@ -68,38 +79,37 @@ public class Filter_Activity extends ActionBarActivity {
         radiusSeekBar = (SeekBar) findViewById(R.id.radiusSeekbar);
         radiusValueTextView = (TextView) findViewById(R.id.radiusValueTextView);
 
-        //only show the radius elements when a city is specified
-        radiusSeekBar.setVisibility(View.GONE);
-        radiusValueTextView.setVisibility(View.GONE);
 
-        /*
-        titleEditText.setFilters(new InputFilter[] { filter });
-        authorEditText.setFilters(new InputFilter[] { filter });
-        cityEditText.setFilters(new InputFilter[] { filter });
-        */
 
         titleEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
         authorEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
         cityEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
 
+        //set the standard values for the date picker:
         calendar = Calendar.getInstance();
         max_year = calendar.get(Calendar.YEAR);
         max_month = calendar.get(Calendar.MONTH);
         max_day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        //creationDateMaxButton.setText(new StringBuilder().append(max_day).append(". ").append(max_month).append(". ").append(max_year));
-        creationDateMaxButton.setText(dateDefault);
-        min_year = max_year-2;
+        min_year = max_year;
         min_month = max_month;
         min_day = max_day;
+
+        creationDateMin= new Date(min_year,min_month,min_day); 
+        creationDateMax= new Date(max_year,max_month,max_day);
         
-        //creationDateMinButton.setText(new StringBuilder().append(min_day).append(". ").append(min_month).append(". ").append(min_year));
-        creationDateMinButton.setText(dateDefault);
-        //set listener to show the radius components only if a city is specified
-        cityEditText.addTextChangedListener(textWatcher);
+        //display a toast message if the inserted creationDateMin is < creationDateMax, 
+        //because no stories can be between creationDateMin and creationDateMax if: "creationDateMin  < creationDateMax":
+        creationDateMinButton.addTextChangedListener(DateTextWatcher);
+        creationDateMaxButton.addTextChangedListener(DateTextWatcher);
+        
+        //only show the radius elements when a city is specified
+        radiusSeekBar.setVisibility(View.GONE);
+        radiusValueTextView.setVisibility(View.GONE);
+        cityEditText.addTextChangedListener(cityTextWatcher);
 
 
-        //change the text using the seekbar:
+        //change the radiusValueTextView-text using the radiusSeekBar-SeekBar:
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -119,6 +129,52 @@ public class Filter_Activity extends ActionBarActivity {
             }
         });
 
+        //The parcelable class named StoryFilter has no standard constructor, therefore get an object with some values that won't be used
+        //and reset them after that to the default values specified in the StoryFilter class:
+        StoryFilter defaultStoryFilter = new StoryFilter("default", "default", "default", "default", "default", "default", "default", "default", "default");
+        defaultStoryFilter.resetToDefault();	//reset all values to the default values described in the StoryFilter class
+        storyFilter = defaultStoryFilter;
+        
+        //StoryFilter storyFilter = new StoryFilter("default", "default", "default", "default", "default", "default", "default", "default", "default");
+        //storyFilter.resetToDefault();	//reset all values to the default values described in the StoryFilter class.
+       
+        oldIntent = this.getIntent();
+        if (oldIntent.hasExtra("Filter_From")) {
+        	
+        	filterFrom = oldIntent.getExtras().getString("Filter_From");
+		    if(filterFrom.equals("InstalledFragment")){
+		    	topicTextView.setText("Installierte Stories filtern nach:");
+		    	if (oldIntent.hasExtra("InstalledFragmentStoryFilter")){
+		    		storyFilter = oldIntent.getParcelableExtra("InstalledFragmentStoryFilter");
+		    	}
+		    }else if (filterFrom.equals("StoreFragment")){
+	    		topicTextView.setText("Store Stories filtern nach:");
+		    	if (oldIntent.hasExtra("StoreFragmentStoryFilter")){
+		    		storyFilter = oldIntent.getParcelableExtra("StoreFragmentStoryFilter");
+		    	}
+			}
+        }
+      
+        //get the values from the StoryFilter class and set the GUI Values:
+        titleEditText.setText(storyFilter.title);
+        authorEditText.setText(storyFilter.author);
+        sizeMaxEditText.setText(storyFilter.size_max);
+        creationDateMinButton.setText(storyFilter.creationDateMin);
+        creationDateMaxButton.setText(storyFilter.creationDateMax);
+        cityEditText.setText(storyFilter.city);
+        radiusSeekBar.setProgress(Integer.parseInt(storyFilter.radius)-1);
+        ////months in android are starting at 0!!! TODO month -1 
+        
+        
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy");
+			creationDateMin = sdf.parse(storyFilter.creationDateMin);
+			creationDateMax = sdf.parse(storyFilter.creationDateMax);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}     
     }
 
     @Override
@@ -137,65 +193,51 @@ public class Filter_Activity extends ActionBarActivity {
 
         if (id == R.id.action_filter) {
 
-            //id, title, description, author, size, size_min, size_max, creation_date, creation_date_min, creation_date_max, location, radius
-            //Example: http://api.storytellar.de/story?author=arno+claus&size_max=20
+        	 Address address = null;
+        	 double latitude = 0;
+	         double longitude = 0;
+	         
+        	 if (!cityEditText.getText().toString().matches("")){
+        		 
+                 try {
+                     address = geoLocate(cityEditText.getText().toString());
+                     latitude = address.getLatitude();
+        	         longitude = address.getLongitude();
+        	         Toast.makeText(this, "latitude = " + latitude + "longitude = " + longitude, Toast.LENGTH_SHORT).show();
+        	         
+                  //   if (address != null) {
+                  //       String locality = address.getLocality(); 
+                  //   }
 
-            StringBuilder getQuery = new StringBuilder();
-            getQuery.append("http://api.storytellar.de/story?"); //already defined in RESTclient.java
-            if (!titleEditText.getText().toString().matches("")) getQuery.append("title=" + titleEditText.getText().toString()+"&");
-            if (!authorEditText.getText().toString().matches("")) getQuery.append("author=" + authorEditText.getText().toString()+"&");
-            if (!sizeMaxEditText.getText().toString().matches("")) getQuery.append("size_max=" + sizeMaxEditText.getText().toString()+"&");
-            if (!creationDateMinButton.getText().toString().matches("")&&!creationDateMinButton.getText().toString().matches(dateDefault)) getQuery.append("creation_date_min="
-                    + creationDateMinButton.getText().toString().replaceAll("\\.", "")+"&");
-            if (!creationDateMaxButton.getText().toString().matches("")&&!creationDateMaxButton.getText().toString().matches(dateDefault)) getQuery.append("creation_date_max="
-                   + creationDateMaxButton.getText().toString().replaceAll("\\.", "")+"&");
-            
-            if (!cityEditText.getText().toString().matches("")){
-                try {
-                    Address address = geoLocate(cityEditText.getText().toString());
-                    if (address != null) {
-                        String locality = address.getLocality();
+                 } catch (Exception ex) {
+                     ex.printStackTrace();
+                 }
+             }
+        	 
+        	 
+	         storyFilter.SetStoryFilter(titleEditText.getText().toString(), authorEditText.getText().toString(), sizeMaxEditText.getText().toString(),
+        			creationDateMinButton.getText().toString(), creationDateMaxButton.getText().toString(), cityEditText.getText().toString(),
+        			String.valueOf(latitude),String.valueOf(longitude), String.valueOf(radiusSeekBar.getProgress()+1)); 
 
-                        double latitude = address.getLatitude();
-                        double longitude = address.getLongitude();
+	         Intent newIntent = new Intent(getApplicationContext(), Main_Activity.class);
+	         
+	         if(filterFrom.equals("InstalledFragment")){
+	        	 newIntent.putExtra("InstalledFragmentStoryFilter",storyFilter);
+		         if (oldIntent.hasExtra("StoreFragmentStoryFilter")){			//the old filter also has to be saved
+		        	 newIntent.putExtra("StoreFragmentStoryFilter", oldIntent.getParcelableExtra("StoreFragmentStoryFilter"));
+		         }
+	         }
+	         
+	         if (filterFrom.equals("StoreFragment")){
+	        	 newIntent.putExtra("StoreFragmentStoryFilter",storyFilter);
+		         if (oldIntent.hasExtra("InstalledFragmentStoryFilter")){		//the old filter also has to be saved
+		        	 newIntent.putExtra("InstalledFragmentStoryFilter", oldIntent.getParcelableExtra("InstalledFragmentStoryFilter"));
+		         }
+	         }
 
-                        getQuery.append("location=" + String.valueOf(latitude) + "+" + String.valueOf(longitude)+"&"
-                                +"radius=" + String.valueOf(radiusSeekBar.getProgress()+1)+"&");
-                    }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-
-            String adjustedQuery = getQuery.substring(0, getQuery.length()-1); //delete the last &
-
-             //delete double whitespaces
-            //adjustedQuery.replaceAll("\\s+", " ");
-            adjustedQuery = adjustedQuery.trim().replaceAll(" +", " ");
-
-            adjustedQuery = adjustedQuery.replaceAll(" ", "+");
-
-            //Toast.makeText(this, adjustedQuery, Toast.LENGTH_LONG).show();
-
-            Toast.makeText(this, adjustedQuery, Toast.LENGTH_SHORT).show();
-            
-            
-            Intent intent = new Intent(getApplicationContext(), Main_Activity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("query", adjustedQuery); //Your id
-            intent.putExtras(bundle); //Put your id to your next Intent
-            startActivity(intent);
-            
-            finish();
-         //   startActivity(new Intent(getApplicationContext(),Main_Activity.class));
-            
-          //  Intent myIntent = new Intent(Filter_Activity.this, Main_Activity.class);
-          //  myIntent.putExtra("query", adjustedQuery);
-          //  Filter_Activity.this.startActivity(myIntent);
-            
-            //startActivity(new Intent(getApplicationContext(),Main_Activity.class));
+	        Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
+	        //Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
+	        startActivity(newIntent);
             return true;
         }else {
         	return false;
@@ -204,13 +246,10 @@ public class Filter_Activity extends ActionBarActivity {
     }
 
 
-    //TextWatcher
-    private TextWatcher textWatcher = new TextWatcher() {
+    //CityTextWatcher: shows the radius components only if a city is specified
+    private TextWatcher cityTextWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
-        {
-
-        }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3){}
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -224,39 +263,32 @@ public class Filter_Activity extends ActionBarActivity {
             {
                 radiusSeekBar.setVisibility(View.VISIBLE);
                 radiusValueTextView.setVisibility(View.VISIBLE);
-            }
+            }            
         }
 
         @Override
-        public void afterTextChanged(Editable editable) {
-        }
+        public void afterTextChanged(Editable editable) {}
     };
 
-/*
-    private InputFilter filter = new InputFilter() {
-    //removes non-alphanumeric characters
+    //DateTextWatcher: displays a toast message if the inserted creationDateMin is > creationDateMax, 
+    //because no stories can be between creationDateMin and creationDateMax if: "creationDateMin  > creationDateMax".
+    private TextWatcher DateTextWatcher = new TextWatcher() {
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int count) {
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3){}
 
-          // final Pattern USER_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
-            final Pattern USER_NAME_PATTERN = Pattern.compile("[a-zA-Z|\\s]");
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-            if(!USER_NAME_PATTERN.matcher(source).matches()||end > 20){
-                return "";
+            if(creationDateMin.after(creationDateMax) || creationDateMax .before(creationDateMin)){
+            	Toast.makeText(Filter_Activity.this, "Das \"Erstellt nach\" Datum, sollte vor dem \"Erstellt vor\" Datum liegen.", Toast.LENGTH_LONG).show();
             }
-            return null;
-            }
-
-
-            for (int i = start; i < end; i++) {
-                if ((!Character.isLetter(source.charAt(i))&& !Character.isWhitespace(source.charAt(i)))|| count > 20) {
-                    return "";
-                }
-            }
-            return null;
+            
         }
+
+        @Override
+        public void afterTextChanged(Editable editable) {}
     };
-*/
+
     @SuppressWarnings("deprecation")
     public void setMinDate(View view) {
         showDialog(0);
@@ -282,18 +314,22 @@ public class Filter_Activity extends ActionBarActivity {
     private DatePickerDialog.OnDateSetListener min_dateListener= new DatePickerDialog.OnDateSetListener(){
 
         public void onDateSet(DatePicker datapicker, int year, int month, int day) {
-            creationDateMinButton.setText(new StringBuilder().append(day).append(". ").append(month).append(". ").append(year));
+        	//months in android are starting at 0
+            creationDateMinButton.setText(new StringBuilder().append(day).append(". ").append(month+1).append(". ").append(year));
+            creationDateMin = new Date(year,month,day);    
         }
-
-
     };
     private DatePickerDialog.OnDateSetListener max_dateListener= new DatePickerDialog.OnDateSetListener(){
 
         public void onDateSet(DatePicker datapicker, int year, int month, int day) {
-            creationDateMaxButton.setText(new StringBuilder().append(day).append(". ").append(month).append(". ").append(year));
+        	//months in android are starting at 0
+            creationDateMaxButton.setText(new StringBuilder().append(day).append(". ").append(month+1).append(". ").append(year)); 
+            creationDateMax = new Date(year,month,day);
         }
     };
 
+    
+    
     /**
      * Returns the first found address of the given location
      * @return the address
@@ -301,27 +337,42 @@ public class Filter_Activity extends ActionBarActivity {
      */
     public Address geoLocate(String location)throws IOException {
 
-        if (cityEditText.getText().toString().matches("")){ //no city was inserted
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+       // imm.hideSoftInputFromWindow(cityEditText.getWindowToken(), 0);
+
+        Geocoder gc = new Geocoder(this);
+        java.util.List<Address> list = gc.getFromLocationName(location, 1);
+
+        if (list.isEmpty()){
+            //Toast.makeText(this, "Stadt nicht gefunden", Toast.LENGTH_LONG).show();
             return null;
+        }else {
 
-        }else { //look for coordinates
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(cityEditText.getWindowToken(), 0);
+            Address address = list.get(0); //get only the first location (google finds more than one location)
+            return address;
 
-            Geocoder gc = new Geocoder(this);
-            java.util.List<Address> list = gc.getFromLocationName(location, 1);
-
-            if (list.isEmpty()){
-                //Toast.makeText(this, "Stadt nicht gefunden", Toast.LENGTH_LONG).show();
-                return null;
-            }else {
-
-                Address address = list.get(0); //get only the first location (google finds more than one location)
-                return address;
-
-            }
         }
+       
     }
+   /* 
+    //method that converts Strings into UTF-8
+    
+    public String convertToUTF8(String inputText){
+    	
+        //Convert String to byte[]:
+ 	
+        	String s = inputText;
+        	byte[] b = s.getBytes("UTF-8");
+        	
+        //Convert byte[] to String:
+
+        	byte[] b = {(byte) 99, (byte)97, (byte)116};
+        	String s = new String(b, "US-ASCII");
+        	
+    	
+    }
+    */
+
 
 }

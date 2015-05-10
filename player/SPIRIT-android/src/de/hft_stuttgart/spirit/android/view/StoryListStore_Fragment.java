@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,8 +46,16 @@ public class StoryListStore_Fragment extends Fragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    inflater.inflate(R.menu.main, menu);
+	    //super.onCreateOptionsMenu(menu, inflater);
 	}
 	
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+	    menu.findItem(R.id.action_store_filter).setVisible(true);
+	    super.onPrepareOptionsMenu(menu);
+	}
+
 	/**
 	 * Method is called when Fragment is created. It will do the following things:
 	 * - request the stories from the server
@@ -60,34 +69,23 @@ public class StoryListStore_Fragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         items = new ArrayList<Story>();
         
-        //Intent intent = getIntent();
-        //String value = intent.getStringExtra("key");
+        String adjustedQuery = "allStories";
+	 
+        Intent intent = getActivity().getIntent();
         
-        GetStoreStoriesWithParameter task;
-        
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if(bundle != null && bundle.getString("query") != null) {
+        if (intent.hasExtra("StoreFragmentStoryFilter")) {
+        	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("StoreFragmentStoryFilter");
+	    	adjustedQuery = storyFilter.getQuery();
+		} else {
+			adjustedQuery = "allStories"; //if no filter is used: adjustedQuery = "allStories" (show all stories)
+		}
+		
+        GetStoreStoriesWithParameter task= new GetStoreStoriesWithParameter();
 
-            	String adjustedQuery = bundle.getString("query");
-            	//task = new GetStoreStories();
-            	task = new GetStoreStoriesWithParameter();
-            	Toast.makeText(getActivity(), "query = "+adjustedQuery, Toast.LENGTH_LONG).show();	
-            	task.execute(adjustedQuery);
+        //Toast.makeText(getActivity(), "query = "+adjustedQuery, Toast.LENGTH_LONG).show();
+        
+    	task.execute(adjustedQuery);	
 
-        }else {
-        	task = new GetStoreStoriesWithParameter();
-
-        	task.execute("allStories");
-        	//task = new GetStoreStories();	
-        }
-        
-      //  GetStoreStories task = new GetStoreStories("");
-        
-        
-      //  task= new GetStoreStories();
-      //  task.execute();
-        
-       
         try {
 			items = task.get();
 		} catch (InterruptedException e) {
@@ -212,15 +210,7 @@ public class StoryListStore_Fragment extends Fragment {
 		protected ArrayList<Story> doInBackground(String... params) {
 			if (params[0].equals("allStories")){
 				return ContentDownloader.getInstance().getAllStoriesData();
-				
-				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://api.storytellar.de/story?author=arno+claus&size_max=20");
-				//http://api.storytellar.de/story?author=arno+claus&size_max=20
 			}else{
-				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://somethingThatDoesntWorkToTestThisCrappyFunction");
-				//return ContentDownloader.getInstance().getAllStoriesData();
-				//return ContentDownloader.getInstance().getAllStoriesData();
-				//return ContentDownloader.getInstance().requestAllStoriesWithParameter("http://api.storytellar.de/story?author=arno+claus&size_max=20");
-				
 				return ContentDownloader.getInstance().requestAllStoriesWithParameter(params[0]);
 			}
 		}

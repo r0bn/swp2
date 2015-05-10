@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="de.swp2.storytellar.StoryList_Activity"
-    android:background="#ffbdd4ff">
+    android:background="#ffbdd4ff"
+    android:id="@+id/relativeLayoutListInstalled">
 
     <ListView
         android:layout_width="wrap_content"
