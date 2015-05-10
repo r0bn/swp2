@@ -128,11 +128,11 @@
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
                 
-
+                $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
                 # Click Event für btnStorypointMap                 
                 $("#btnStorypointMap_" + counter).click ->
                     window.mapCaller = "btnStorypointMap_" + counter
-                    $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
+                    
 
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
@@ -221,7 +221,8 @@
             $("#inStorypoint_" + counter).on 'input', () ->
                 objectInput = $("#inItemStorypointRef_" + interactionCounter)
                 objectInput.val($("#inStorypoint_" + counter).val())
-                objectInput.val(objectInput.val().replace(/\s+/, "") )
+                if typeof objectInput.val() != "undefined"
+                    objectInput.val(objectInput.val().replace(/\s+/, "") )
 
         createQuiz = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
@@ -253,7 +254,8 @@
             $("#inStorypoint_" + counter).on 'input', () ->
                 objectInput = $("#inQuizStorypointRef_" + interactionCounter)
                 objectInput.val($("#inStorypoint_" + counter).val())
-                objectInput.val(objectInput.val().replace(/\s+/, "") )
+                if typeof objectInput.val() != "undefined"
+                    objectInput.val(objectInput.val().replace(/\s+/, "") )
             
             # Click Event für btnQuizAnswer
             $("#btnQuizAnswer_" + interactionCounter).click ->
@@ -315,7 +317,8 @@
                 $("#inStorypoint_" + counter).on 'input', () ->
                     objectInput = $("#inChooserStorypointRef_" + interactionCounter)
                     objectInput.val($("#inStorypoint_" + counter).val())
-                    objectInput.val(objectInput.val().replace(/\s+/, "") )
+                    if typeof objectInput.val() != "undefined"
+                        objectInput.val(objectInput.val().replace(/\s+/, "") )
 
                 # Click Event für btnChooserAnswer
                 $("#btnChooserAnswer_" + interactionCounter).click ->

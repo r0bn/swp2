@@ -117,9 +117,9 @@ mainApp.controller("mainCtrl", [
       $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter);
       btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
       btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
+      $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter);
       $("#btnStorypointMap_" + counter).click(function() {
-        window.mapCaller = "btnStorypointMap_" + counter;
-        return $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter);
+        return window.mapCaller = "btnStorypointMap_" + counter;
       });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
@@ -211,7 +211,9 @@ mainApp.controller("mainCtrl", [
         var objectInput;
         objectInput = $("#inItemStorypointRef_" + interactionCounter);
         objectInput.val($("#inStorypoint_" + counter).val());
-        return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        if (typeof objectInput.val() !== "undefined") {
+          return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        }
       });
     };
     createQuiz = function(counter) {
@@ -241,7 +243,9 @@ mainApp.controller("mainCtrl", [
         var objectInput;
         objectInput = $("#inQuizStorypointRef_" + interactionCounter);
         objectInput.val($("#inStorypoint_" + counter).val());
-        return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        if (typeof objectInput.val() !== "undefined") {
+          return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        }
       });
       return $("#btnQuizAnswer_" + interactionCounter).click(function() {
         var answer, copyAnswer, quizAnswerCounter;
@@ -299,7 +303,9 @@ mainApp.controller("mainCtrl", [
         var objectInput;
         objectInput = $("#inChooserStorypointRef_" + interactionCounter);
         objectInput.val($("#inStorypoint_" + counter).val());
-        return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        if (typeof objectInput.val() !== "undefined") {
+          return objectInput.val(objectInput.val().replace(/\s+/, ""));
+        }
       });
       return $("#btnChooserAnswer_" + interactionCounter).click(function() {
         var ChooserAnswerCounter, answer, copyAnswer;
