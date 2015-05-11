@@ -42,3 +42,8 @@ CREATE TABLE `stories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ```
+
+### XML handling concept
+  - Validate XML against schema
+  - Extract story metadata (title, description, author, revision, size, size_uom, location, radius, radius_uom)
+  - Validate metadata against database fields
