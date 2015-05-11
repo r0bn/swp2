@@ -26,8 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.ContentDownloader;
 import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.Story;
@@ -52,6 +55,12 @@ public class StoryListInstalled_Fragment extends Fragment {
 	    inflater.inflate(R.menu.main, menu);
 	}
 	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+	    menu.findItem(R.id.action_installed_filter).setVisible(true);
+	    super.onPrepareOptionsMenu(menu);
+	}
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +69,23 @@ public class StoryListInstalled_Fragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         items = new ArrayList<Story>();
         items = ContentDownloader.getInstance().getDownloadedStories();
- 
+        
+  /*      for (int i = 0; i < items.size(); i++) {
+        	Toast.makeText(getActivity(), "items = "+items.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+        	
+        }
+        //SINGLETON!!!!!!!!!!!!!!!!
+        List<Story> filteredItems = new ArrayList<Story>();
+        filteredItems = items;
+        
+       
+        Intent intent = getActivity().getIntent();
+        if (intent.hasExtra("InstalledFragmentStoryFilter")) {
+        	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("InstalledFragmentStoryFilter");
+        	
+        	filteredItems = storyFilter.filterArrayList(filteredItems);
+		} 
+         */
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -76,9 +101,10 @@ public class StoryListInstalled_Fragment extends Fragment {
                 startActivity(i);
             }
         });
+        
+        //CustomListViewAdapter adapter = new CustomListViewAdapter(this, filteredItems);
         CustomListViewAdapter adapter = new CustomListViewAdapter(this, items);
         listView.setAdapter(adapter);
-
 
         return rootView;
     }
@@ -116,23 +142,56 @@ public class StoryListInstalled_Fragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
-            Story item = items.get(position);
+        	/*
+        	 Intent intent = getActivity().getIntent();
+             if (intent.hasExtra("InstalledFragmentStoryFilter")) {
+             	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("InstalledFragmentStoryFilter");
+             	
+             	filteredItems = storyFilter.filterArrayList(filteredItems);
+     		} */
+        	
+        	Story item = items.get(position);
             View vi=convertView;
 
             if(convertView==null)
                 vi = inflater.inflate(R.layout.listview_item_row, null);
 
-            TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
-            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
-            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
-
-            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-            task.execute(item);
+            Intent intent = getActivity().getIntent();
             
-            textTitel.setText(item.getTitle());
-            textAutor.setText(item.getAuthor());
-
-            return vi;
+            if (intent.hasExtra("InstalledFragmentStoryFilter")) {
+            	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("InstalledFragmentStoryFilter");
+            	
+            	if (!storyFilter.filterStoryItem(item)) {
+            		vi=inflater.inflate(R.layout.row_null,null);
+            	 	return vi;
+            	}else{
+            		vi = inflater.inflate(R.layout.listview_item_row, null);
+            		TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
+    	            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
+    	            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
+    	
+    	            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+    	            task.execute(item);
+    	            
+    	            textTitel.setText(item.getTitle());
+    	            textAutor.setText(item.getAuthor());
+    	
+    	            return vi;
+            	}
+            }else{
+            	vi = inflater.inflate(R.layout.listview_item_row, null);
+	            TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
+	            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
+	            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
+	
+	            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+	            task.execute(item);
+	            
+	            textTitel.setText(item.getTitle());
+	            textAutor.setText(item.getAuthor());
+	
+	            return vi;
+            }
         }
     }
 }

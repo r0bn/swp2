@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit.android;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -7,9 +8,9 @@ import java.util.HashMap;
  * @author Mirjam
  *
  *Class 'Story' saves the data of a downloaded Story. This includes the meta data and the paths of the downloaded XML
- *and media data of the story. 
+ *and media data of the story. Class is serializable to load already downloaded stories to list 'downloadedStories' when the app starts.
  */
-public class Story {
+public class Story implements Serializable {
 	private Integer id;
 	private String title;
 	private String description;
@@ -26,6 +27,8 @@ public class Story {
 	private HashMap<String,String> storyMediaData;
 	private double longitude;
 	private double latitude;
+	
+	private static final long serialVersionUID = 10050001;
 
 	/**
 	 * Constructor of the class 'Story'. A story can only be created when the following attributes are given.

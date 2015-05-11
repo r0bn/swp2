@@ -163,7 +163,9 @@ public class StoryDetails_Activity extends ActionBarActivity {
 			startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
 			return true;
 		case R.id.action_delete:
-        	ContentDownloader.getInstance().deleteStory(intent.getIntExtra(EXTRA_STORYID, -1));
+			toast = Toast.makeText(getApplicationContext(),"Delete Story "+intent.getStringExtra(EXTRA_STORYNAME)+" (ID: "+intent.getIntExtra(EXTRA_STORYID, -1)+")",Toast.LENGTH_SHORT);
+        	toast.show();
+			ContentDownloader.getInstance().deleteStory(intent.getIntExtra(EXTRA_STORYID, -1));
         	Intent i_delete = new Intent(getApplicationContext(), Main_Activity.class);
         	startActivity(i_delete);
 			return true;
@@ -172,16 +174,6 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	toast.show();
         	DownloadStory task = new DownloadStory();
         	task.execute();
-//TODO: Lukas: Is this needed?
-//	        try {
-//				task.get();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (ExecutionException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
         	Intent i_download = new Intent(getApplicationContext(),Main_Activity.class);
         	startActivity(i_download);
 		default:
