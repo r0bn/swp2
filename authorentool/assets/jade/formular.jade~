@@ -324,7 +324,7 @@ block content
             
 
                                         // OnTrue und OnFalse Schattenkopien für das Quiz
-            li(id="liSkQuizOnTrueRef", role="presentation", style="display:none")
+            li(id="liSkQuizOnTrueRef", role="presentation")
                 a(id="ddnQuizOnTrueStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
 
 

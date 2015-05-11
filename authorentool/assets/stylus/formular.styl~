@@ -10,7 +10,7 @@ fonts = helvetica, arial, sans-serif
     font-size: 12pt
 body
   padding 30px 0px
-  min-width: 100%
+  min-width: 1366px
 
 .modal-content
     padding: 0px 25px 25px 25px

@@ -468,7 +468,7 @@
             $("#ulSkQuizOnTrueRef_"+counter).empty()
             i = 0
             while i < storypointArray.length
-                stuff = copyForm.cloneNode(true)
+                stuff = stuff.cloneNode(true)
                 stuff.id = stuff.id + "_" + dropdownLiCounter
                 stuff.style.display="block"
                 document.getElementById("ulSkQuizOnTrueRef_"+counter).appendChild(stuff)

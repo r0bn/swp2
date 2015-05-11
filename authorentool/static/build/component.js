@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createItem, createQuiz, createQuizDropdown, googleMap, graph, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -38,7 +38,8 @@ mainApp.controller("mainCtrl", [
       lightMedienBox();
       initDropdownClicks();
       googleMap();
-      graph();
+      window.nodes = [];
+      window.edges = [];
       initHelpSystem();
       initScrollbar();
     });
@@ -98,7 +99,7 @@ mainApp.controller("mainCtrl", [
         return $("#ddnsize").html("GB <span class='caret' />");
       });
     };
-    $scope.createNewFeature = function(counter) {
+    $scope.createNewStorypoint = function(counter) {
       var button, copyForm, stuff;
       copyForm = document.getElementById("fhlNeuerStorypoint");
       stuff = copyForm.cloneNode(true);
@@ -123,6 +124,7 @@ mainApp.controller("mainCtrl", [
       });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
+          AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter);
           return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
             pieces: 25
           }, 2000, function() {
@@ -145,7 +147,9 @@ mainApp.controller("mainCtrl", [
       button = document.getElementById("fgpStorypoint");
       button.parentNode.removeChild(button);
       document.getElementById("fhlStorypoints").appendChild(button);
-      return button.scrollIntoView(true);
+      button.scrollIntoView(true);
+      $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter);
+      return AddoDeleteNewNodes("Storypoint: " + counter, "", counter);
     };
     inIDSetter = function(objectInput, objectFieldset, text, alternativeText) {
       objectInput.val(objectInput.val().replace(/\s+/, ""));
@@ -233,6 +237,9 @@ mainApp.controller("mainCtrl", [
         if (confirm('Möchten Sie das Quiz wirklich löschen?')) {
           return $("#fgpNeu_Quiz_" + interactionCounter).remove();
         }
+      });
+      $("#btnSetQuizOnTrueReferences_" + interactionCounter).click(function() {
+        return createDropdownQuiz(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id);
       });
       btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter);
       $("#inQuizID_" + interactionCounter).keyup(function() {
@@ -402,48 +409,64 @@ mainApp.controller("mainCtrl", [
         $("#GraEditor").css("display", "none");
       }
     };
-    graph = function() {
-      var container, data, edges, network, nodes;
-      nodes = [
-        {
-          id: 1,
-          label: 'Node 1'
-        }, {
-          id: 2,
-          label: 'Node 2'
-        }, {
-          id: 3,
-          label: 'Node 3'
-        }, {
-          id: 4,
-          label: 'Node 4'
-        }, {
-          id: 5,
-          label: 'Node 5'
-        }, {
-          id: 6,
-          label: 'Node 6'
+    getAllStorypoints = function(buttonID, currentStorypointID) {
+      var currentStorypoint, nextStorypoint, prevStorypoint, storypointArray;
+      prevStorypoint = $(currentStorypointID).prev();
+      nextStorypoint = $(currentStorypointID).next();
+      currentStorypoint = $(currentStorypointID);
+      storypointArray = [];
+      while (typeof prevStorypoint.attr("id") !== 'undefined') {
+        storypointArray.push(prevStorypoint);
+        prevStorypoint = prevStorypoint.prev();
+      }
+      storypointArray.push(currentStorypoint);
+      while (typeof nextStorypoint.attr("id") !== 'undefined' && nextStorypoint.attr("id") !== "fgpStorypoint") {
+        storypointArray.push(nextStorypoint);
+        nextStorypoint = nextStorypoint.next();
+      }
+      return storypointArray;
+    };
+    createDropdownQuiz = function(counter, buttonID, currentObjID) {
+      var copyForm, currentStorypointID, dropdownLiCounter, i, storypointArray, stuff;
+      currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
+      storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
+      copyForm = document.getElementById("liSkQuizOnTrueRef");
+      dropdownLiCounter = $("#btnSetQuizOnTrueReferences_" + counter).attr("QuizRefOnTrueCounter");
+      dropdownLiCounter++;
+      $("#btnSetQuizOnTrueReferences_" + counter).attr("dropdownLiCounter", dropdownLiCounter);
+      $("#ulSkQuizOnTrueRef_" + counter).empty();
+      i = 0;
+      while (i < storypointArray.length) {
+        stuff = copyForm.cloneNode(true);
+        stuff.id = stuff.id + "_" + dropdownLiCounter;
+        stuff.style.display = "block";
+        document.getElementById("ulSkQuizOnTrueRef_" + counter).appendChild(stuff);
+        i++;
+      }
+      return setIDs($("#ulSkQuizOnTrueRef_" + counter), dropdownLiCounter);
+    };
+    AddoDeleteNewNodes = function(nodeLabelInfo, searchID, counter) {
+      var container, data, i, network, node;
+      if (searchID !== '') {
+        i = 0;
+        while (i < window.nodes.length) {
+          if (window.nodes[i].nodeOwner === searchID) {
+            window.nodes.splice(i, 1);
+          }
+          i++;
         }
-      ];
-      edges = [
-        {
-          from: 1,
-          to: 2
-        }, {
-          from: 1,
-          to: 3
-        }, {
-          from: 2,
-          to: 4
-        }, {
-          from: 2,
-          to: 5
-        }
-      ];
+      } else {
+        node = {
+          id: counter,
+          label: nodeLabelInfo
+        };
+        node.nodeOwner = "Storypoint_" + counter;
+        window.nodes.push(node);
+      }
       container = document.getElementById('divDependencyBox');
       data = {
-        nodes: nodes,
-        edges: edges
+        nodes: window.nodes,
+        edges: window.edges
       };
       network = new vis.Network(container, data, {});
     };
