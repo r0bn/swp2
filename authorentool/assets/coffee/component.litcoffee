@@ -442,30 +442,40 @@
                     return
 
         #hier noch eine Ordnung der storypoints hinkriegen. Momentan: 2,1,3,4,5,6,... (Die erste while schleife ist nach unten sortiert...)
-        getAllStorypoints = (buttonID, currentStorypointID) ->
-            prevStorypoint = $(currentStorypointID).prev()
-            nextStorypoint = $(currentStorypointID).next()
-            currentStorypoint = $(currentStorypointID)
-            storypointArray = []
-            while typeof prevStorypoint.attr("id") != 'undefined' 
-                storypointArray.push(prevStorypoint)
-                prevStorypoint = prevStorypoint.prev()
-            storypointArray.push(currentStorypoint)
-            while typeof nextStorypoint.attr("id") != 'undefined' && nextStorypoint.attr("id") != "fgpStorypoint"
-                storypointArray.push(nextStorypoint)
-                nextStorypoint = nextStorypoint.next()
-            return storypointArray
+        #Methode um GEORDNENT ALLE Storypoints zurückzugeben					
+        getAllStorypoints = (buttonID, currentStorypointID) ->					
+            prevStorypoint = $(currentStorypointID).prev()					
+            currentStorypoint = $(currentStorypointID)					
+            storypointArray = []					
+            #find first prevStorypoint					
+            while typeof prevStorypoint.attr("id") != 'undefined'					
+                currentStorypoint = prevStorypoint					
+                prevStorypoint = prevStorypoint.prev()					
+            #push all from the lowest Storypoint into the array until it reached the highest					
+            while typeof currentStorypoint.attr("id") != 'undefined' && currentStorypoint.attr("id") != "fgpStorypoint"					
+                storypointArray.push(currentStorypoint)					
+                currentStorypoint = currentStorypoint.next()					
+            return storypointArray					
 
 
         setQuizDropdownIDs = (node, lauf) ->
             node.children().each ->
                 if typeof $(this).attr("id") != "undefined"
-                    newID = $(this).attr("id") + "_" + window.dropdownLiCounter + "_" + lauf
-                    $(this).attr("id", newID)
+                    if $(this).attr("id").indexOf("_tmp_") != -1
+                        split = $(this).attr("id").split("_tmp_")
+                        newID = split[0] + "_" + window.dropdownLiCounter + "_" + lauf
+                        $(this).attr("id", newID)
+                    else 
+                        newID = $(this).attr("id") + "_" + window.dropdownLiCounter + "_" + lauf
+                        $(this).attr("id", newID)
                     lauf++;
                 setQuizDropdownIDs($(this), lauf)
             return
 
+
+        helper = (storypointId, calcID) ->
+            splitted = storypointId.split("_")
+            return calcID = calcID + "_" + splitted[1]
 
         createDropdownQuiz = (counter, buttonID, currentObjID) ->
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
@@ -480,10 +490,16 @@
             i = 0
             while i < storypointArray.length
                 stuff = copyForm.cloneNode(true)
-                stuff.id = stuff.id + "_" + window.dropdownLiCounter
+                stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
                 #hier gerne jetzt, den unterknoten von stuff ändern. Idee: stuff.find("a").val(storypointArray[i]) - geht nicht
+                inputID = helper(storypointArray[i].attr("id"), "inStorypoint")
                 document.getElementById("ulSkQuizOnTrueRef_"+counter).appendChild(stuff)
+                tmpStoryname = $("#" + inputID).val()
+                if tmpStoryname == ""
+                    tmpStoryname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").text(tmpStoryname)
+                $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
 
             # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
@@ -499,12 +515,9 @@
             j = 0
             while j < storypointArray.length
                 indexe = window.dropdownLiCounter + "_" + (j+1)
-                tmpStoryname = storypointArray[j].children("fieldset").children("fieldset").find("#inStorypoint_" + (j+1)).val()
-                if tmpStoryname == ""
-                    tmpStoryname = storypointArray[j].children("fieldset").children("fieldset").find("#inStorypoint_" + (j+1)).attr("placeholder") + (j+1)
                 $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
-                    $("#btnSetQuizOnTrueReferences_"+counter).val("" +tmpStoryname)
-                    $("#btnSetQuizOnTrueReferences_"+counter).html(tmpStoryname + "<span class='caret' />")
+                    $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
+                    $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
                     return
                 j++
             return
