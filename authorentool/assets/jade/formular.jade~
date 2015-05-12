@@ -180,6 +180,9 @@ block content
                                                 a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
                                 .col-lg-3
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateInteraction",interactionCounter="0", type="button") Interaktion erstellen
+                              
+
+
                             br
                             br
 
@@ -272,7 +275,7 @@ block content
                         .col-lg-3
                         .col-lg-5
                             .dropdown
-                                button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetQuizOnTrueReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenzen bei richtiger Antwort
+                                button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetQuizOnTrueReferences", QuizRefOnTrueCounter=QuizRefOnTrueCounter+1, type="button", data-toggle='dropdown', aria-expanded='true') Referenzen bei richtiger Antwort
                                     span.caret 
                         
                                 ul.dropdown-menu(id="ulSkQuizOnTrueRef", role="menu", aria-labelledby="dropdownMenu1")
@@ -321,7 +324,7 @@ block content
             
 
                                         // OnTrue und OnFalse Schattenkopien für das Quiz
-            li(id="liSkQuizOnTrueRef", role="presentation", style="display:none")
+            li(id="liSkQuizOnTrueRef", role="presentation")
                 a(id="ddnQuizOnTrueStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
 
 
