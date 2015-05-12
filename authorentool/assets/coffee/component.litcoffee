@@ -47,6 +47,9 @@
             initDropdownClicks()
             googleMap()
             
+            # Counters
+            window.dropdownLiCounter = 0; 
+            # Nodes and Edges for the dependency graph
             window.nodes = []
             window.edges = []
 
@@ -438,7 +441,7 @@
                     $("#GraEditor").css("display","none")
                     return
 
-
+        #hier noch eine Ordnung der storypoints hinkriegen. Momentan: 2,1,3,4,5,6,... (Die erste while schleife ist nach unten sortiert...)
         getAllStorypoints = (buttonID, currentStorypointID) ->
             prevStorypoint = $(currentStorypointID).prev()
             nextStorypoint = $(currentStorypointID).next()
@@ -454,6 +457,16 @@
             return storypointArray
 
 
+        setQuizDropdownIDs = (node, lauf) ->
+            node.children().each ->
+                if typeof $(this).attr("id") != "undefined"
+                    newID = $(this).attr("id") + "_" + window.dropdownLiCounter + "_" + lauf
+                    $(this).attr("id", newID)
+                    lauf++;
+                setQuizDropdownIDs($(this), lauf)
+            return
+
+
         createDropdownQuiz = (counter, buttonID, currentObjID) ->
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
@@ -461,33 +474,44 @@
             # Now all Storypoints as Objects are in the array: storypointArray
             
             copyForm = document.getElementById("liSkQuizOnTrueRef")
-            dropdownLiCounter = $("#btnSetQuizOnTrueReferences_" + counter).attr("QuizRefOnTrueCounter")
-            dropdownLiCounter++
-            $("#btnSetQuizOnTrueReferences_" + counter).attr("dropdownLiCounter", dropdownLiCounter)
+            window.dropdownLiCounter++;
 
             $("#ulSkQuizOnTrueRef_"+counter).empty()
             i = 0
             while i < storypointArray.length
                 stuff = copyForm.cloneNode(true)
-                stuff.id = stuff.id + "_" + dropdownLiCounter
+                stuff.id = stuff.id + "_" + window.dropdownLiCounter
                 stuff.style.display="block"
+                #hier gerne jetzt, den unterknoten von stuff ändern. Idee: stuff.find("a").val(storypointArray[i]) - geht nicht
                 document.getElementById("ulSkQuizOnTrueRef_"+counter).appendChild(stuff)
                 i++
 
-            setIDs($("#ulSkQuizOnTrueRef_" + counter), dropdownLiCounter)
+            # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
+            lauf = 0
+            setQuizDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf)
 
-            
+            # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
+            # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
+            # und zwar mit den Storypointnamen, und sollten die nicht gesetzt sein mit dem Platzhalter.
 
-            #$("#ddnQuizOnTrueStorypoint_"+counter).click ->
-                #$("#btnSetQuizOnTrueReferences_"+counter).val("FUCK")
-                #$("#btnSetQuizOnTrueReferences_"+counter).html("FUCK <span class='caret' />")
+            # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
+            # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
+            j = 0
+            while j < storypointArray.length
+                indexe = window.dropdownLiCounter + "_" + (j+1)
+                tmpStoryname = storypointArray[j].children("fieldset").children("fieldset").find("#inStorypoint_" + (j+1)).val()
+                if tmpStoryname == ""
+                    tmpStoryname = storypointArray[j].children("fieldset").children("fieldset").find("#inStorypoint_" + (j+1)).attr("placeholder") + (j+1)
+                $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
+                    $("#btnSetQuizOnTrueReferences_"+counter).val("" +tmpStoryname)
+                    $("#btnSetQuizOnTrueReferences_"+counter).html(tmpStoryname + "<span class='caret' />")
+                    return
+                j++
+            return
 
 
 
-
-
-
-        # Methode zum hinzufügen und löschen von neuen Knoten, wenn diese per createNewStorypoint neu angelegt werden.
+            #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
             if searchID != ''
                 i = 0
