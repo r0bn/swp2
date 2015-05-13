@@ -43,10 +43,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
             else
                 $scope.xmlError = "XML valide!"
 
-            test.xml = $scope.xmlFile
+                xmlService.getFileReferences $scope.xmlFile
 
-            delete test.id
-            #server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
+                test.xml = $scope.xmlFile
+
+                delete test.id
+                #server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
         # This is dummy data for demmo reasons
         $scope.mediaData = [

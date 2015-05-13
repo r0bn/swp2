@@ -64,6 +64,16 @@
                 else
                     return ""
 
+            getFileReferences : (xml) ->
+                xmlDoc = $.parseXML( xml.toLowerCase() )
+                $xml = $( xmlDoc )
+                
+                $references = $xml.find("video").each () ->
+                    console.log $(this).find("href").attr("xlink:href")
+
+                $references = $xml.find("image").each () ->
+                    console.log $(this).find("href").attr("xlink:href")
+                
         }
     ]
 
