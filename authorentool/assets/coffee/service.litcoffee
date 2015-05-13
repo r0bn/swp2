@@ -46,6 +46,13 @@
                     .error () ->
                         console.log "error"
 
+            isMediaFileUploaded : (mediaFile, id, cb) ->
+                $http.get("#{serverUrl}/media/#{id}/#{mediaFile.name}")
+                    .success (data) ->
+                        cb(mediaFile, "ok")
+                    .error () ->
+                        cb(mediaFile, "error")
+
         }
     ]
 
@@ -67,12 +74,20 @@
             getFileReferences : (xml) ->
                 xmlDoc = $.parseXML( xml.toLowerCase() )
                 $xml = $( xmlDoc )
+
+                mediaFiles = []
                 
                 $references = $xml.find("video").each () ->
-                    console.log $(this).find("href").attr("xlink:href")
+                    mediaFiles.push {
+                        name : $(this).find("href").attr("xlink:href")
+                    }
 
                 $references = $xml.find("image").each () ->
-                    console.log $(this).find("href").attr("xlink:href")
+                    mediaFiles.push {
+                        name : $(this).find("href").attr("xlink:href")
+                    }
+
+                return mediaFiles
                 
         }
     ]

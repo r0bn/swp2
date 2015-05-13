@@ -29,13 +29,13 @@
                         thead
                             tr
                                 th Name 
-                                th Type
+                                th Status 
                                 th Action
                         tbody
                             tr(ng-repeat="obj in mediaData")
                                 td {{ obj.name }}
                                 td 
-                                    span.label.label-default {{ obj.type }}
+                                    span.label.label-default {{ obj.status }}
                                 td
                                     button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
                                     button.btn.btn-danger.btn-xs Delete 

@@ -22,9 +22,17 @@ The following code is a angularJS (https://angularjs.org/) Application.
             foldGutter : true
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
+        $scope.testMediaFiles = () ->
+            for file in $scope.mediaData
+                server.isMediaFileUploaded file, $scope.storyId, (mFile, status) =>
+                    mFile.status = status
+                    console.log status
+
         $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
+                $scope.mediaData = xmlService.getFileReferences $scope.xmlFile
+                $scope.testMediaFiles()
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -50,29 +58,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 delete test.id
                 #server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
-        # This is dummy data for demmo reasons
-        $scope.mediaData = [
-            {
-                id : 1
-                name : "Cover"
-                type : "image"
-            },
-            {
-                id : 2
-                name : "ReferenceBar"
-                type : "image"
-            },
-            {
-                id : 3
-                name : "Introduction"
-                type : "movie"
-            },
-            {
-                id : 4
-                name : "FinalScene"
-                type : "movie"
-            }
-        ]
     ]
 
     storyTellarCtrl.controller "homeCtrl", ["$scope", "$location", "storytellerServer", ($scope, $location, $server) ->
