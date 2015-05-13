@@ -467,6 +467,7 @@ mainApp.controller("mainCtrl", [
         }
         $("#" + stuff.id).find("a").text(tmpStoryname);
         $("#" + stuff.id).find("a").html(tmpStoryname);
+        $("#" + stuff.id).find("a").attr("inputID", inputID);
         i++;
       }
       lauf = 0;
@@ -477,6 +478,11 @@ mainApp.controller("mainCtrl", [
         $("#ddnQuizOnTrueStorypoint_" + indexe).click(function() {
           $("#btnSetQuizOnTrueReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
+          $("#" + $(this).attr("inputID")).on('input', function() {
+            $(this).off('input:last');
+            $("#btnSetQuizOnTrueReferences_" + counter).val($(this).val());
+            $("#btnSetQuizOnTrueReferences_" + counter).html($(this).val() + "<span class='caret' />");
+          });
         });
         j++;
       }
