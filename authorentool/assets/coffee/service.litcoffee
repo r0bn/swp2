@@ -60,6 +60,10 @@
                 if dom.getElementsByTagName('parsererror').length > 0
                     console.log dom.getElementsByTagName('parsererror')
 
+                    return dom.getElementsByTagName('parsererror')[0].innerText
+                else
+                    return ""
+
         }
     ]
 

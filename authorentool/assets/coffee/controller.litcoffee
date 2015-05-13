@@ -36,7 +36,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.saveXML = () ->
             test = $scope.storys[$scope.storyId]
 
-            xmlService.isValidXML $scope.xmlFile
+            ret = xmlService.isValidXML $scope.xmlFile
+            if ret.length > 0
+                $scope.xmlError = ret
+                return
+            else
+                $scope.xmlError = "XML valide!"
 
             test.xml = $scope.xmlFile
 

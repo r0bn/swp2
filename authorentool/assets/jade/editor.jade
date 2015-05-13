@@ -10,7 +10,9 @@
                     // more infos https://codemirror.net
                     div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
             .row
-                .col-md-4.col-md-offset-8
+                .col-md-8
+                    | {{ xmlError }}
+                .col-md-4
                     button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save
 
         // This is an demo example for the media library
