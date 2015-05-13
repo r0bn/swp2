@@ -6,8 +6,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", ($scope, $routeParams, $http, server, xmlService) ->
 
-        $scope.selectedFile = ""
-        $scope.selectedFile2 = ""
         $scope.storyId = $routeParams.story
 
         # Codemirror Options
@@ -22,17 +20,30 @@ The following code is a angularJS (https://angularjs.org/) Application.
             foldGutter : true
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
-        $scope.testMediaFiles = () ->
+        $scope.testMediaFiles = (cb) ->
+            wait = 0
             for file in $scope.mediaData
+                wait++
                 server.isMediaFileUploaded file, $scope.storyId, (mFile, status) =>
                     mFile.status = status
-                    console.log status
+                    wait--
+                    if wait is 0
+                        cb()
+
+        $scope.updateMediaFiles = (cb) ->
+            $scope.mediaData = xmlService.getFileReferences $scope.xmlFile
+            $scope.testMediaFiles () ->
+                okay = true
+                for f in $scope.mediaData
+                    if f.status is "error"
+                        okay = false
+                cb okay
 
         $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
-                $scope.mediaData = xmlService.getFileReferences $scope.xmlFile
-                $scope.testMediaFiles()
+                $scope.updateMediaFiles () ->
+                    console.log "ini"
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -51,12 +62,23 @@ The following code is a angularJS (https://angularjs.org/) Application.
             else
                 $scope.xmlError = "XML valide!"
 
-                xmlService.getFileReferences $scope.xmlFile
-
                 test.xml = $scope.xmlFile
 
                 delete test.id
-                #server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
+                files = []
+                for f in $scope.mediaData
+                    if f.status is "error"
+                        if f.selectedFile?
+                            if f.selectedFile.name is f.name
+                                files.push f.selectedFile
+                            else
+                                $scope.xmlError = "name must be the same as the reference in xml"
+                                return
+                        else
+                            $scope.xmlError = "you need to add a file for every file with status error"
+                            return
+
+                server.uploadMediaFile files, test
 
     ]
 

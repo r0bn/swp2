@@ -21,8 +21,6 @@
                 .col-md-12
                     .page-header
                         h3 Media Library
-                        input(type="file",file-model="selectedFile")
-                        input(type="file",file-model="selectedFile2")
             .row
                 .col-md-12
                     table.table.table-striped.table-hover
@@ -37,8 +35,7 @@
                                 td 
                                     span.label.label-default {{ obj.status }}
                                 td
-                                    button.btn.btn-success.btn-xs(style="margin-right:5px") Show 
-                                    button.btn.btn-danger.btn-xs Delete 
+                                    input(type="file",ng-show="obj.status === 'error'",file-model="obj.selectedFile")
 
 
 
