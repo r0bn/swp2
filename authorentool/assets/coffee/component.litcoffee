@@ -500,7 +500,6 @@
                     tmpStoryname = $("#" + inputID).attr("placeholder") 
                 $("#" + stuff.id).find("a").text(tmpStoryname)
                 $("#" + stuff.id).find("a").html(tmpStoryname)
-                $("#" + stuff.id).find("a").attr("inputID", inputID)
                 i++
 
             # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
@@ -517,16 +516,8 @@
             while j < storypointArray.length
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
-                    
                     $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
-
-                    $("#" + $(this).attr("inputID")).on 'input.mynamespace', () ->
-                        $("#btnSetQuizOnTrueReferences_"+ counter).val( $(this).val())
-                        $("#btnSetQuizOnTrueReferences_"+ counter).html( $(this).val() + "<span class='caret' />")
-                        return
-                    
-                    #$("#" + $(this).attr("inputID")).off('input.mynamespace');
                     return  
                 j++
             return
