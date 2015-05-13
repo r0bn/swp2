@@ -54,7 +54,7 @@
             isValidXML : (xml) ->
                 parser = new DOMParser()
 
-                dom = parser.parseFromString(xml, 'text/html')
+                dom = parser.parseFromString(xml, 'text/xml')
                 console.log dom
 
                 if dom.getElementsByTagName('parsererror').length > 0

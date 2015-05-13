@@ -49,6 +49,7 @@
 
     gulp.task 'js-vendor', () ->
         gulp.src [
+            './bower_components/jquery/dist/jquery.js'
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/codemirror/addon/fold/*.js'
