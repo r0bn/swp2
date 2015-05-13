@@ -478,8 +478,7 @@ mainApp.controller("mainCtrl", [
         $("#ddnQuizOnTrueStorypoint_" + indexe).click(function() {
           $("#btnSetQuizOnTrueReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
-          $("#" + $(this).attr("inputID")).on('input', function() {
-            $(this).off('input:last');
+          $("#" + $(this).attr("inputID")).on('input.mynamespace', function() {
             $("#btnSetQuizOnTrueReferences_" + counter).val($(this).val());
             $("#btnSetQuizOnTrueReferences_" + counter).html($(this).val() + "<span class='caret' />");
           });

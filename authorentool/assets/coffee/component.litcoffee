@@ -520,15 +520,16 @@
                     
                     $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
-                    $("#" + $(this).attr("inputID")).on 'input', () ->
-                        $(this).off('input:last')
-                        $("#btnSetQuizOnTrueReferences_"+counter).val( $(this).val())
-                        $("#btnSetQuizOnTrueReferences_"+counter).html( $(this).val() + "<span class='caret' />")
+
+                    $("#" + $(this).attr("inputID")).on 'input.mynamespace', () ->
+                        $("#btnSetQuizOnTrueReferences_"+ counter).val( $(this).val())
+                        $("#btnSetQuizOnTrueReferences_"+ counter).html( $(this).val() + "<span class='caret' />")
                         return
-                    return
+                    
+                    #$("#" + $(this).attr("inputID")).off('input.mynamespace');
+                    return  
                 j++
             return
-
 
 
             #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
