@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -448,9 +448,14 @@ mainApp.controller("mainCtrl", [
       return calcID = calcID + "_" + splitted[1];
     };
     createDropdownQuiz = function(counter, buttonID, currentObjID) {
-      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
+      var currentStorypointID, storypointArray;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
       storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
+      createDropdownQuizOnTrue(counter, storypointArray);
+      return createDropdownQuizOnFalse(counter, storypointArray);
+    };
+    createDropdownQuizOnTrue = function(counter, storypointArray) {
+      var copyForm, i, indexe, inputID, j, lauf, stuff, tmpStoryname;
       copyForm = document.getElementById("liSkQuizOnTrueRef");
       window.dropdownLiCounter++;
       $("#ulSkQuizOnTrueRef_" + counter).empty();
@@ -477,6 +482,38 @@ mainApp.controller("mainCtrl", [
         $("#ddnQuizOnTrueStorypoint_" + indexe).click(function() {
           $("#btnSetQuizOnTrueReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
+        });
+        j++;
+      }
+    };
+    createDropdownQuizOnFalse = function(counter, storypointArray) {
+      var copyForm, i, indexe, inputID, j, lauf, stuff, tmpStoryname;
+      copyForm = document.getElementById("liSkQuizOnFalseRef");
+      window.dropdownLiCounter++;
+      $("#ulSkQuizOnFalseRef_" + counter).empty();
+      i = 0;
+      while (i < storypointArray.length) {
+        stuff = copyForm.cloneNode(true);
+        stuff.id = stuff.id + "_tmp_" + i;
+        stuff.style.display = "block";
+        inputID = helper(storypointArray[i].attr("id"), "inStorypoint");
+        document.getElementById("ulSkQuizOnFalseRef_" + counter).appendChild(stuff);
+        tmpStoryname = $("#" + inputID).val();
+        if (tmpStoryname === "") {
+          tmpStoryname = $("#" + inputID).attr("placeholder");
+        }
+        $("#" + stuff.id).find("a").text(tmpStoryname);
+        $("#" + stuff.id).find("a").html(tmpStoryname);
+        i++;
+      }
+      lauf = 0;
+      setQuizDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf);
+      j = 0;
+      while (j < storypointArray.length) {
+        indexe = window.dropdownLiCounter + "_" + (j + 1);
+        $("#ddnQuizOnFalseStorypoint_" + indexe).click(function() {
+          $("#btnSetQuizOnFalseReferences_" + counter).val($(this).text());
+          $("#btnSetQuizOnFalseReferences_" + counter).html($(this).text() + "<span class='caret' />");
         });
         j++;
       }

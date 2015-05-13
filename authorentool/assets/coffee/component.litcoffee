@@ -441,7 +441,7 @@
                     $("#GraEditor").css("display","none")
                     return
 
-        #hier noch eine Ordnung der storypoints hinkriegen. Momentan: 2,1,3,4,5,6,... (Die erste while schleife ist nach unten sortiert...)
+
         #Methode um GEORDNENT ALLE Storypoints zurückzugeben					
         getAllStorypoints = (buttonID, currentStorypointID) ->					
             prevStorypoint = $(currentStorypointID).prev()					
@@ -480,6 +480,10 @@
         createDropdownQuiz = (counter, buttonID, currentObjID) ->
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
+            createDropdownQuizOnTrue(counter, storypointArray)
+            createDropdownQuizOnFalse(counter, storypointArray)
+
+        createDropdownQuizOnTrue = (counter, storypointArray) ->
 
             # Now all Storypoints as Objects are in the array: storypointArray
             
@@ -521,6 +525,54 @@
                     return  
                 j++
             return
+
+        createDropdownQuizOnFalse = (counter, storypointArray) ->
+
+            # Now all Storypoints as Objects are in the array: storypointArray
+            
+            copyForm = document.getElementById("liSkQuizOnFalseRef")
+            window.dropdownLiCounter++;
+
+            $("#ulSkQuizOnFalseRef_"+counter).empty()
+            i = 0
+            while i < storypointArray.length
+                stuff = copyForm.cloneNode(true)
+                stuff.id = stuff.id + "_tmp_" + i
+                stuff.style.display="block"
+                #hier gerne jetzt, den unterknoten von stuff ändern. Idee: stuff.find("a").val(storypointArray[i]) - geht nicht
+                inputID = helper(storypointArray[i].attr("id"), "inStorypoint")
+                document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
+                tmpStoryname = $("#" + inputID).val()
+                if tmpStoryname == ""
+                    tmpStoryname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").text(tmpStoryname)
+                $("#" + stuff.id).find("a").html(tmpStoryname)
+                i++
+
+            # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
+            lauf = 0
+            setQuizDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf)
+
+            # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
+            # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
+            # und zwar mit den Storypointnamen, und sollten die nicht gesetzt sein mit dem Platzhalter.
+
+            # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
+            # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
+            j = 0
+            while j < storypointArray.length
+                indexe = window.dropdownLiCounter + "_" + (j+1)
+                $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
+                    $("#btnSetQuizOnFalseReferences_"+counter).val($(this).text())
+                    $("#btnSetQuizOnFalseReferences_"+counter).html($(this).text() + "<span class='caret' />")
+                    return  
+                j++
+            return
+
+
+
+
+
 
 
             #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
