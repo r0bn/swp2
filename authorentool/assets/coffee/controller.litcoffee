@@ -4,7 +4,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", ($scope, $routeParams, $http, server) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", ($scope, $routeParams, $http, server, xmlService) ->
 
         $scope.selectedFile = ""
         $scope.selectedFile2 = ""
@@ -34,11 +34,14 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # this saves the current xml file
         $scope.saveXML = () ->
-            console.log $scope.selectedFile
             test = $scope.storys[$scope.storyId]
+
+            xmlService.isValidXML $scope.xmlFile
+
             test.xml = $scope.xmlFile
+
             delete test.id
-            server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
+            #server.uploadMediaFile [$scope.selectedFile, $scope.selectedFile2 ], test
 
         # This is dummy data for demmo reasons
         $scope.mediaData = [

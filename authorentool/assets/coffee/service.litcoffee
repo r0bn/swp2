@@ -46,11 +46,21 @@
                     .error () ->
                         console.log "error"
 
-
-
-
         }
     ]
 
+    storyTellarServices.factory 'xmlServices', [ () ->
+        {
+            isValidXML : (xml) ->
+                parser = new DOMParser()
+
+                dom = parser.parseFromString(xml, 'text/html')
+                console.log dom
+
+                if dom.getElementsByTagName('parsererror').length > 0
+                    console.log dom.getElementsByTagName('parsererror')
+
+        }
+    ]
 
 
