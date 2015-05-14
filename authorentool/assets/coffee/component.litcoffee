@@ -54,10 +54,10 @@
             googleMap()
             
             # Counters
-            # window.dropdownLiCounter = 0; 
+            window.dropdownLiCounter = 0
             # Nodes and Edges for the dependency graph
-            # window.nodes = []
-            # window.edges = []
+            window.nodes = []
+            window.edges = []
 
             initHelpSystem()
             initScrollbar()
@@ -135,8 +135,6 @@
                 $("#inStorypoint_"+counter).keyup ->
                     inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
 
-                $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter)
-                $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter)
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
                 
@@ -149,14 +147,13 @@
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
-                        ###########################AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
+                        AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                         $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 25}, 2000, () ->
                             $("#fhlNeuerStorypoint_" + counter).remove()
         
                 # Click Event für btnStorypointEinklappen
                 btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)
 
-                $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter)
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
                     if ($("#ddnInteractions_" + counter).val() == "Item")
@@ -176,7 +173,7 @@
                 # Für jeden Storypoint gibt es ein Attribut nodeOwner, mit der ID: Storypoint_ (counter)
                 $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter)
                 # Create new Node after creating a new Storypoint
-                                                                    #######################AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
+                AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
                 helpRek($("#" + stuff.id))
         
         inIDSetter = (objectInput, objectFieldset, text, alternativeText) ->
@@ -263,8 +260,13 @@
 
             # Dropdown Event for btnSetQuizOnTrueReferences
             $("#btnSetQuizOnTrueReferences_" + interactionCounter).click ->
-                # für OnTrue und OnFalse
-                createDropdownQuiz(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id)
+                # für OnTrue
+                createDropdownQuizOnTrue(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id)
+
+            # Dropdown Event for btnSetQuizOnFalseReferences
+            $("#btnSetQuizOnFalseReferences_" + interactionCounter).click ->
+                # für OnFalse
+                createDropdownQuizOnFalse(interactionCounter, "#btnSetQuizOnFalseReferences_" + interactionCounter, "#" + stuff.id)
 
             btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter)
             # quizID Trigger
@@ -373,6 +375,7 @@
                     currentObject.animate {opacity: 0.25}, 400, () ->
                         nextObject.insertBefore("#" + currentObject.attr("id"))
                     currentObject.animate {opacity: 1}, 500
+                    return
                 return
             return
 
@@ -387,6 +390,7 @@
                     currentObject.animate {opacity: 0.25}, 400, () ->
                         prevObject.insertAfter("#" + currentObject.attr("id"))
                     currentObject.animate {opacity: 1}, 500
+                    return
                 return
             return
 
@@ -457,17 +461,18 @@
 
         #Methode um GEORDNENT ALLE Storypoints zurückzugeben					
         getAllStorypoints = (buttonID, currentStorypointID) ->					
-            prevStorypoint = $(currentStorypointID).prev()					
-            currentStorypoint = $(currentStorypointID)					
+            prevStorypoint = $(currentStorypointID).prev().attr("id")				
+            currentStorypoint = $(currentStorypointID).attr("id")			
             storypointArray = []					
             #find first prevStorypoint					
-            while typeof prevStorypoint.attr("id") != 'undefined'					
+            while typeof prevStorypoint != 'undefined'					
                 currentStorypoint = prevStorypoint					
-                prevStorypoint = prevStorypoint.prev()					
+                prevStorypoint = $("#" +prevStorypoint).prev().attr("id")				
             #push all from the lowest Storypoint into the array until it reached the highest					
-            while typeof currentStorypoint.attr("id") != 'undefined' && currentStorypoint.attr("id") != "fgpStorypoint"					
-                storypointArray.push(currentStorypoint)					
-                currentStorypoint = currentStorypoint.next()					
+            while typeof currentStorypoint != 'undefined' && currentStorypoint != "fgpStorypoint"	
+                tmpStorypoint = currentStorypoint				
+                storypointArray.push(tmpStorypoint)					
+                currentStorypoint = $("#" +currentStorypoint).next().attr("id")					
             return storypointArray					
 
 
@@ -490,13 +495,11 @@
             splitted = storypointId.split("_")
             return calcID = calcID + "_" + splitted[1]
 
-        createDropdownQuiz = (counter, buttonID, currentObjID) ->
+
+        createDropdownQuizOnTrue = (counter, buttonID, currentObjID) ->
+
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
-            createDropdownQuizOnTrue(counter, storypointArray)
-            createDropdownQuizOnFalse(counter, storypointArray)
-
-        createDropdownQuizOnTrue = (counter, storypointArray) ->
 
             # Now all Storypoints as Objects are in the array: storypointArray
             
@@ -509,8 +512,7 @@
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
-                #hier gerne jetzt, den unterknoten von stuff ändern. Idee: stuff.find("a").val(storypointArray[i]) - geht nicht
-                inputID = helper(storypointArray[i].attr("id"), "inStorypoint")
+                inputID = helper(storypointArray[i], "inStorypoint")
                 document.getElementById("ulSkQuizOnTrueRef_"+counter).appendChild(stuff)
                 tmpStoryname = $("#" + inputID).val()
                 if tmpStoryname == ""
@@ -539,7 +541,10 @@
                 j++
             return
 
-        createDropdownQuizOnFalse = (counter, storypointArray) ->
+        createDropdownQuizOnFalse = (counter, buttonID, currentObjID) ->
+
+            currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
+            storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
             # Now all Storypoints as Objects are in the array: storypointArray
             
@@ -552,8 +557,7 @@
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
-                #hier gerne jetzt, den unterknoten von stuff ändern. Idee: stuff.find("a").val(storypointArray[i]) - geht nicht
-                inputID = helper(storypointArray[i].attr("id"), "inStorypoint")
+                inputID = helper(storypointArray[i], "inStorypoint")
                 document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
                 tmpStoryname = $("#" + inputID).val()
                 if tmpStoryname == ""
@@ -825,6 +829,7 @@
                     $("#divHelpBox").slideUp("slow")
                     $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-small')
                     $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full')
+                return
 
         setAllMap = (map, markers) ->
           i = 0

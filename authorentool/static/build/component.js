@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -48,6 +48,9 @@ mainApp.controller("mainCtrl", [
       lightMedienBox();
       initDropdownClicks();
       googleMap();
+      window.dropdownLiCounter = 0;
+      window.nodes = [];
+      window.edges = [];
       initHelpSystem();
       initScrollbar();
     });
@@ -122,8 +125,6 @@ mainApp.controller("mainCtrl", [
       $("#inStorypoint_" + counter).keyup(function() {
         return inIDSetter($("#inStorypoint_" + counter), $("#lgdNeuerStorypointFieldset_" + counter), "Storypoint: ", "Neuer Storypoint");
       });
-      $("#" + stuff.id).find("#btnSwitchDown").attr("id", "btnSwitchDown_" + counter);
-      $("#" + stuff.id).find("#btnSwitchUp").attr("id", "btnSwitchUp_" + counter);
       btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
       btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
       $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter);
@@ -132,6 +133,7 @@ mainApp.controller("mainCtrl", [
       });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
+          AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter);
           return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
             pieces: 25
           }, 2000, function() {
@@ -140,7 +142,6 @@ mainApp.controller("mainCtrl", [
         }
       });
       btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter);
-      $("#btnCreateInteraction_" + counter).attr("interactionCounter", counter);
       $("#btnCreateInteraction_" + counter).click(function() {
         if ($("#ddnInteractions_" + counter).val() === "Item") {
           return createItem(counter);
@@ -156,6 +157,7 @@ mainApp.controller("mainCtrl", [
       document.getElementById("fhlStorypoints").appendChild(button);
       button.scrollIntoView(true);
       $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter);
+      AddoDeleteNewNodes("Storypoint: " + counter, "", counter);
       return helpRek($("#" + stuff.id));
     };
     inIDSetter = function(objectInput, objectFieldset, text, alternativeText) {
@@ -247,7 +249,10 @@ mainApp.controller("mainCtrl", [
         }
       });
       $("#btnSetQuizOnTrueReferences_" + interactionCounter).click(function() {
-        return createDropdownQuiz(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id);
+        return createDropdownQuizOnTrue(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id);
+      });
+      $("#btnSetQuizOnFalseReferences_" + interactionCounter).click(function() {
+        return createDropdownQuizOnFalse(interactionCounter, "#btnSetQuizOnFalseReferences_" + interactionCounter, "#" + stuff.id);
       });
       btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter);
       $("#inQuizID_" + interactionCounter).keyup(function() {
@@ -361,6 +366,7 @@ mainApp.controller("mainCtrl", [
           currentObject.animate({
             opacity: 1
           }, 500);
+          return;
         }
       });
     };
@@ -381,6 +387,7 @@ mainApp.controller("mainCtrl", [
           currentObject.animate({
             opacity: 1
           }, 500);
+          return;
         }
       });
     };
@@ -422,17 +429,18 @@ mainApp.controller("mainCtrl", [
       }
     };
     getAllStorypoints = function(buttonID, currentStorypointID) {
-      var currentStorypoint, prevStorypoint, storypointArray;
-      prevStorypoint = $(currentStorypointID).prev();
-      currentStorypoint = $(currentStorypointID);
+      var currentStorypoint, prevStorypoint, storypointArray, tmpStorypoint;
+      prevStorypoint = $(currentStorypointID).prev().attr("id");
+      currentStorypoint = $(currentStorypointID).attr("id");
       storypointArray = [];
-      while (typeof prevStorypoint.attr("id") !== 'undefined') {
+      while (typeof prevStorypoint !== 'undefined') {
         currentStorypoint = prevStorypoint;
-        prevStorypoint = prevStorypoint.prev();
+        prevStorypoint = $("#" + prevStorypoint).prev().attr("id");
       }
-      while (typeof currentStorypoint.attr("id") !== 'undefined' && currentStorypoint.attr("id") !== "fgpStorypoint") {
-        storypointArray.push(currentStorypoint);
-        currentStorypoint = currentStorypoint.next();
+      while (typeof currentStorypoint !== 'undefined' && currentStorypoint !== "fgpStorypoint") {
+        tmpStorypoint = currentStorypoint;
+        storypointArray.push(tmpStorypoint);
+        currentStorypoint = $("#" + currentStorypoint).next().attr("id");
       }
       return storypointArray;
     };
@@ -458,15 +466,10 @@ mainApp.controller("mainCtrl", [
       splitted = storypointId.split("_");
       return calcID = calcID + "_" + splitted[1];
     };
-    createDropdownQuiz = function(counter, buttonID, currentObjID) {
-      var currentStorypointID, storypointArray;
+    createDropdownQuizOnTrue = function(counter, buttonID, currentObjID) {
+      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
       storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
-      createDropdownQuizOnTrue(counter, storypointArray);
-      return createDropdownQuizOnFalse(counter, storypointArray);
-    };
-    createDropdownQuizOnTrue = function(counter, storypointArray) {
-      var copyForm, i, indexe, inputID, j, lauf, stuff, tmpStoryname;
       copyForm = document.getElementById("liSkQuizOnTrueRef");
       window.dropdownLiCounter++;
       $("#ulSkQuizOnTrueRef_" + counter).empty();
@@ -475,7 +478,7 @@ mainApp.controller("mainCtrl", [
         stuff = copyForm.cloneNode(true);
         stuff.id = stuff.id + "_tmp_" + i;
         stuff.style.display = "block";
-        inputID = helper(storypointArray[i].attr("id"), "inStorypoint");
+        inputID = helper(storypointArray[i], "inStorypoint");
         document.getElementById("ulSkQuizOnTrueRef_" + counter).appendChild(stuff);
         tmpStoryname = $("#" + inputID).val();
         if (tmpStoryname === "") {
@@ -497,8 +500,10 @@ mainApp.controller("mainCtrl", [
         j++;
       }
     };
-    createDropdownQuizOnFalse = function(counter, storypointArray) {
-      var copyForm, i, indexe, inputID, j, lauf, stuff, tmpStoryname;
+    createDropdownQuizOnFalse = function(counter, buttonID, currentObjID) {
+      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
+      currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
+      storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
       copyForm = document.getElementById("liSkQuizOnFalseRef");
       window.dropdownLiCounter++;
       $("#ulSkQuizOnFalseRef_" + counter).empty();
@@ -507,7 +512,7 @@ mainApp.controller("mainCtrl", [
         stuff = copyForm.cloneNode(true);
         stuff.id = stuff.id + "_tmp_" + i;
         stuff.style.display = "block";
-        inputID = helper(storypointArray[i].attr("id"), "inStorypoint");
+        inputID = helper(storypointArray[i], "inStorypoint");
         document.getElementById("ulSkQuizOnFalseRef_" + counter).appendChild(stuff);
         tmpStoryname = $("#" + inputID).val();
         if (tmpStoryname === "") {
@@ -795,11 +800,11 @@ mainApp.controller("mainCtrl", [
       if ($("#divHelpBox").is(":hidden")) {
         $("#divHelpBox").show("slow");
         $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-small');
-        return $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-full');
+        $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-full');
       } else {
         $("#divHelpBox").slideUp("slow");
         $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-small');
-        return $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full');
+        $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full');
       }
     };
     setAllMap = function(map, markers) {
