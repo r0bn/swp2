@@ -1,7 +1,10 @@
 package de.hft_stuttgart.spirit.android;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 /**
  * 
@@ -27,6 +30,9 @@ public class Story implements Serializable {
 	private HashMap<String,String> storyMediaData;
 	private double longitude;
 	private double latitude;
+	private Date created_at_Date;
+	private Date updated_at_Date;
+	private boolean isUpToDate;
 	
 	private static final long serialVersionUID = 10050001;
 
@@ -54,10 +60,17 @@ public class Story implements Serializable {
 		this.setRadius_uom(radius_uom);
 		this.setCreated_at(created_at);
 		this.setUpdated_at(updated_at);
+		try {
+			created_at_Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(created_at);
+			updated_at_Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updated_at);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		this.setAlreadyDownloaded(alreadyDownloaded);
 		String[] longLat = location.split(" ");
 		latitude = Double.valueOf(longLat[0]);
 		longitude = Double.valueOf(longLat[1]);
+		setUpToDate(true);
 		
 	}
 
@@ -181,4 +194,27 @@ public class Story implements Serializable {
 		this.updated_at = updated_at;
 	}
 
+	public Date getCreated_at_Date() {
+		return created_at_Date;
+	}
+	
+	public void setCreated_at_Date(Date created_at_Date) {
+		this.created_at_Date = created_at_Date;
+	}
+	
+	public Date getUpdated_at_Date() {
+		return updated_at_Date;
+	}
+	
+	public void setUpdated_at_Date(Date updated_at_Date) {
+		this.updated_at_Date = updated_at_Date;
+	}
+	
+	public boolean isUpToDate() {
+		return isUpToDate;
+	}
+	
+	public void setUpToDate(boolean isUpToDate) {
+		this.isUpToDate = isUpToDate;
+	}
 }

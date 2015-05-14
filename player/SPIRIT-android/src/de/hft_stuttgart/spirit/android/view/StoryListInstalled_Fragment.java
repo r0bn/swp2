@@ -189,6 +189,10 @@ public class StoryListInstalled_Fragment extends Fragment {
 	            
 	            textTitel.setText(item.getTitle());
 	            textAutor.setText(item.getAuthor());
+	            
+            	if(!item.isUpToDate()){
+            		vi.setBackgroundColor(0xA0FF3300);
+            	}
 	
 	            return vi;
             }

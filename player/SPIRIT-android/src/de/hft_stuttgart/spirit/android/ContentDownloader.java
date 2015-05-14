@@ -184,8 +184,12 @@ public class ContentDownloader {
 
 		for (Story x : downloadedStories) {
 			for (int i = 0; i < allStoriesData.size(); i++) {
-				if (x.getId().equals(allStoriesData.get(i).getId()))
+				if (x.getId().equals(allStoriesData.get(i).getId())) {					
 					allStoriesData.get(i).setAlreadyDownloaded(true);
+					if(x.getUpdated_at_Date().before(allStoriesData.get(i).getUpdated_at_Date())) {
+						x.setUpToDate(false);
+					}
+				}
 			}
 		}
 	}

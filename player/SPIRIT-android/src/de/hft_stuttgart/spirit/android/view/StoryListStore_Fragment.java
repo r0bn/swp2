@@ -179,6 +179,8 @@ public class StoryListStore_Fragment extends Fragment {
             } else {
             	vi.setBackgroundColor(0x00000000);
             }
+            
+            
             return vi;
         }
     }
