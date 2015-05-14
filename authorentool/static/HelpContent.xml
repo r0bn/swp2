@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Content>
-
-
-<inTitle> Hier wird der Titel der Story eingegeben. Dieser kann von Ihnen frei gewählt werden. </inTitle>
+<inTitel> Hier wird der Titel der Story eingegeben. Dieser kann von Ihnen frei gewählt werden. </inTitel>
 <ttaDescription> Hier wird die Beschreibung der Story eingegeben. Diese kann von Ihnen frei gewählt werden </ttaDescription>
 <inAutor> Bitte geben Sie hier Ihren (Künstler-)Namen ein </inAutor>
 <inSize> Hier soll die gesamte Größe Ihrer Story eingegeben werden. Die Größe berechnet sich durch die Größe aller Mediendateien, sowie der XML-Datei </inSize>

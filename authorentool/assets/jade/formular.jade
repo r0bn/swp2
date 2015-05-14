@@ -16,17 +16,17 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for="inTitel") Titel
                             .col-lg-8
-                                input.form-control(type="text", id="inTitel", placeholder="Titel")
+                                input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
 
                         .form-group
                             label.col-lg-2.control-label(for="ttaDescription") Beschreibung
                             .col-lg-8
-                                textarea.form-control(rows="3", id="ttaDescription", style="max-width: 700px; max-height: 200px", placeholder="Bitte geben Sie die Beschreibung der Story ein")
+                                textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Bitte geben Sie die Beschreibung der Story ein")
 
                         .form-group
                             label.col-lg-2.control-label(for="inAutor") Autor
                             .col-lg-8
-                                input.form-control(type="text", id="inAutor", placeholder="Name des Autors")
+                                input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
 
                         .form-group
                             label.col-lg-2.control-label(for="inSize") Größe der Story
@@ -47,7 +47,7 @@ block content
                             label.col-lg-2.control-label(for="inLatLngLocation") Ort
 
                             .col-lg-8
-                                input.form-control( id="inLatLngLocation", placeholder="Breitengrad")
+                                input.form-control( disabled, id="inLatLngLocation", placeholder="Breitengrad")
                                 #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
                                     .modal-dialog   
                                         .modal-content
@@ -94,8 +94,7 @@ block content
                                     button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
                                         span.glyphicon.glyphicon-menu-down
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnStorypointEinklappen", type='button')
-                                        span.glyphicon.glyphicon-resize-small(id="resize")
-                                             
+                                        span.glyphicon.glyphicon-resize-small(id="resize") 
                                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesStorypointDelete", type='button') 
                                         span.glyphicon.glyphicon-trash
                         .col-lg-1
@@ -123,14 +122,14 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblInputStorypoint", for="inStorypoint") Storypoint
                                 .col-lg-8
-                                    input.form-control(type="text", id="inStorypoint", placeholder="Storypointname")
+                                    input.form-control(type="text",maxlength="255", id="inStorypoint", placeholder="Storypointname")
 
 
                             .form-group
                                 .col-lg-4
                                     label.control-label(id="lblAnchorPoint", for="inAnchorPoint") Ort
                                 .col-lg-6
-                                    input.form-control(type="text", id="inAnchorPoint", placeholder="Über map realisieren?")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorPoint", placeholder="Über map realisieren?")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnStorypointMap", type="button", gpsField="inAnchorPoint", data-toggle='modal', data-target='#lightbox') Map
 
@@ -139,7 +138,7 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblAnchorImg", for="inAnchorImg") Auslösebild bestimmen
                                 .col-lg-6
-                                    input.form-control(disabled, type="text", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
@@ -148,7 +147,7 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblAsset", for="inAsset") Anzeigbares Objekt
                                 .col-lg-6
-                                    input.form-control(disabled, type="text", id="inAsset", placeholder="Bild/Video aus Bib holen")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Bild/Video aus Bib holen")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
@@ -186,14 +185,17 @@ block content
             .col-lg-3.column(id="colColumn2", style="position:fixed; right:20px; top:150px")
                             form.form-horizontal
                                 fieldset
-                                    legend Hilfe
-                                        div(id="divHelpBox", style="outline: 1px solid black; width: 300px; height:100px; overflow-y: scroll; font-size: 12pt")
-
+                                    .col-lg-8
+                                        legend Hilfe
+                                    .col-lg-4
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnHelpEinklappen", type='button', ng-click="btnHelpEinklappenClick()")
+                                            span.glyphicon.glyphicon-resize-small(id="resize")
+                                div(id="divHelpBox", style="width: 300px; height:200px; overflow-y: auto; font-size: 12pt")
 
                             form.form-horizontal
                                 fieldset
                                     legend Abhängigkeiten
-                                        div(id="divDependencyBox", style="outline: 1px solid black; width: 300px; min-height:100px; text-align:center;")
+                                        div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
 
 
                                                         // ----------------------- AB HIER: SCHATTEN
@@ -220,17 +222,17 @@ block content
                         .col-lg-5
                             label.control-label(id="lblItemID", for="inItemID") Item ID
                         .col-lg-7
-                            input.form-control(type="text", id="inItemID", placeholder="ITEM ID")
+                            input.form-control(type="text",maxlength="255", id="inItemID", placeholder="ITEM ID")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblItemDescription", for="inItemDescription") Beschreibung
                         .col-lg-7
-                            input.form-control(type="text", id="inItemDescription", placeholder="ITEM Description")
+                            input.form-control(type="text",maxlength="255", id="inItemDescription", placeholder="ITEM Description")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
                     .form-group
                         .col-lg-6
                         .col-lg-6
@@ -260,12 +262,12 @@ block content
                         .col-lg-5
                             label.control-label(id="lblQuizID", for="inQuizID") Quiz ID
                         .col-lg-7
-                            input.form-control(type="text", id="inQuizID", placeholder="Quiz ID")   
+                            input.form-control(type="text",maxlength="255", id="inQuizID", placeholder="Quiz ID")   
                     .form-group
                         .col-lg-5
                             label.control-label( id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
                     .form-group
                         .col-lg-4
                             label.control-label(id="lblQuizOnTrue", for="ddnQuizOnTrueReference") Quiz OnTrue
@@ -292,7 +294,7 @@ block content
                         .col-lg-5
                             label.control-label(id="lblQuizQuestion", for="inQuizQuestion") Question
                         .col-lg-7
-                            input.form-control(type="text", id="inQuizQuestion", placeholder="Quiz Question")
+                            input.form-control(type="text",maxlength="255", id="inQuizQuestion", placeholder="Quiz Question")
                     .form-group
                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                 span Antwort hinzufügen
@@ -300,11 +302,11 @@ block content
                 .col-lg-1
                     label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
                 .col-lg-2
-                    input.form-control(type="text", id="inQuizAnswerID", placeholder="Quiz Answer ID")
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerID", placeholder="Quiz Answer ID")
                 .col-lg-1
                     label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
                 .col-lg-5
-                    input.form-control(type="text", id="inQuizAnswerText", placeholder="Quiz Answer Text")
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerText", placeholder="Quiz Answer Text")
                 .col-lg-1
                     .dropdown
                         button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
@@ -353,17 +355,17 @@ block content
                         .col-lg-5
                             label.control-label(id="lblChooserID", for="inChooserID") Chooser ID
                         .col-lg-7
-                            input.form-control(type="text", id="inChooserID", placeholder="Chooser ID")   
+                            input.form-control(type="text",maxlength="255", id="inChooserID", placeholder="Chooser ID")   
                     .form-group
                         .col-lg-5
                             label.control-label( id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage
                         .col-lg-7
-                            input.form-control(type="text", id="inChooserQuestion", placeholder="Chooser Question")
+                            input.form-control(type="text",maxlength="255", id="inChooserQuestion", placeholder="Chooser Question")
                     .form-group
                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
                                 span Antwort hinzufügen
@@ -373,7 +375,7 @@ block content
                     .col-lg-1
                         label.control-label(id="lblChooserAnswerID", for="inChooserAnswerID") ID
                     .col-lg-3
-                        input.form-control(type="text", id="inChooserAnswerID", placeholder="Chooser Answer ID")
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerID", placeholder="Chooser Answer ID")
                     .col-lg-1
                     .col-lg-2
                         label.control-label(id="lblChooserAnswerItemRef", for="ddnChooserItemReference") ItemRef
@@ -391,7 +393,7 @@ block content
                     .col-lg-1
                         label.control-label(id="lblChooserAnswerText", for="inChooserAnswerText") Text
                     .col-lg-3
-                        input.form-control(type="text", id="inChooserAnswerText", placeholder="Chooser Answer Text")
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerText", placeholder="Chooser Answer Text")
                     .col-lg-1
                     .col-lg-2
                         label.control-label(id="lblChooserAnswerFeatureRef", for="ddnChooserStorypointReference") StorypointRef

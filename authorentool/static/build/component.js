@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuiz, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -35,12 +35,19 @@ mainApp.controller("mainCtrl", [
       $("#btnMap").click(function() {
         return window.mapCaller = "btnMap";
       });
+      $("#inSize").on("input", function() {
+        var tmp;
+        tmp = $(this).val().replace(/[^\d.-]/g, '');
+        return $(this).val(tmp);
+      });
+      $("#inRadius").on("input", function() {
+        var tmp;
+        tmp = $(this).val().replace(/[^\d.-]/g, '');
+        return $(this).val(tmp);
+      });
       lightMedienBox();
       initDropdownClicks();
       googleMap();
-      window.dropdownLiCounter = 0;
-      window.nodes = [];
-      window.edges = [];
       initHelpSystem();
       initScrollbar();
     });
@@ -125,7 +132,6 @@ mainApp.controller("mainCtrl", [
       });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
-          AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter);
           return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
             pieces: 25
           }, 2000, function() {
@@ -150,7 +156,7 @@ mainApp.controller("mainCtrl", [
       document.getElementById("fhlStorypoints").appendChild(button);
       button.scrollIntoView(true);
       $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter);
-      return AddoDeleteNewNodes("Storypoint: " + counter, "", counter);
+      return helpRek($("#" + stuff.id));
     };
     inIDSetter = function(objectInput, objectFieldset, text, alternativeText) {
       objectInput.val(objectInput.val().replace(/\s+/, ""));
@@ -212,7 +218,7 @@ mainApp.controller("mainCtrl", [
         return inIDSetter($("#inItemID_" + interactionCounter), $("#lgdNeuesItemFieldset_" + interactionCounter), "Item: ", "Neues Item");
       });
       $("#inItemStorypointRef_" + interactionCounter).val($("#inStorypoint_" + counter).val());
-      return $("#inStorypoint_" + counter).on('input', function() {
+      $("#inStorypoint_" + counter).on('input', function() {
         var objectInput;
         objectInput = $("#inItemStorypointRef_" + interactionCounter);
         objectInput.val($("#inStorypoint_" + counter).val());
@@ -220,6 +226,7 @@ mainApp.controller("mainCtrl", [
           return objectInput.val(objectInput.val().replace(/\s+/, ""));
         }
       });
+      return helpRek($("#" + stuff.id));
     };
     createQuiz = function(counter) {
       var copyForm, interactionCounter, stuff;
@@ -255,7 +262,7 @@ mainApp.controller("mainCtrl", [
           return objectInput.val(objectInput.val().replace(/\s+/, ""));
         }
       });
-      return $("#btnQuizAnswer_" + interactionCounter).click(function() {
+      $("#btnQuizAnswer_" + interactionCounter).click(function() {
         var answer, copyAnswer, quizAnswerCounter;
         quizAnswerCounter = $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter");
         quizAnswerCounter++;
@@ -267,12 +274,14 @@ mainApp.controller("mainCtrl", [
         document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer);
         setIDs($("#" + answer.id), quizAnswerCounter);
         createQuizDropdown(quizAnswerCounter);
-        return $("#btnQuizAnswerDelete_" + quizAnswerCounter).click(function() {
+        $("#btnQuizAnswerDelete_" + quizAnswerCounter).click(function() {
           if (confirm('Möchten Sie die Antwort wirklich löschen?')) {
             return $("#" + answer.id).remove();
           }
         });
+        return helpRek($("#" + answer.id));
       });
+      return helpRek($("#" + stuff.id));
     };
     createQuizDropdown = function(counter) {
       $("#ddnTrue_" + counter).click(function() {
@@ -315,7 +324,7 @@ mainApp.controller("mainCtrl", [
           return objectInput.val(objectInput.val().replace(/\s+/, ""));
         }
       });
-      return $("#btnChooserAnswer_" + interactionCounter).click(function() {
+      $("#btnChooserAnswer_" + interactionCounter).click(function() {
         var ChooserAnswerCounter, answer, copyAnswer;
         ChooserAnswerCounter = $("#btnChooserAnswer_" + interactionCounter).attr("ChooserAnswerCounter");
         ChooserAnswerCounter++;
@@ -326,12 +335,14 @@ mainApp.controller("mainCtrl", [
         answer.style.display = "block";
         document.getElementById("fstNeuerChooserContent_" + interactionCounter).appendChild(answer);
         setIDs($("#" + answer.id), ChooserAnswerCounter);
-        return $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click(function() {
+        $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click(function() {
           if (confirm('Möchten Sie die Antwort wirklich löschen?')) {
             return $("#" + answer.id).remove();
           }
         });
+        return helpRek($("#" + answer.id));
       });
+      return helpRek($("#" + stuff.id));
     };
     btnSwitchDown = function(buttonID, currentObjID) {
       $(buttonID).click(function() {
@@ -374,15 +385,15 @@ mainApp.controller("mainCtrl", [
       });
     };
     btnEinklappen = function(button, content) {
-      return $(button).click(function() {
+      $(button).click(function() {
         if ($(content).is(":hidden")) {
           $(content).show("slow");
-          $(button).find("#resize").addClass('glyphicon-resize-small');
-          return $(button).find("#resize").removeClass('glyphicon-resize-full');
+          $(button).find("span").addClass('glyphicon-resize-small');
+          $(button).find("span").removeClass('glyphicon-resize-full');
         } else {
           $(content).slideUp("slow");
-          $(button).find("#resize").removeClass('glyphicon-resize-small');
-          return $(button).find("#resize").addClass('glyphicon-resize-full');
+          $(button).find("span").removeClass('glyphicon-resize-small');
+          $(button).find("span").addClass('glyphicon-resize-full');
         }
       });
     };
@@ -646,7 +657,7 @@ mainApp.controller("mainCtrl", [
         google.maps.event.trigger(window.map, 'resize');
       });
       $lightbox.on('shown.bs.modal', function(e) {
-        var $mapDiv, i;
+        var $mapDiv, i, rad;
         $mapDiv = $(this).find('gmeg_map_canvas');
         $lightbox.find('.modal-dialog').css({
           'width': $mapDiv.width()
@@ -657,6 +668,15 @@ mainApp.controller("mainCtrl", [
           if (markers[i].get("markerOwner") === window.mapCaller) {
             markers[i].setMap(window.map);
             markers[i].getMap().setCenter(markers[i].position);
+            if (markers[i] instanceof google.maps.Circle) {
+              rad = $("#inRadius").val();
+              if ($("#ddnradius").val() === "Einheit") {
+                rad = 0;
+              } else if ($("#ddnradius").val() === "Kilometer") {
+                rad = rad * 1000;
+              }
+              markers[i].set('radius', Math.round(rad));
+            }
           }
           i++;
         }
@@ -723,6 +743,11 @@ mainApp.controller("mainCtrl", [
             return $("#inRadius").val(Math.round(rad));
           } else if ($("#ddnradius").val() === "Kilometer") {
             return $("#inRadius").val(Math.round(rad / 1000));
+          } else {
+            alert("Da Sie keine Einheit für den Radius gewählt haben, wird Kilometer als Einheit gewählt.\n Sie können diese Einstellung jederzeit im Auswahlmenü der Einheit ändern.");
+            $("#inRadius").val(Math.round(rad / 1000));
+            $("#ddnradius").val("Kilometer");
+            return $("#ddnradius").html("Kilometer <span class='caret' />");
           }
         });
         google.maps.event.addListener(circle, 'center_changed', function() {
@@ -738,14 +763,49 @@ mainApp.controller("mainCtrl", [
       }
     };
     initHelpSystem = function() {
+      var url;
+      $("#divHelpBox").slideUp("slow");
+      url = 'HelpContent.xml';
       $.ajax({
         type: 'GET',
         url: 'HelpContent.xml',
         dataType: 'xml',
         success: function(xml) {
-          $("#divHelpBox").append($(xml).find('inTitle').text());
+          $(xml).find("Content").children().each(function() {
+            return $("#divHelpBox").attr(this.tagName.toLowerCase(), $(this).text());
+          });
+          helpRek($("#rowFormular"));
         }
       });
+    };
+    helpRekRemoveID = function(node) {
+      var clearedID;
+      clearedID = node.split("_");
+      return clearedID[0];
+    };
+    helpRek = function(node) {
+      node.children().each(function() {
+        var helpID;
+        helpID = $(this).attr("id");
+        if (typeof helpID !== 'undefined') {
+          $("#" + helpID).on("focus", function() {
+            $("#divHelpBox").empty();
+            $("#divHelpBox").append($("#divHelpBox").attr(helpRekRemoveID(helpID).toLowerCase()));
+          });
+        }
+        return helpRek($(this));
+      });
+    };
+    $scope.btnHelpEinklappenClick = function() {
+      if ($("#divHelpBox").is(":hidden")) {
+        $("#divHelpBox").show("slow");
+        $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-small');
+        return $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-full');
+      } else {
+        $("#divHelpBox").slideUp("slow");
+        $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-small');
+        return $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full');
+      }
     };
     setAllMap = function(map, markers) {
       var i;

@@ -43,15 +43,21 @@
         $ ->
             $("#btnMap").click ->
                 window.mapCaller = "btnMap"
+            $("#inSize").on "input", () ->
+                tmp = $(this).val().replace(/[^\d.-]/g, '')
+                $(this).val(tmp)
+            $("#inRadius").on "input", () ->
+                tmp = $(this).val().replace(/[^\d.-]/g, '')
+                $(this).val(tmp)
             lightMedienBox()
             initDropdownClicks()
             googleMap()
             
             # Counters
-            window.dropdownLiCounter = 0; 
+            # window.dropdownLiCounter = 0; 
             # Nodes and Edges for the dependency graph
-            window.nodes = []
-            window.edges = []
+            # window.nodes = []
+            # window.edges = []
 
             initHelpSystem()
             initScrollbar()
@@ -143,7 +149,7 @@
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
-                        AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
+                        ###########################AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                         $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 25}, 2000, () ->
                             $("#fhlNeuerStorypoint_" + counter).remove()
         
@@ -170,8 +176,8 @@
                 # Für jeden Storypoint gibt es ein Attribut nodeOwner, mit der ID: Storypoint_ (counter)
                 $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter)
                 # Create new Node after creating a new Storypoint
-                AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
-                
+                                                                    #######################AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
+                helpRek($("#" + stuff.id))
         
         inIDSetter = (objectInput, objectFieldset, text, alternativeText) ->
                     objectInput.val(objectInput.val().replace(/\s+/, "") )
@@ -235,6 +241,7 @@
                 objectInput.val($("#inStorypoint_" + counter).val())
                 if typeof objectInput.val() != "undefined"
                     objectInput.val(objectInput.val().replace(/\s+/, "") )
+            helpRek( $("#" + stuff.id))
 
         createQuiz = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
@@ -291,7 +298,8 @@
                 # Click Event für btnQuizAnswerDelete
                 $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
                     $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
-
+                helpRek( $("#" + answer.id))
+            helpRek( $("#" + stuff.id))
 
         createQuizDropdown = (counter) ->
             #DropdownMenu QuizStatus
@@ -351,6 +359,8 @@
                     # Click Event für btnChooserDelete
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
                         $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
+                    helpRek( $("#" + answer.id))
+                helpRek( $("#" + stuff.id))
 
         btnSwitchDown = (buttonID, currentObjID) ->
             $(buttonID).click ->
@@ -385,12 +395,15 @@
             $(button).click ->
                 if $(content).is( ":hidden" )
                     $(content).show( "slow" )
-                    $(button).find("#resize").addClass('glyphicon-resize-small')
-                    $(button).find("#resize").removeClass('glyphicon-resize-full')
+                    $(button).find("span").addClass('glyphicon-resize-small')
+                    $(button).find("span").removeClass('glyphicon-resize-full')
+                    return
                 else
                     $(content).slideUp("slow")
-                    $(button).find("#resize").removeClass('glyphicon-resize-small')
-                    $(button).find("#resize").addClass('glyphicon-resize-full')
+                    $(button).find("span").removeClass('glyphicon-resize-small')
+                    $(button).find("span").addClass('glyphicon-resize-full')
+                    return
+            return
 
         $scope.tabSwitch = (activeTabID) ->
                 if (activeTabID == "MedienBibTab") 
@@ -701,6 +714,13 @@
                        if markers[i].get("markerOwner") == window.mapCaller
                             markers[i].setMap window.map
                             markers[i].getMap().setCenter(markers[i].position);
+                            if markers[i] instanceof google.maps.Circle
+                                rad = $("#inRadius").val()
+                                if $("#ddnradius").val() == "Einheit"
+                                    rad = 0
+                                else if $("#ddnradius").val() == "Kilometer"
+                                    rad = rad * 1000
+                                markers[i].set('radius', Math.round(rad))
                        i++
                   google.maps.event.trigger window.map, 'resize'
                   return
@@ -757,6 +777,11 @@
                                         $("#inRadius").val(Math.round(rad))
                                     else if $("#ddnradius").val() == "Kilometer"
                                         $("#inRadius").val(Math.round(rad / 1000))
+                                    else
+                                        alert "Da Sie keine Einheit für den Radius gewählt haben, wird Kilometer als Einheit gewählt.\n Sie können diese Einstellung jederzeit im Auswahlmenü der Einheit ändern."
+                                        $("#inRadius").val(Math.round(rad / 1000))
+                                        $("#ddnradius").val("Kilometer")
+                                        $("#ddnradius").html("Kilometer <span class='caret' />")
                 google.maps.event.addListener circle, 'center_changed', () ->
                     marker.setPosition(circle.center)
                 google.maps.event.addListener marker, 'position_changed', () ->
@@ -767,17 +792,44 @@
             return
 
         initHelpSystem = () ->
+           
+            $("#divHelpBox").slideUp("slow")
+            url = 'HelpContent.xml'
             $.ajax
-              type: 'GET'
-              url: 'HelpContent.xml'
-              dataType: 'xml'
-              success: (xml) ->
-                $("#divHelpBox").append($(xml).find('inTitle').text())
-                return
-            
+                type: 'GET'
+                url: 'HelpContent.xml'
+                dataType: 'xml'
+                success: (xml) ->
+                    $(xml).find("Content").children().each () ->
+                        $("#divHelpBox").attr(this.tagName.toLowerCase(), $(this).text())
+                    helpRek($("#rowFormular"))   
+                    return
+                     
+            return
+        helpRekRemoveID = (node) ->
+            clearedID = node.split("_")
+            return clearedID[0]
 
+        helpRek = (node) ->
+            node.children().each ->
+                helpID = $(this).attr("id")
+                if typeof helpID != 'undefined'
+                    $("#"+helpID).on "focus", () ->
+                        $("#divHelpBox").empty()
+                        $("#divHelpBox").append($("#divHelpBox").attr(helpRekRemoveID(helpID).toLowerCase()))
+                        return
+                helpRek($(this))
             return
 
+        $scope.btnHelpEinklappenClick = () ->
+                if $("#divHelpBox").is( ":hidden" )
+                    $("#divHelpBox").show( "slow" )
+                    $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-small')
+                    $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-full')
+                else
+                    $("#divHelpBox").slideUp("slow")
+                    $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-small')
+                    $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full')
 
         setAllMap = (map, markers) ->
           i = 0
