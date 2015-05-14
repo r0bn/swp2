@@ -777,11 +777,6 @@
                                         $("#inRadius").val(Math.round(rad))
                                     else if $("#ddnradius").val() == "Kilometer"
                                         $("#inRadius").val(Math.round(rad / 1000))
-                                    else
-                                        alert "Da Sie keine Einheit für den Radius gewählt haben, wird Kilometer als Einheit gewählt.\n Sie können diese Einstellung jederzeit im Auswahlmenü der Einheit ändern."
-                                        $("#inRadius").val(Math.round(rad / 1000))
-                                        $("#ddnradius").val("Kilometer")
-                                        $("#ddnradius").html("Kilometer <span class='caret' />")
                 google.maps.event.addListener circle, 'center_changed', () ->
                     marker.setPosition(circle.center)
                 google.maps.event.addListener marker, 'position_changed', () ->

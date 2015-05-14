@@ -31,6 +31,11 @@
 <ddnChooserItemReference> ** OPTIONAL ** Bestimmen Sie hier, welches Item aufgenommen werden soll, nachdem die Interaktion vorbei ist (das Item muss später angelegt werden!). </ddnChooserItemReference>
 <btnSetChooserStorypointReferences> ** OPTIONAL ** Bestimmen Sie hier, welcher Storypoint folgen soll, nachdem die Interaktion vorbei ist (der Storypoint muss später angelegt werden!). </btnSetChooserStorypointReferences>
 <ddnChooserStorypointReference> ** OPTIONAL ** Bestimmen Sie hier, welcher Storypoint folgen soll, nachdem die Interaktion vorbei ist (der Storypoint muss später angelegt werden!). </ddnChooserStorypointReference>
+<ddnradius>Wählen Sie hier die Maßeinheit für den Radius aus.</ddnradius>
+<ddnsize>Wählen Sie hier die Maßeinheit für die Größe der Story aus.</ddnsize>
+<btnSetQuizOnTrueReferences>Wählen Sie hier den Storypoint aus, welcher bei einer richtigen Antwort besucht werden soll.</btnSetQuizOnTrueReferences>
+<btnSetQuizOnFalseReferences>Wählen Sie hier den Storypoint aus, welcher bei einer falschen Antwort besucht werden soll.</btnSetQuizOnFalseReferences>
+<ddnState>Legen Sie hier fest, ob die Antwort richtig oder falsch ist</ddnState>
 
 
 </Content>
