@@ -497,6 +497,10 @@ mainApp.controller("mainCtrl", [
           $("#btnSetQuizOnTrueReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
         });
+        $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
+          $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen");
+          $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+        });
         j++;
       }
     };
@@ -530,6 +534,10 @@ mainApp.controller("mainCtrl", [
         $("#ddnQuizOnFalseStorypoint_" + indexe).click(function() {
           $("#btnSetQuizOnFalseReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnFalseReferences_" + counter).html($(this).text() + "<span class='caret' />");
+        });
+        $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
+          $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen");
+          $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
         });
         j++;
       }
