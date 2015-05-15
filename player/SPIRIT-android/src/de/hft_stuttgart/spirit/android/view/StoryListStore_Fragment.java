@@ -71,9 +71,9 @@ public class StoryListStore_Fragment extends Fragment {
         
         String adjustedQuery = "allStories";
 	 
-        Intent intent = getActivity().getIntent();
+        final Intent oldIntent = getActivity().getIntent();
         
-        if (intent.hasExtra("StoreFragmentStoryFilter")) {
+        if (oldIntent.hasExtra("StoreFragmentStoryFilter")) {
         	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("StoreFragmentStoryFilter");
 	    	adjustedQuery = storyFilter.getQuery();
 		} else {
@@ -110,6 +110,14 @@ public class StoryListStore_Fragment extends Fragment {
                 i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, selectedStory.getAuthor());
                 i.putExtra(StoryDetails_Activity.EXTRA_UPDATEDAT, selectedStory.getUpdated_at());
                 i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "STORE");
+                
+    	 		if (oldIntent.hasExtra("StoreFragmentStoryFilter")){	
+    	 			i.putExtra("StoreFragmentStoryFilter", oldIntent.getParcelableExtra("StoreFragmentStoryFilter"));
+  		        }
+    	 		if (oldIntent.hasExtra("InstalledFragmentStoryFilter")){	
+    	 			i.putExtra("InstalledFragmentStoryFilter", oldIntent.getParcelableExtra("InstalledFragmentStoryFilter"));
+   		        } 
+
                 startActivity(i);
             }
         });

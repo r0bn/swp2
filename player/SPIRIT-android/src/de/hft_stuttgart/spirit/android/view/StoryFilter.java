@@ -10,7 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+
+
 import de.hft_stuttgart.spirit.android.Story;
+import android.text.TextUtils;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -134,26 +137,52 @@ public class StoryFilter implements Parcelable {
 	}
 
 	public boolean filterStoryItem(Story item){
-		
-		boolean show = true;
 
-		if (!this.title.equals("") && !item.getTitle().contains(this.title)&& !item.getTitle().toLowerCase().contains(this.title.toLowerCase())){
+		if (this.title.trim().length() > 0){	//checks if String contains characters != whitespace 
+			boolean show = false;
+			String split[]= TextUtils.split(this.title, " ");
+			for (int i=0; i < split.length ; i++){
+				//if only one part of the String is enough to let an item through the filter:
+//				if((item.getTitle().toLowerCase().contains(split[i].toLowerCase()) && (split[i].trim().length() > 0)){
+//					//return false;
+//					show = true;
+//				}
+//			}
+//				if(!show) return false;
+				
+				//if all parts of the ItemString must be in the FilterString to let an item through the filter:
+				if( !(item.getTitle().toLowerCase().contains(split[i].toLowerCase())) && (split[i].trim().length() > 0) ){
+					return false;
+				}
+			}
+		}
 
-			show = false;
+		if (this.author.trim().length() > 0){	//checks if String contains characters != whitespace
+			boolean show = false;
+			String split[]= TextUtils.split(this.author, " ");
+			for (int i=0; i < split.length ; i++){
+				//if only one part of the String is enough to let an item through the filter:
+//				if(item.getAuthor().toLowerCase().contains(split[i].toLowerCase()) && (split[i].trim().length() > 0)){
+//					//return false;
+//					show = true;
+//				}
+//			}
+//			if(!show) return false;
+				//if all parts of the ItemString must be in the FilterString to let an item through the filter:
+				if( !(item.getAuthor().toLowerCase().contains(split[i].toLowerCase())) && (split[i].trim().length() > 0) ){
+					return false;
+				}
+			}	
 		}
 		
-		if (!this.author.equals("") && !item.getAuthor().contains(this.author) && !item.getAuthor().toLowerCase().contains(this.author.toLowerCase()) && show){
-			show = false;
-		}
-		
-		if (!this.size_max.equals("") && show){
+		if (this.size_max.trim().length() > 0){	//checks if String contains characters != whitespace
 			
 			if(Integer.parseInt(this.size_max) < Integer.parseInt(item.getSize())){
-				show = false;
+				return false;
 			}	
 		}
 
-		if (!this.creationDateMin.equals("Datum festlegen") && show){
+		if (!this.creationDateMin.equals("Datum festlegen")){
 				
 			Date dateMin = null;
 			Date itemDate = null;
@@ -165,8 +194,8 @@ public class StoryFilter implements Parcelable {
 				sdf = new SimpleDateFormat("yyyy-MM-dd");
 				itemDate = sdf.parse(item.getCreated_at());
 				
-				if(itemDate.before(dateMin) && !itemDate.equals(dateMin) && show){	
-					show = false;
+				if(itemDate.before(dateMin) && !itemDate.equals(dateMin)){	
+					return false;
 				}
 				
 			} catch (ParseException e) {
@@ -177,7 +206,7 @@ public class StoryFilter implements Parcelable {
 				
 			
 			
-		if (!this.creationDateMax.equals("Datum festlegen") && show){
+		if (!this.creationDateMax.equals("Datum festlegen")){
 
 			Date dateMax = null;
 			Date itemDate = null;
@@ -189,7 +218,7 @@ public class StoryFilter implements Parcelable {
 				sdf = new SimpleDateFormat("yyyy-MM-dd");
 				itemDate = sdf.parse(item.getCreated_at());
 				if(itemDate.after(dateMax) && !itemDate.equals(dateMax)){
-					show = false;
+					return false;
 				}					
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -198,8 +227,8 @@ public class StoryFilter implements Parcelable {
 		}
 		
 
-		if (!this.city.equals("") && !this.latitude.equals("") && !this.longitude.equals("") && show){
-			
+		//if (!this.city.equals("") && !this.latitude.equals("") && !this.longitude.equals("")){
+		if ((this.city.trim().length() > 0) && (this.latitude.trim().length() > 0) && (this.longitude.trim().length() > 0)){	
 			Location filterLocation = new Location("filterLocation");
 			Location itemLocation = new Location("itemLocation");
 				
@@ -212,11 +241,11 @@ public class StoryFilter implements Parcelable {
 			float distance = filterLocation.distanceTo(itemLocation)/1000; //approximate distance in meters/1000 for km
 			
 			if(distance > (double)Double.parseDouble(this.radius)){ 
-				show = false;		
+				return false;		
 			}
 		}	
 		
-		return show;
+		return true;
 	}
 	
 
@@ -232,14 +261,15 @@ public class StoryFilter implements Parcelable {
 		getQuery.append("http://api.storytellar.de/story?"); //already defined in RESTclient.java
 		
 		
-		if (!this.title.matches("")) getQuery.append("title=" + this.title+"&");
-		if (!this.author.matches("")) getQuery.append("author=" + this.author+"&");
-		if (!this.size_max.matches("")) getQuery.append("size_max=" + this.size_max.toString()+"&");
+		if (this.title.trim().length() > 0) getQuery.append("title=" + this.title.trim()+"&");
+		
+		if (this.author.trim().length() > 0) getQuery.append("author=" + this.author.trim()+"&");
+		if (this.size_max.trim().length() > 0) getQuery.append("size_max=" + this.size_max.trim()+"&");
 		if (!this.creationDateMin.matches("Datum festlegen")) getQuery.append("creation_date_min="
 		       + creationDateMin.replaceAll("\\.", "")+"&");
 		if (!this.creationDateMax.matches("Datum festlegen")) getQuery.append("creation_date_max="
 			       + creationDateMax.replaceAll("\\.", "")+"&");
-		if (!city.matches("")){
+		if (this.city.trim().length() > 0){
 	           getQuery.append("location=" + this.latitude + "+" + this.longitude +"&"
 	                   +"radius=" + this.radius+"&");		
 		}
@@ -248,83 +278,10 @@ public class StoryFilter implements Parcelable {
 		 String adjustedQuery = getQuery.substring(0, getQuery.length()-1); //delete the last &
 
          //delete double whitespaces
-        //adjustedQuery.replaceAll("\\s+", " ");
         adjustedQuery = adjustedQuery.trim().replaceAll(" +", " ");
 
         adjustedQuery = adjustedQuery.replaceAll(" ", "+");
 		
 		return adjustedQuery;
 	}
-	
-	
-
-
-
-        
-	//standard getters and setters:
-	
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	public String getSize_max() {
-		return size_max;
-	}
-	public void setSize_max(String size_max) {
-		this.size_max = size_max;
-	}
-	public String getCreationDateMin() {
-		if(this.creationDateMin.equals("Datum festlegen")){
-			return "";	//default String not changed
-		}else {
-			return creationDateMin;
-		}
-	}
-	public void setCreationDateMin(String creationDateMin) {
-		this.creationDateMin = creationDateMin;
-	}
-	public String getCreationDateMax() {
-		if(this.creationDateMax.equals("Datum festlegen")){
-			return "";	//default String not changed
-		}else {
-			return creationDateMax;
-		}
-	}
-	public void setCreationDateMax(String creationDateMax) {
-		this.creationDateMax = creationDateMax;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getRadius() {
-		return radius;
-	}
-	public void setRadius(String radius) {
-		this.radius = radius;
-	}
-	public String getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-	public String getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-	
-
 }

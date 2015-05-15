@@ -235,6 +235,8 @@ public class Filter_Activity extends ActionBarActivity {
 		         }
 	         }
 
+	        newIntent.putExtra("Filter_From",filterFrom);
+	        
 	        Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
 	        //Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
 	        startActivity(newIntent);
@@ -337,7 +339,7 @@ public class Filter_Activity extends ActionBarActivity {
      */
     public Address geoLocate(String location)throws IOException {
 
-
+    	location = location.trim();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
        // imm.hideSoftInputFromWindow(cityEditText.getWindowToken(), 0);
 
@@ -355,24 +357,4 @@ public class Filter_Activity extends ActionBarActivity {
         }
        
     }
-   /* 
-    //method that converts Strings into UTF-8
-    
-    public String convertToUTF8(String inputText){
-    	
-        //Convert String to byte[]:
- 	
-        	String s = inputText;
-        	byte[] b = s.getBytes("UTF-8");
-        	
-        //Convert byte[] to String:
-
-        	byte[] b = {(byte) 99, (byte)97, (byte)116};
-        	String s = new String(b, "US-ASCII");
-        	
-    	
-    }
-    */
-
-
 }

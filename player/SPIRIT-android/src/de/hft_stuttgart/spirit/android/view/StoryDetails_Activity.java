@@ -167,6 +167,12 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	toast.show();
 			ContentDownloader.getInstance().deleteStory(intent.getIntExtra(EXTRA_STORYID, -1));
         	Intent i_delete = new Intent(getApplicationContext(), Main_Activity.class);
+	 		if (intent.hasExtra("StoreFragmentStoryFilter")){	
+	 			i_delete.putExtra("StoreFragmentStoryFilter", intent.getParcelableExtra("StoreFragmentStoryFilter"));
+	 		}
+	 		if (intent.hasExtra("InstalledFragmentStoryFilter")){	
+	 			i_delete.putExtra("InstalledFragmentStoryFilter", intent.getParcelableExtra("InstalledFragmentStoryFilter"));
+	 		} 
         	startActivity(i_delete);
 			return true;
 		case R.id.action_download:
@@ -175,6 +181,12 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	DownloadStory task = new DownloadStory();
         	task.execute();
         	Intent i_download = new Intent(getApplicationContext(),Main_Activity.class);
+	 		if (intent.hasExtra("StoreFragmentStoryFilter")){	
+	 			i_download.putExtra("StoreFragmentStoryFilter", intent.getParcelableExtra("StoreFragmentStoryFilter"));
+	 		}
+	 		if (intent.hasExtra("InstalledFragmentStoryFilter")){	
+	 			i_download.putExtra("InstalledFragmentStoryFilter", intent.getParcelableExtra("InstalledFragmentStoryFilter"));
+	 		} 
         	startActivity(i_download);
 		default:
 			return false;

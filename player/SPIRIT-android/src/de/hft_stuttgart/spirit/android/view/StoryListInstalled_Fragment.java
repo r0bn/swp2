@@ -70,22 +70,6 @@ public class StoryListInstalled_Fragment extends Fragment {
         items = new ArrayList<Story>();
         items = ContentDownloader.getInstance().getDownloadedStories();
         
-  /*      for (int i = 0; i < items.size(); i++) {
-        	Toast.makeText(getActivity(), "items = "+items.get(i).getTitle(), Toast.LENGTH_SHORT).show();
-        	
-        }
-        //SINGLETON!!!!!!!!!!!!!!!!
-        List<Story> filteredItems = new ArrayList<Story>();
-        filteredItems = items;
-        
-       
-        Intent intent = getActivity().getIntent();
-        if (intent.hasExtra("InstalledFragmentStoryFilter")) {
-        	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("InstalledFragmentStoryFilter");
-        	
-        	filteredItems = storyFilter.filterArrayList(filteredItems);
-		} 
-         */
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -98,6 +82,15 @@ public class StoryListInstalled_Fragment extends Fragment {
                 i.putExtra(StoryDetails_Activity.EXTRA_UPDATEDAT, selectedStory.getUpdated_at());
                 i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "INSTALLED");
                 i.putExtra(StoryDetails_Activity.EXTRA_STORYID, selectedStory.getId());
+               
+                Intent oldIntent = getActivity().getIntent();
+    	 		if (oldIntent.hasExtra("StoreFragmentStoryFilter")){	
+    	 			i.putExtra("StoreFragmentStoryFilter", oldIntent.getParcelableExtra("StoreFragmentStoryFilter"));
+  		        }
+    	 		if (oldIntent.hasExtra("InstalledFragmentStoryFilter")){	
+    	 			i.putExtra("InstalledFragmentStoryFilter", oldIntent.getParcelableExtra("InstalledFragmentStoryFilter"));
+   		        } 
+    	 		
                 startActivity(i);
             }
         });
@@ -142,14 +135,6 @@ public class StoryListInstalled_Fragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
-        	/*
-        	 Intent intent = getActivity().getIntent();
-             if (intent.hasExtra("InstalledFragmentStoryFilter")) {
-             	StoryFilter storyFilter = getActivity().getIntent().getParcelableExtra("InstalledFragmentStoryFilter");
-             	
-             	filteredItems = storyFilter.filterArrayList(filteredItems);
-     		} */
-        	
         	Story item = items.get(position);
             View vi=convertView;
 

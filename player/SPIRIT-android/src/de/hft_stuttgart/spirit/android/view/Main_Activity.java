@@ -100,6 +100,16 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        
+        Intent intent = this.getIntent();
+        if (intent.hasExtra("Filter_From")){
+        	if (intent.getExtras().getString("Filter_From").equals("StoreFragment")){
+        		mViewPager.setCurrentItem(1);
+        	}else{ //set the startfragment to the default fragment.
+        		mViewPager.setCurrentItem(0);
+        	}
+        }
+        
     }
 
 
