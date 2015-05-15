@@ -58,7 +58,7 @@
             # Nodes and Edges for the dependency graph
             window.nodes = []
             window.edges = []
-
+            window.interactioncounter = 10;
             initHelpSystem()
             initScrollbar()
             return
@@ -207,10 +207,9 @@
             return
                 
         createItem = (counter) ->
-            copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
-            interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
-            interactionCounter++
-            $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+            copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())          
+            window.interactioncounter++
+            interactionCounter = window.interactioncounter
             stuff = copyForm.cloneNode(true)
             stuff.id = stuff.id + "_" + interactionCounter
             stuff.style.display="block"
@@ -242,9 +241,8 @@
 
         createQuiz = (counter) ->
             copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
-            interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
-            interactionCounter++
-            $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+            window.interactioncounter++
+            interactionCounter = window.interactioncounter
             stuff = copyForm.cloneNode(true)
             stuff.id = stuff.id + "_" + interactionCounter
             stuff.style.display="block"
@@ -315,9 +313,8 @@
 
         createChooser = (counter) ->
                 copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
-                interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter")
-                interactionCounter++
-                $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter)
+                window.interactioncounter++
+                interactionCounter = window.interactioncounter
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_" + interactionCounter
                 stuff.style.display="block"

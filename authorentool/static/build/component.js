@@ -51,6 +51,7 @@ mainApp.controller("mainCtrl", [
       window.dropdownLiCounter = 0;
       window.nodes = [];
       window.edges = [];
+      window.interactioncounter = 10;
       initHelpSystem();
       initScrollbar();
     });
@@ -200,9 +201,8 @@ mainApp.controller("mainCtrl", [
     createItem = function(counter) {
       var copyForm, interactionCounter, stuff;
       copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val());
-      interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
-      interactionCounter++;
-      $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+      window.interactioncounter++;
+      interactionCounter = window.interactioncounter;
       stuff = copyForm.cloneNode(true);
       stuff.id = stuff.id + "_" + interactionCounter;
       stuff.style.display = "block";
@@ -233,9 +233,8 @@ mainApp.controller("mainCtrl", [
     createQuiz = function(counter) {
       var copyForm, interactionCounter, stuff;
       copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val());
-      interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
-      interactionCounter++;
-      $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+      window.interactioncounter++;
+      interactionCounter = window.interactioncounter;
       stuff = copyForm.cloneNode(true);
       stuff.id = stuff.id + "_" + interactionCounter;
       stuff.style.display = "block";
@@ -301,9 +300,8 @@ mainApp.controller("mainCtrl", [
     createChooser = function(counter) {
       var copyForm, interactionCounter, stuff;
       copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val());
-      interactionCounter = $("#btnCreateInteraction_" + counter).attr("interactionCounter");
-      interactionCounter++;
-      $("#btnCreateInteraction_" + counter).attr("interactionCounter", interactionCounter);
+      window.interactioncounter++;
+      interactionCounter = window.interactioncounter;
       stuff = copyForm.cloneNode(true);
       stuff.id = stuff.id + "_" + interactionCounter;
       stuff.style.display = "block";
