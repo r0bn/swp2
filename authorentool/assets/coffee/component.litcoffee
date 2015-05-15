@@ -535,6 +535,11 @@
                     $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
                     return  
+
+                $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                    $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen")
+                    $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    return
                 j++
             return
 
@@ -574,18 +579,21 @@
             # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
             # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
             j = 0
+
             while j < storypointArray.length
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnFalseReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnFalseReferences_"+counter).html($(this).text() + "<span class='caret' />")
-                    return  
+                    return
+
+                $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                    $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen")
+                    $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    return
+
                 j++
             return
-
-
-
-
 
 
 
