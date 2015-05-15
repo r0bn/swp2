@@ -1,25 +1,24 @@
 package restClient;
 
-import static org.junit.Assert.*;
-
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-
-import junit.framework.TestCase;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import android.os.Environment;
+import android.test.InstrumentationTestCase;
+import android.test.mock.MockContext;
+import de.hft_stuttgart.spirit.android.Story;
 
-import android.test.AndroidTestCase;
-
-public class restClient_Test extends TestCase {
+public class restClient_Test extends InstrumentationTestCase {
 
 	RESTClient client;
 	String URLallStories = "http://api.storytellar.de/temp";
@@ -685,5 +684,24 @@ public class restClient_Test extends TestCase {
 		} catch (Exception e) {
 			fail("client throwed an exception: " + e.getMessage());
 		}
+	}
+	
+	@Test
+	public void test_downloadMediaFiles() {
+		client = new RESTClient();
+		System.setProperty("dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath());
+		File dir = new File("/storage/emulated/0/StorytellAR/Content/-1");
+		dir.mkdirs();
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("Studentengespraech.mp4", "Studentengespraech.mp4");
+		Story story = Mockito.mock(Story.class);
+		Mockito.when(story.getId()).thenReturn(1,-1);
+		client.downloadMediaFiles(map, story);
+		File toTest = new File("/storage/emulated/0/StorytellAR/Content/-1/Studentengespraech.mp4");
+		if(!toTest.exists()){
+			fail("File was not downloaded");
+		}
+		toTest.delete();
+		dir.delete();		
 	}
 }
