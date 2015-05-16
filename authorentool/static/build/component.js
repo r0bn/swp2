@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initScrollbar, lightBox, lightMedienBox, setAllMap, setIDs, setQuizDropdownIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, checkSafeButton, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initSafeButton, initScrollbar, lightBox, lightMedienBox, selectAvailibleStorypoints, setAllMap, setIDs, setQuizDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -54,7 +54,22 @@ mainApp.controller("mainCtrl", [
       window.interactioncounter = 10;
       initHelpSystem();
       initScrollbar();
+      window.safeButtonCounter = 0;
+      initSafeButton();
     });
+    initSafeButton = function() {
+      return $("#btnCreateNewStorypoint").click(function() {
+        window.safeButtonCounter++;
+        checkSafeButton();
+      });
+    };
+    checkSafeButton = function() {
+      if (window.safeButtonCounter > 0) {
+        $("#btnSaveStory").css("display", "block");
+      } else {
+        $("#btnSaveStory").css("display", "none");
+      }
+    };
     initScrollbar = function() {
       var $header, $win, headerPos, scrollBottom;
       $header = $('#colColumn2');
@@ -134,6 +149,9 @@ mainApp.controller("mainCtrl", [
       });
       $("#btnNeuesStorypointDelete_" + counter).click(function() {
         if (confirm("Wollen Sie den Storypoint wirklich löschen?")) {
+          window.safeButtonCounter--;
+          window.safeButtonCounter--;
+          checkSafeButton();
           AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter);
           return $("#fhlNeuerStorypoint_" + counter).toggle("explode", {
             pieces: 25
@@ -442,6 +460,12 @@ mainApp.controller("mainCtrl", [
       }
       return storypointArray;
     };
+    selectAvailibleStorypoints = function(storypointArray, currentStorypointID) {
+      var index;
+      index = storypointArray.indexOf(currentStorypointID);
+      storypointArray.splice(index, 1);
+      return storypointArray;
+    };
     setQuizDropdownIDs = function(node, lauf) {
       node.children().each(function() {
         var newID, split;
@@ -468,6 +492,7 @@ mainApp.controller("mainCtrl", [
       var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
       storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
+      storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID);
       copyForm = document.getElementById("liSkQuizOnTrueRef");
       window.dropdownLiCounter++;
       $("#ulSkQuizOnTrueRef_" + counter).empty();
@@ -506,6 +531,7 @@ mainApp.controller("mainCtrl", [
       var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
       storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
+      storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID);
       copyForm = document.getElementById("liSkQuizOnFalseRef");
       window.dropdownLiCounter++;
       $("#ulSkQuizOnFalseRef_" + counter).empty();

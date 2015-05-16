@@ -61,6 +61,27 @@
             window.interactioncounter = 10;
             initHelpSystem()
             initScrollbar()
+
+            window.safeButtonCounter = 0
+            initSafeButton()
+
+            return
+
+        
+
+        initSafeButton = () -> 
+            $("#btnCreateNewStorypoint").click ->
+                window.safeButtonCounter++
+                #alert window.safeButtonCounter
+                checkSafeButton()
+                return
+
+
+        checkSafeButton = () ->
+            if window.safeButtonCounter > 0            
+                $("#btnSaveStory").css("display","block")
+            else
+                $("#btnSaveStory").css("display","none")
             return
 
 
@@ -147,6 +168,9 @@
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
+                        window.safeButtonCounter--
+                        window.safeButtonCounter--
+                        checkSafeButton()
                         AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                         $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 25}, 2000, () ->
                             $("#fhlNeuerStorypoint_" + counter).remove()
@@ -473,6 +497,13 @@
             return storypointArray					
 
 
+        selectAvailibleStorypoints = (storypointArray, currentStorypointID) ->
+            index = storypointArray.indexOf(currentStorypointID)
+            storypointArray.splice(index,1)
+            return storypointArray
+
+
+
         setQuizDropdownIDs = (node, lauf) ->
             node.children().each ->
                 if typeof $(this).attr("id") != "undefined"
@@ -497,6 +528,8 @@
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
+
+            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
 
             # Now all Storypoints as Objects are in the array: storypointArray
             
@@ -548,7 +581,9 @@
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
-            # Now all Storypoints as Objects are in the array: storypointArray
+            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
+
+            # Now all Storypoints without the current Storypoint as IDs are in the array: storypointArray
             
             copyForm = document.getElementById("liSkQuizOnFalseRef")
             window.dropdownLiCounter++;
