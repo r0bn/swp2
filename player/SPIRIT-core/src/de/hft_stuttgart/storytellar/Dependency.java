@@ -12,30 +12,48 @@ import java.util.List;
  */
 public class Dependency {
 
-	List<String> scenes;
+	List<String> storypoints;
 	List<String> items;
 	
 	public Dependency(){
-		scenes = new ArrayList<String>();
+		storypoints = new ArrayList<String>();
 		items = new ArrayList<String>();
 	}
 	
 	public Dependency(List<String> scenes, List<String> items){
-		this.scenes = scenes;
+		this.storypoints = scenes;
 		this.items = items;
+	}
+	
+	/**
+	 * 
+	 * @param storypoint
+	 */
+	
+	public void addStorypoint( String storypoint ) {
+		storypoints.add(storypoint);
+	}
+	
+	/**
+	 * 
+	 * @param item
+	 */
+	
+	public void addItem( String item ) {
+		items.add(item);
 	}
 	
 	/**
 	 * @return the scenes
 	 */
-	public List<String> getScenes() {
-		return scenes;
+	public List<String> getStorypoints() {
+		return storypoints;
 	}
 	/**
 	 * @param scenes the scenes to set
 	 */
-	public void setScenes(List<String> scenes) {
-		this.scenes = scenes;
+	public void setStorypoints(List<String> storypoint) {
+		this.storypoints = storypoint;
 	}
 	/**
 	 * @return the items
@@ -56,6 +74,25 @@ public class Dependency {
 	 */
 	public Boolean isFulfilled(){
 		return null;
+	}
+	
+	public String toString(){
+		String strng;
+		strng = "Depending storypoints: ";
+		for (int i = 0; i < storypoints.size()-1; i++) {
+			strng += storypoints.get(i) + ", ";
+		}
+		if (storypoints.size()>0) {
+			strng += storypoints.get(storypoints.size()-1);
+		}
+		strng += "\nDepending items: ";
+		for (int i = 0; i < items.size()-1; i++) {
+			strng += items.get(i) + ", ";
+		}
+		if (items.size()>0) {
+			strng += items.get(items.size()-1);
+		}
+		return strng;
 	}
 	
 }

@@ -160,7 +160,9 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	startActivity(start_intent);
 			return true;
 		case R.id.action_restart:
-			startActivity(new Intent(getApplicationContext(),AndroidLauncher.class));
+			Intent restart_intent = new Intent(getApplicationContext(),AndroidLauncher.class);
+			restart_intent.putExtra(EXTRA_STORYID, intent.getIntExtra(EXTRA_STORYID, -1));
+        	startActivity(restart_intent);
 			return true;
 		case R.id.action_delete:
 			toast = Toast.makeText(getApplicationContext(),"Delete Story "+intent.getStringExtra(EXTRA_STORYNAME)+" (ID: "+intent.getIntExtra(EXTRA_STORYID, -1)+")",Toast.LENGTH_SHORT);

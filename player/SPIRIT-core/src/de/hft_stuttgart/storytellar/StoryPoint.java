@@ -7,44 +7,74 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hft_stuttgart.spirit.Poi;
+
 /**
  * @author Marcel
  *That part of the Story that plays at a certain Location with Videos, images, etc.
  */
-public class StoryPoint {
+public class StoryPoint extends Poi{
 	
 	//maybe change status codes
-	Status status;
+	String name;
+	StorypointStatus status;
 	List<Dependency> dependencies; // Instead of the, in the xml-documentation described, containers are multipe dependencies used.
 	File video;
 	Interaction interaction;
-	Boolean isEndScene;
+	Boolean isEndStorypoint;
 	
 	public StoryPoint(){
+		super();
 		this.dependencies = new ArrayList<Dependency>();
 		this.video = new File("");
 		this.interaction = new Quiz(); // Default for interaction is quiz
+		this.status = StorypointStatus.OPEN;
+		this.isEndStorypoint = false;
 	}
 	
-	public StoryPoint(Status status,	List<Dependency> dependencies, File video, Interaction interaction, Boolean isEndScene){
+	public StoryPoint(StorypointStatus status,	List<Dependency> dependencies, File video, Interaction interaction, Boolean isEndStorypoint){
+		super();
 		this.status = status;
 		this.dependencies = dependencies;
 		this.video = video;
 		this.interaction = interaction;
-		this.isEndScene = isEndScene;
+		this.isEndStorypoint = isEndStorypoint;
 	}
 	
 	/**
+	 * 
+	 * @param dependency
+	 */
+	
+	public void addDependency( Dependency dependency ){
+		dependencies.add(dependency);
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * @return the status
 	 */
-	public Status getStatus() {
+	public StorypointStatus getStatus() {
 		return status;
 	}
 
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(Status status) {
+	public void setStatus(StorypointStatus status) {
 		this.status = status;
 	}
 
@@ -65,16 +95,16 @@ public class StoryPoint {
 	/**
 	 * @return the video
 	 */
-	public File getVideo() {
+	/*public File getVideo() {
 		return video;
-	}
+	}*/
 
 	/**
 	 * @param video the video to set
 	 */
-	public void setVideo(File video) {
+	/*public void setVideo(File video) {
 		this.video = video;
-	}
+	}*/
 
 	/**
 	 * @return the interaction
@@ -93,15 +123,15 @@ public class StoryPoint {
 	/**
 	 * @return the isEndScene
 	 */
-	public Boolean getIsEndScene() {
-		return isEndScene;
+	public Boolean getIsEndStorypoint() {
+		return isEndStorypoint;
 	}
 
 	/**
 	 * @param isEndScene the isEndScene to set
 	 */
-	public void setIsEndScene(Boolean isEndScene) {
-		this.isEndScene = isEndScene;
+	public void setIsEndStorypoint(Boolean isEndScene) {
+		this.isEndStorypoint = isEndScene;
 	}
 
 	/**
@@ -109,5 +139,21 @@ public class StoryPoint {
 	 */
 	public void start(){
 		
+	}
+	
+	@Override
+	public String toString(){
+		String strng;
+		strng = "Storypoint: " + name + "\n";
+		strng += "Status: " + status.toString() + "\n";
+		strng += "Video: " + video.getPath() + "\n";
+		strng += "Interaction: " + interaction.toString() + "\n";
+		strng += "IsEndStorypoint: " + isEndStorypoint.toString() + "\n";
+		strng += "Dependencis:\n";
+		for (int i = 0; i < dependencies.size(); i++) {
+			strng += dependencies.get(i).toString() + "\n";
+		}
+		strng += super.toString();
+		return strng;
 	}
 }
