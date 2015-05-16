@@ -62,19 +62,43 @@ Directory tree:
                  | /<filename>
 ```
 
-### Filter concept for stories
+### Filtering stories
 ```
-http://api.storytellar.de/story?<query parameters>
+http://api.storytellar.de/temp?<query parameters>
 ```
-> **Note:** Not implemented yet!
- 
+> **Note:** Filtering is only activated for the temp route for now, as soon as the main route is live we will activate that one too.
+
  * Method: GET
- * Query Parameter (optional): id, title, description, author, size_min, size_max, creation_date_min, creation_date_max, location, radius
- * Data: id, xsd_revision, title, description, author, size, size_uom, location, radius, radius_uom, created_at, updated_at 
+ * Query Parameter (optional): id, title, description, author, revision, size, size_uom, size_min, size_max, location, radius, radius_uom, created_at, updated_at, creation_date_min, creation_date_max, gps_point, gps_point_radius
+
+> **Note:** If gps_point is given as parameter, then gps_point_radius must be given too! (it would be pointless without...)
+
+The query parameters must be passed encoded and following these rules: http://www.faqs.org/rfcs/rfc3986.html
+
+Nearly every language has this function built in, like urlencode for php or encodeuri for javascript and so on. It doesn't matter if you use '+' or '%20' (without the ' characters) in your query, we accept both.
+
+An example for filtering on the 3 available stories for our temp route would be:
+```
+http://api.storytellar.de/temp?author=lukas
+```
+This will filter all stories for author's name 'lukas'.
+
+Of course you can add other query parameters as well (all the parameters listed above). An example for making the filtering more specific with a gps point and radius:
+```
+http://api.storytellar.de/temp?author=lukas&gps_point=48.810592+9.237417&gps_point_radius=100
+```
+This will filter all stories for the following conditions:
+- Author of a story must be 'lukas'
+- Story location must be in the radius of '100' from the gps point '48.810592 9.237417'
+
+The gps radius unit must be given in km.
+
+We made it possible to exclude detailed timestamps for any dates. So it's possible to just pass the date as YYYY-MM-DD (just like the response format).
+
+ * Response data: id, title, description, author, revision, size, size_uom, location, radius, radius_uom, created_at, updated_at
  * Response format: JSON
  * Character encoding (header): utf-8
 
-Example for author and maximum size filtering: http://api.storytellar.de/story?author=arno+claus&size_max=20
  
 ### Temporary route for stories
 ```
