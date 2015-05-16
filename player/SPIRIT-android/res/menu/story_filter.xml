@@ -8,4 +8,8 @@
         android:title="@string/action_filter" 
         android:orderInCategory="100" 
         android:showAsAction="never" />
+ 	<item android:id="@+id/reset_filter" 
+        android:title="@string/reset_filter" 
+        android:orderInCategory="100" 
+        android:showAsAction="never" />
 </menu>

@@ -258,8 +258,8 @@ public class StoryFilter implements Parcelable {
 		//Example: http://api.storytellar.de/story?author=arno+claus&size_max=20
 		//String URL = "http://api.storytellar.de/story?";
 		StringBuilder getQuery = new StringBuilder();
-		getQuery.append("http://api.storytellar.de/story?"); //already defined in RESTclient.java
-		
+		//getQuery.append("http://api.storytellar.de/story?"); 
+		getQuery.append("http://api.storytellar.de/temp?");
 		
 		if (this.title.trim().length() > 0) getQuery.append("title=" + this.title.trim()+"&");
 		

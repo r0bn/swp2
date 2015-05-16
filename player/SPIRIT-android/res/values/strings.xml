@@ -12,7 +12,7 @@
     <string name="title_activity_story_list_installed__fragment">StoryListInstalled_Fragment</string>
     <string name="title_activity_story_list_store__fragment">StoryListStore_Fragment</string>
     <string name="title_activity_story_details_">StorytellAR</string>
-    <string name="action_filter">Filter</string>
+    <string name="action_filter">Filter anwenden</string>
     <string name="action_restart">Neustart</string>
     <string name="action_start">Start</string>
     <string name="action_delete">Löschen</string>
@@ -26,6 +26,7 @@
     
     <string name="action_installed_filter">Installierte Stories filtern</string>
     <string name="action_store_filter">Store Stories filtern</string>
+    <string name="reset_filter">Filter zurücksetzen</string>
     
     <string name="filterFor">Filtern nach:</string>
     <string name="title">Titel</string>

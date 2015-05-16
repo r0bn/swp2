@@ -1,9 +1,11 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -55,9 +57,9 @@ public class Filter_Activity extends ActionBarActivity {
 
     private int min_year, min_month, min_day;
     private int max_year, max_month, max_day; //initialize them to current date in onStart()/onCreate()
-    private String dateDefault = "Datum festlegen";
-    
+
     private StoryFilter storyFilter;
+    private StoryFilter defaultStoryFilter;
     private String filterFrom;
     private Intent oldIntent;
     
@@ -131,7 +133,7 @@ public class Filter_Activity extends ActionBarActivity {
 
         //The parcelable class named StoryFilter has no standard constructor, therefore get an object with some values that won't be used
         //and reset them after that to the default values specified in the StoryFilter class:
-        StoryFilter defaultStoryFilter = new StoryFilter("default", "default", "default", "default", "default", "default", "default", "default", "default");
+        defaultStoryFilter = new StoryFilter("default", "default", "default", "default", "default", "default", "default", "default", "default");
         defaultStoryFilter.resetToDefault();	//reset all values to the default values described in the StoryFilter class
         storyFilter = defaultStoryFilter;
         
@@ -204,10 +206,6 @@ public class Filter_Activity extends ActionBarActivity {
                      latitude = address.getLatitude();
         	         longitude = address.getLongitude();
         	         Toast.makeText(this, "latitude = " + latitude + "longitude = " + longitude, Toast.LENGTH_SHORT).show();
-        	         
-                  //   if (address != null) {
-                  //       String locality = address.getLocality(); 
-                  //   }
 
                  } catch (Exception ex) {
                      ex.printStackTrace();
@@ -241,7 +239,39 @@ public class Filter_Activity extends ActionBarActivity {
 	        //Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
 	        startActivity(newIntent);
             return true;
-        }else {
+        }else if (id == R.id.reset_filter) {
+        	
+        	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        	    @Override
+        	    public void onClick(DialogInterface dialog, int which) {
+        	        switch (which){
+        	        case DialogInterface.BUTTON_POSITIVE:
+
+        		         if(filterFrom.equals("InstalledFragment")){
+        		        	 oldIntent.putExtra("InstalledFragmentStoryFilter",defaultStoryFilter);
+        		         }
+        		         
+        		         if (filterFrom.equals("StoreFragment")){
+        		        	 oldIntent.putExtra("StoreFragmentStoryFilter",defaultStoryFilter);
+        		         }
+
+        	        	finish();
+        	        	startActivity(oldIntent);
+        		        
+        	            break;
+
+        	        case DialogInterface.BUTTON_NEGATIVE:
+        	        	//back to Filter
+        	            break;
+        	        }
+        	    }
+        	};
+
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setMessage("Möchten Sie wirklich den Filter zurücksetzen?").setPositiveButton("Ja", dialogClickListener)
+        	    .setNegativeButton("Nein", dialogClickListener).show();
+        	return true;
+        }else{
         	return false;
         }
     
