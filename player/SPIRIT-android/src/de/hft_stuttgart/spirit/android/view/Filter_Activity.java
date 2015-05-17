@@ -40,7 +40,10 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/*
+ * @author Stefan
+ * This activity is used to filter the Stories in the StoryListInstalled_Fragment and StoryListStore_Fragment.
+ */
 public class Filter_Activity extends ActionBarActivity {
 
     private Calendar calendar;
@@ -205,7 +208,7 @@ public class Filter_Activity extends ActionBarActivity {
                      address = geoLocate(cityEditText.getText().toString());
                      latitude = address.getLatitude();
         	         longitude = address.getLongitude();
-        	         Toast.makeText(this, "latitude = " + latitude + "longitude = " + longitude, Toast.LENGTH_SHORT).show();
+        	         //Toast.makeText(this, "latitude = " + latitude + "longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                  } catch (Exception ex) {
                      ex.printStackTrace();
@@ -235,8 +238,9 @@ public class Filter_Activity extends ActionBarActivity {
 
 	        newIntent.putExtra("Filter_From",filterFrom);
 	        
-	        Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
-	        //Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
+	        //Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
+	        Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
+	        
 	        startActivity(newIntent);
             return true;
         }else if (id == R.id.reset_filter) {
@@ -278,7 +282,9 @@ public class Filter_Activity extends ActionBarActivity {
     }
 
 
-    //CityTextWatcher: shows the radius components only if a city is specified
+    /**
+     * The CityTextWatcher shows the radius components only if a city was specified by the user.
+     */
     private TextWatcher cityTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3){}
@@ -302,8 +308,11 @@ public class Filter_Activity extends ActionBarActivity {
         public void afterTextChanged(Editable editable) {}
     };
 
-    //DateTextWatcher: displays a toast message if the inserted creationDateMin is > creationDateMax, 
-    //because no stories can be between creationDateMin and creationDateMax if: "creationDateMin  > creationDateMax".
+
+    /**
+     * The DateTextWatcher displays a toast message if the inserted creationDateMin is > creationDateMax,
+     * because no stories can be between creationDateMin and creationDateMax if: "creationDateMin  > creationDateMax". 
+     */
     private TextWatcher DateTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3){}
@@ -342,7 +351,9 @@ public class Filter_Activity extends ActionBarActivity {
         }
         return null;
     }
-
+/**
+ * The min_dateListener gets the date from the DatePicker and puts it separated by ". " into a String. 
+ */
     private DatePickerDialog.OnDateSetListener min_dateListener= new DatePickerDialog.OnDateSetListener(){
 
         public void onDateSet(DatePicker datapicker, int year, int month, int day) {
@@ -351,6 +362,10 @@ public class Filter_Activity extends ActionBarActivity {
             creationDateMin = new Date(year,month,day);    
         }
     };
+    
+/**
+ * The max_dateListener gets the date from the DatePicker and puts it separated by ". " into a String. 
+ */
     private DatePickerDialog.OnDateSetListener max_dateListener= new DatePickerDialog.OnDateSetListener(){
 
         public void onDateSet(DatePicker datapicker, int year, int month, int day) {
@@ -363,9 +378,9 @@ public class Filter_Activity extends ActionBarActivity {
     
     
     /**
-     * Returns the first found address of the given location
+     * Returns the first found address of the given location.
      * @return the address
-     * @throws IOException
+     * @throws IOException if no adress was found
      */
     public Address geoLocate(String location)throws IOException {
 

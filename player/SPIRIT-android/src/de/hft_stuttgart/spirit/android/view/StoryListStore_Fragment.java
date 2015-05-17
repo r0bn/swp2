@@ -176,7 +176,7 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
             
             GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-            task.execute(item); //Array out of bound Exception
+            task.execute(item);
 
 
             textTitel.setText(item.getTitle());

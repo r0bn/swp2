@@ -1,6 +1,8 @@
 package de.hft_stuttgart.spirit.android.view;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,8 +11,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-
 
 import de.hft_stuttgart.spirit.android.Story;
 import android.text.TextUtils;
@@ -27,7 +27,9 @@ import android.view.inputmethod.InputMethodManager;
 /**
  * @author Stefan
  * 
- * The StoryFilter Class defines the FiterComponents to pass them between the FragmentActivitys and the FilterActivity. 
+ * The StoryFilter Class is a paracelable class in which the FiterComponents are defined. It is used to pass custom 
+ * objects between the FragmentActivitys, the FilterActivity and the StoryDetails_Activity.
+ * It also provides a function to build the filter path URL which can be used to get filtered stories from the server. 
  *
  */
 public class StoryFilter implements Parcelable {
@@ -55,6 +57,10 @@ public class StoryFilter implements Parcelable {
 		this.radius = radius;
 	}
 	
+/**
+ * This method is used to make the class paracelable 
+ * @param in
+ */
 	public StoryFilter(Parcel in){
 		
 		this.title = in.readString();
@@ -88,6 +94,10 @@ public class StoryFilter implements Parcelable {
 	    dest.writeString(this.radius);
 	}
 	
+	/**
+	 * This method is used to make the class paracelable 
+	 * @param in
+	 */
 	public static final Parcelable.Creator<StoryFilter> CREATOR = new Parcelable.Creator<StoryFilter>() {
 
 		@Override
@@ -107,7 +117,7 @@ public class StoryFilter implements Parcelable {
 	
 	
 	/**
-	 * this method resets all Values to their default 
+	 * This method resets all filter component values to their default. 
 	 */
 	public void resetToDefault(){
 		this.title = "";
@@ -122,6 +132,9 @@ public class StoryFilter implements Parcelable {
 		
 	}
 	
+	/**
+	 * The filter component values for the storyfilter can be set here. 
+	 */
 	public void SetStoryFilter(String title, String author, String size_max,
 			String creationDateMin, String creationDateMax, String city, String latitude, String longitude,
 			String radius) {
@@ -135,7 +148,12 @@ public class StoryFilter implements Parcelable {
         this.longitude = longitude;
 		this.radius = radius;
 	}
-
+	
+/**
+ * This function checks if the filter values equal the item-values. 
+ * @param item the item which should be compared to the filter. 
+ * @return true if the item does pass the filter and false if the item doesn't pass through the filter.
+ */
 	public boolean filterStoryItem(Story item){
 
 		if (this.title.trim().length() > 0){	//checks if String contains characters != whitespace 
@@ -250,7 +268,7 @@ public class StoryFilter implements Parcelable {
 	
 
 	/**
-	 * The getQuery function puts the query-URL together, that is needed to get filtered stories from the server.
+	 * The getQuery function puts the query-URL that is needed to get filtered stories from the server, together.
 	 * @return the query-URL
 	 */
 	public String getQuery(){
@@ -261,9 +279,26 @@ public class StoryFilter implements Parcelable {
 		//getQuery.append("http://api.storytellar.de/story?"); 
 		getQuery.append("http://api.storytellar.de/temp?");
 		
-		if (this.title.trim().length() > 0) getQuery.append("title=" + this.title.trim()+"&");
+		if (this.title.trim().length() > 0){
+			String title = this.title;
+			try {
+				title = URLEncoder.encode(title, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace(); 	
+			}
+			getQuery.append("title=" + title+"&");
+		}
 		
-		if (this.author.trim().length() > 0) getQuery.append("author=" + this.author.trim()+"&");
+		if (this.author.trim().length() > 0){ 
+			String author = this.author;
+			try {
+				author = URLEncoder.encode(author, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace(); 	
+			}
+			getQuery.append("author=" + author + "&");
+		}
+		
 		if (this.size_max.trim().length() > 0) getQuery.append("size_max=" + this.size_max.trim()+"&");
 		if (!this.creationDateMin.matches("Datum festlegen")) getQuery.append("creation_date_min="
 		       + creationDateMin.replaceAll("\\.", "")+"&");

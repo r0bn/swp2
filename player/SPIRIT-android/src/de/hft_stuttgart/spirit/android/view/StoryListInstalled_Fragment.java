@@ -149,38 +149,26 @@ public class StoryListInstalled_Fragment extends Fragment {
             	if (!storyFilter.filterStoryItem(item)) {
             		vi=inflater.inflate(R.layout.row_null,null);
             	 	return vi;
-            	}else{
-            		vi = inflater.inflate(R.layout.listview_item_row, null);
-            		TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
-    	            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
-    	            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
-    	
-    	            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-    	            task.execute(item);
-    	            
-    	            textTitel.setText(item.getTitle());
-    	            textAutor.setText(item.getAuthor());
-    	
-    	            return vi;
             	}
-            }else{
-            	vi = inflater.inflate(R.layout.listview_item_row, null);
-	            TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
-	            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
-	            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
-	
-	            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-	            task.execute(item);
-	            
-	            textTitel.setText(item.getTitle());
-	            textAutor.setText(item.getAuthor());
-	            
-            	if(!item.isUpToDate()){
-            		vi.setBackgroundColor(0xA0FF3300);
-            	}
-	
-	            return vi;
             }
+            
+        	vi = inflater.inflate(R.layout.listview_item_row, null);
+            TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
+            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
+            TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
+
+            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            task.execute(item);
+            
+            textTitel.setText(item.getTitle());
+            textAutor.setText(item.getAuthor());
+            
+        	if(!item.isUpToDate()){
+        		vi.setBackgroundColor(0xA0FF3300);
+        	}
+
+            return vi;
+            
         }
     }
 }
