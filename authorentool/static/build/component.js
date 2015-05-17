@@ -524,8 +524,16 @@ mainApp.controller("mainCtrl", [
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
         });
         $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
-          $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen");
-          $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          var tmpCounter, tmpStorypointValue;
+          tmpCounter = $(this).attr("id").split("_")[1];
+          tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val();
+          if (tmpStorypointValue === '') {
+            tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder");
+          }
+          if ($("#btnSetQuizOnTrueReferences_" + counter).val() === tmpStorypointValue) {
+            $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen");
+            $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          }
         });
         j++;
       }
@@ -563,8 +571,16 @@ mainApp.controller("mainCtrl", [
           $("#btnSetQuizOnFalseReferences_" + counter).html($(this).text() + "<span class='caret' />");
         });
         $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
-          $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen");
-          $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          var tmpCounter, tmpStorypointValue;
+          tmpCounter = $(this).attr("id").split("_")[1];
+          tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val();
+          if (tmpStorypointValue === '') {
+            tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder");
+          }
+          if ($("#btnSetQuizOnFalseReferences_" + counter).val() === tmpStorypointValue) {
+            $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen");
+            $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          }
         });
         j++;
       }
@@ -602,8 +618,16 @@ mainApp.controller("mainCtrl", [
           $("#btnSetStorypointReferences_" + counter).html($(this).text() + "<span class='caret' />");
         });
         $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
-          $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen");
-          $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          var tmpCounter, tmpStorypointValue;
+          tmpCounter = $(this).attr("id").split("_")[1];
+          tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val();
+          if (tmpStorypointValue === '') {
+            tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder");
+          }
+          if ($("#btnSetStorypointReferences_" + counter).val() === tmpStorypointValue) {
+            $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen");
+            $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+          }
         });
         j++;
       }

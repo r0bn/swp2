@@ -576,9 +576,14 @@
                     return  
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
-                    #if $("#btnSetQuizOnFalseReferences_"+counter).val() == storypointName... Hier prüfen, welcher Wert im Feld steht. Wenn das der selbe ist wie der Storypointname vom jeweiligen Button; erst dann darf das unten asugeführt werden.
-                    $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen")
-                    $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    tmpCounter = $(this).attr("id").split("_")[1]
+                    tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val()
+                    if tmpStorypointValue == ''
+                        tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
+
+                    if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue
+                        $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen")
+                        $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
                 j++
             return
@@ -630,17 +635,19 @@
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
-                    # s.o
-                    #if $("#btnSetQuizOnFalseReferences_"+counter).val() == $(this).text()
-                    $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen")
-                    $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
-                    return
+                    tmpCounter = $(this).attr("id").split("_")[1]
+                    tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val()
+                    if tmpStorypointValue == ''
+                        tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
+                    if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue
+                        $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen")
+                        $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    return
                 j++
             return
 
 
-                #createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id)
         createDropdownStorypointRef = (counter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
@@ -678,9 +685,14 @@
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
-                    # s.o
-                    $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen")
-                    $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    tmpCounter = $(this).attr("id").split("_")[1]
+                    tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val()
+                    if tmpStorypointValue == ''
+                        tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
+
+                    if $("#btnSetStorypointReferences_"+ counter).val() == tmpStorypointValue
+                        $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen")
+                        $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
                 j++
             return
