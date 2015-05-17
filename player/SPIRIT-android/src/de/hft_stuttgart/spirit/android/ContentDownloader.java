@@ -158,7 +158,7 @@ public class ContentDownloader {
 				allStoriesWithParameterData.add(temp);
 
 			}
-			markDownloadedStories();
+			markFilteredDownloadedStories();
 			return allStoriesWithParameterData;
 
 		} catch (JSONException e) {
@@ -194,6 +194,24 @@ public class ContentDownloader {
 		}
 	}
 
+	/**
+	 * Method compares the list of all requested stories with the list of the
+	 * already downloaded stories and sets the parameter 'already_downloaded' in
+	 * list allStoriesData if this story is already downloaded.
+	 */
+	private void markFilteredDownloadedStories() {
+
+		for (Story x : downloadedStories) {
+			for (int i = 0; i < allStoriesWithParameterData.size(); i++) {
+				if (x.getId().equals(allStoriesWithParameterData.get(i).getId())) {					
+					allStoriesWithParameterData.get(i).setAlreadyDownloaded(true);
+					if(x.getUpdated_at_Date().before(allStoriesWithParameterData.get(i).getUpdated_at_Date())) {
+						x.setUpToDate(false);
+					}
+				}
+			}
+		}
+	}
 	/**
 	 * Download of a single story specified by the id. Server returns the XML
 	 * which includes media data with absolute URI.

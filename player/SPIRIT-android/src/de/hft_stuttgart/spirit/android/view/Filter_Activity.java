@@ -86,9 +86,9 @@ public class Filter_Activity extends ActionBarActivity {
 
 
 
-        titleEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
-        authorEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
-        cityEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20)});
+        titleEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(50)});
+        authorEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(50)});
+        cityEditText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(50)});
 
         //set the standard values for the date picker:
         calendar = Calendar.getInstance();
@@ -238,8 +238,8 @@ public class Filter_Activity extends ActionBarActivity {
 
 	        newIntent.putExtra("Filter_From",filterFrom);
 	        
-	        //Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
-	        Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
+	        Toast.makeText(this, "Filter wird übernommen...", Toast.LENGTH_SHORT).show();
+	        //Toast.makeText(this, storyFilter.getQuery(), Toast.LENGTH_SHORT).show();
 	        
 	        startActivity(newIntent);
             return true;
