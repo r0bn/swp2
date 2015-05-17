@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class Dependency {
 
-	List<String> storypoints;
-	List<String> items;
+	private List<String> storypoints;
+	private List<String> items;
 	
 	public Dependency(){
 		storypoints = new ArrayList<String>();

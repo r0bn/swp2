@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class Quiz implements Interaction{
 	
-	String question;
-	List<String> answers;
-	List<String> nextScenes;
+	private String question;
+	private List<String> answers;
+	private List<String> nextScenes;
 
 	public Quiz(){
 		this.answers = new ArrayList<String>();

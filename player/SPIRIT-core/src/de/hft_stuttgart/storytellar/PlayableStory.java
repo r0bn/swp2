@@ -17,14 +17,14 @@ import de.hft_stuttgart.spirit.Poi;
 public class PlayableStory {
 	
 	// Metadata:
-	String title;
-	String description;
-	Double size;
-	String author;
-	Date creationDate;
-	Double latitude;
-	Double longitude;
-	Double radius;
+	private String title;
+	private String description;
+	private Double size;
+	private String author;
+	private Date creationDate;
+	private Double latitude;
+	private Double longitude;
+	private Double radius;
 	
 	// Other Data:
 	Map<String,Poi> storypoints;
