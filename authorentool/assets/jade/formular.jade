@@ -21,7 +21,7 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for="ttaDescription") Beschreibung
                             .col-lg-8
-                                textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Bitte geben Sie die Beschreibung der Story ein")
+                                textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
 
                         .form-group
                             label.col-lg-2.control-label(for="inAutor") Autor
@@ -31,7 +31,7 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for="inSize") Größe der Story
                             .col-lg-6
-                                input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Gesamte Größe der Story?")
+                                input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Stor")
                             .col-lg-1
                                 .dropdown
                                     button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
@@ -47,7 +47,7 @@ block content
                             label.col-lg-2.control-label(for="inLatLngLocation") Ort
 
                             .col-lg-8
-                                input.form-control( disabled, id="inLatLngLocation", placeholder="Breitengrad")
+                                input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
                                 #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
                                     .modal-dialog   
                                         .modal-content
@@ -129,7 +129,7 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblAnchorPoint", for="inAnchorPoint") Ort
                                 .col-lg-6
-                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorPoint", placeholder="Über map realisieren?")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorPoint", placeholder="Anker GPS Koordinaten")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnStorypointMap", type="button", gpsField="inAnchorPoint", data-toggle='modal', data-target='#lightbox') Map
 
@@ -138,7 +138,7 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblAnchorImg", for="inAnchorImg") Auslösebild bestimmen
                                 .col-lg-6
-                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorImg", placeholder="Bild auswählen können aus Bib")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorImg", placeholder="Referenzbild aus MedienBib auswählen")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
@@ -147,19 +147,17 @@ block content
                                 .col-lg-4
                                     label.control-label(id="lblAsset", for="inAsset") Anzeigbares Objekt
                                 .col-lg-6
-                                    input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Bild/Video aus Bib holen")
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Anzeigebild/Anzeigevideo aus MedienBib auswählen")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
-                            .form-group
-                                .col-lg-9
-                                .col-lg-3
-                                    .dropdown(id="ddnStorypointReference")
-                                        button.btn.btn-info.btn-block.pull-primary.btnDesign(id="btnSetReferences", referenceStorypointCounter="0", type="button") Referenzen setzen
-                                        
-                                        ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu1")
-                                            li(id="NEU_Storypoint_Ref_", role="presentation")
-                                                a(role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Referenz zu 
+                            .form-group(id="fgpMultipleStorypointRefs")
+                                .col-lg-4(id="colStorypointRefDeep")
+                                    .dropdown
+                                        button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') Vorgänger- Storypoint auswählen
+                                            span.caret 
+                                
+                                        ul.dropdown-menu(id="ulSkStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
                                         
 
 
@@ -208,6 +206,13 @@ block content
 
 
                                                         // ----------------------- AB HIER: SCHATTEN
+
+
+                                            // ---------------------- STORYPOINT - REFERENZ SCHATTEN
+
+            li(id="liSKStorypointRef", role="presentation", style="display:none")
+                a(id="ddnStorypointStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu 
+
 
                  // -------------------- ITEM
             .form-group(id="fgpNeu_Item", style="display: none")

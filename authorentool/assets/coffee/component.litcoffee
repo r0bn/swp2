@@ -178,6 +178,12 @@
                 # Click Event für btnStorypointEinklappen
                 btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)
 
+
+                # Click Event für btnSetStorypointReferences
+                $("#btnSetStorypointReferences_"+ counter).click ->
+                    createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id)
+
+
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
                     if ($("#ddnInteractions_" + counter).val() == "Item")
@@ -504,7 +510,7 @@
 
 
 
-        setQuizDropdownIDs = (node, lauf) ->
+        setReferenceDropdownIDs = (node, lauf) ->
             node.children().each ->
                 if typeof $(this).attr("id") != "undefined"
                     if $(this).attr("id").indexOf("_tmp_") != -1
@@ -515,7 +521,7 @@
                         newID = $(this).attr("id") + "_" + window.dropdownLiCounter + "_" + lauf
                         $(this).attr("id", newID)
                     lauf++;
-                setQuizDropdownIDs($(this), lauf)
+                setReferenceDropdownIDs($(this), lauf)
             return
 
 
@@ -553,7 +559,7 @@
 
             # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
             lauf = 0
-            setQuizDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf)
+            setReferenceDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf)
 
             # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
             # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
@@ -570,6 +576,7 @@
                     return  
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                    #if $("#btnSetQuizOnFalseReferences_"+counter).val() == storypointName... Hier prüfen, welcher Wert im Feld steht. Wenn das der selbe ist wie der Storypointname vom jeweiligen Button; erst dann darf das unten asugeführt werden.
                     $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen")
                     $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -605,7 +612,7 @@
 
             # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
             lauf = 0
-            setQuizDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf)
+            setReferenceDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf)
 
             # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
             # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
@@ -623,12 +630,61 @@
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                    # s.o
+                    #if $("#btnSetQuizOnFalseReferences_"+counter).val() == $(this).text()
                     $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen")
                     $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
 
                 j++
             return
+
+
+                #createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id)
+        createDropdownStorypointRef = (counter, buttonID, currentObjID) ->
+
+            currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
+            storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
+            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
+            
+            copyForm = document.getElementById("liSKStorypointRef")
+            window.dropdownLiCounter++;
+            
+            $("#ulSkStorypointRef_"+counter).empty()
+            i = 0
+            while i < storypointArray.length
+                stuff = copyForm.cloneNode(true)
+                stuff.id = stuff.id + "_tmp_" + i
+                stuff.style.display="block"
+                inputID = helper(storypointArray[i], "inStorypoint")
+                document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
+                tmpStoryname = $("#" + inputID).val()
+                if tmpStoryname == ""
+                    tmpStoryname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").text(tmpStoryname)
+                $("#" + stuff.id).find("a").html(tmpStoryname)
+                i++
+
+            lauf = 0
+            setReferenceDropdownIDs($("#ulSkStorypointRef_" + counter), lauf)
+
+            j = 0
+
+            while j < storypointArray.length
+                indexe = window.dropdownLiCounter + "_" + (j+1)
+                $("#ddnStorypointStorypoint_"+indexe).click ->
+                    $("#btnSetStorypointReferences_"+counter).val($(this).text())
+                    $("#btnSetStorypointReferences_"+counter).html($(this).text() + "<span class='caret' />")
+                    return
+
+                $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                    # s.o
+                    $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen")
+                    $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
+                    return
+                j++
+            return
+
 
 
 

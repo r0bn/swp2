@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, checkSafeButton, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initSafeButton, initScrollbar, lightBox, lightMedienBox, selectAvailibleStorypoints, setAllMap, setIDs, setQuizDropdownIDs;
+    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, checkSafeButton, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createDropdownStorypointRef, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initSafeButton, initScrollbar, lightBox, lightMedienBox, selectAvailibleStorypoints, setAllMap, setIDs, setReferenceDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -161,6 +161,9 @@ mainApp.controller("mainCtrl", [
         }
       });
       btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter);
+      $("#btnSetStorypointReferences_" + counter).click(function() {
+        return createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id);
+      });
       $("#btnCreateInteraction_" + counter).click(function() {
         if ($("#ddnInteractions_" + counter).val() === "Item") {
           return createItem(counter);
@@ -466,7 +469,7 @@ mainApp.controller("mainCtrl", [
       storypointArray.splice(index, 1);
       return storypointArray;
     };
-    setQuizDropdownIDs = function(node, lauf) {
+    setReferenceDropdownIDs = function(node, lauf) {
       node.children().each(function() {
         var newID, split;
         if (typeof $(this).attr("id") !== "undefined") {
@@ -480,7 +483,7 @@ mainApp.controller("mainCtrl", [
           }
           lauf++;
         }
-        return setQuizDropdownIDs($(this), lauf);
+        return setReferenceDropdownIDs($(this), lauf);
       });
     };
     helper = function(storypointId, calcID) {
@@ -512,7 +515,7 @@ mainApp.controller("mainCtrl", [
         i++;
       }
       lauf = 0;
-      setQuizDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf);
+      setReferenceDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf);
       j = 0;
       while (j < storypointArray.length) {
         indexe = window.dropdownLiCounter + "_" + (j + 1);
@@ -551,7 +554,7 @@ mainApp.controller("mainCtrl", [
         i++;
       }
       lauf = 0;
-      setQuizDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf);
+      setReferenceDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf);
       j = 0;
       while (j < storypointArray.length) {
         indexe = window.dropdownLiCounter + "_" + (j + 1);
@@ -562,6 +565,45 @@ mainApp.controller("mainCtrl", [
         $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
           $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen");
           $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
+        });
+        j++;
+      }
+    };
+    createDropdownStorypointRef = function(counter, buttonID, currentObjID) {
+      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
+      currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
+      storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
+      storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID);
+      copyForm = document.getElementById("liSKStorypointRef");
+      window.dropdownLiCounter++;
+      $("#ulSkStorypointRef_" + counter).empty();
+      i = 0;
+      while (i < storypointArray.length) {
+        stuff = copyForm.cloneNode(true);
+        stuff.id = stuff.id + "_tmp_" + i;
+        stuff.style.display = "block";
+        inputID = helper(storypointArray[i], "inStorypoint");
+        document.getElementById("ulSkStorypointRef_" + counter).appendChild(stuff);
+        tmpStoryname = $("#" + inputID).val();
+        if (tmpStoryname === "") {
+          tmpStoryname = $("#" + inputID).attr("placeholder");
+        }
+        $("#" + stuff.id).find("a").text(tmpStoryname);
+        $("#" + stuff.id).find("a").html(tmpStoryname);
+        i++;
+      }
+      lauf = 0;
+      setReferenceDropdownIDs($("#ulSkStorypointRef_" + counter), lauf);
+      j = 0;
+      while (j < storypointArray.length) {
+        indexe = window.dropdownLiCounter + "_" + (j + 1);
+        $("#ddnStorypointStorypoint_" + indexe).click(function() {
+          $("#btnSetStorypointReferences_" + counter).val($(this).text());
+          $("#btnSetStorypointReferences_" + counter).html($(this).text() + "<span class='caret' />");
+        });
+        $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
+          $("#btnSetStorypointReferences_" + counter).val("Neue Ref setzen");
+          $("#btnSetStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />");
         });
         j++;
       }
