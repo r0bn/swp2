@@ -155,6 +155,20 @@
                 # FeatureName Trigger
                 $("#inStorypoint_"+counter).keyup ->
                     inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
+                    i = 0;
+                    while i < window.nodes.length
+                        if window.nodes[i].id == counter
+                            if $("#inStorypoint_"+counter).val() != ""
+                                window.nodes[i].label = $("#inStorypoint_"+counter).val()
+                            else
+                                window.nodes[i].label = "Storypoint: " + counter
+                        i++ 
+                    container = document.getElementById('divDependencyBox')
+                    data = {
+                        nodes: window.nodes,
+                        edges: window.edges
+                        }
+                    network = new vis.Network(container, data, {});
 
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
@@ -587,6 +601,20 @@
                     return
                 j++
             return
+        edgeStorypointfinder = (objectID, searchedParent) ->
+            found = false
+            foundID = ""
+            i = 0
+            tmpObj = $(objectID)
+            while found != true
+                parentNode = tmpObj.parent()
+                if typeof parentNode.attr("id") != "undefined"
+                    tmp = parentNode.attr("id").split("_")
+                    if tmp[0] == searchedParent
+                        found = true
+                        foundID = parentNode.attr("id")
+                tmpObj = parentNode
+            return foundID
 
         createDropdownQuizOnFalse = (counter, buttonID, currentObjID) ->
 
@@ -612,6 +640,7 @@
                 if tmpStoryname == ""
                     tmpStoryname = $("#" + inputID).attr("placeholder") 
                 $("#" + stuff.id).find("a").text(tmpStoryname)
+                $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i])
                 $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
 
@@ -632,6 +661,11 @@
                 $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnFalseReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnFalseReferences_"+counter).html($(this).text() + "<span class='caret' />")
+                    storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
+                    storypoint = storypoint.split("_")
+                    storypoint_2 = $(this).attr("storypointOwner")
+                    storypoint_2 = storypoint_2.split("_")
+                    AddEdge(storypoint[1], storypoint_2[1])
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -699,6 +733,19 @@
 
 
 
+        AddEdge = (StorypointID1, StorypointID2) ->
+            edge = {
+                from: StorypointID1,
+                to: StorypointID2
+            }
+            window.edges.push(edge)
+            container = document.getElementById('divDependencyBox');
+            data = {
+                nodes: window.nodes,
+                edges: window.edges
+            }
+            network = new vis.Network(container, data, {});
+            return
 
             #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->

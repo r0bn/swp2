@@ -4,7 +4,7 @@ mainApp = angular.module("mainApp", ['ui.codemirror']);
 
 mainApp.controller("mainCtrl", [
   "$scope", "$http", function($scope, $http) {
-    var AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, checkSafeButton, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createDropdownStorypointRef, createItem, createQuiz, createQuizDropdown, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initSafeButton, initScrollbar, lightBox, lightMedienBox, selectAvailibleStorypoints, setAllMap, setIDs, setReferenceDropdownIDs;
+    var AddEdge, AddoDeleteNewNodes, addMarker, btnEinklappen, btnSwitchDown, btnSwitchUp, checkSafeButton, createChooser, createDropdownQuizOnFalse, createDropdownQuizOnTrue, createDropdownStorypointRef, createItem, createQuiz, createQuizDropdown, edgeStorypointfinder, getAllStorypoints, googleMap, helpRek, helpRekRemoveID, helper, inIDSetter, initDdnInteraction, initDropdownClicks, initHelpSystem, initSafeButton, initScrollbar, lightBox, lightMedienBox, selectAvailibleStorypoints, setAllMap, setIDs, setReferenceDropdownIDs;
     $scope.editorOptions = {
       lineNumbers: true,
       mode: 'xml',
@@ -139,7 +139,25 @@ mainApp.controller("mainCtrl", [
       setIDs($("#" + stuff.id), counter);
       $("#lblInputStorypoint_" + counter).attr("for", "inStorypoint_" + counter);
       $("#inStorypoint_" + counter).keyup(function() {
-        return inIDSetter($("#inStorypoint_" + counter), $("#lgdNeuerStorypointFieldset_" + counter), "Storypoint: ", "Neuer Storypoint");
+        var container, data, i, network;
+        inIDSetter($("#inStorypoint_" + counter), $("#lgdNeuerStorypointFieldset_" + counter), "Storypoint: ", "Neuer Storypoint");
+        i = 0;
+        while (i < window.nodes.length) {
+          if (window.nodes[i].id === counter) {
+            if ($("#inStorypoint_" + counter).val() !== "") {
+              window.nodes[i].label = $("#inStorypoint_" + counter).val();
+            } else {
+              window.nodes[i].label = "Storypoint: " + counter;
+            }
+          }
+          i++;
+        }
+        container = document.getElementById('divDependencyBox');
+        data = {
+          nodes: window.nodes,
+          edges: window.edges
+        };
+        return network = new vis.Network(container, data, {});
       });
       btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id);
       btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id);
@@ -538,6 +556,25 @@ mainApp.controller("mainCtrl", [
         j++;
       }
     };
+    edgeStorypointfinder = function(objectID, searchedParent) {
+      var found, foundID, i, parentNode, tmp, tmpObj;
+      found = false;
+      foundID = "";
+      i = 0;
+      tmpObj = $(objectID);
+      while (found !== true) {
+        parentNode = tmpObj.parent();
+        if (typeof parentNode.attr("id") !== "undefined") {
+          tmp = parentNode.attr("id").split("_");
+          if (tmp[0] === searchedParent) {
+            found = true;
+            foundID = parentNode.attr("id");
+          }
+        }
+        tmpObj = parentNode;
+      }
+      return foundID;
+    };
     createDropdownQuizOnFalse = function(counter, buttonID, currentObjID) {
       var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
@@ -558,6 +595,7 @@ mainApp.controller("mainCtrl", [
           tmpStoryname = $("#" + inputID).attr("placeholder");
         }
         $("#" + stuff.id).find("a").text(tmpStoryname);
+        $("#" + stuff.id).find("a").attr("storypointOwner", storypointArray[i]);
         $("#" + stuff.id).find("a").html(tmpStoryname);
         i++;
       }
@@ -567,8 +605,14 @@ mainApp.controller("mainCtrl", [
       while (j < storypointArray.length) {
         indexe = window.dropdownLiCounter + "_" + (j + 1);
         $("#ddnQuizOnFalseStorypoint_" + indexe).click(function() {
+          var storypoint, storypoint_2;
           $("#btnSetQuizOnFalseReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnFalseReferences_" + counter).html($(this).text() + "<span class='caret' />");
+          storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_" + counter, "fhlNeuerStorypoint");
+          storypoint = storypoint.split("_");
+          storypoint_2 = $(this).attr("storypointOwner");
+          storypoint_2 = storypoint_2.split("_");
+          AddEdge(storypoint[1], storypoint_2[1]);
         });
         $("#" + storypointArray[j]).find("button:nth-child(4)").click(function() {
           var tmpCounter, tmpStorypointValue;
@@ -631,6 +675,20 @@ mainApp.controller("mainCtrl", [
         });
         j++;
       }
+    };
+    AddEdge = function(StorypointID1, StorypointID2) {
+      var container, data, edge, network;
+      edge = {
+        from: StorypointID1,
+        to: StorypointID2
+      };
+      window.edges.push(edge);
+      container = document.getElementById('divDependencyBox');
+      data = {
+        nodes: window.nodes,
+        edges: window.edges
+      };
+      network = new vis.Network(container, data, {});
     };
     AddoDeleteNewNodes = function(nodeLabelInfo, searchID, counter) {
       var container, data, i, network, node;
