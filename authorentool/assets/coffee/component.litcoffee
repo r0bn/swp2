@@ -155,6 +155,20 @@
                 # FeatureName Trigger
                 $("#inStorypoint_"+counter).keyup ->
                     inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
+                    i = 0;
+                    while i < window.nodes.length
+                        if window.nodes[i].id == counter
+                            if $("#inStorypoint_"+counter).val() != ""
+                                window.nodes[i].label = $("#inStorypoint_"+counter).val()
+                            else
+                                window.nodes[i].label = "Storypoint: " + counter
+                        i++ 
+                    container = document.getElementById('divDependencyBox')
+                    data = {
+                        nodes: window.nodes,
+                        edges: window.edges
+                        }
+                    network = new vis.Network(container, data, {});
 
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
