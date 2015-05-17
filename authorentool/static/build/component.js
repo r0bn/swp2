@@ -38,12 +38,12 @@ mainApp.controller("mainCtrl", [
       $("#inSize").on("input", function() {
         var tmp;
         tmp = $(this).val().replace(/[^\d.-]/g, '');
-        return $(this).val(tmp);
+        return $(this).val(Math.abs(tmp));
       });
       $("#inRadius").on("input", function() {
         var tmp;
         tmp = $(this).val().replace(/[^\d.-]/g, '');
-        return $(this).val(tmp);
+        return $(this).val(Math.abs(tmp));
       });
       lightMedienBox();
       initDropdownClicks();
@@ -101,14 +101,14 @@ mainApp.controller("mainCtrl", [
     initDropdownClicks = function() {
       $("#ddnme").click(function() {
         if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Kilometer") {
-          $("#inRadius").val(Math.round($("#inRadius").val() * 1000));
+          $("#inRadius").val(Math.ceil($("#inRadius").val() * 1000));
         }
         $("#ddnradius").val("Meter");
         return $("#ddnradius").html("Meter <span class='caret' />");
       });
       $("#ddnkm").click(function() {
         if ($("#inRadius").val() !== "" && $("#ddnradius").val() === "Meter") {
-          $("#inRadius").val(Math.round($("#inRadius").val() / 1000));
+          $("#inRadius").val(Math.ceil($("#inRadius").val() / 1000));
         }
         $("#ddnradius").val("Kilometer");
         return $("#ddnradius").html("Kilometer <span class='caret' />");
@@ -754,7 +754,7 @@ mainApp.controller("mainCtrl", [
               } else if ($("#ddnradius").val() === "Kilometer") {
                 rad = rad * 1000;
               }
-              markers[i].set('radius', Math.round(rad));
+              markers[i].set('radius', Math.ceil(rad));
             }
           }
           i++;
@@ -806,7 +806,7 @@ mainApp.controller("mainCtrl", [
         circle = new google.maps.Circle({
           center: center,
           map: window.map,
-          radius: Math.round(rad),
+          radius: Math.ceil(rad),
           strokeColor: 'red',
           strokeOpacity: 0.8,
           strokeWeight: 2,
@@ -819,9 +819,9 @@ mainApp.controller("mainCtrl", [
         google.maps.event.addListener(circle, 'radius_changed', function() {
           rad = circle.getRadius();
           if ($("#ddnradius").val() === "Meter") {
-            return $("#inRadius").val(Math.round(rad));
+            return $("#inRadius").val(Math.ceil(rad));
           } else if ($("#ddnradius").val() === "Kilometer") {
-            return $("#inRadius").val(Math.round(rad / 1000));
+            return $("#inRadius").val(Math.ceil(rad / 1000));
           }
         });
         google.maps.event.addListener(circle, 'center_changed', function() {

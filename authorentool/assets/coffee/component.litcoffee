@@ -45,10 +45,10 @@
                 window.mapCaller = "btnMap"
             $("#inSize").on "input", () ->
                 tmp = $(this).val().replace(/[^\d.-]/g, '')
-                $(this).val(tmp)
+                $(this).val(Math.abs(tmp))
             $("#inRadius").on "input", () ->
                 tmp = $(this).val().replace(/[^\d.-]/g, '')
-                $(this).val(tmp)
+                $(this).val(Math.abs(tmp))
             lightMedienBox()
             initDropdownClicks()
             googleMap()
@@ -118,12 +118,12 @@
             $("#ddnme").click -> 
 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Kilometer"
-                    $("#inRadius").val(Math.round($("#inRadius").val() * 1000))
+                    $("#inRadius").val(Math.ceil($("#inRadius").val() * 1000))
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
             $("#ddnkm").click -> 
                 if $("#inRadius").val() != "" && $("#ddnradius").val() == "Meter"
-                    $("#inRadius").val(Math.round($("#inRadius").val() / 1000))
+                    $("#inRadius").val(Math.ceil($("#inRadius").val() / 1000))
                 $("#ddnradius").val("Kilometer")
                 $("#ddnradius").html("Kilometer <span class='caret' />")
 
@@ -820,7 +820,7 @@
                                     rad = 0
                                 else if $("#ddnradius").val() == "Kilometer"
                                     rad = rad * 1000
-                                markers[i].set('radius', Math.round(rad))
+                                markers[i].set('radius', Math.ceil(rad))
                        i++
                   google.maps.event.trigger window.map, 'resize'
                   return
@@ -861,7 +861,7 @@
                 circle = new (google.maps.Circle)
                     center: center
                     map: window.map
-                    radius: Math.round(rad)
+                    radius: Math.ceil(rad)
                     strokeColor: 'red'
                     strokeOpacity: 0.8
                     strokeWeight: 2
@@ -874,9 +874,9 @@
                 google.maps.event.addListener circle, 'radius_changed', () ->
                                     rad = circle.getRadius()
                                     if $("#ddnradius").val() == "Meter"
-                                        $("#inRadius").val(Math.round(rad))
+                                        $("#inRadius").val(Math.ceil(rad))
                                     else if $("#ddnradius").val() == "Kilometer"
-                                        $("#inRadius").val(Math.round(rad / 1000))
+                                        $("#inRadius").val(Math.ceil(rad / 1000))
                 google.maps.event.addListener circle, 'center_changed', () ->
                     marker.setPosition(circle.center)
                 google.maps.event.addListener marker, 'position_changed', () ->
