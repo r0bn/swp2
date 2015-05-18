@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="C:\Users\Marcel\Documents\GitHub\swp2\player\SPIRIT-android\libs\gdx\gdx-1.4.1.jar;C:\Users\Marcel\Documents\GitHub\swp2\player\SPIRIT-android\libs\android-22.jar" destdir="C:\Users\Marcel\Documents\GitHub\swp2\player\doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" sourcefiles="C:\Users\Marcel\Documents\GitHub\swp2\player\SPIRIT-core\src\de\hft_stuttgart\storytellar\StoryXMLParser.java" sourcepath="C:\Users\Marcel\Documents\GitHub\swp2\player\SPIRIT-core\src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

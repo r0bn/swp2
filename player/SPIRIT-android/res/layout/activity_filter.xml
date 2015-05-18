@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:fillViewport="true"
     android:layout_weight="0"
-    android:background="#ffbdd4ff">
+    android:background="#010178">
 
 
 
