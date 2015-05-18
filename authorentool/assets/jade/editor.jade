@@ -1,43 +1,22 @@
 
 .container-fluid
     .row
-        .col-md-8
-            .row
-                .col-md-12
-                    .page-header
-                        h3 XML Editor 
-                    // This initializes the codemirror plugin
-                    // more infos https://codemirror.net
-                    div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile")
-            .row
-                .col-md-8
-                    | {{ xmlError }}
-                .col-md-4
-                    button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save
-
-        // This is an demo example for the media library
-        .col-md-4
-            .row
-                .col-md-12
-                    .page-header
-                        h3 Media Library
-            .row
-                .col-md-12
-                    table.table.table-striped.table-hover
-                        thead
-                            tr
-                                th Name 
-                                th Status 
-                                th Action
-                        tbody
-                            tr(ng-repeat="obj in mediaData")
-                                td {{ obj.name }}
-                                td 
-                                    span.label.label-default {{ obj.status }}
-                                td
-                                    input(type="file",ng-show="obj.status === 'error'",file-model="obj.selectedFile")
+        .col-md-12
+                ul.nav.nav-tabs(id="myTabs")
+                    li(id="XMLTab")
+                        a(ng-click="tabSwitch('XMLTab')", href="#XML", data-toggle="tab") XML Editor
+                    li.active(id="GraEditorTab")
+                        a(ng-click="tabSwitch('GraEditorTab')",href="#GraEditor", data-toggle="tab") Graphischer Editor
+                    li(id="MedienBibTab")
+                        a(ng-click="tabSwitch('MedienBibTab')", href="#MedienEditor", data-toggle="tab") Medienbibliothek
 
 
 
-
+                .tab-content(id="myTabContent")
+                    .tab-pane.fade.active.in(id="GraEditor") 
+                        include ./formular.jade
+                    .tab-pane.fade.active.in(id="XML", style="display:none")
+                        p hallo1
+                    .tab-pane.fade.active.in(id="MedienEditor", style="display:none")
+                        p test
 

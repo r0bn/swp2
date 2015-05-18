@@ -42,8 +42,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
-                $scope.updateMediaFiles () ->
-                    console.log "ini"
+                #$scope.updateMediaFiles () ->
+                #    console.log "ini"
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -79,6 +79,183 @@ The following code is a angularJS (https://angularjs.org/) Application.
                             return
 
                 server.uploadMediaFile files, test
+
+
+        #jQuery Namespace Binding
+        (($) ->
+            ) jQuery
+
+        
+        $("#btnMap").click ->
+            window.mapCaller = "btnMap"
+        $("#inSize").on "input", () ->
+            tmp = $(this).val().replace(/[^\d.-]/g, '')
+            $(this).val(Math.abs(tmp))
+        $("#inRadius").on "input", () ->
+            tmp = $(this).val().replace(/[^\d.-]/g, '')
+            $(this).val(Math.abs(tmp))
+        lightMedienBox()
+        initDropdownClicks()
+        window.googleMap()
+        
+        # Counters
+        window.dropdownLiCounter = 0
+        # Nodes and Edges for the dependency graph
+        window.nodes = []
+        window.edges = []
+        window.interactioncounter = 10;
+        initHelpSystem()
+        initScrollbar()
+
+        window.safeButtonCounter = 0
+        initSafeButton()      
+
+            
+        $scope.createNewStorypoint = (counter) ->
+                console.log "test"
+                copyForm = document.getElementById("fhlNeuerStorypoint")
+                stuff = copyForm.cloneNode(true)
+                counter = 1 if counter == undefined
+                stuff.id="fhlNeuerStorypoint_" + counter
+                stuff.style.display="block"
+                document.getElementById("fhlStorypoints").appendChild(stuff)
+                # Setze die IDs neu
+                setIDs($("#" + stuff.id), counter)
+                # Labels neu setzen
+                $("#lblInputStorypoint_" + counter).attr("for","inStorypoint_" + counter)
+                # FeatureName Trigger
+                $("#inStorypoint_"+counter).keyup ->
+                    inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
+                    i = 0;
+                    while i < window.nodes.length
+                        if window.nodes[i].id == counter
+                            if $("#inStorypoint_"+counter).val() != ""
+                                window.nodes[i].label = $("#inStorypoint_"+counter).val()
+                            else
+                                window.nodes[i].label = "Storypoint: " + counter
+                        i++ 
+                    container = document.getElementById('divDependencyBox')
+                    data = {
+                        nodes: window.nodes,
+                        edges: window.edges
+                        }
+                    network = new vis.Network(container, data, {});
+
+                btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
+                btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
+                
+                $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
+                # Click Event für btnStorypointMap                 
+                $("#btnStorypointMap_" + counter).click ->
+                    window.mapCaller = "btnStorypointMap_" + counter
+
+
+                # Click Event für btnNeuesStorypointDelete
+                $("#btnNeuesStorypointDelete_" + counter).click ->
+                    if confirm "Wollen Sie den Storypoint wirklich löschen?"
+                        window.safeButtonCounter--
+                        window.safeButtonCounter--
+                        checkSafeButton()
+                        AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
+                        $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 25}, 2000, () ->
+                            $("#fhlNeuerStorypoint_" + counter).remove()
+        
+                # Click Event für btnStorypointEinklappen
+                btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)
+
+
+                # Click Event für btnSetStorypointReferences
+                $("#btnSetStorypointReferences_"+ counter).click ->
+                    createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id)
+
+
+                # Click Event für btnCreateInteraction
+                $("#btnCreateInteraction_" + counter).click ->
+                    if ($("#ddnInteractions_" + counter).val() == "Item")
+                        createItem(counter)
+                    else if ($("#ddnInteractions_" + counter).val() == "Quiz")
+                        createQuiz(counter)
+                    else if ($("#ddnInteractions_" + counter).val() == "Chooser")
+                        createChooser(counter)
+                # Click Events für ddnInteraction
+                initDdnInteraction(counter)
+
+                # Neues Feature Button machen.
+                button = document.getElementById("fgpStorypoint");
+                button.parentNode.removeChild(button);
+                document.getElementById("fhlStorypoints").appendChild(button)
+                button.scrollIntoView(true)
+                # Für jeden Storypoint gibt es ein Attribut nodeOwner, mit der ID: Storypoint_ (counter)
+                $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner", "Storypoint_" + counter)
+                # Create new Node after creating a new Storypoint
+                AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
+                helpRek($("#" + stuff.id))
+
+                console.log "test"
+        
+   
+
+        $scope.tabSwitch = (activeTabID) ->
+                if (activeTabID == "MedienBibTab") 
+                    # Active Tabs
+                    $("#MedienBibTab").addClass("active")
+
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+
+                    # Active Content
+                    $("#MedienEditor").css("display", "block")
+                    
+                    # Passive Content
+                    $("#GraEditor").css("display","none")
+                    $("#XML").css("display","none")
+                    
+                    return
+                else if (activeTabID == "GraEditorTab") 
+                    # Active Tabs
+                    $("#GraEditorTab").addClass("active")
+
+                    # Passive Tabs
+                    $("#MedienBibTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+                    
+                    # Active Content
+                    $("#GraEditor").css("display", "block")
+
+                    # Passive Content
+                    $("#XML").css("display","none")
+                    $("#MedienEditor").css("display","none")
+                    
+                    return
+                else if (activeTabID == "XMLTab") 
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+
+                    # Active Content
+                    $("#XML").css("display", "block")
+
+                    # Passive Content
+                    $("#MedienEditor").css("display","none")
+                    $("#GraEditor").css("display","none")
+                    return
+
+        $scope.btnHelpEinklappenClick = () ->
+                if $("#divHelpBox").is( ":hidden" )
+                    $("#divHelpBox").show( "slow" )
+                    $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-small')
+                    $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-full')
+                else
+                    $("#divHelpBox").slideUp("slow")
+                    $("#btnHelpEinklappen").find("#resize").removeClass('glyphicon-resize-small')
+                    $("#btnHelpEinklappen").find("#resize").addClass('glyphicon-resize-full')
+                return
+
+ 
 
     ]
 
