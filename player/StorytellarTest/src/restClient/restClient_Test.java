@@ -281,7 +281,6 @@ public class restClient_Test extends InstrumentationTestCase {
 					1,
 					new JSONObject(
 							"{\"id\":\"3\",\"title\":\"Schneewittchen\",\"description\":\"Das arme Ding\",\"author\":\"Lukas\",\"revision\":\"7\",\"size\":\"30\",\"size_uom\":\"MB\",\"location\":\"53.552647 10.007829\",\"radius\":\"2\",\"radius_uom\":\"km\",\"created_at\":\"2015-05-03 13:02:19\",\"updated_at\":\"2015-05-03 16:45:02\"}"));
-			url = URLallStories + "?revision=7";
 			JSONArray toTest = client.getAvailableStoriesWithParamenter(url);
 			if (toTest.length() != 2) {
 				fail("Number of Stories is wrong! expected: " + 2
@@ -503,7 +502,7 @@ public class restClient_Test extends InstrumentationTestCase {
 	@Test
 	public void test_getAvailableStoriesWithParamenter_testLocationAndRadius() {
 		client = new RESTClient();
-		String url = URLallStories + "?location=48.783375+9.181187&radius=1";
+		String url = URLallStories + "?gps_point=48.783375+9.181187&gps_point_radius=1";
 		try {
 			JSONObject result = new JSONObject(
 					"{\"id\":\"1\",\"title\":\"Schneewittchen und die sieben Zwerge\",\"description\":\"Die halbwüchsigen kehren zurück\",\"author\":\"Grimm\",\"revision\":\"7\",\"size\":\"10\",\"size_uom\":\"MB\",\"location\":\"48.783375 9.181187\",\"radius\":\"2\",\"radius_uom\":\"km\",\"created_at\":\"2015-05-01 17:08:31\",\"updated_at\":\"2015-05-01 18:09:37\"}");
@@ -547,7 +546,7 @@ public class restClient_Test extends InstrumentationTestCase {
 					1,
 					new JSONObject(
 							"{\"id\":\"2\",\"title\":\"Aschenputtel\",\"description\":\"Das arme Ding\",\"author\":\"Lukas\",\"revision\":\"7\",\"size\":\"20\",\"size_uom\":\"MB\",\"location\":\"48.799353 9.003754\",\"radius\":\"2\",\"radius_uom\":\"km\",\"created_at\":\"2015-05-02 12:32:58\",\"updated_at\":\"2015-05-02 14:37:44\"}"));
-			url = URLallStories + "?location=48.783375+9.181187&radius=100";
+			url = URLallStories + "?gps_point=48.783375+9.181187&gps_point_radius=100";
 			toTest = client.getAvailableStoriesWithParamenter(url);
 			if (toTest.length() != 2) {
 				fail("Number of Stories is wrong! expected: " + 2
