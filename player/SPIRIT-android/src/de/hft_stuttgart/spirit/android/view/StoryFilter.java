@@ -305,8 +305,8 @@ public class StoryFilter implements Parcelable {
 		if (!this.creationDateMax.matches("Datum festlegen")) getQuery.append("creation_date_max="
 			       + creationDateMax.replaceAll("\\.", "")+"&");
 		if (this.city.trim().length() > 0){
-	           getQuery.append("location=" + this.latitude + "+" + this.longitude +"&"
-	                   +"radius=" + this.radius+"&");		
+	           getQuery.append("gps_point=" + this.latitude + "+" + this.longitude +"&"
+	                   +"gps_point_radius=" + this.radius+"&");		
 		}
 		
 
