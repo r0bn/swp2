@@ -4,7 +4,7 @@
         xml:lang="en"
         xmlns:gml="http://www.opengis.net/gml/3.2"
         xmlns:gmd="http://www.isotc211.org/2005/gmd"
-        gmd:schemaLocation="http://www.isotc211.org/2005/gmd ../gmd/gmd.xsd"
+        gmd:schemaLocation="../gmd/gmd.xsd"
         xmlns="http://www.w3.org/2001/XMLSchema"
         version="3.2.1.2">
     <annotation>
