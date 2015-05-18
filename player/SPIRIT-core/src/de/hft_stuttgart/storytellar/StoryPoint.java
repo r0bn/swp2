@@ -147,7 +147,7 @@ public class StoryPoint extends Poi{
 		strng = ">>> Storypoint: " + name + " <<<\n";
 		strng += "Status: " + status.toString() + "\n";
 		strng += "Video: " + super.getVideo() + "\n";
-		strng += "Interaction: " + interaction.toString() + "\n";
+		strng += "Interaction:\n" + interaction.toString() + "\n";
 		strng += "IsEndStorypoint: " + isEndStorypoint.toString() + "\n";
 		strng += "Dependencis:\n";
 		for (int i = 0; i < dependencies.size(); i++) {

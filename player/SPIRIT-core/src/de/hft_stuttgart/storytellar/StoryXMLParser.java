@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -110,6 +111,9 @@ public class StoryXMLParser {
 		}
 		story.setStorypoints(storypoints);
 		
+		nodes = arelementselement.getElementsByTagName("Interactions");
+		addInteractionsfromNode(nodes.item(0),story);
+		
 		// Get dependency node
 		Node dependencynode = doc.getElementsByTagName("Dependency").item(0);
 		Element dependencyelement = (Element)dependencynode;
@@ -145,6 +149,7 @@ public class StoryXMLParser {
 		sPointId = sPointId.replace("Feature", "");
 		sPointId = sPointId.replace("_", "");
 		sPoint.setName(sPointId);
+		featureRef.put(node.getAttributes().getNamedItem("id").getNodeValue(), sPoint.getName());
 		
 		Node subnode = node.getFirstChild();
 		do {
@@ -156,7 +161,7 @@ public class StoryXMLParser {
 						addLocationfromNode(anchors_subnode,sPoint);
 					}
 					if (anchors_subnode.getNodeName().equals("InteractionList")) {
-						interactionRef.put(sPoint.getName(), getInteractionReffromNode(anchors_subnode));
+						interactionRef.put(getInteractionReffromNode(anchors_subnode), sPoint.getName());
 					}
 					anchors_subnode = anchors_subnode.getNextSibling();
 				} while(anchors_subnode!=null);
@@ -251,6 +256,103 @@ public class StoryXMLParser {
 	/**
 	 * 
 	 * @param node
+	 * @param story
+	 */
+	
+	private void addInteractionsfromNode( Node node, PlayableStory story ){
+		
+		Node subnode = node.getFirstChild();
+		do {
+			if (subnode.getNodeName().equals("Quiz")) {
+				addQuizfromNode(subnode,story);
+			} else if (subnode.getNodeName().equals("Waychooser")) {
+				addWaychooserfromNode(subnode,story);
+			} else if (subnode.getNodeName().equals("Item")) {
+				addItemfromNode(subnode,story);
+			}
+			subnode = subnode.getNextSibling();
+		} while (subnode.getNextSibling()!=null);
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param story
+	 */
+	
+	private void addQuizfromNode ( Node node, PlayableStory story ){
+		
+		String featureref = "";
+		String ontrue = "";
+		String onfalse = "";
+		String ontrueanswer = "";
+		String onfalseanswer = "";
+		Quiz quiz = new Quiz();
+		
+		// Get feature reference
+		Node subnode = node.getFirstChild();
+		do {
+			if (subnode.getNodeName().equals("FeatureRef")) {
+				featureref = subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
+				featureref = featureref.replace("#", "");
+			}
+			if (subnode.getNodeName().equals("Question")) {
+				quiz.setQuestion(subnode.getTextContent());
+			}
+			if (subnode.getNodeName().equals("OnTrue")) {
+				ontrue = subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
+				ontrue = ontrue.replace("#", "");
+				ontrue = ontrue.replace("Punkt", "");
+				ontrue = ontrue.replace("Feature", "");
+				ontrue = ontrue.replace("_", "");
+			}
+			if (subnode.getNodeName().equals("OnFalse")) {
+				onfalse = subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
+				onfalse = onfalse.replace("#", "");
+				onfalse = onfalse.replace("Punkt", "");
+				onfalse = onfalse.replace("Feature", "");
+				onfalse = onfalse.replace("_", "");
+			}
+			if (subnode.getNodeName().equals("Answer")) {
+				String status = ((Element)subnode).getElementsByTagName("Status").item(0).getTextContent();
+				if (status.toLowerCase().trim().equals("true")) {
+					ontrueanswer = ((Element)subnode).getElementsByTagName("Text").item(0).getTextContent();
+				} else {
+					onfalseanswer = ((Element)subnode).getElementsByTagName("Text").item(0).getTextContent();
+				}
+			}
+			subnode = subnode.getNextSibling();
+		} while (subnode.getNextSibling()!=null);
+		
+		quiz.setAnswers(Arrays.asList(ontrueanswer,onfalseanswer));
+		quiz.setNextScenes(Arrays.asList(ontrue,onfalse));
+		
+		((StoryPoint)story.getStorypoints().get(featureRef.get(featureref))).setInteraction(quiz);
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param story
+	 */
+	
+	private void addWaychooserfromNode ( Node node, PlayableStory story ){
+		
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param story
+	 */
+	
+	private void addItemfromNode ( Node node, PlayableStory story ){
+		
+	}
+	
+	/**
+	 * 
+	 * @param node
 	 * @return
 	 */
 	
@@ -295,23 +397,6 @@ public class StoryXMLParser {
 		} while (subnode!=null);
 		
 		((StoryPoint)story.getStorypoints().get(sPointId)).addDependency(dependency);
-	}
-	
-	/**
-	 * 
-	 * @param node
-	 * @return
-	 */
-	
-	private String getFreatureReffromNode( Node node ){
-		Node subnode = node.getFirstChild();
-		do {
-			if (subnode.getNodeName().equals("FeatureRef")) {
-				return subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
-			}
-			subnode = subnode.getNextSibling();
-		} while (subnode.getNextSibling()!=null);
-		return null;
 	}
 
 }

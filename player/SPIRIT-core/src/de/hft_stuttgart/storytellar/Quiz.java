@@ -73,5 +73,14 @@ public class Quiz implements Interaction{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String toString(){
+		String strng;
+		strng = "Question: " + question + "\n";
+		for (int i = 0; i < answers.size(); i++) {
+			strng += "Answer " + String.valueOf((i + 1)) + ": " + answers.get(i) + " " + nextScenes.get(i) + "\n";
+		}
+		return strng;
+	}
 
 }
