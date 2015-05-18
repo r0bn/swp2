@@ -510,7 +510,7 @@ mainApp.controller("mainCtrl", [
       return calcID = calcID + "_" + splitted[1];
     };
     createDropdownQuizOnTrue = function(counter, buttonID, currentObjID) {
-      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname;
+      var copyForm, currentStorypointID, i, indexe, inputID, j, lauf, storypointArray, stuff, tmpStoryname, z;
       currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id");
       storypointArray = getAllStorypoints(buttonID, "#" + currentStorypointID);
       storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID);
@@ -518,15 +518,22 @@ mainApp.controller("mainCtrl", [
       window.dropdownLiCounter++;
       $("#ulSkQuizOnTrueRef_" + counter).empty();
       i = 0;
-      while (i < storypointArray.length) {
+      z = storypointArray.length;
+      z++;
+      while (i < z) {
         stuff = copyForm.cloneNode(true);
         stuff.id = stuff.id + "_tmp_" + i;
         stuff.style.display = "block";
-        inputID = helper(storypointArray[i], "inStorypoint");
-        document.getElementById("ulSkQuizOnTrueRef_" + counter).appendChild(stuff);
-        tmpStoryname = $("#" + inputID).val();
-        if (tmpStoryname === "") {
-          tmpStoryname = $("#" + inputID).attr("placeholder");
+        if (i === storypointArray.length) {
+          document.getElementById("ulSkQuizOnTrueRef_" + counter).appendChild(stuff);
+          tmpStoryname = "Ref löschen";
+        } else {
+          inputID = helper(storypointArray[i], "inStorypoint");
+          document.getElementById("ulSkQuizOnTrueRef_" + counter).appendChild(stuff);
+          tmpStoryname = $("#" + inputID).val();
+          if (tmpStoryname === "") {
+            tmpStoryname = $("#" + inputID).attr("placeholder");
+          }
         }
         $("#" + stuff.id).find("a").text(tmpStoryname);
         $("#" + stuff.id).find("a").html(tmpStoryname);
@@ -535,8 +542,14 @@ mainApp.controller("mainCtrl", [
       lauf = 0;
       setReferenceDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf);
       j = 0;
-      while (j < storypointArray.length) {
+      while (j < z) {
         indexe = window.dropdownLiCounter + "_" + (j + 1);
+        if (j === storypointArray.length) {
+          $("#ddnQuizOnTrueStorypoint_" + indexe).click(function() {
+            $("#btnSetQuizOnTrueReferences_" + counter).val("Referenz neu setzen");
+            $("#btnSetQuizOnTrueReferences_" + counter).html("Referenz neu setzen <span class='caret' />");
+          });
+        }
         $("#ddnQuizOnTrueStorypoint_" + indexe).click(function() {
           $("#btnSetQuizOnTrueReferences_" + counter).val($(this).text());
           $("#btnSetQuizOnTrueReferences_" + counter).html($(this).text() + "<span class='caret' />");
