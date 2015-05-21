@@ -76,7 +76,8 @@ public class Quiz implements Interaction{
 	
 	public String toString(){
 		String strng;
-		strng = "Question: " + question + "\n";
+		strng = "Type: " + this.getClass().getName() + "\n";
+		strng += "Question: " + question + "\n";
 		for (int i = 0; i < answers.size(); i++) {
 			strng += "Answer " + String.valueOf((i + 1)) + ": " + answers.get(i) + " " + nextScenes.get(i) + "\n";
 		}

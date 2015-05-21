@@ -130,6 +130,10 @@ public class StoryXMLParser {
 		for (String key : story.getStorypoints().keySet()) {
 			System.out.println(story.getStorypoints().get(key).toString());
 		}
+		for (String key : story.getInteractions().keySet()) {
+			System.out.println(">>> Interaction: " + key + " <<<\n");
+			System.out.println(story.getInteractions().get(key).toString());
+		}
 		System.out.println("Finished parsing XML file");
 		return story;
 	}
@@ -287,6 +291,7 @@ public class StoryXMLParser {
 		String onfalse = "";
 		String ontrueanswer = "";
 		String onfalseanswer = "";
+		String quizId = node.getAttributes().getNamedItem("id").getNodeValue();
 		Quiz quiz = new Quiz();
 		
 		// Get feature reference
@@ -327,7 +332,9 @@ public class StoryXMLParser {
 		quiz.setAnswers(Arrays.asList(ontrueanswer,onfalseanswer));
 		quiz.setNextScenes(Arrays.asList(ontrue,onfalse));
 		
-		((StoryPoint)story.getStorypoints().get(featureRef.get(featureref))).setInteraction(quiz);
+		StoryPoint sPoint = ((StoryPoint)story.getStorypoints().get(featureRef.get(featureref)));
+		sPoint.setInteraction(quizId);
+		story.addInteraction(quizId, quiz);
 	}
 	
 	/**
