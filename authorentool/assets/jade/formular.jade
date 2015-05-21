@@ -80,7 +80,7 @@ block content
                     fieldset
                         legend Storypoints
                             .form-group(id="fgpStorypoint")
-                                button.btn.btn-info.btn-lg.pull-primary.btnDesign(id="btnCreateNewStorypoint",type="button", ng-click="storypointCounter=storypointCounter+1;createNewStorypoint(storypointCounter)") Neuen Storypoint erstellen
+                                button.btn.btn-warning.btn-lg.pull-primary.btnDesign(id="btnCreateNewStorypoint",type="button", ng-click="storypointCounter=storypointCounter+1;createNewStorypoint(storypointCounter)") Neuen Storypoint erstellen
                 form.form-horizontal(id="fhlNeuerStorypoint", style="display: none")
                     .col-lg-1
                     fieldset
@@ -152,12 +152,17 @@ block content
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
 
                             .form-group(id="fgpMultipleStorypointRefs")
-                                .col-lg-4(id="colStorypointRefDeep")
+                                .col-lg-3(id="colStorypointRefDeep")
                                     .dropdown
-                                        button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') Vorgänger- Storypoint auswählen
+                                        button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP Ref wählen
                                             span.caret 
+                                        ul.dropdown-menu(id="ulStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+                                .col-lg-2
+                                .col-lg-1
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnStorypointRefDelete", type='button') 
+                                        span.glyphicon.glyphicon-trash
                                 
-                                        ul.dropdown-menu(id="ulSkStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+
                                         
 
 
@@ -213,7 +218,11 @@ block content
             li(id="liSkStorypointRef", role="presentation", style="display:none")
                 a(id="ddnStorypointStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu 
 
-
+            .col-lg-3(id="colSkStorypointRefDeep", style="display:none")
+                .dropdown
+                    button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSkSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP-Ref wählen
+                        span.caret 
+                    ul.dropdown-menu(id="ulSkStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
                  // -------------------- ITEM
             .form-group(id="fgpNeu_Item", style="display: none")
                 .col-lg-1
@@ -288,7 +297,7 @@ block content
                         .col-lg-3
                         .col-lg-5
                             .dropdown
-                                button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetQuizOnTrueReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenzen bei richtiger Antwort
+                                button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetQuizOnTrueReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenzen bei richtiger Antwort
                                     span.caret 
                         
                                 ul.dropdown-menu(id="ulSkQuizOnTrueRef", role="menu", aria-labelledby="dropdownMenu1")
@@ -299,7 +308,7 @@ block content
                         .col-lg-3
                         .col-lg-5
                             .dropdown
-                                button.btn.btn-block.btn-default.dropdown-toggle(id="btnSetQuizOnFalseReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenz bei falscher Antwort
+                                button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetQuizOnFalseReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenz bei falscher Antwort
                                     span.caret
                         
                                 ul.dropdown-menu(id="ulSkQuizOnFalseRef", role="menu", aria-labelledby="dropdownMenu1")

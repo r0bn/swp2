@@ -93,10 +93,10 @@
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 if j == storypointArray.length
                     $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
-                        $("#btnSetQuizOnTrueReferences_"+counter).val("Referenz neu setzen")
-                        $("#btnSetQuizOnTrueReferences_"+counter).html("Referenz neu setzen <span class='caret' />")
+                        $("#btnSetQuizOnTrueReferences_"+counter).val("Neue Ref setzen")
+                        $("#btnSetQuizOnTrueReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
-                $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
+                else $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
                     storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
@@ -162,10 +162,10 @@
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 if j == storypointArray.length
                     $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
-                        $("#btnSetQuizOnFalseReferences_"+counter).val("Referenz neu setzen")
-                        $("#btnSetQuizOnFalseReferences_"+counter).html("Referenz neu setzen <span class='caret' />")
+                        $("#btnSetQuizOnFalseReferences_"+counter).val("Neue Ref setzen")
+                        $("#btnSetQuizOnFalseReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
-                $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
+                else $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnFalseReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnFalseReferences_"+counter).html($(this).text() + "<span class='caret' />")
                     storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
@@ -199,7 +199,7 @@
             copyForm = document.getElementById("liSkStorypointRef")
             window.dropdownLiCounter++;
 
-            $("#ulSkStorypointRef_"+counter).empty()
+            $("#ulStorypointRef_"+counter).empty()
             i = 0
             z = storypointArray.length
             z++
@@ -209,11 +209,11 @@
                 stuff.style.display="block"
                 
                 if i == storypointArray.length
-                    document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
+                    document.getElementById("ulStorypointRef_"+counter).appendChild(stuff)
                     tmpStoryname = "Ref löschen"
                 else
                     inputID = helper(storypointArray[i], "inStorypoint")
-                    document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
+                    document.getElementById("ulStorypointRef_"+counter).appendChild(stuff)
                     tmpStoryname = $("#" + inputID).val()
                     if tmpStoryname == ""
                         tmpStoryname = $("#" + inputID).attr("placeholder")
@@ -223,17 +223,17 @@
                 i++
 
             lauf = 0
-            setReferenceDropdownIDs($("#ulSkStorypointRef_" + counter), lauf)
+            setReferenceDropdownIDs($("#ulStorypointRef_" + counter), lauf)
 
             j = 0
             while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 if j == storypointArray.length
                     $("#ddnStorypointStorypoint_"+indexe).click ->
-                        $("#btnSetStorypointReferences_"+counter).val("Referenz neu setzen")
-                        $("#btnSetStorypointReferences_"+counter).html("Referenz neu setzen <span class='caret' />")
+                        $("#btnSetStorypointReferences_"+counter).val("Neue Ref setzen")
+                        $("#btnSetStorypointReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
-                $("#ddnStorypointStorypoint_"+indexe).click ->
+                else $("#ddnStorypointStorypoint_"+indexe).click ->
                     $("#btnSetStorypointReferences_"+counter).val($(this).text())
                     $("#btnSetStorypointReferences_"+counter).html($(this).text() + "<span class='caret' />")
                     storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter, "fhlNeuerStorypoint" )
