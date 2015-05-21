@@ -140,10 +140,17 @@
 
             $("#ulSkQuizOnFalseRef_"+counter).empty()
             i = 0
-            while i < storypointArray.length
+            z = storypointArray.length
+            z++
+            while i < z
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
+
+                if i == storypointArray.length
+                    document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
+                    tmpStoryname = "Ref löschen"
+
                 inputID = helper(storypointArray[i], "inStorypoint")
                 document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
                 tmpStoryname = $("#" + inputID).val()
@@ -165,9 +172,13 @@
             # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
             # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
             j = 0
-
-            while j < storypointArray.length
+            while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
+                if j == storypointArray.length
+                    $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
+                        $("#btnSetQuizOnFalseReferences_"+counter).val("Referenz neu setzen")
+                        $("#btnSetQuizOnFalseReferences_"+counter).html("Referenz neu setzen <span class='caret' />")
+                        return
                 $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnFalseReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnFalseReferences_"+counter).html($(this).text() + "<span class='caret' />")
@@ -203,10 +214,17 @@
             
             $("#ulSkStorypointRef_"+counter).empty()
             i = 0
-            while i < storypointArray.length
+            z = storypointArray.length
+            z++
+            while i < z
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
+
+                if i == storypointArray.length
+                    document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
+                    tmpStoryname = "Ref löschen"
+
                 inputID = helper(storypointArray[i], "inStorypoint")
                 document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
                 tmpStoryname = $("#" + inputID).val()
@@ -220,9 +238,13 @@
             setReferenceDropdownIDs($("#ulSkStorypointRef_" + counter), lauf)
 
             j = 0
-
-            while j < storypointArray.length
+            while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
+                if j == storypointArray.length
+                    $("#ddnStorypointStorypoint_"+indexe).click ->
+                        $("#btnSetStorypointReferences_"+counter).val("Referenz neu setzen")
+                        $("#btnSetStorypointReferences_"+counter).html("Referenz neu setzen <span class='caret' />")
+                        return
                 $("#ddnStorypointStorypoint_"+indexe).click ->
                     $("#btnSetStorypointReferences_"+counter).val($(this).text())
                     $("#btnSetStorypointReferences_"+counter).html($(this).text() + "<span class='caret' />")
