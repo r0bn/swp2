@@ -42,6 +42,7 @@
             return calcID = calcID + "_" + splitted[1]
 
 
+        #OnTrue
         createDropdownQuizOnTrue = (counter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
@@ -72,6 +73,7 @@
                     tmpStoryname = $("#" + inputID).val()
                     if tmpStoryname == ""
                         tmpStoryname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i])
                 $("#" + stuff.id).find("a").text(tmpStoryname)
                 $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
@@ -97,7 +99,13 @@
                 $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
                     $("#btnSetQuizOnTrueReferences_"+counter).val($(this).text())
                     $("#btnSetQuizOnTrueReferences_"+counter).html($(this).text() + "<span class='caret' />")
+                    storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
+                    storypoint = storypoint.split("_")
+                    storypoint_2 = $(this).attr("storypointOwner")
+                    storypoint_2 = storypoint_2.split("_")
+                    AddEdge(storypoint[1], storypoint_2[1])
                     return
+
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
                     tmpCounter = $(this).attr("id").split("_")[1]
@@ -111,29 +119,14 @@
                     return
                 j++
             return
-        edgeStorypointfinder = (objectID, searchedParent) ->
-            found = false
-            foundID = ""
-            i = 0
-            tmpObj = $(objectID)
-            while found != true
-                parentNode = tmpObj.parent()
-                if typeof parentNode.attr("id") != "undefined"
-                    tmp = parentNode.attr("id").split("_")
-                    if tmp[0] == searchedParent
-                        found = true
-                        foundID = parentNode.attr("id")
-                tmpObj = parentNode
-            return foundID
 
+        #OnFalse
         createDropdownQuizOnFalse = (counter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
             storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
-
-            # Now all Storypoints without the current Storypoint as IDs are in the array: storypointArray
             
             copyForm = document.getElementById("liSkQuizOnFalseRef")
             window.dropdownLiCounter++;
@@ -146,31 +139,24 @@
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
-
+                
                 if i == storypointArray.length
                     document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
                     tmpStoryname = "Ref löschen"
-
-                inputID = helper(storypointArray[i], "inStorypoint")
-                document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
-                tmpStoryname = $("#" + inputID).val()
-                if tmpStoryname == ""
-                    tmpStoryname = $("#" + inputID).attr("placeholder") 
-                $("#" + stuff.id).find("a").text(tmpStoryname)
+                else
+                    inputID = helper(storypointArray[i], "inStorypoint")
+                    document.getElementById("ulSkQuizOnFalseRef_"+counter).appendChild(stuff)
+                    tmpStoryname = $("#" + inputID).val()
+                    if tmpStoryname == ""
+                        tmpStoryname = $("#" + inputID).attr("placeholder") 
                 $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i])
+                $("#" + stuff.id).find("a").text(tmpStoryname)
                 $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
 
-            # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
             lauf = 0
             setReferenceDropdownIDs($("#ulSkQuizOnFalseRef_" + counter), lauf)
 
-            # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
-            # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
-            # und zwar mit den Storypointnamen, und sollten die nicht gesetzt sein mit dem Platzhalter.
-
-            # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
-            # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
             j = 0
             while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
@@ -202,16 +188,17 @@
                 j++
             return
 
-
+        #Storypoint
         createDropdownStorypointRef = (counter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
+
             storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
             
-            copyForm = document.getElementById("liSKStorypointRef")
+            copyForm = document.getElementById("liSkStorypointRef")
             window.dropdownLiCounter++;
-            
+
             $("#ulSkStorypointRef_"+counter).empty()
             i = 0
             z = storypointArray.length
@@ -220,16 +207,17 @@
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
-
+                
                 if i == storypointArray.length
                     document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
                     tmpStoryname = "Ref löschen"
-
-                inputID = helper(storypointArray[i], "inStorypoint")
-                document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
-                tmpStoryname = $("#" + inputID).val()
-                if tmpStoryname == ""
-                    tmpStoryname = $("#" + inputID).attr("placeholder") 
+                else
+                    inputID = helper(storypointArray[i], "inStorypoint")
+                    document.getElementById("ulSkStorypointRef_"+counter).appendChild(stuff)
+                    tmpStoryname = $("#" + inputID).val()
+                    if tmpStoryname == ""
+                        tmpStoryname = $("#" + inputID).attr("placeholder")
+                $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i]) 
                 $("#" + stuff.id).find("a").text(tmpStoryname)
                 $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
@@ -248,6 +236,11 @@
                 $("#ddnStorypointStorypoint_"+indexe).click ->
                     $("#btnSetStorypointReferences_"+counter).val($(this).text())
                     $("#btnSetStorypointReferences_"+counter).html($(this).text() + "<span class='caret' />")
+                    storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter, "fhlNeuerStorypoint" )
+                    storypoint = storypoint.split("_")
+                    storypoint_2 = $(this).attr("storypointOwner")
+                    storypoint_2 = storypoint_2.split("_")
+                    AddEdge(storypoint[1], storypoint_2[1])
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -263,6 +256,21 @@
                 j++
             return
 
+
+        edgeStorypointfinder = (objectID, searchedParent) ->
+            found = false
+            foundID = ""
+            i = 0
+            tmpObj = $(objectID)
+            while found != true
+                parentNode = tmpObj.parent()
+                if typeof parentNode.attr("id") != "undefined"
+                    tmp = parentNode.attr("id").split("_")
+                    if tmp[0] == searchedParent
+                        found = true
+                        foundID = parentNode.attr("id")
+                tmpObj = parentNode
+            return foundID
 
 
         AddEdge = (StorypointID1, StorypointID2) ->

@@ -17,8 +17,8 @@
         initScrollbar = () ->
             $header = $('#colColumn2')
             headerPos = $header.position().top
+
             $win = $(window)
-            scrollBottom = $win.scrollTop() + $win.height()
             $win.scroll ->
                 #Hier scrollt man nach unten. Dabei gilt: immer 30px unter Top und fix
               if $win.scrollTop() >= headerPos
@@ -34,7 +34,7 @@
                 if $win.scrollTop() == i
                     $header.css
                         'position': 'fixed'
-                        'top': Math.abs(i-150)
+                        'top': Math.abs(i-headerPos)
                         'right':'20px'
                 i++
               return
