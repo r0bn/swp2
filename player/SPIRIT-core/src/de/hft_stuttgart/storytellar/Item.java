@@ -9,18 +9,16 @@ package de.hft_stuttgart.storytellar;
  */
 public class Item implements Interaction{
 
-	String description;
-	Boolean isCollected;
-	String nextScene;
+	private String description;
+	private Boolean isCollected;
 	
 	public Item(){
-		
+		isCollected = false;
 	}
 	
-	public Item(String description,	Boolean isCollected, String nextScene){
+	public Item(String description,	Boolean isCollected){
 		this.description = description;
 		this.isCollected = isCollected;
-		this.nextScene = nextScene;
 	}
 	
 	/**
@@ -51,24 +49,23 @@ public class Item implements Interaction{
 		this.isCollected = isCollected;
 	}
 
-
-	/**
-	 * @param nextScene the nextScene to set
-	 */
-	public void setNextScene(String nextScene) {
-		this.nextScene = nextScene;
-	}
-
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public String next() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public String toString(){
+		String strng = "Type: " + this.getClass().getName() + "\n";
+		strng += "Description: " + description + "\n";
+		strng += "IsCollected: " + isCollected.toString() + "\n";
+		return strng;
+	}
+	
 }

@@ -16,7 +16,7 @@ import de.hft_stuttgart.spirit.Poi;
 public class StoryPoint extends Poi{
 	
 	//maybe change status codes
-	private String name;
+	//private String name;
 	private StorypointStatus status;
 	private List<Dependency> dependencies; // Instead of the, in the xml-documentation described, containers are multipe dependencies used.
 	private File video;
@@ -52,16 +52,16 @@ public class StoryPoint extends Poi{
 	/**
 	 * @return the name
 	 */
-	public String getName() {
+	/*public String getName() {
 		return name;
-	}
+	}*/
 
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	/*public void setName(String name) {
 		this.name = name;
-	}
+	}*/
 
 	/**
 	 * @return the status
@@ -136,7 +136,7 @@ public class StoryPoint extends Poi{
 	@Override
 	public String toString(){
 		String strng;
-		strng = ">>> Storypoint: " + name + " <<<\n";
+		strng = ">>> Storypoint: " + super.getName() + " <<<\n";
 		strng += "Status: " + status.toString() + "\n";
 		strng += "Video: " + super.getVideo() + "\n";
 		strng += "Interaction: " + interaction + "\n";

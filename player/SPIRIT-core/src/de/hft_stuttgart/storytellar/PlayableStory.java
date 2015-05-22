@@ -164,4 +164,24 @@ public class PlayableStory {
 	public void load(){
 		
 	}
+	
+	public String toString(){
+		String strng = "";
+		
+		strng += "Title: " + this.getTitle() + "\n";
+		strng += "Description: " + this.getDescription() + "\n";
+		strng += "Size: " + this.getSize().toString() + "\n";
+		strng += "Latitude: " + this.getLatitude().toString() + "\n";
+		strng += "Longitude: " + this.getLongitude().toString() + "\n";
+		strng += "Radius: " + this.getRadius() + "\n";
+		
+		for (String key : this.getStorypoints().keySet()) {
+			strng += this.getStorypoints().get(key).toString() + "\n";
+		}
+		for (String key : this.getInteractions().keySet()) {
+			strng += ">>> Interaction: " + key + " <<<\n";
+			strng += this.getInteractions().get(key).toString() + "\n";
+		}
+		return strng;
+	}
 }
