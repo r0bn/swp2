@@ -2,14 +2,18 @@ package de.hft_stuttgart.spirit;
 
 import java.util.List;
 
+import de.hft_stuttgart.storytellar.PlayableStory;
+import de.hft_stuttgart.storytellar.StorytellAR_StoryEngine;
+
 public class Facade implements UIController {
 
 	SpiritApp app; // App Implementierung
 	SpiritStoryEngine engine; // Storyengine Implementierung
 
-	public Facade(SpiritApp app) {
+	public Facade(SpiritApp app, PlayableStory story) {
 		this.app = app;
-		engine = new StoryEngine(this); // Hier andere Storyengine-Implementierung starten
+		engine = new StorytellAR_StoryEngine(this, story);
+		//engine = new StoryEngine(this); // Hier andere Storyengine-Implementierung starten
 	}
 
 	@Override

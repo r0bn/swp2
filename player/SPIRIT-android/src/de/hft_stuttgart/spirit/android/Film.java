@@ -23,6 +23,8 @@ import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.scaleM;
 import static android.opengl.Matrix.translateM;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
@@ -172,10 +174,17 @@ public class Film implements OnCompletionListener, OnPreparedListener,
 			// afd.getLength());
 			// }
 
-			AssetFileDescriptor afd = context.getAssets().openFd(
-					playlistEntry.getUrl());
-			mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(),
-					afd.getLength());
+			if(playlistEntry.getUrl().contains("storage") || playlistEntry.getUrl().contains("sdcard")){				
+				File f = new File(playlistEntry.getUrl());
+				FileInputStream fis = new FileInputStream(f);
+				mp.setDataSource(fis.getFD(), 0, f.length());
+				fis.close();
+			} else {			
+				AssetFileDescriptor afd = context.getAssets().openFd(
+						playlistEntry.getUrl());
+				mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(),
+						afd.getLength());
+			}
 
 			seekTo = position;
 			// mp.start();

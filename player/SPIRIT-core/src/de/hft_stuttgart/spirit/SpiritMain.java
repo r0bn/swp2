@@ -133,7 +133,10 @@ public class SpiritMain extends ApplicationAdapter implements
 		vuforia.onSurfaceCreated();
 		spiritFilm.setup();
 		events = new ArrayList<SpiritEvent>();
-		spiritFacade = new Facade(this);
+		
+		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
+			
+		spiritFacade = new Facade(this, story);
 		guiAtlas = new TextureAtlas(Gdx.files.internal("gui.pack"));
 		sonarAtlas = new TextureAtlas(Gdx.files.internal("sonar.pack"));
 		webViewX = guiAtlas.createSprite("stopp");
@@ -154,10 +157,6 @@ public class SpiritMain extends ApplicationAdapter implements
 		customTextButton[3] = new TextButton(guiAtlas, font,positionA.Right,positionB.CENTER);
 		customTextButton[4] = new TextButton(guiAtlas, font,positionA.Left,positionB.BOTTOM);
 		customTextButton[5] = new TextButton(guiAtlas, font,positionA.Right,positionB.BOTTOM);
-		
-		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
-		
-
 	}
 
 	boolean workaround = false;
