@@ -153,7 +153,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo">
-                            <Href xlink:href="#Anfangsvideo.mp4" />
+                            <Href xlink:href="Anfangsvideo.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4">
@@ -174,7 +174,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_A_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_A.png</src>
+                <src>anchorPicture_Punkt_A.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
@@ -186,7 +186,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo_E1">
-                            <Href xlink:href="#Anfangsvideo_E1.mp4" />
+                            <Href xlink:href="Anfangsvideo_E1.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4_1">
@@ -204,7 +204,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_A_1_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_A.png</src>
+                <src>anchorPicture_Punkt_A.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>	
@@ -214,7 +214,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo_E2"> 
-                            <Href xlink:href="#Anfangsvideo_E2.mp4" />
+                            <Href xlink:href="Anfangsvideo_E2.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_A_Block4_2">
@@ -232,7 +232,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_A_2_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_A.png</src>
+                <src>anchorPicture_Punkt_A.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>	
@@ -264,7 +264,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_B_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_B.png</src>
+                <src>anchorPicture_Punkt_B.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>	
@@ -297,7 +297,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_C_1_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_C_1.png</src>
+                <src>anchorPicture_Punkt_C_1.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
@@ -329,7 +329,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_C_2_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_C_2.png</src>
+                <src>anchorPicture_Punkt_C_2.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
@@ -358,7 +358,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_D_1_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_D_1.png</src>
+                <src>anchorPicture_Punkt_D_1.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
@@ -387,7 +387,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_D_2_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_D_2.png</src>
+                <src>anchorPicture_Punkt_D_2.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
@@ -416,7 +416,7 @@
             <assets />
             <config>
                 <tracker xlink:href="#Punkt_E_Feature_Tracker" />
-                <src>http://www.myserver.com/anchorPicture_Punkt_A.png</src>
+                <src>anchorPicture_Punkt_A.png</src>
             </config>
             <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
         </Trackable>
