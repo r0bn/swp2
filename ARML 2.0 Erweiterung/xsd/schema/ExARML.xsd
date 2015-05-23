@@ -109,7 +109,7 @@
                             <xsd:attribute name="id" type="xsd:ID" />
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="WayChooser" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="Chooser" minOccurs="0" maxOccurs="unbounded">
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="style" type="xsd:string" maxOccurs="1" minOccurs="0" />
@@ -245,10 +245,6 @@
                             <xsd:choice>
                                 <xsd:element ref="Label" maxOccurs="unbounded"
                                              minOccurs="0" />
-                                
-                                
-                                
-                                
                                 <xsd:element name="assetRef" maxOccurs="unbounded"
                                              minOccurs="0">
                                     <xsd:complexType>
@@ -256,10 +252,6 @@
                                     </xsd:complexType>
                                 </xsd:element>
                                 <xsd:element ref="Video" maxOccurs="1" minOccurs="0" />
-                                
-                                
-                                
-                                
                             </xsd:choice>
                         </xsd:complexType>
                     </xsd:element>
