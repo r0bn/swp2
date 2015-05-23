@@ -142,6 +142,7 @@
                     <StorypointRef xlink:href="#D2" />
                 </Storypointlist>
             </Container>
+            <EndOfStory>true</EndOfStory>
         </Storypoint>
     </Dependency>
 
