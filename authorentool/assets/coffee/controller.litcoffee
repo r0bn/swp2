@@ -168,7 +168,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 $("#btnSetStorypointReferences_"+ counter).click ->
                     createDropdownStorypointRef(counter, "#btnSetStorypointReferences_" + counter, "#" + stuff.id)
 
-
+                # Click Event für btnCreateReferences
+                $("#btnCreateReferences_" + counter).click ->
+                    if typeof $("#btnCreateReferences_" + counter).attr("rowCounter") == 'undefined'
+                        $("#btnCreateReferences_" + counter).attr("rowCounter", "1")
+                    else
+                        i = $("#btnCreateReferences_" + counter).attr("rowCounter")
+                        i++
+                        $("#btnCreateReferences_" + counter).attr("rowCounter", i)
+                    createStorypointRef(counter, $("#btnCreateReferences_" + counter).attr("rowCounter"), "#" + stuff.id)
                 # Click Event für btnCreateInteraction
                 $("#btnCreateInteraction_" + counter).click ->
                     if ($("#ddnInteractions_" + counter).val() == "Item")

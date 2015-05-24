@@ -150,20 +150,13 @@ block content
                                     input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Anzeigebild/Anzeigevideo aus MedienBib auswählen")
                                 .col-lg-2
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", data-toggle='modal', data-target='#medienLightbox') MBib
-
-                            .form-group(id="fgpMultipleStorypointRefs")
-                                .col-lg-3(id="colStorypointRefDeep")
-                                    .dropdown
-                                        button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP Ref wählen
-                                            span.caret 
-                                        ul.dropdown-menu(id="ulStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
-                                .col-lg-2
-                                .col-lg-1
-                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnStorypointRefDelete", type='button') 
-                                        span.glyphicon.glyphicon-trash
-                                
-
-                                        
+                                                    // ------------ REFERENZEN
+                            .form-group(id="fgpReferences")
+                                .form-group(id="fgpButtonReferences")
+                                    .col-lg-9
+                                    .col-lg-3
+                                        button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateReferences", type="button") Referenz erstellen
+ 
 
 
                             .form-group
@@ -211,7 +204,23 @@ block content
 
 
                                                         // ----------------------- AB HIER: SCHATTEN
-
+                                                        // STORYPOINT - MULTIREFERENZBOX SCHATTENKOPIEN
+            
+            .form-group(id="fgpMultipleStorypointRefs", style="display:none")
+                .col-lg-3(id="colStorypointRefDeep")
+                    .dropdown
+                        button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP Ref wählen
+                            span.caret 
+                        ul.dropdown-menu(id="ulStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+                .col-lg-1
+                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnStorypointRefDelete", type='button') 
+                        span.glyphicon.glyphicon-trash
+            .form-group(id="fgpMultipleItemRefs", style="display:none")
+                .col-lg-3(id="colItemRefDeep")
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
+                                span.caret 
+                            ul.dropdown-menu(id="ulItemRef", role="menu", aria-labelledby="dropdownMenu1")
 
                                             // ---------------------- STORYPOINT - REFERENZ SCHATTEN
 
