@@ -154,7 +154,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
                         window.safeButtonCounter--
-                        window.safeButtonCounter--
                         checkSafeButton()
                         AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                         $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->

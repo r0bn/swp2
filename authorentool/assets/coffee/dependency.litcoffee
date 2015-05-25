@@ -394,7 +394,8 @@
             while i < window.edges.length
                 if window.edges[i].from == StorypointID
                     window.edges.splice(i,1);
-                if nodeRemoved == true && window.edges[i].to == StorypointID
+                
+                if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
                     window.edges.splice(i,1);
                 i++
             container = document.getElementById('divDependencyBox');
