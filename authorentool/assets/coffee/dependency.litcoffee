@@ -250,9 +250,30 @@
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 if j == storypointArray.length
                     $("#ddnStorypointStorypoint_"+counter + "_" +rowCounter + "_" + columnCounter + "_" +indexe).click ->
-                        storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                        storypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner")
+                        prevColumn = columnCounter
+                        prevColumn--
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        if prevColumn > 0
+                            previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + prevColumn).attr("selectedOwner")
+                            previousStorypoint = previousStorypoint.split("_")
+                            RemoveParticularEdge(storypoint[1], previousStorypoint[1])
+                        else 
+                            previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                            previousStorypoint = previousStorypoint.split("_")
+                            RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                        i = columnCounter
+                        i++
+                        while i < 4
+                           nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                           nextStorypoint = nextStorypoint.split("_")
+                           RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                           storypoint = nextStorypoint
+                           $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", undefined)
+                           $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
+                           $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
+                           i++
+                        
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", undefined)
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
@@ -293,15 +314,14 @@
                         previousColumn = columnCounter
                         previousColumn--
                         previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
-                        storypoint = $(this).attr("storypointOwner")
-                        storypoint = storypoint.split("_")
                         previousStorypoint = previousStorypoint.split("_")
                         if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
                             oldEdgeStartpoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
                             oldEdgeStartpoint = oldEdgeStartpoint.split("_")
-                            RemoveParticularEdge(previousStorypoint[1], oldEdgeStartpoint[1])
-                        else 
-                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", $(this).attr("storypointOwner"))
+                            RemoveParticularEdge(oldEdgeStartpoint[1], previousStorypoint[1])
+                        storypoint = $(this).attr("storypointOwner")
+                        $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
+                        storypoint = storypoint.split("_")
                         AddEdge(storypoint[1], previousStorypoint[1])
                     return
 
