@@ -338,9 +338,8 @@
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
                     return
-                j++
+                j++  
             return
-
 
         edgeStorypointfinder = (objectID, searchedParent) ->
             found = false
@@ -435,21 +434,39 @@
             columnCounter = 1
             storyPointRefOrig = document.getElementById('fgpMultipleStorypointRefs')
             storyPointRef = storyPointRefOrig.cloneNode(true)
-            storyPointRef.id = 'fgpMultipleStorypointRefs_' + counter + "_" + rowCounter + "_" + columnCounter
+            storyPointRef.id = 'fgpMultipleStorypointRefs_' + counter + "_" + rowCounter
             storyPointRef.style.display = "block"
             button.parentNode.parentNode.parentNode.insertBefore(storyPointRef, button.parentNode.parentNode)
-            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter + "_" + columnCounter), counter)
-            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter + "_" + columnCounter), rowCounter)
-            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter + "_" + columnCounter), columnCounter)
+            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter), counter)
+            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter), rowCounter)
+            setIDs($('#fgpMultipleStorypointRefs_' + counter + "_" + rowCounter), columnCounter)
             
             itemRefOrig = document.getElementById('fgpMultipleItemRefs')
             itemRef = itemRefOrig.cloneNode(true)
             itemRef.id = 'fgpMultipleItemRefs_' + counter + "_" + rowCounter
             itemRef.style.display = "block"
             storyPointRef.parentNode.insertBefore(itemRef, storyPointRef.nextSibling)
-            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter + "_" + columnCounter), counter)
-            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter + "_" + columnCounter), rowCounter)
-            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter + "_" + columnCounter), columnCounter)
+            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), counter)
+            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), rowCounter)
+            setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), columnCounter)
             createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
-
+            $("#btnStorypointRefDelete_"+counter + "_" +rowCounter + "_" + columnCounter).click ->
+                if (confirm('Möchten Sie diese Referenzen wirklich löschen?'))
+                    storypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_1").attr("selectedOwner")
+                    storypoint = storypoint.split("_")
+                    previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                    previousStorypoint = previousStorypoint.split("_")
+                    RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                    i = 1
+                    i++
+                    while i < 4
+                       nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                       nextStorypoint = nextStorypoint.split("_")
+                       RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                       storypoint = nextStorypoint
+                       i++
+                    $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).remove()
+                    $("#fgpMultipleItemRefs_" + counter + "_" + rowCounter).remove() 
+                    return
+                return
             return
