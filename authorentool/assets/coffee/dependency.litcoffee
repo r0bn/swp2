@@ -309,7 +309,7 @@
                         storypoint_2 = $(this).attr("storypointOwner")
                         storypoint_2 = storypoint_2.split("_")
                         # RemoveEdge(storypoint[1])
-                        AddEdge(storypoint[1], storypoint_2[1])
+                        AddEdge(storypoint_2[1], storypoint[1])
                     else
                         oldEdgeStartpoint
                         previousColumn = columnCounter
@@ -368,7 +368,8 @@
         AddEdge = (StorypointID1, StorypointID2) ->
             edge = {
                 from: StorypointID1,
-                to: StorypointID2
+                to: StorypointID2,
+                arrows: 'to'
             }
             window.edges.push(edge)
             container = document.getElementById('divDependencyBox');
