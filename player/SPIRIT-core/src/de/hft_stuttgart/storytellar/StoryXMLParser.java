@@ -421,6 +421,7 @@ public class StoryXMLParser {
 	private void addDependencyfromNode( Node node, PlayableStory story ) {
 		
 		Dependency dependency = new Dependency();
+		Boolean endpoint = false;
 		String strng;
 		
 		String sPointId = node.getAttributes().getNamedItem("id").getNodeValue();
@@ -455,10 +456,17 @@ public class StoryXMLParser {
 					cont_subnode = cont_subnode.getNextSibling();
 				} while (cont_subnode!=null);
 			}
+			if (subnode.getNodeName().equals("EndOfStory") && subnode.getTextContent().equals("true")) {
+				endpoint = true;
+			}
 			subnode = subnode.getNextSibling();
 		} while (subnode!=null);
 		
-		((StoryPoint)story.getStorypoints().get(sPointId)).addDependency(dependency);
+		StoryPoint sPoint = (StoryPoint)story.getStorypoints().get(sPointId);
+		sPoint.addDependency(dependency);
+		if (endpoint) {
+			sPoint.setIsEndStorypoint(true);
+		}
 	}
 
 }
