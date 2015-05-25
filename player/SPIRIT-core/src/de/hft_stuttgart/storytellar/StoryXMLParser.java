@@ -340,8 +340,8 @@ public class StoryXMLParser {
 		
 		Dependency dependency = new Dependency();
 		dependency.addStorypoint(sPoint.getName());
-		//((StoryPoint)story.getStorypoints().get(featureRef.get(ontrueref))).addDependency(dependency);
-		//((StoryPoint)story.getStorypoints().get(featureRef.get(onfalseref))).addDependency(dependency);
+		((StoryPoint)story.getStorypoints().get(featureRef.get(ontrueref))).addDependency(dependency);
+		((StoryPoint)story.getStorypoints().get(featureRef.get(onfalseref))).addDependency(dependency);
 	}
 	
 	/**
