@@ -36,6 +36,7 @@ public class StoryXMLParser {
 	
 	private Map<String,String> featureRef = new HashMap<String, String>();
 	private Map<String,String> interactionRef = new HashMap<String, String>();
+	String pathToContent;
 	
 	/**
 	 * Parses a XML-file and creates a PlayableStory-object from it.
@@ -45,9 +46,10 @@ public class StoryXMLParser {
 	
 	public PlayableStory parse( String xmlPath ){
 		
+		pathToContent = xmlPath.substring(0, xmlPath.length()-8);
 		Document doc = null;
 		NodeList nodes;
-		Map<String,Poi> storypoints = new HashMap<String, Poi>();
+		Map<String,StoryPoint> storypoints = new HashMap<String, StoryPoint>();
 		PlayableStory story = new PlayableStory();
 		
 		// open xml file with dom parser
@@ -187,7 +189,7 @@ public class StoryXMLParser {
 						do {
 							if (video_subnode.getNodeName().equalsIgnoreCase("href")) {
 								videofile = video_subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
-								sPoint.setVideo(videofile);
+								sPoint.setVideo(pathToContent+videofile);
 								return;
 							}
 							video_subnode = video_subnode.getNextSibling();
@@ -338,8 +340,8 @@ public class StoryXMLParser {
 		
 		Dependency dependency = new Dependency();
 		dependency.addStorypoint(sPoint.getName());
-		((StoryPoint)story.getStorypoints().get(featureRef.get(ontrueref))).addDependency(dependency);
-		((StoryPoint)story.getStorypoints().get(featureRef.get(onfalseref))).addDependency(dependency);
+		//((StoryPoint)story.getStorypoints().get(featureRef.get(ontrueref))).addDependency(dependency);
+		//((StoryPoint)story.getStorypoints().get(featureRef.get(onfalseref))).addDependency(dependency);
 	}
 	
 	/**
