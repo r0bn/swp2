@@ -352,20 +352,20 @@ public class SpiritMain extends ApplicationAdapter implements
 		
 		
 		// nebel starten und stoppen
-		if (!spiritFilm.isNull() && spiritFilm.isPlaying()){
-			if (spiritFilm.getPosition() > spiritFilm.getDuration() - 500){
-				if (!fadeEffect.isActive){
-					startFadeEffect();
-				}
-			}else if (spiritFilm.getPosition() > 500){
-				if (fadeEffect.isActive){
-					stopFadeEffect();
-				}
-			}
-		}
-		if(spiritFilm.isNull() && !spiritFilm.isPlaying() && !playlist.isNextFilmAvailable()){
-			stopFadeEffect();
-		}
+//		if (!spiritFilm.isNull() && spiritFilm.isPlaying()){
+//			if (spiritFilm.getPosition() > spiritFilm.getDuration() - 500){
+//				if (!fadeEffect.isActive){
+//					startFadeEffect();
+//				}
+//			}else if (spiritFilm.getPosition() > 500){
+//				if (fadeEffect.isActive){
+//					stopFadeEffect();
+//				}
+//			}
+//		}
+//		if(spiritFilm.isNull() && !spiritFilm.isPlaying() && !playlist.isNextFilmAvailable()){
+//			stopFadeEffect();
+//		}
 
 	}
 
