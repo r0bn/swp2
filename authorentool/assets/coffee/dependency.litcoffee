@@ -311,9 +311,13 @@
                         # RemoveEdge(storypoint[1])
                         AddEdge(storypoint[1], storypoint_2[1])
                     else
+                        oldEdgeStartpoint
                         previousColumn = columnCounter
+                        nextColumn = columnCounter
                         previousColumn--
+                        nextColumn++
                         previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
+                        nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + nextColumn).attr("selectedOwner")
                         previousStorypoint = previousStorypoint.split("_")
                         if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
                             oldEdgeStartpoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
@@ -323,6 +327,10 @@
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
                         storypoint = storypoint.split("_")
                         AddEdge(storypoint[1], previousStorypoint[1])
+                        if typeof nextStorypoint != "undefined"
+                           nextStorypoint = nextStorypoint.split("_")
+                           RemoveParticularEdge(nextStorypoint[1], oldEdgeStartpoint[1])
+                           AddEdge(nextStorypoint[1], storypoint[1])
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -461,8 +469,9 @@
                     i++
                     while i < 4
                        nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
-                       nextStorypoint = nextStorypoint.split("_")
-                       RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                       if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
+                           nextStorypoint = nextStorypoint.split("_")
+                           RemoveParticularEdge(nextStorypoint[1], storypoint[1])
                        storypoint = nextStorypoint
                        i++
                     $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).remove()
