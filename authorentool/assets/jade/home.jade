@@ -5,7 +5,8 @@
             .list-group(ng-repeat="story in storys")
                 a.list-group-item(href="#",ng-click="select(story.id)")
                     h4.list-group-item-heading {{ story.title }}
-                    p.list-group-item-text 
+                    .label.label-danger.home-label(ng-show="story.draft") Draft 
+                    p.list-group-item-text
                         | {{ story.description }}
                         br
                         br

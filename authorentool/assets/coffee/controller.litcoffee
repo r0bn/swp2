@@ -276,7 +276,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # Creates a story on the server
         $scope.createStory = () ->
-            $server.createStory({})
+            $server.createStory()
+            $server.getStoryList (data) ->
+                    $scope.storys = data
+
 
         $scope.select = (id) ->
             $location.path("/story/#{id}")

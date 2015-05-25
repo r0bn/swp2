@@ -28,7 +28,13 @@
             getStoryList : (cb) ->
                 $http.get("#{serverUrl}/story")
                     .success (data) ->
-                        cb(data)
+                        $http.get("#{serverUrl}/story/open")
+                            .success (data2) ->
+                                for d in data2
+                                    d.draft = true
+                                cb(data.concat(data2))
+                            .error () ->
+                                console.log "error"
                     .error () ->
                         console.log "error"
 
@@ -39,8 +45,8 @@
                     .error () ->
                         console.log "error"
 
-            createStory : (story) ->
-                $http.post("#{serverUrl}/story", story)
+            createStory : () ->
+                $http.post("#{serverUrl}/story", { xml : "start here" })
                     .success () ->
                         console.log "created"
                     .error () ->
