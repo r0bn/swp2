@@ -304,16 +304,16 @@ public class StoryXMLParser {
 			}
 			if (subnode.getNodeName().equals("OnTrue")) {
 				ontrue = subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
-				ontrueref = ontrue;
 				ontrue = ontrue.replace("#", "");
+				ontrueref = ontrue;
 				ontrue = ontrue.replace("Punkt", "");
 				ontrue = ontrue.replace("Feature", "");
 				ontrue = ontrue.replace("_", "");
 			}
 			if (subnode.getNodeName().equals("OnFalse")) {
 				onfalse = subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
-				onfalseref = onfalse;
 				onfalse = onfalse.replace("#", "");
+				onfalseref = onfalse;
 				onfalse = onfalse.replace("Punkt", "");
 				onfalse = onfalse.replace("Feature", "");
 				onfalse = onfalse.replace("_", "");
