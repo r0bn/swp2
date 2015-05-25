@@ -264,11 +264,14 @@
                             RemoveParticularEdge(previousStorypoint[1], storypoint[1])
                         i = columnCounter
                         i++
-                        while i < 4
+                        button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
+                        length = button.parentNode.parentNode.parentNode.childNodes.length
+                        while i < length
                            nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
-                           nextStorypoint = nextStorypoint.split("_")
-                           RemoveParticularEdge(nextStorypoint[1], storypoint[1])
-                           storypoint = nextStorypoint
+                           if typeof nextStorypoint != "undefined"
+                                nextStorypoint = nextStorypoint.split("_")
+                                RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                                storypoint = nextStorypoint
                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", undefined)
                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
@@ -303,6 +306,10 @@
                         setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + i), rowCounter)
                         setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + i), i)
                         createDropdownStorypointRef(counter,rowCounter,i, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i, currentObjID)
+                        $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i).click ->
+                            createDropdownStorypointRef(counter,rowCounter,i, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i, currentObjID)
+                            return
+                            
                     if columnCounter == 1
                         storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
@@ -416,11 +423,14 @@
             #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
             if searchID != ''
+                splitted = searchID.split("_")
+                RemoveEdge(splitted[1], true)
                 i = 0
                 while i < window.nodes.length
                     if window.nodes[i].nodeOwner == searchID 
                             window.nodes.splice(i,1);
                     i++
+                
             else
                 node = {
                         id: counter
@@ -459,22 +469,26 @@
             setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), rowCounter)
             setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), columnCounter)
             createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
+            $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter).click ->
+                createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
+                return
             $("#btnStorypointRefDelete_"+counter + "_" +rowCounter + "_" + columnCounter).click ->
                 if (confirm('Möchten Sie diese Referenzen wirklich löschen?'))
                     storypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_1").attr("selectedOwner")
-                    storypoint = storypoint.split("_")
-                    previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
-                    previousStorypoint = previousStorypoint.split("_")
-                    RemoveParticularEdge(previousStorypoint[1], storypoint[1])
-                    i = 1
-                    i++
-                    while i < 4
-                       nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
-                       if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
-                           nextStorypoint = nextStorypoint.split("_")
-                           RemoveParticularEdge(nextStorypoint[1], storypoint[1])
-                       storypoint = nextStorypoint
-                       i++
+                    if typeof storypoint != "undefined"
+                        storypoint = storypoint.split("_")
+                        previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                        previousStorypoint = previousStorypoint.split("_")
+                        RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                        i = 1
+                        i++
+                        while i < 4
+                           nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                           if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
+                               nextStorypoint = nextStorypoint.split("_")
+                               RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                           storypoint = nextStorypoint
+                           i++
                     $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).remove()
                     $("#fgpMultipleItemRefs_" + counter + "_" + rowCounter).remove() 
                     return

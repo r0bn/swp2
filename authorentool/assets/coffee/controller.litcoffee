@@ -157,8 +157,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         window.safeButtonCounter--
                         checkSafeButton()
                         AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
-                        $("#fhlNeuerStorypoint_" + counter).toggle "explode",{pieces: 25}, 2000, () ->
+                        $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
                             $("#fhlNeuerStorypoint_" + counter).remove()
+                        return
         
                 # Click Event für btnStorypointEinklappen
                 btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)
