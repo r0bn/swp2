@@ -261,7 +261,7 @@
                         else 
                             previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                             previousStorypoint = previousStorypoint.split("_")
-                            RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                            RemoveParticularEdge(storypoint[1],previousStorypoint[1])
                         i = columnCounter
                         i++
                         button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
@@ -484,7 +484,7 @@
                         storypoint = storypoint.split("_")
                         previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         previousStorypoint = previousStorypoint.split("_")
-                        RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                        RemoveParticularEdge(storypoint[1],previousStorypoint[1])
                         i = 1
                         i++
                         while i < 4
