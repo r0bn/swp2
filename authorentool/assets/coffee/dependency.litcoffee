@@ -323,7 +323,11 @@
                         nextColumn = columnCounter
                         previousColumn--
                         nextColumn++
-                        previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
+                        previousStorypoint
+                        if columnCounter == 1
+                            previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                        else
+                            previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
                         nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + nextColumn).attr("selectedOwner")
                         previousStorypoint = previousStorypoint.split("_")
                         if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
