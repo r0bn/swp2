@@ -22,6 +22,7 @@ public class StoryPoint extends Poi{
 	private File video;
 	private String interaction;
 	private Boolean isEndStorypoint;
+	private Trackable trackable_image = null;
 	
 	public StoryPoint(){
 		super();
@@ -145,7 +146,16 @@ public class StoryPoint extends Poi{
 		for (int i = 0; i < dependencies.size(); i++) {
 			strng += dependencies.get(i).toString() + "\n";
 		}
+		strng += "Trackable: "+trackable_image + "\n";
 		strng += super.toString();
 		return strng;
+	}
+
+	public Trackable getTrackable_image() {
+		return trackable_image;
+	}
+
+	public void setTrackable_image(Trackable trackable_image) {
+		this.trackable_image = trackable_image;
 	}
 }

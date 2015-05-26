@@ -21,7 +21,29 @@
     </Story>
     <Dependency>
         <Storypoint id="A" >
-            <FeatureRef xlink:href="Punkt_A_Feature" />
+            <FeatureRef xlink:href="#Punkt_A_Feature" />
+            <Metadata>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadata>
+            <Container>
+                <Storypointlist />
+                <Itemlist />
+            </Container>
+        </Storypoint>
+        <Storypoint id="A1" >
+            <FeatureRef xlink:href="#Punkt_A_1_Feature" />
+            <Metadata>
+                <Accessible>true</Accessible>
+                <Internet>true</Internet>
+            </Metadata>
+            <Container>
+                <Storypointlist />
+                <Itemlist />
+            </Container>
+        </Storypoint>
+        <Storypoint id="A2" >
+            <FeatureRef xlink:href="#Punkt_A_2_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
@@ -32,7 +54,7 @@
             </Container>
         </Storypoint>
         <Storypoint id="B" >
-            <FeatureRef xlink:href="Punkt_B_Feature" />
+            <FeatureRef xlink:href="#Punkt_B_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
@@ -45,7 +67,7 @@
             </Container>
         </Storypoint>
         <Storypoint id="C1" >
-            <FeatureRef xlink:href="Punkt_C_1_Feature" />
+            <FeatureRef xlink:href="#Punkt_C_1_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
@@ -55,12 +77,12 @@
                     <StorypointRef xlink:href="#B" />
                 </Storypointlist>
                 <Itemlist>
-                    <ItemRef xlink:href="Punkt_B_E1" />
+                    <ItemRef xlink:href="#Punkt_B_E1" />
                 </Itemlist>
             </Container>
         </Storypoint>
         <Storypoint id="C2" >
-            <FeatureRef xlink:href="Punkt_C_2_Feature" />
+            <FeatureRef xlink:href="#Punkt_C_2_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
@@ -70,56 +92,57 @@
                     <StorypointRef xlink:href="#B" />
                 </Storypointlist>
                 <Itemlist>
-                    <ItemRef xlink:href="Punkt_B_E2" />
+                    <ItemRef xlink:href="#Punkt_B_E2" />
                 </Itemlist>
             </Container>
         </Storypoint>
         <Storypoint id="D1">
-            <FeatureRef xlink:href="Punkt_D_1_Feature" />
+            <FeatureRef xlink:href="#Punkt_D_1_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
             </Metadata>
             <Container>
                 <Storypointlist>
-                    <StorypointRef xlink:href="C1" />
+                    <StorypointRef xlink:href="#C1" />
                 </Storypointlist>
                 <Itemlist>
-                    <ItemRef xlink:href="Punkt_B_E1" />
+                    <ItemRef xlink:href="#Punkt_B_E1" />
                 </Itemlist>
             </Container>
         </Storypoint>
         <Storypoint id="D2">
-            <FeatureRef xlink:href="Punkt_D_2_Feature" />
+            <FeatureRef xlink:href="#Punkt_D_2_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
             </Metadata>
             <Container>
                 <Storypointlist>
-                    <StorypointRef xlink:href="C2" />
+                    <StorypointRef xlink:href="#C2" />
                 </Storypointlist>
                 <Itemlist>
-                    <ItemRef xlink:href="Punkt_B_E2" />
+                    <ItemRef xlink:href="#Punkt_B_E2" />
                 </Itemlist>
             </Container>
         </Storypoint>
         <Storypoint id="E">
-            <FeatureRef xlink:href="Punkt_E_Feature" />
+            <FeatureRef xlink:href="#Punkt_E_Feature" />
             <Metadata>
                 <Accessible>true</Accessible>
                 <Internet>true</Internet>
             </Metadata>
             <Container>
                 <Storypointlist>
-                    <StorypointRef xlink:href="D1" />
+                    <StorypointRef xlink:href="#D1" />
                 </Storypointlist>
             </Container>
             <Container>
                 <Storypointlist>
-                    <StorypointRef xlink:href="D2" />
+                    <StorypointRef xlink:href="#D2" />
                 </Storypointlist>
             </Container>
+            <EndOfStory>true</EndOfStory>
         </Storypoint>
     </Dependency>
 
@@ -137,15 +160,29 @@
                         <gml:pos>48.780332 9.172515</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_A_Feature_Tracker" />
                 <InteractionList>
-                    <InteractionRef xlink:href="Punkt_A_Quiz" />
+                    <InteractionRef xlink:href="#Punkt_A_Quiz" />
                 </InteractionList>
             </anchors>
         </Feature>
-
+        <Tracker id="Punkt_A_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_A_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_A_Feature_Tracker" />
+                <src>anchorPicture_Punkt_A.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
+        
         <Feature id="Punkt_A_1_Feature">
             <name> Entscheidung 1 </name>
             <anchors>
+               
                 <Geometry>
                     <assets>
                         <Video id="Anfangsvideo_E1">
@@ -156,9 +193,21 @@
                         <gml:pos>48.780332 9.172515</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_A_1_Feature_Tracker" />
             </anchors>
         </Feature>
-        
+        <Tracker id="Punkt_A_1_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_A_1_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_A_1_Feature_Tracker" />
+                <src>anchorPicture_Punkt_A.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>	
         <Feature id="Punkt_A_2_Feature">
             <name> Entscheidung 2 </name>
             <anchors>
@@ -172,8 +221,21 @@
                         <gml:pos>48.780332 9.172515</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_A_2_Feature_Tracker" />
             </anchors>
         </Feature>
+        <Tracker id="Punkt_A_2_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_A_2_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_A_2_Feature_Tracker" />
+                <src>anchorPicture_Punkt_A.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>	
         
         <Feature id="Punkt_B_Feature">
             <name> Startpunkt </name>
@@ -181,37 +243,64 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentenvideo">
-                            <Href xlink:href="Studentenvideo.mp4" />
+                            <Href xlink:href="#Studentenvideo.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_B_PdR">
                         <gml:pos>48.779714 9.174050</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_B_Feature_Tracker" />
                 <InteractionList>
-                    <InteractionRef xlink:href="Punkt_B_Waychooser" />
+                    <InteractionRef xlink:href="#Punkt_B_Chooser" />
                 </InteractionList>
             </anchors>
         </Feature>
-        
+        <Tracker id="Punkt_B_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_B_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_B_Feature_Tracker" />
+                <src>anchorPicture_Punkt_B.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>	
+
         <Feature id="Punkt_C_1_Feature">
             <name> Kap Tormentoso </name>
-            <anchors>
+            <anchors>              
                 <Geometry>
                     <assets>
                         <Image id="Piratenzeugs">
-                            <href xlink:href="Piratenzeug.jpg" />
+                            <href xlink:href="#Piratenzeugs.png" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_KT">
                         <gml:pos>48.779782 9.174015</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_C_1_Feature_Tracker" />
                 <InteractionList>
-                    <InteractionRef xlink:href="Punkt_C_1_Item" />
+                    <InteractionRef xlink:href="#Punkt_C_1_Item" />
                 </InteractionList>
             </anchors>
         </Feature>
+		
+        <Tracker id="Punkt_C_1_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_C_1_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_C_1_Feature_Tracker" />
+                <src>anchorPicture_Punkt_C_1.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
         
         <Feature id="Punkt_C_2_Feature">
             <name> OneTableClub </name>
@@ -219,18 +308,31 @@
                 <Geometry>
                     <assets>
                         <Image id="gebrauchter_Rucksack">
-                            <href xlink:href="alter_Rucksack.jpg" />
+                            <href xlink:href="#Rucksack.png" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_OTC">
                         <gml:pos>48.775659 9.171824</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_C_2_Feature_Tracker" />
                 <InteractionList>
-                    <InteractionRef xlink:href="Punkt_C_2_Item" />
+                    <InteractionRef xlink:href="#Punkt_C_2_Item" />
                 </InteractionList>
             </anchors>
         </Feature>
+        <Tracker id="Punkt_C_2_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_C_2_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_C_2_Feature_Tracker" />
+                <src>anchorPicture_Punkt_C_2.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
         
         <Feature id="Punkt_D_1_Feature">
             <name> Pirat </name>
@@ -238,15 +340,28 @@
                 <Geometry>
                     <assets>
                         <Video id="Piratengespraech">
-                            <Href xlink:href="Piratengespraech.mp4" />
+                            <Href xlink:href="#Piratengespraech.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Pirat">
                         <gml:pos>48.779714 9.174050</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_D_1_Feature_Tracker" />
             </anchors>
         </Feature>
+        <Tracker id="Punkt_D_1_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_D_1_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_D_1_Feature_Tracker" />
+                <src>anchorPicture_Punkt_D_1.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
         
         <Feature id="Punkt_D_2_Feature">
             <name> Student </name>
@@ -254,15 +369,28 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentengespraech">
-                            <Href xlink:href="Studentengespraech.mp4" />
+                            <Href xlink:href="#Studentengespraech.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Student">
                         <gml:pos>48.779714 9.174050</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_D_2_Feature_Tracker" />
             </anchors>
         </Feature>
+        <Tracker id="Punkt_D_2_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_D_2_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_D_2_Feature_Tracker" />
+                <src>anchorPicture_Punkt_D_2.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
         
         <Feature id="Punkt_E_Feature">
             <name>Ende</name>
@@ -270,47 +398,60 @@
                 <Geometry>
                     <assets>
                         <Video id="Ende">
-                            <Href xlink:href="Ende.mp4" />
+                            <Href xlink:href="#Ende.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_E_1" >
                         <gml:pos>48.780332 9.172515</gml:pos>
                     </gml:Point>
                 </Geometry>
+                <anchorRef xlink:href="#Punkt_E_Feature_Tracker" />
             </anchors>
         </Feature>
-    
+        <Tracker id="Punkt_E_Feature_Tracker">
+            <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />
+        </Tracker>
+        <Trackable id="Punkt_E_Feature_Trackable">
+            <enabled>true</enabled>
+            <assets />
+            <config>
+                <tracker xlink:href="#Punkt_E_Feature_Tracker" />
+                <src>anchorPicture_Punkt_A.png</src>
+            </config>
+            <size>0.2</size> <!-- in real word dimensions, the image is 20 cm wide -->
+        </Trackable>
+        
         <Interactions>
             <Quiz id="Punkt_A_Quiz">
                 <FeatureRef xlink:href="#Punkt_A_Feature" />
-                <OnTrue xlink:href="Feature_A_1"/>
-                <OnFalse xlink:href="Feature_A_2" />
+                <OnTrue xlink:href="#Punkt_A_1_Feature"/>
+                <OnFalse xlink:href="#Punkt_A_2_Feature" />
                 <Question> Bist du der Auserwählte? </Question>
                                 
-                <Answer id="A1">
+                <Answer id="Punkt_A_Quiz_Answer_1">
                     <Text> Ja </Text>
                     <Status> true </Status>
                 </Answer>
-                <Answer id="A2">
+                <Answer id="Punkt_A_Quiz_Answer_2">
                     <Text> Nein </Text>
                     <Status> false </Status>
                 </Answer>
-                
+				
             </Quiz>
 
-            <WayChooser id="Punkt_B_Waychooser">
+            <Chooser id="Punkt_B_Chooser">
                 <FeatureRef xlink:href="#Punkt_B_Feature" />
                 <Question> Wohin willst du gehen? </Question>
-                <Answer id="A3">
+                <Answer id="Punkt_B_Chooser_Answer_1">
                     <Text> Kap Tormentoso </Text>
-                    <ItemRef xlink:href="Punkt_B_E1" />
+                    <ItemRef xlink:href="#Punkt_B_E1" />
                     <FeatureRef xlink:href="#Punkt_B_Feature" />
                 </Answer>
-                <Answer id="A4" >
+                <Answer id="Punkt_B_Chooser_Answer_2" >
                     <Text> OneTableClub </Text>
-                    <ItemRef xlink:href="Punkt_B_E2" />
+                    <ItemRef xlink:href="#Punkt_B_E2" />
                 </Answer>
-            </WayChooser>
+            </Chooser>
             <Item id="Punkt_B_E1">
                 <Description> Entscheidung 1 bei Punkt B </Description>
                 <FeatureRef xlink:href="#Punkt_B_Feature" />
@@ -323,7 +464,7 @@
             </Item>
 
             <Item id="Punkt_C_1_Item">
-                <Description> Priatenzeug </Description>
+                <Description> Piratenzeug </Description>
                 <FeatureRef xlink:href="#Punkt_C_1_Feature" />
                 <IsCollected>true</IsCollected>
             </Item>
@@ -332,7 +473,7 @@
                 <FeatureRef xlink:href="#Punkt_C_2_Feature" />
                 <IsCollected>true</IsCollected>
             </Item>
-        </Interactions> 
+        </Interactions>	
     </ARElements>
 
 </arml>

@@ -36,6 +36,7 @@ public class StoryXMLParser {
 	
 	private Map<String,String> featureRef = new HashMap<String, String>();
 	private Map<String,String> interactionRef = new HashMap<String, String>();
+	private Map<String,StoryPoint> trackableRef = new HashMap<String, StoryPoint>();
 	String pathToContent;
 	
 	/**
@@ -126,6 +127,13 @@ public class StoryXMLParser {
 			addDependencyfromNode(nodes.item(i),story);
 		}
 		
+		//Get trackeables
+		nodes = arelementselement.getElementsByTagName("Tracker");
+		NodeList trackables = arelementselement.getElementsByTagName("Trackable");
+		for (int i = 0; i < nodes.getLength(); i++) {
+			addTrackeablefromNode(nodes.item(i), trackables);
+		}
+		
 		System.out.println(story.toString() + "\n");
 		System.out.println("Finished parsing XML file");
 		return story;
@@ -159,6 +167,10 @@ public class StoryXMLParser {
 					}
 					if (anchors_subnode.getNodeName().equals("InteractionList")) {
 						interactionRef.put(getInteractionReffromNode(anchors_subnode), sPoint.getName());
+					}
+					if (anchors_subnode.getNodeName().equals("anchorRef")) {
+						trackableRef.put(anchors_subnode.getAttributes().getNamedItem("xlink:href").getNodeValue().replace("#", ""), sPoint);
+						System.out.println("Add Anchor: "+anchors_subnode.getAttributes().getNamedItem("xlink:href").getNodeValue().replace("#", ""));
 					}
 					anchors_subnode = anchors_subnode.getNextSibling();
 				} while(anchors_subnode!=null);
@@ -471,4 +483,53 @@ public class StoryXMLParser {
 		}
 	}
 
+	private void addTrackeablefromNode(Node node, NodeList trackables){
+		System.out.println(node.getAttributes().getNamedItem("id").getNodeValue());
+		StoryPoint sPoint = trackableRef.get(node.getAttributes().getNamedItem("id").getNodeValue());
+		Trackable temp = new Trackable(node.getAttributes().getNamedItem("id").getNodeValue(), getTrackableUri(node));
+		for (int i = 0; i < trackables.getLength(); i++) {
+			System.out.println(temp.getId()+"  equals  "+trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker"));
+			System.out.println(temp.getId().equals(trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker")));
+			if(temp.getId().equals(trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker"))){
+				getTrackableValues(trackables.item(i), temp);
+				break;
+			}
+		}
+		System.out.println(temp.toString());
+		sPoint.setTrackable_image(temp);
+		
+	}
+
+	private String getTrackableUri(Node node){
+		Node subnode = node.getFirstChild();
+		do {
+			if (subnode.getNodeName().equals("uri")) {
+				return subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
+			}
+			subnode = subnode.getNextSibling();
+		} while (subnode.getNextSibling()!=null);
+		return null;
+	}
+	
+	private void getTrackableValues(Node node, Trackable temp){
+		Node subnode = node.getFirstChild();
+		do {
+			if (subnode.getNodeName().equals("enabled")) {
+				temp.setEnabled(subnode.getTextContent());
+			}
+			if (subnode.getNodeName().equals("size")) {
+				temp.setSize(subnode.getTextContent());
+			}
+			if (subnode.getNodeName().equals("config")) {
+				Node subsubnode = subnode.getFirstChild();
+				do{
+					if (subsubnode.getNodeName().equals("src")) {
+						temp.setSrc(subsubnode.getTextContent());
+					}
+					subsubnode = subsubnode.getNextSibling();
+				} while(subsubnode.getNextSibling()!=null);
+			}
+			subnode = subnode.getNextSibling();
+		} while (subnode.getNextSibling()!=null);
+	}
 }
