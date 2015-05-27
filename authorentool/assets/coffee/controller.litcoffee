@@ -207,51 +207,47 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         $scope.tabSwitch = (activeTabID) ->
                 if (activeTabID == "MedienBibTab") 
-                    # Active Tabs
-                    $("#MedienBibTab").addClass("active")
-
-                    # Passive Tabs
-                    $("#GraEditorTab").removeClass("active")
-                    $("#XMLTab").removeClass("active")
-
-                    # Active Content
-                    $("#MedienEditor").css("display", "block")
                     
-                    # Passive Content
+                     # Passive Content
                     $("#GraEditor").css("display","none")
                     $("#XML").css("display","none")
-                    
+                     # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+                     # Active Tabs
+                    $("#MedienBibTab").addClass("active")
+                     # Active Content
+                    $("#MedienEditor").css("display", "block")
                     return
                 else if (activeTabID == "GraEditorTab") 
-                    # Active Tabs
-                    $("#GraEditorTab").addClass("active")
-
-                    # Passive Tabs
+                     # Passive Content
+                    $("#XML").css("display","none")
+                    $("#MedienEditor").css("display","none")
+                     # Passive Tabs
                     $("#MedienBibTab").removeClass("active")
                     $("#XMLTab").removeClass("active")
                     
-                    # Active Content
+                     # Active Tabs
+                    $("#GraEditorTab").addClass("active")
+                     # Active Content
                     $("#GraEditor").css("display", "block")
-
-                    # Passive Content
-                    $("#XML").css("display","none")
-                    $("#MedienEditor").css("display","none")
-                    
                     return
                 else if (activeTabID == "XMLTab") 
-                    # Active Tabs
-                    $("#XMLTab").addClass("active")
-
-                    # Passive Tabs
-                    $("#GraEditorTab").removeClass("active")
-                    $("#MedienBibTab").removeClass("active")
-
-                    # Active Content
-                    $("#XML").css("display", "block")
 
                     # Passive Content
                     $("#MedienEditor").css("display","none")
                     $("#GraEditor").css("display","none")
+                    
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+                    
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+                    xml = startSynchro()
+                    # Active Content
+                    $("#XML").css("display", "block")
+                    $("#XML").find("p").text(xml)
                     return
 
         $scope.btnHelpEinklappenClick = () ->
