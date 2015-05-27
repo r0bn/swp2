@@ -247,7 +247,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     xml = startSynchro()
                     # Active Content
                     $("#XML").css("display", "block")
-                    $("#XML").find("p").text(xml)
+                    $("#ttaXML").val(xml)
+                    cm = CodeMirror.fromTextArea($("#XML").find('textarea')[0],
+                      lineNumbers: true
+                      matchBrackets: true)
+
+                    setMode(cm, "xml");
                     return
 
         $scope.btnHelpEinklappenClick = () ->
