@@ -445,7 +445,7 @@ public class SpiritMain extends ApplicationAdapter implements
 		spiritFacade.stopFilm();
 		spiritFacade.resetStoryEngine();
 		startFilm = false;
-		stopFadeEffect();
+		//stopFadeEffect();
 	}
 
 	@Override

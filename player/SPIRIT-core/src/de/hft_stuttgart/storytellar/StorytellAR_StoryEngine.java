@@ -1,6 +1,8 @@
 package de.hft_stuttgart.storytellar;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hft_stuttgart.spirit.Location;
 import de.hft_stuttgart.spirit.NfcTagDetected;
@@ -11,70 +13,60 @@ import de.hft_stuttgart.spirit.SpiritStoryEngine;
 import de.hft_stuttgart.spirit.UIController;
 
 public class StorytellAR_StoryEngine implements SpiritStoryEngine {
+	
+	enum EngineStates {
+		OPEN,IN_SCENE
+	}
 
 	PlayableStory story;
 	UIController facade;
-	boolean firstStart = true;
-	boolean firstVideo = true;
-	boolean ghostDetected = false;
-	long[] vibratePattern = { 760, 600, 1080, 880, 1560, 840, 720, 2080, 2120,
-			720, 2360, 360 }; // pattern:
-
-	// pause,
-	// vibrieren,
-	// pause,
-	// vibrieren,
-	// ...
-	boolean startNextVideo = false;
-	long timerStartNextVideo = 0;
+	boolean doIt = true;
+	EngineStates state = EngineStates.OPEN;
+	StoryPoint activeStoryPoint;
 
 	public StorytellAR_StoryEngine(UIController spiritFacade, PlayableStory story) {
 		facade = spiritFacade;
 		this.story = story;
+		
+		
+		addOpenStoryPointsToSonar();
+		facade.showAllGhostNamesInRadar();
 	}
 	
 	//Wird nach jedem Frame aufgerufen
 	@Override
 	public void update() {
-
-		// bei erstem Start Playlist erstellen
-		if (firstStart) {
-
-		}
-
-		checkEvents();
-		checkGhost();
-		setGuiStuff();
-
-		// AR / Sonar wechsel durch Tabletwinkel
-		if (facade.getTabletAngle() < 30) {
-			facade.switchToSonarView();
-		} else {
-			facade.switchToARView();
-		}
-
-		if (startNextVideo) {
-			// Log.w("SPIRIT", "Hallo");
-			if (System.currentTimeMillis() > timerStartNextVideo) {
-				// Log.w("SPIRIT", "Und los!");
-				startNextVideo = false;
-				facade.nextFilm();
+		switch (state) {
+		case OPEN:			
+			Location loc = facade.getClosestGhost();
+			Map<String,StoryPoint> sps = story.getStorypoints();
+			StoryPoint closest = sps.get(loc.name);
+			if (facade.getDistanceUserToClosestGhost() > 10) {
+				activeStoryPoint = closest;
+				activeStoryPoint.setStatus(StorypointStatus.ACTIVE);
+				state = EngineStates.IN_SCENE;
+				playVideo(closest);
 			}
+			
+			// AR / Sonar wechsel durch Tabletwinkel
+			if (facade.getTabletAngle() < 30) {
+				facade.switchToSonarView();
+			} else {
+				facade.switchToARView();
+			}
+			break;
+		case IN_SCENE:
+			break;
+		default:
+			break;
 		}
+		
+		checkEvents();
 	}
 
 	@Override
 	public void reset() {
-		// Playlist Queue leeren
-		// facade.removeAllVideos();
-		// Aktuell laufendes Video abbrechen
-		// facade.stopFilm();
-		// GUI Elemente zurücksetzen
-		// Geist wieder suchen
-		ghostDetected = false;
-		firstVideo = true;
-		// und wieder neue playlist erstellen
-		createPlaylist();
+
 	}
 
 	private void checkEvents() {
@@ -83,60 +75,39 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		for (int i = 0; i < events.length; i++) {
 			switch (events[i].getEvent()) {
 			case Filmende:
+				activeStoryPoint.setStatus(StorypointStatus.DONE);
+				state = EngineStates.OPEN;
+				addOpenStoryPointsToSonar();
 				break;
 			case Filmstart:
-				System.out.println("Film Start");
-				if (firstVideo) {
-					firstVideo = false;
-					// facade.vibrate(vibratePattern);
-					facade.setBrowserSize(0.7f, 0.7f);
-					facade.setBrowserAlpha(0.6f);
-					
-				}
-//				facade.openUrl("http://de.m.wikipedia.org/wiki/Wikipedia:Hauptseite");
 				break;
 			case ResetAllButtonPressed:
-				facade.resetAll();
 				break;
 			case SkipButtonPressed:
-				facade.startSignalToGhostEffect(300);
-				startNextVideo = true;
-				timerStartNextVideo = System.currentTimeMillis() + 500;
 				break;
 			case NotSkipButtonPressed:
-				facade.enableSubtitle();
 				break;
 			case SonarButtonPressed:
-				facade.switchToSonarView();
 				break;
 			case StartManuellButtonPressed:
-				facade.startFilm();
-				facade.createReference();
 				break;
 			case FadeEffectStarted:
-				facade.vibrate(Integer.MAX_VALUE);
 				break;
 			case FadeEffectStopped:
-				facade.cancelVibrate();
 				break;
 			case CustomButton0:
-				// Log.w("SPIRIT", "Button 0");
 				break;
 			case CustomButton1:
-				// Log.w("SPIRIT", "Button 1");
 				break;
 			case CustomButton2:
-				// Log.w("SPIRIT", "Button 2");
-				ghostDetected = false;
 				break;
 			case CustomButton3:
-				// Log.w("SPIRIT", "Button 3");
 				break;
 			case CustomButton4:
-				// Log.w("SPIRIT", "Button 4");
 				break;
 			case CustomButton5:
-				// Log.w("SPIRIT", "Button 5");
+				facade.createReference();
+				facade.startFilm();
 				break;
 
 			default:
@@ -146,34 +117,26 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		}
 
 	}
-
-	private void checkGhost() {
-		// System.out.println("Hallo @ "+facade.getTabletAngle());
-		// Entfernung zum Geist prüfen
-
-		// nur wenn Geist noch nicht gefunden
-		if (!ghostDetected) {
-			// Geist gefunden? -> über Entfernung in Metern
-
-			if (facade.getTabletAngle() > 85) {
-				createPlaylist();
-				ghostDetected = true;
-				facade.createReference();
-				facade.startFilm();
-				facade.disableArrow();
+	
+	private void addOpenStoryPointsToSonar() {
+		facade.deleteAllGhosts();
+		for(StoryPoint storyPoint : story.getStorypoints().values()) {
+			if(storyPoint.getStatus() == StorypointStatus.OPEN) {
+				Location loc = new Location(storyPoint.getName());
+				loc.setLatitude(storyPoint.getLatitude());
+				loc.setLongitude(storyPoint.getLongitude());
+				facade.addGhostLocation(loc);
 			}
 		}
 	}
-
-	private void setGuiStuff() {
-
-	}
-
-	public void createPlaylist() {
-		PlaylistEntry pe = new PlaylistEntry(story.getStorypoints().values().iterator().next().getVideo());
-		pe.setAutostart(true);
-		pe.setLoop(true);
+	
+	private void playVideo(StoryPoint storyPoint) {
+		storyPoint.setStatus(StorypointStatus.ACTIVE);
+		PlaylistEntry pe = new PlaylistEntry(storyPoint.getVideo());
+		pe.setLoop(false);
+		pe.setAutostart(false);
 		facade.enqueueVideo(pe);
+		facade.setButtonText(storyPoint.getName(), 5);
 	}
 
 }
