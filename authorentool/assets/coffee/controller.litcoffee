@@ -247,12 +247,18 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     xml = startSynchro()
                     # Active Content
                     $("#XML").css("display", "block")
+                    $(".CodeMirror").remove()
                     $("#ttaXML").val(xml)
+                    
                     cm = CodeMirror.fromTextArea($("#XML").find('textarea')[0],
-                      lineNumbers: true
-                      matchBrackets: true)
-
-                    setMode(cm, "xml");
+                        lineWrapping : true
+                        lineNumbers: true
+                        #readOnly: 'nocursor'
+                        mode: 'xml'
+                        #indentUnit : 2
+                        theme : "eclipse"
+                        foldGutter : true
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
                     return
 
         $scope.btnHelpEinklappenClick = () ->

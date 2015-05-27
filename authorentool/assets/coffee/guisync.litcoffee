@@ -7,6 +7,8 @@
             xml += '    xsi:schemaLocation="http://www.opengis.net/arml/2.0 schema/ExARML.xsd">\n'
             xml = synchronizeStoryTag(xml)
             xml = synchronizeDependencyTag(xml)
+            xml = synchronizeARMLTag(xml)
+            xml += '</arml>'
             return xml
             
         synchronizeStoryTag = (xml) ->
@@ -47,6 +49,16 @@
             xml += '    </Dependency>\n'
             return xml
             
+        synchronizeARMLTag = (xml) ->
+            xml += '    <ARElements>\n'
+            xml = synchronizeInteractionTag(xml)
+            xml += '    </ARElements>\n'
+            return xml
+        
+        synchronizeInteractionTag = (xml) ->
+            xml += '        <Interactions>\n'
+            xml += '        </Interactions>\n'
+            return xml
         synchronizeGPSCalc = (inputID) ->
             return $("#"+inputID).val().replace ","," "
             
