@@ -19,3 +19,9 @@
                         td
                             a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Open 
                             button.btn.btn-danger.btn-xs Delete 
+    .row
+        .col-md-4
+            input(type="file",file-model="mediaFileUpload")
+            br
+            button.btn.btn-primary.btn(ng-click="uploadMediaFile()") Upload 
+

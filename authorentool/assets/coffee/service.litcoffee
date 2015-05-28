@@ -89,6 +89,7 @@
                     transformRequest : (data) ->
                         formData = new FormData()
                         formData.append "file", file
+                        formData.append "_method", "PUT"
                         formData
                     data : { file : file }
                 })

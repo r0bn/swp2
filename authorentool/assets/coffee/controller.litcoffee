@@ -62,6 +62,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
                 server.uploadMediaFile files, test
 
+        $scope.uploadMediaFile = () ->
+            console.log $scope.mediaFileUpload
+            media.addMediaFile $scope.storyId, $scope.mediaFileUpload
+
 
         #jQuery Namespace Binding
         (($) ->
