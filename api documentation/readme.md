@@ -137,6 +137,7 @@ http://api.storytellar.de/story/<id>/media
 ```
  * Method: PUT
  * Parameters: file
+
 > **NOTE:** Since uploading files via put is impossible for HTML forms, you can add an extra parameter with the name "_method" and value "PUT" to it for achieving the same result via post method.
 
 This will add a media file to a story for the given id.
@@ -157,8 +158,7 @@ Media files restrictions:
    * .mp4
 
 ### Story management
-> **Note:** All stories that are not final can be found here:
-
+Stories that are not final can be found here:
 ```
 http://api.storytellar.de/story/open
 ```
