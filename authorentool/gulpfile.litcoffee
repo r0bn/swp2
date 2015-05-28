@@ -59,7 +59,7 @@
             './bower_components/angular/angular.js'
             './bower_components/angular-route/angular-route.js'
 
-            './assets/js/vis.min.js'
+            './bower_components/vis/dist/vis.min.js'
 
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
             './bower_components/jquery/dist/jquery.min.js'
@@ -88,8 +88,8 @@
             './bower_components/codemirror/addon/fold/foldgutter.css'
             './bower_components/codemirror/theme/eclipse.css'
             './bower_components/bootswatch-dist/css/bootstrap.css'
-            './assets/js/vis.min.css'
-            './assets/js/jQueryUI/jquery-ui.min.css'
+            './bower_components/vis/vis.min.css'
+            './bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css'
         ]
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'
