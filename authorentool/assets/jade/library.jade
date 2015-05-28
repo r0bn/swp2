@@ -1,0 +1,21 @@
+.col-md-9
+    .row
+        .col-md-12
+            table.table.table-striped.table-hover
+                thead
+                    tr
+                        th Name 
+                        th Type
+                        th Size
+                        th Created
+                        th Action
+                tbody
+                    tr(ng-repeat="obj in mediaData")
+                        td {{ obj.file }}
+                        td 
+                            span.label.label-default {{ obj.extension }}
+                        td {{ obj.size }} bytes
+                        td {{ obj.created_at }}
+                        td
+                            a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Open 
+                            button.btn.btn-danger.btn-xs Delete 

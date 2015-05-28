@@ -4,7 +4,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", ($scope, $routeParams, $http, server, xmlService) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
 
         $scope.storyId = $routeParams.story
 
@@ -20,30 +20,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
             foldGutter : true
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
-        $scope.testMediaFiles = (cb) ->
-            wait = 0
-            for file in $scope.mediaData
-                wait++
-                server.isMediaFileUploaded file, $scope.storyId, (mFile, status) =>
-                    mFile.status = status
-                    wait--
-                    if wait is 0
-                        cb()
-
-        $scope.updateMediaFiles = (cb) ->
-            $scope.mediaData = xmlService.getFileReferences $scope.xmlFile
-            $scope.testMediaFiles () ->
-                okay = true
-                for f in $scope.mediaData
-                    if f.status is "error"
-                        okay = false
-                cb okay
-
         $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
-                #$scope.updateMediaFiles () ->
-                #    console.log "ini"
+
+                media.getMediaFiles $scope.storyId, (mediaFiles) ->
+                    $scope.mediaData = mediaFiles
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -108,7 +90,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initScrollbar()
 
         window.safeButtonCounter = 0
-        initSafeButton()      
+        initSafeButton()
 
             
         $scope.createNewStorypoint = (counter) ->
