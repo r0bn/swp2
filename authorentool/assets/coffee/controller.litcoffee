@@ -63,8 +63,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 server.uploadMediaFile files, test
 
         $scope.uploadMediaFile = () ->
-            console.log $scope.mediaFileUpload
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload
+
+        $scope.deleteMediaFile = (filename) ->
+            #media.deleteFile $scope.storyId, filename
 
 
         #jQuery Namespace Binding
@@ -289,7 +291,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 element.bind 'change', () ->
                     scope.$apply () ->
                         scope.fileModel = element[0].files[0]
-                        console.log scope.fileModel
         }
     ]
 
