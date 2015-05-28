@@ -25,5 +25,5 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 }
 
             # use the HTML5 History API
-            $locationProvider.html5Mode(true)
+            #$locationProvider.html5Mode(true)
     ]
