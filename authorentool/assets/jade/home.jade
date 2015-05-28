@@ -3,7 +3,7 @@
     .row
         .col-md-6.col-centered(style="margin-top:100px")
             .list-group(ng-repeat="story in storys")
-                a.list-group-item(href="#",ng-click="select(story.id)")
+                a.list-group-item(href="#/story/{{story.id}}")
                     h4.list-group-item-heading {{ story.title }}
                     .label.label-danger.home-label(ng-show="story.draft") Draft 
                     p.list-group-item-text
