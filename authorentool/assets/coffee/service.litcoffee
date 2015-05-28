@@ -3,28 +3,6 @@
     storyTellarServices.factory 'storytellerServer', ['$http', ($http) ->
         serverUrl = "http://api.storytellar.de"
         {
-            uploadMediaFile : (files, data) ->
-                $http({
-                    method : 'POST'
-                    url : 'http://api.dev.la/createstory'
-                    headers: {'Content-Type': undefined}
-                    transformRequest : (data) ->
-                        formData = new FormData()
-
-                        for key, value of data.model
-                            formData.append key, value
-
-                        for file in data.files
-                            formData.append "media[]", file
-
-                        formData
-                    data : { files : files, model : data }
-                })
-                .success () ->
-                    console.log "success"
-                .error () ->
-                    console.log "error"
-
             getStoryList : (cb) ->
                 $http.get("#{serverUrl}/story")
                     .success (data) ->
@@ -52,12 +30,13 @@
                     .error () ->
                         console.log "error"
 
-            isMediaFileUploaded : (mediaFile, id, cb) ->
-                $http.get("#{serverUrl}/media/#{id}/#{mediaFile.name}")
-                    .success (data) ->
-                        cb(mediaFile, "ok")
-                    .error () ->
-                        cb(mediaFile, "error")
+            updateStory : (id, xml) ->
+                $http.post("#{serverUrl}/story/#{id}", { xml : xml })
+                    .success () ->
+                        console.log "updated"
+                    .error (err) ->
+                        console.log err
+
         }
     ]
 

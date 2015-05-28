@@ -8,6 +8,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         $scope.storyId = $routeParams.story
 
+        $scope.codeMirrorUpdateUI = false
+
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
         $scope.editorOptions =
@@ -20,8 +22,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             foldGutter : true
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 
-        $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
-            .success (data) ->
+        server.getStoryXML $scope.storyId, (data) ->
                 $scope.xmlFile = data
                 $scope.updateMedia()
 
@@ -37,8 +38,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # this saves the current xml file
         $scope.saveXML = () ->
-            test = $scope.storys[$scope.storyId]
-
             ret = xmlService.isValidXML $scope.xmlFile
             if ret.length > 0
                 $scope.xmlError = ret
@@ -46,23 +45,21 @@ The following code is a angularJS (https://angularjs.org/) Application.
             else
                 $scope.xmlError = "XML valide!"
 
-                test.xml = $scope.xmlFile
+                referencedFiles = xmlService.getFileReferences $scope.xmlFile
 
-                delete test.id
-                files = []
-                for f in $scope.mediaData
-                    if f.status is "error"
-                        if f.selectedFile?
-                            if f.selectedFile.name is f.name
-                                files.push f.selectedFile
-                            else
-                                $scope.xmlError = "name must be the same as the reference in xml"
-                                return
-                        else
-                            $scope.xmlError = "you need to add a file for every file with status error"
-                            return
+                for refFile in referencedFiles
+                    found = false
+                    console.log refFile
+                    for mediaFile in $scope.mediaData
+                        if "#{mediaFile.file.toLowerCase()}" is refFile.name
+                            found = true
+                            break
+                    if !found
+                        $scope.xmlError = "Referenced File: #{refFile.name} not found  in media library!"
+                        return
 
-                server.uploadMediaFile files, test
+                console.log $scope.xmlFile
+                server.updateStory $scope.storyId, $scope.xmlFile
 
         $scope.uploadMediaFile = () ->
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
@@ -235,21 +232,13 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     
                     # Active Tabs
                     $("#XMLTab").addClass("active")
-                    xml = startSynchro()
                     # Active Content
                     $("#XML").css("display", "block")
-                    $(".CodeMirror").remove()
-                    $("#ttaXML").val(xml)
+                    $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
+
+                    xml = startSynchro()
+                    $scope.xmlFile = xml
                     
-                    cm = CodeMirror.fromTextArea($("#XML").find('textarea')[0],
-                        lineWrapping : true
-                        lineNumbers: true
-                        #readOnly: 'nocursor'
-                        mode: 'xml'
-                        #indentUnit : 2
-                        theme : "eclipse"
-                        foldGutter : true
-                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
                     return
 
         $scope.btnHelpEinklappenClick = () ->
