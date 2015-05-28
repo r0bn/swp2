@@ -49,7 +49,7 @@
       
 
     gulp.task 'js-vendor', () ->
-        gulp.src [    
+        gulp.src [
 
             './assets/js/google2.api.js'
 
@@ -63,7 +63,7 @@
 
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
             './bower_components/jquery/dist/jquery.min.js'
-            './bower_components/bootswatch-dist/js/bootstrap.min.js'  
+            './bower_components/bootswatch-dist/js/bootstrap.min.js'
             './bower_components/bootswatch-dist/js/bootstrap-lightbox.min.js'
             './assets/js/jQueryUI/jquery-ui.min.js'
             

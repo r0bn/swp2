@@ -23,9 +23,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $http.get("http://api.storytellar.de/story/#{$scope.storyId}")
             .success (data) ->
                 $scope.xmlFile = data
+                $scope.updateMedia()
 
-                media.getMediaFiles $scope.storyId, (mediaFiles) ->
-                    $scope.mediaData = mediaFiles
+        $scope.updateMedia = () ->
+            media.getMediaFiles $scope.storyId, (mediaFiles) ->
+                $scope.mediaData = mediaFiles
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -63,11 +65,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 server.uploadMediaFile files, test
 
         $scope.uploadMediaFile = () ->
-            media.addMediaFile $scope.storyId, $scope.mediaFileUpload
+            media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
+                $scope.updateMedia()
 
         $scope.deleteMediaFile = (filename) ->
-            #media.deleteFile $scope.storyId, filename
-
+            media.deleteFile $scope.storyId, filename, () ->
+                $scope.updateMedia()
 
         #jQuery Namespace Binding
         (($) ->

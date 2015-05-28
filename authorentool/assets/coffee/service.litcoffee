@@ -74,14 +74,14 @@
             getDownloadPath : (storyId, filename) ->
                 return "#{serverUrl}/media/#{storyId}/#{filename}"
 
-            deleteFile : (storyId, filename) ->
-                $http.delete("#{serverUrl}/story/#{storyId}/media")
+            deleteFile : (storyId, filename, cb) ->
+                $http.delete("#{serverUrl}/story/#{storyId}/media/#{filename}")
                     .success (data) ->
-                        console.log data
+                        cb()
                     .error (err) ->
                         console.log err
 
-            addMediaFile : (storyId, file) ->
+            addMediaFile : (storyId, file, cb) ->
                 $http({
                     method : 'POST'
                     url : "#{serverUrl}/story/#{storyId}/media"
@@ -94,7 +94,7 @@
                     data : { file : file }
                 })
                 .success () ->
-                    console.log "success"
+                    cb()
                 .error (err) ->
                     console.log err
         }
