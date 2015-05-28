@@ -261,7 +261,7 @@
                         else 
                             previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                             previousStorypoint = previousStorypoint.split("_")
-                            RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                            RemoveParticularEdge(storypoint[1],previousStorypoint[1])
                         i = columnCounter
                         i++
                         button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
@@ -323,7 +323,11 @@
                         nextColumn = columnCounter
                         previousColumn--
                         nextColumn++
-                        previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
+                        previousStorypoint
+                        if columnCounter == 1
+                            previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                        else
+                            previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
                         nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + nextColumn).attr("selectedOwner")
                         previousStorypoint = previousStorypoint.split("_")
                         if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
@@ -394,7 +398,8 @@
             while i < window.edges.length
                 if window.edges[i].from == StorypointID
                     window.edges.splice(i,1);
-                if nodeRemoved == true && window.edges[i].to == StorypointID
+                
+                if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
                     window.edges.splice(i,1);
                 i++
             container = document.getElementById('divDependencyBox');
@@ -479,7 +484,7 @@
                         storypoint = storypoint.split("_")
                         previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         previousStorypoint = previousStorypoint.split("_")
-                        RemoveParticularEdge(previousStorypoint[1], storypoint[1])
+                        RemoveParticularEdge(storypoint[1],previousStorypoint[1])
                         i = 1
                         i++
                         while i < 4

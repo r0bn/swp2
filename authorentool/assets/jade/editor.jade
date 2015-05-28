@@ -4,11 +4,11 @@
         .col-md-12
                 ul.nav.nav-tabs(id="myTabs")
                     li(id="XMLTab")
-                        a(ng-click="tabSwitch('XMLTab')", href="#XML", data-toggle="tab") XML Editor
+                        a(ng-click="tabSwitch('XMLTab')", data-toggle="tab") XML Editor
                     li.active(id="GraEditorTab")
-                        a(ng-click="tabSwitch('GraEditorTab')",href="#GraEditor", data-toggle="tab") Graphischer Editor
+                        a(ng-click="tabSwitch('GraEditorTab')", data-toggle="tab") Graphischer Editor
                     li(id="MedienBibTab")
-                        a(ng-click="tabSwitch('MedienBibTab')", href="#MedienEditor", data-toggle="tab") Medienbibliothek
+                        a(ng-click="tabSwitch('MedienBibTab')", data-toggle="tab") Medienbibliothek
 
 
 
@@ -16,7 +16,6 @@
                     .tab-pane.fade.active.in(id="GraEditor") 
                         include ./formular.jade
                     .tab-pane.fade.active.in(id="XML", style="display:none")
-                        p hallo1
+                        textarea.form-control(rows="3", id="ttaXML", style="max-width: 700px")
                     .tab-pane.fade.active.in(id="MedienEditor", style="display:none")
                         p test
-

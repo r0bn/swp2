@@ -105,15 +105,18 @@ block content
                                     .col-lg-4
                                         label Storypointeinstellungen
                                 .row
-                                    .col-lg-1
-                                    .col-lg-5
+                                    .col-lg-4
                                         .checkbox
                                             input(id="inInternet", type='checkbox', placeholder="Internet?")
                                             label(id="lblInternet", for='inInternet') Storypoint verfügt über Internet
-                                    .col-lg-5
+                                    .col-lg-4
                                         .checkbox
                                             input(id="inAccessable", type='checkbox', placeholder="Erreichbar?")
                                             label(id="lblAccessable", for='inAccessable') Storypoint ist erreichbar
+                                    .col-lg-4
+                                        .checkbox
+                                            input(id="inEndOfStory", type='checkbox', placeholder="Endpunkt?")
+                                            label(id="lblEndOfStory", for='inEndOfStory') Storypoint ist Endpunkt
                                 
                                                 // -----------------------------ENDE
 
@@ -159,7 +162,7 @@ block content
  
 
 
-                            .form-group
+                            .form-group(id="fgpInteractions")
                                 .col-lg-5
                                     label.control-label(id="lblInteractions", for="ddnInteractions") Interaktion wählen
                                 .col-lg-4

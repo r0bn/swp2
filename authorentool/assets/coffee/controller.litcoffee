@@ -154,7 +154,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 $("#btnNeuesStorypointDelete_" + counter).click ->
                     if confirm "Wollen Sie den Storypoint wirklich löschen?"
                         window.safeButtonCounter--
-                        window.safeButtonCounter--
                         checkSafeButton()
                         AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                         $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
@@ -188,7 +187,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         createChooser(counter)
                 # Click Events für ddnInteraction
                 initDdnInteraction(counter)
-
+                if counter > 6
+                    $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/lTcRfJyEKkM?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+                    
                 # Neues Feature Button machen.
                 button = document.getElementById("fgpStorypoint");
                 button.parentNode.removeChild(button);
@@ -206,51 +207,58 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         $scope.tabSwitch = (activeTabID) ->
                 if (activeTabID == "MedienBibTab") 
-                    # Active Tabs
-                    $("#MedienBibTab").addClass("active")
-
-                    # Passive Tabs
-                    $("#GraEditorTab").removeClass("active")
-                    $("#XMLTab").removeClass("active")
-
-                    # Active Content
-                    $("#MedienEditor").css("display", "block")
                     
-                    # Passive Content
+                     # Passive Content
                     $("#GraEditor").css("display","none")
                     $("#XML").css("display","none")
-                    
+                     # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#XMLTab").removeClass("active")
+                     # Active Tabs
+                    $("#MedienBibTab").addClass("active")
+                     # Active Content
+                    $("#MedienEditor").css("display", "block")
                     return
                 else if (activeTabID == "GraEditorTab") 
-                    # Active Tabs
-                    $("#GraEditorTab").addClass("active")
-
-                    # Passive Tabs
+                     # Passive Content
+                    $("#XML").css("display","none")
+                    $("#MedienEditor").css("display","none")
+                     # Passive Tabs
                     $("#MedienBibTab").removeClass("active")
                     $("#XMLTab").removeClass("active")
                     
-                    # Active Content
+                     # Active Tabs
+                    $("#GraEditorTab").addClass("active")
+                     # Active Content
                     $("#GraEditor").css("display", "block")
-
-                    # Passive Content
-                    $("#XML").css("display","none")
-                    $("#MedienEditor").css("display","none")
-                    
                     return
                 else if (activeTabID == "XMLTab") 
-                    # Active Tabs
-                    $("#XMLTab").addClass("active")
-
-                    # Passive Tabs
-                    $("#GraEditorTab").removeClass("active")
-                    $("#MedienBibTab").removeClass("active")
-
-                    # Active Content
-                    $("#XML").css("display", "block")
 
                     # Passive Content
                     $("#MedienEditor").css("display","none")
                     $("#GraEditor").css("display","none")
+                    
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+                    
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+                    xml = startSynchro()
+                    # Active Content
+                    $("#XML").css("display", "block")
+                    $(".CodeMirror").remove()
+                    $("#ttaXML").val(xml)
+                    
+                    cm = CodeMirror.fromTextArea($("#XML").find('textarea')[0],
+                        lineWrapping : true
+                        lineNumbers: true
+                        #readOnly: 'nocursor'
+                        mode: 'xml'
+                        #indentUnit : 2
+                        theme : "eclipse"
+                        foldGutter : true
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
                     return
 
         $scope.btnHelpEinklappenClick = () ->
