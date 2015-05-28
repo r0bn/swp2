@@ -65,7 +65,7 @@
             './bower_components/jquery/dist/jquery.min.js'
             './bower_components/bootswatch-dist/js/bootstrap.min.js'
             './bower_components/bootswatch-dist/js/bootstrap-lightbox.min.js'
-            './assets/js/jQueryUI/jquery-ui.min.js'
+            './bower_components/jquery-ui/jquery-ui.min.js'
             
         ]
         .pipe concat 'vendor.js'
