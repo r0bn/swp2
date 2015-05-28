@@ -108,7 +108,7 @@
                 id = $(this).attr("id")
                 id = id.split("_")
                 id = id[1]
-                interactions = $("#fgpInteractions_"+id).next().next().next()
+                interactions = $("#fgpInteractions_"+id).next()
                 while typeof interactions.attr("id") != "undefined"
                     interID = interactions.attr("id")
                     interID = interID.split("_")

@@ -75,9 +75,8 @@
             
             # Click Event für btnQuizAnswer
             $("#btnQuizAnswer_" + interactionCounter).click ->
-                quizAnswerCounter = $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter")
-                quizAnswerCounter++
-                $("#btnQuizAnswer_" + interactionCounter).attr("quizAnswerCounter", quizAnswerCounter)
+                window.quizAnswerCounter++
+                quizAnswerCounter = window.quizAnswerCounter
                 copyAnswer = document.getElementById("fgpAnswer")
                 answer = copyAnswer.cloneNode(true)
                 answer.id = answer.id + "_" + quizAnswerCounter
@@ -138,15 +137,26 @@
 
                 # Click Event für btnChooserAnswer
                 $("#btnChooserAnswer_" + interactionCounter).click ->
-                    ChooserAnswerCounter = $("#btnChooserAnswer_" + interactionCounter).attr("ChooserAnswerCounter")
-                    ChooserAnswerCounter++
-                    $("#btnChooserAnswer_" + interactionCounter).attr("ChooserAnswerCounter", ChooserAnswerCounter)
+                    window.chooserAnswerCounter++
+                    ChooserAnswerCounter = window.chooserAnswerCounter
                     copyAnswer = document.getElementById("fgpChooserAnswer")
                     answer = copyAnswer.cloneNode(true)
                     answer.id = answer.id + "_" + ChooserAnswerCounter
                     answer.style.display="block"
                     document.getElementById("fstNeuerChooserContent_" + interactionCounter).appendChild(answer)
                     setIDs($("#" + answer.id), ChooserAnswerCounter)
+
+
+                    # Dropdown Event for btnSetChooserItemReferences
+                    $("#btnSetChooserItemReferences_" + ChooserAnswerCounter).click ->
+                        createChooserItemReference(ChooserAnswerCounter, "#btnSetChooserItemReferences_" + ChooserAnswerCounter, "#" + stuff.id)
+                     
+
+                    # Dropdown Event for btnSetChooserStorypointReferences
+                    $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).click ->
+                        createChooserStorypointReference(ChooserAnswerCounter, "#btnSetChooserStorypointReferences_" + ChooserAnswerCounter, "#" + stuff.id)
+                        
+   
 
                     # Click Event für btnChooserDelete
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->

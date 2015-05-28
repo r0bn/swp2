@@ -178,8 +178,7 @@ block content
                                                 a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
                                 .col-lg-3
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateInteraction", interactionCounter="10000", type="button") Interaktion erstellen
-                            br
-                            br
+
 
             .col-lg-3.column(id="colColumn2", style="position:fixed; right:20px; margin-top:0%")
                             form.form-horizontal
@@ -203,10 +202,16 @@ block content
             .col.lg-12.column(style="margin-top:3%")
                 button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnSaveStory", type="button", style="margin-right:90%; display:none") Story speichern
                     span.glyphicon.glyphicon-save-file
+                
+
 
 
 
                                                         // ----------------------- AB HIER: SCHATTEN
+                                                        
+                        // Save-Hinweis                                      
+            .div(id="saveFunction", title="Saved", style="display:none")
+                p Die Story wurde gespeichert und an den Server geschickt.
                                                         // STORYPOINT - MULTIREFERENZBOX SCHATTENKOPIEN
             
             .form-group(id="fgpMultipleStorypointRefs", style="display:none")
@@ -305,7 +310,7 @@ block content
                             input.form-control(disabled, type="text",maxlength="255", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
                     .form-group
                         .col-lg-4
-                            label.control-label(id="lblQuizOnTrue", for="ddnQuizOnTrueReference") Quiz OnTrue
+                            label.control-label(id="lblQuizOnTrue", for="btnSetQuizOnTrueReferences") Quiz OnTrue
                         .col-lg-3
                         .col-lg-5
                             .dropdown
@@ -316,7 +321,7 @@ block content
 
                     .form-group
                         .col-lg-4
-                            label.control-label(id="lblQuizOnFalse", for="ddnQuizOnFalseReference") Quiz OnFalse
+                            label.control-label(id="lblQuizOnFalse", for="btnSetQuizOnFalseReferences") Quiz OnFalse
                         .col-lg-3
                         .col-lg-5
                             .dropdown
@@ -413,14 +418,14 @@ block content
                         input.form-control(type="text",maxlength="255", id="inChooserAnswerID", placeholder="Chooser Answer ID")
                     .col-lg-1
                     .col-lg-2
-                        label.control-label(id="lblChooserAnswerItemRef", for="ddnChooserItemReference") ItemRef
+                        label.control-label(id="lblChooserAnswerItemRef", for="btnSetChooserItemReferences") ItemRef
                     .col-lg-4
-                        .dropdown(id="ddnChooserItemReference")
-                            button.btn.btn-info.btn-block.pull-primary.btnDesign(id="btnSetChooserItemReferences", referenceChooserItemCounter="0", type="button") Referenz zum Item
-
-                            ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu1")
-                                li(id="NEU_Chooser_Item_Ref_", role="presentation")
-                                    a(role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Referenz zu Item
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Take Item ...
+                                span.caret
+                    
+                            ul.dropdown-menu(id="ulSkChooserItemRef", role="menu", aria-labelledby="dropdownMenu1")
+                            
                     .col-lg-1
                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserAnswerDelete", type='button')
                             span.glyphicon.glyphicon-trash
@@ -431,15 +436,24 @@ block content
                         input.form-control(type="text",maxlength="255", id="inChooserAnswerText", placeholder="Chooser Answer Text")
                     .col-lg-1
                     .col-lg-2
-                        label.control-label(id="lblChooserAnswerFeatureRef", for="ddnChooserStorypointReference") StorypointRef
+                        label.control-label(id="lblChooserAnswerFeatureRef", for="btnSetChooserStorypointReferences") StorypointRef
                     .col-lg-4
-                        .dropdown(id="ddnChooserStorypointReference")
-                            button.btn.btn-info.btn-block.pull-primary.btnDesign(id="btnSetChooserStorypointReferences", referenceChooserStorypointCounter="0", type="button") Referenz zum Storypoint
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenz zu Storypoint
+                                span.caret
+                    
+                            ul.dropdown-menu(id="ulSkChooserStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
 
-                            ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu1")
-                                li(id="NEU_Chooser_Storypoint_Ref_", role="presentation")
-                                    a(role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Referenz zum Storypoint
-                                        
+
+                                        // Chooser Schattenkopien für das Quiz
+            li(id="liSkChooserStorypointRef", role="presentation", style="display:none")
+                a(id="ddnChooserStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+                
+            li(id="liSkChooserItemRef", role="presentation", style="display:none")
+                a(id="ddnChooserItem", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+
+
+
             include ./medienLibrary.jade
                 //.tab-pane.fade(id="XML")
                         p Zwei und ewig so weiter

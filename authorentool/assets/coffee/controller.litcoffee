@@ -88,6 +88,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
         
         # Counters
         window.dropdownLiCounter = 0
+        window.storypointCounter = 0
+        window.quizAnswerCounter = 10
+        window.chooserAnswerCounter = 10
+        
         # Nodes and Edges for the dependency graph
         window.nodes = []
         window.edges = []
@@ -100,6 +104,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
             
         $scope.createNewStorypoint = (counter) ->
+        
+                window.storypointCounter = counter
                 console.log "test"
                 copyForm = document.getElementById("fhlNeuerStorypoint")
                 stuff = copyForm.cloneNode(true)
