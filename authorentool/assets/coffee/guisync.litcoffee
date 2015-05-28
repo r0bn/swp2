@@ -96,8 +96,75 @@
             return xml
         synchronizeInteractionTag = (xml) ->
             xml += '        <Interactions>\n'
+            xml = synchronizeItems(xml)
+            xml = synchronizeQuizes(xml)
+            xml = synchronizeChoosers(xml)
+
+            
             xml += '        </Interactions>\n'
             return xml
+        synchronizeItems = (xml) ->
+            $('#fhlStorypoints').find('.form-horizontal').each ->
+                id = $(this).attr("id")
+                id = id.split("_")
+                id = id[1]
+                interactions = $("#fgpInteractions_"+id).next().next().next()
+                while typeof interactions.attr("id") != "undefined"
+                    interID = interactions.attr("id")
+                    interID = interID.split("_")
+                    if interID[1] == "Item"
+                        xml += '            <Item id="' + synchronizeInputHelper("inItemID_"+ interID[2]) + '">\n'
+                        xml += '                <Description>' + synchronizeInputHelper("inItemDescription_"+ interID[2]) + '</Description>\n'
+                        xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <IsCollected>'+ $("#inItemIsCollected_"+ interID[2]).is( ":checked" )+ '</IsCollected>\n'
+                        xml += '            </Item>\n'
+                    interactions = interactions.next()
+            return xml
+        synchronizeQuizes = (xml) ->
+            $('#fhlStorypoints').find('.form-horizontal').each ->
+                id = $(this).attr("id")
+                id = id.split("_")
+                id = id[1]
+                interactions = $("#fgpInteractions_"+id).next().next().next()
+                while typeof interactions.attr("id") != "undefined"
+                    interID = interactions.attr("id")
+                    interID = interID.split("_")
+                    if interID[1] == "Quiz"
+                        xml += '            <Quiz id="' + synchronizeInputHelper("inQuizID_"+ interID[2]) + '">\n'
+                        xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <Question>' + synchronizeInputHelper("inQuizQuestion_"+ interID[2]) + '</Question>\n'
+
+                                      #  <Answer id="Punkt_A_Quiz_Answer_1">
+                                      #      <Text> Ja </Text>
+                                      #      <Status> true </Status>
+                                     #   </Answer>
+                                    #   <Answer id="Punkt_A_Quiz_Answer_2">
+                                    #        <Text> Nein </Text>
+                                   #         <Status> false </Status>
+                                    #    </Answer>
+                        xml += '            </Quiz>\n'
+                    interactions = interactions.next()
+            return xml
+
+        synchronizeChoosers = (xml) ->
+        
+              #  <Chooser id="Punkt_B_Chooser">
+              #      <FeatureRef xlink:href="#Punkt_B_Feature" />
+              #      <Question> Wohin willst du gehen? </Question>
+              #      <Answer id="Punkt_B_Chooser_Answer_1">
+              #          <Text> Kap Tormentoso </Text>
+              #          <ItemRef xlink:href="#Punkt_B_E1" />
+              #          <FeatureRef xlink:href="#Punkt_B_Feature" />
+              #      </Answer>
+              #      <Answer id="Punkt_B_Chooser_Answer_2" >
+              #          <Text> OneTableClub </Text>
+              #          <ItemRef xlink:href="#Punkt_B_E2" />
+              #      </Answer>
+              #  </Chooser>
+            return xml
+            
         synchronizeGPSCalc = (inputID) ->
             return $("#"+inputID).val().replace ",",""
             
