@@ -26,8 +26,6 @@
 ```
 http://api.storytellar.de/story
 ```
-> **IMPORTANT:** We are not able to guarantee for a list of stories that are well formatted and schema validated due to a missing XML catalog. This will be updated in the near future.
-
  * Method: GET
  * Response format: JSON
  * Data: id, title, description, author, revision, size, size_uom, location, radius, radius_uom, created_at, updated_at
@@ -56,8 +54,6 @@ To download a story XML you have to append the ID.
 ```
 http://api.storytellar.de/story/<id>
 ```
-> **IMPORTANT:** We are not able to guarantee for a list of stories that are well-formatted and schema validated due to a missing XML catalog. This will be updated in the near future.
-
  * Method: GET
  * Response type: XML
  * Media data: See next paragraph
@@ -69,11 +65,11 @@ http://api.storytellar.de/story/38
 
 ### Media files
 **Get story media files**
-To get a list of all media files stored for a story, the following URI schema needs to be triggered:
+
+To get a list of all media files stored for a story, the following URI needs to be triggered:
 ```
 http://api.storytellar.de/story/<id>/media
 ```
-
  * Method: GET
  * Response format: JSON
  * Data: file, folder, extension, size, created_at
@@ -98,6 +94,7 @@ Example response:
 ```
 
 **Media file download**
+
 Media files are accessible in an media folder, where the subfolder represents the story ID:
 ```
 http://api.storytellar.de/media/<id>/<filename>
@@ -120,6 +117,7 @@ Directory tree:
 ```
 
 **Delete media file**
+
 To delete a media file for a story, the following route has to be called via delete method:
 ```
 http://api.storytellar.de/story/<id>/media/<filename>
@@ -132,13 +130,13 @@ http://api.storytellar.de/story/38/media/Piratenzeug.jpg
 ```
 
 **Add media file**
+
 You can add a media file by calling the following route via put method:
 ```
 http://api.storytellar.de/story/<id>/media
 ```
  * Method: PUT
  * Parameters: file
-
 > **NOTE:** Since uploading files via put is impossible for HTML forms, you can add an extra parameter with the name "_method" and value "PUT" to it for achieving the same result via post method.
 
 This will add a media file to a story for the given id.
@@ -164,27 +162,26 @@ Media files restrictions:
 ```
 http://api.storytellar.de/story/open
 ```
-The response parameters are the same as for final tagged stories.
+The response will be an json object with the following parameters: id, working_title, created_at, updated_at
 
 **Create new story**
-To create a new story that is final the following post route applies:
+
+To create a new story the following post route applies:
 ```
 http://api.storytellar.de/story
 ```
-
  * Method: POST
- * Parameters: final (optional, read on...), xml
+ * Parameters: final (optional), working_title (optional), xml
  * Response: Story ID integer
 
-> **Note:** The server will automatically extract the xml metadata from the XML file when the final parameter is given.
+> **Note:** The server will automatically extract the xml metadata from the XML file when the final parameter is given and the story is valid.
 
-If the parameter "final" (content doesn't matter) is set, the XML file/string has to be valid in all ways (media files, well formatted and schema valid). Don't set that parameter without checking!
-
-> **IMPORTANT:** We are unable to check if the XML is well formatted and schema validated at the moment! This has to be done front-end when the "final" parameter is given. This will be updated as soon as the XML catalog is ready. Without "final" parameter there is no need for any validation, you can post whatever you want then.
+If the parameter `final` (content doesn't matter) is set, the XML file/string has to be valid in all ways (media files, well formatted and schema valid). Don't set that parameter without checking! The server will check if the xml is well formatted and schema valid, if that fails the story will not be tagged as final and remain open.
 
 Let's create a final story for example: The route has to be called via post method and contain a parameter "final" and "xml" with the xml file content as string.
 
-Let's create a story that is not final, which could be called "preparing a story": Only the "xml" parameter has to be filled, it doesn't matter if it's a valid xml string or not. Don't include the parameter "final" within your post. You can now edit this story... (see next chapters)
+Let's create a story that is not final, which could be called "preparing a story": The parameter `xml` and `working_title` has to be filled, it doesn't matter if it's a valid xml string or not. Don't include the parameter "final" within your post. You can now edit this story... (see next chapters).
+You can find your story under the route for non-final stories!
 
 Valid XML metadata tags have to follow these rules:
 
@@ -199,6 +196,7 @@ Valid XML metadata tags have to follow these rules:
  * Radius uom: Required, length: 1-255 characters
 
 **Update/edit story**
+
 Once a story is stored on the server, you can edit it with the following route via post method:
 ```
 http://api.storytellar.de/story/<id>
@@ -206,6 +204,7 @@ http://api.storytellar.de/story/<id>
 The rules that apply here are the same as for creating a new story! So be careful with the "final" parameter!
 
 **Delete story**
+
 To delete a story including all it's media files you have to call the following route via delete method:
 ```
 http://api.storytellar.de/story/<id>
