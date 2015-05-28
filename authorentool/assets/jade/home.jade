@@ -1,7 +1,7 @@
 .container-fluid
     // this view's an initial menu with all available story's
     .row
-        .col-md-3.col-centered(style="margin-top:100px")
+        .col-md-6.col-centered(style="margin-top:100px")
             .list-group(ng-repeat="story in storys")
                 a.list-group-item(href="#",ng-click="select(story.id)")
                     h4.list-group-item-heading {{ story.title }}
@@ -14,5 +14,6 @@
                         br
                         | Erstellt: {{ story.creation_date }}
 
-            .list-group
-                    button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story
+    .row
+        .col-md-3.col-centered
+                button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story
