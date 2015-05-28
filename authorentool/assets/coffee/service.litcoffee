@@ -58,7 +58,44 @@
                         cb(mediaFile, "ok")
                     .error () ->
                         cb(mediaFile, "error")
+        }
+    ]
 
+    storyTellarServices.factory 'storytellarMedia', [ '$http', ($http) ->
+        serverUrl = "http://api.storytellar.de"
+        {
+            getMediaFiles : (storyId, cb) ->
+                $http.get("#{serverUrl}/story/#{storyId}/media")
+                    .success (data) ->
+                        cb(data)
+                    .error (err) ->
+                        console.log err
+
+            getDownloadPath : (storyId, filename) ->
+                return "#{serverUrl}/media/#{storyId}/#{filename}"
+
+            deleteFile : (storyId, filename) ->
+                $http.delete("#{serverUrl}/story/#{storyId}/media")
+                    .success (data) ->
+                        console.log data
+                    .error (err) ->
+                        console.log err
+
+            addMediaFile : (storyId, file) ->
+                $http({
+                    method : 'POST'
+                    url : "#{serverUrl}/story/#{storyId}/media"
+                    headers: {'Content-Type': undefined}
+                    transformRequest : (data) ->
+                        formData = new FormData()
+                        formData.append "file", file
+                        formData
+                    data : { file : file }
+                })
+                .success () ->
+                    console.log "success"
+                .error (err) ->
+                    console.log err
         }
     ]
 
