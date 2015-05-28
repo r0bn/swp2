@@ -51,16 +51,55 @@
             
         synchronizeARMLTag = (xml) ->
             xml += '    <ARElements>\n'
+            xml = synchronizeFeatures(xml)
             xml = synchronizeInteractionTag(xml)
             xml += '    </ARElements>\n'
             return xml
-        
+        synchronizeFeatures = (xml) ->
+            $('#fhlStorypoints').find('.form-horizontal').each ->
+                id = $(this).attr("id")
+                id = id.split("_")
+                id = id[1]
+                xml += '        <Feature id="'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" >\n'
+                xml += '            <name>'+ synchronizeInputHelper("inStorypoint_"+ id) + '</name>\n'
+                xml += '            <anchors>\n'
+                xml += '                <Geometry>\n'
+                xml += '                    <assets>\n'
+                xml += '                        <Video id="' + synchronizeInputHelper("inAsset_"+ id) + '">\n'
+                xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '.mp4" />\n'
+                xml += '                        </Video>\n'
+                xml += '                    </assets>\n'
+                xml += '                    <gml:Point gml:id="' + synchronizeInputHelper("inStorypoint_"+ id) + '_GPS">\n'
+                xml += '                        <gml:pos>' + synchronizeGPSCalc("inAnchorPoint_" + id) + '</gml:pos>\n'
+                xml += '                    </gml:Point>\n'
+                xml += '                </Geometry>\n'
+                xml += '                <anchorRef xlink:href="#' + synchronizeInputHelper("inStorypoint_"+ id) + '_ImageTracker" />\n'
+                xml += '                <InteractionList>\n'
+                interactions = $("#fgpInteractions_"+id).next().next().next()
+                while typeof interactions.attr("id") != "undefined"
+                    interID = interactions.attr("id")
+                    interID = interID.split("_")
+                    if interID[1] == "Item"
+                        xml += '                    <InteractionRef xlink:href="#' + synchronizeInputHelper("inItemID_"+ interID[2]) + '" />\n'
+                    if interID[1] == "Quiz"
+                        xml += '                    <InteractionRef xlink:href="#' + synchronizeInputHelper("inQuizID_"+ interID[2]) + '" />\n'
+                    if interID[1] == "Chooser"
+                        xml += '                    <InteractionRef xlink:href="#' + synchronizeInputHelper("inChooserID_"+ interID[2]) + '" />\n'   
+                    interactions = interactions.next()
+                xml += '                </InteractionList>\n'
+                xml += '            </anchors>\n'
+                xml += '        </Feature>\n'
+                xml += '        <Tracker id="#' + synchronizeInputHelper("inStorypoint_"+ id) + '_ImageTracker">\n'
+                xml += '              <uri xlink:href="http://opengeospatial.org/arml/tracker/genericImageTracker" />\n'
+                xml += '        </Tracker>\n'
+                
+            return xml
         synchronizeInteractionTag = (xml) ->
             xml += '        <Interactions>\n'
             xml += '        </Interactions>\n'
             return xml
         synchronizeGPSCalc = (inputID) ->
-            return $("#"+inputID).val().replace ","," "
+            return $("#"+inputID).val().replace ",",""
             
         synchronizeInputHelper = (inputID) ->
             if $("#"+inputID).val() != ""
