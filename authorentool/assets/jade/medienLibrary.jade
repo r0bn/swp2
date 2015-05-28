@@ -10,4 +10,22 @@ block content
                     .form-group  
                         button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
                         #medienBib(style='width:800px;height:400px')
-                            include library.jade
+                            .col-md-12
+                                .row
+                                    .col-md-12
+                                        table.table.table-striped.table-hover
+                                            thead
+                                                tr
+                                                    th Name 
+                                                    th Type
+                                                    th - 
+                                                    th - 
+                                            tbody
+                                                tr(ng-repeat="obj in mediaData")
+                                                    td {{ obj.file }}
+                                                    td 
+                                                        span.label.label-default {{ obj.extension }}
+                                                    td
+                                                        a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Open 
+                                                        button.btn.btn-primary.btn-xs.btn-select(style="margin-right:5px",data-filename="{{obj.file}}") Select 
+

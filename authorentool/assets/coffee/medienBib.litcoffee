@@ -13,3 +13,12 @@
               $medien.find('.modal-dialog').css 'width': $medienBib.width()
               $medien.find('.close').removeClass 'hidden'
               return
+
+        selectFromMedienBib = (targetId) ->
+            $('#medienLightbox').modal("show")
+
+            $('#medienLightbox .btn-select').click (handler) ->
+                console.log "do"
+                $("##{targetId}").val($(this).data("filename"))
+                $('#medienLightbox').modal("hide")
+
