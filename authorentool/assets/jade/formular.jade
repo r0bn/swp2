@@ -219,7 +219,9 @@ block content
                     span.ui-icon.ui-icon-circle-close(style="float:left; margin-left:50%; margin-top:10%; transform:scale(2)")
                 p(id = "saveFunctionErrorText",style="float:left; margin-left:10%; margin-right:10%; margin-top:5%") Die Story konnte nicht gespeichert werden. Der Fehlercode ist im Tab 'XML Editor' ganz unten einzusehen.
                                                         // STORYPOINT - MULTIREFERENZBOX SCHATTENKOPIEN
-            
+            div(id="dialog-confirm-Storypoint" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie den Storypoint wirklich löschen?
+                    
             .form-group(id="fgpMultipleStorypointRefs", style="display:none")
                 .col-lg-3(id="colStorypointRefDeep")
                     .dropdown
