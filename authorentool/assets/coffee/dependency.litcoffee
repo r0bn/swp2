@@ -526,7 +526,7 @@
                         oldStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
                         currentStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner")
                         if typeof currentStorypoint != "undefined"
-                            $("#" + currentStorypoint).on "remove", ->
+                            $("#" + currentStorypoint).on "remove.btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, ->
                                 prevColumn = columnCounter
                                 prevColumn--
                                 currentStorypoint = currentStorypoint.split("_")
@@ -559,7 +559,7 @@
                                 $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
                                 return
                         if typeof oldStorypoint != "undefined"
-                            $("#" + oldStorypoint).unbind("remove")
+                            $("#" + oldStorypoint).unbind("remove.btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
                             
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
                         storypoint = storypoint.split("_")
