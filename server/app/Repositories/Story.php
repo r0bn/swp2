@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\Story as StoryInterface;
 
+use Carbon\Carbon;
+
 class Story implements StoryInterface
 {
     public function getAllStories()
@@ -203,8 +205,8 @@ class Story implements StoryInterface
         if ($createdAt) $query->where('created_at', '=', $createdAt);
         if ($updatedAt) $query->where('updated_at', '=', $updatedAt);
 
-        if ($createdAtMin) $query->where('created_at', '>=', $createdAtMin);
-        if ($createdAtMax) $query->where('created_at', '<=', $createdAtMax);
+        if ($createdAtMin) $query->where('created_at', '>=', $this->setEarliestTimestamp($createdAtMin));
+        if ($createdAtMax) $query->where('created_at', '<=', $this->setLatestTimestamp($createdAtMax));
 
         $searchResultsMeta = $query->where('final', '=', true)->get();
 
@@ -267,4 +269,34 @@ class Story implements StoryInterface
 
         return $distance;
     }
+
+
+    public function setLatestTimestamp($date)
+    {
+        $retVal = null;
+
+        try {
+            $retVal = Carbon::createFromFormat('Y-m-d', $date)->setTime(23, 59, 59);
+        } catch (\InvalidArgumentException $e) {
+            $retVal = '';
+        }
+
+        return $retVal;
+    }
+
+
+    public function setEarliestTimestamp($date)
+    {
+        $retVal = null;
+
+        try {
+            $retVal = Carbon::createFromFormat('Y-m-d', $date)->setTime(00, 00, 00);
+        } catch (\InvalidArgumentException $e) {
+            $retVal = '';
+        }
+
+        return $retVal;
+    }
+
+
 }
