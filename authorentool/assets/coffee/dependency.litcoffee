@@ -393,6 +393,7 @@
         createDropdownStorypointRef = (counter,rowCounter, columnCounter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
+            storypointArray = []
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
             storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
@@ -419,10 +420,11 @@
                     tmpStoryname = "Ref löschen"
                 else
                     inputID = helper(storypointArray[i], "inStorypoint")
-                    document.getElementById("ulStorypointRef_"+counter + "_" +rowCounter + "_" + columnCounter).appendChild(stuff)
-                    tmpStoryname = $("#" + inputID).val()
-                    if tmpStoryname == ""
-                        tmpStoryname = $("#" + inputID).attr("placeholder")
+                    if typeof $("#ulStorypointRef_"+counter + "_" +rowCounter + "_" + columnCounter) != "undefined"
+                        document.getElementById("ulStorypointRef_"+counter + "_" +rowCounter + "_" + columnCounter).appendChild(stuff)
+                        tmpStoryname = $("#" + inputID).val()
+                        if tmpStoryname == ""
+                            tmpStoryname = $("#" + inputID).attr("placeholder")
                 $("#" + stuff.id).find("a").attr("id",$("#" + stuff.id).find("a").attr("id") + "_"+counter + "_" +rowCounter + "_" + columnCounter) 
                 $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i]) 
                 $("#" + stuff.id).find("a").text(tmpStoryname)
@@ -480,84 +482,75 @@
                         newStorypointRef = copyForm.cloneNode(true)
                         copyItemForm = document.getElementById("colItemRefDeep")
                         newItemRef = copyItemForm.cloneNode(true)
-                        i = columnCounter
-                        i++
-                        newStorypointRef.id = "colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + i
-                        newItemRef.id = "colItemRefDeep_"+counter + "_" +rowCounter + "_" + i
+                        newElemCounter = columnCounter
+                        newElemCounter++
+                        newStorypointRef.id = "colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter
+                        newItemRef.id = "colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter
                         
                         button.parentNode.parentNode.parentNode.insertBefore(newStorypointRef, button.parentNode.parentNode.nextSibling)
                         button.parentNode.parentNode.parentNode.nextSibling.appendChild(newItemRef)
-                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + i), counter)
-                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + i), rowCounter)
-                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + i), i)
-                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + i), counter)
-                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + i), rowCounter)
-                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + i), i)
-                        createDropdownStorypointRef(counter,rowCounter,i, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i, currentObjID)
-                        $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i).click ->
-                            createDropdownStorypointRef(counter,rowCounter,i, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + i, currentObjID)
+                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), counter)
+                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), rowCounter)
+                        setIDs($("#colStorypointRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), newElemCounter)
+                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), counter)
+                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), rowCounter)
+                        setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), newElemCounter)
+                        createDropdownStorypointRef(counter,rowCounter,newElemCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter, currentObjID)
+                        $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter).click ->
+                            createDropdownStorypointRef(counter,rowCounter,newElemCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter, currentObjID)
                             return
-                            
+                    oldEdgeStartpoint
+                    previousColumn = columnCounter
+                    nextColumn = columnCounter
+                    previousColumn--
+                    nextColumn++
+                    previousStorypoint
                     if columnCounter == 1
-                        storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
-                        storypoint = storypoint.split("_")
-                        storypoint_2 = $(this).attr("storypointOwner")
-                        storypoint_2 = storypoint_2.split("_")
-                        # RemoveEdge(storypoint[1])
-                        AddEdge(storypoint_2[1], storypoint[1])
+                        previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                     else
-                        oldEdgeStartpoint
-                        previousColumn = columnCounter
-                        nextColumn = columnCounter
-                        previousColumn--
-                        nextColumn++
-                        previousStorypoint
-                        if columnCounter == 1
-                            previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
-                        else
-                            previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
-                        nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + nextColumn).attr("selectedOwner")
-                        previousStorypoint = previousStorypoint.split("_")
-                        if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
-                            oldEdgeStartpoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
-                            oldEdgeStartpoint = oldEdgeStartpoint.split("_")
-                            RemoveParticularEdge(oldEdgeStartpoint[1], previousStorypoint[1])
-                        storypoint = $(this).attr("storypointOwner")
-                        oldStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
-                        currentStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner")
-                        if typeof currentStorypoint != "undefined"
-                            $("#" + currentStorypoint).on "remove.btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, ->
-                                prevColumn = columnCounter
-                                prevColumn--
-                                currentStorypoint = currentStorypoint.split("_")
-                                if prevColumn > 0
-                                    previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + prevColumn).attr("selectedOwner")
-                                    previousStorypoint = previousStorypoint.split("_")
-                                    RemoveParticularEdge(currentStorypoint[1], previousStorypoint[1])
-                                else 
-                                    previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
-                                    previousStorypoint = previousStorypoint.split("_")
-                                    RemoveParticularEdge(currentStorypoint[1],previousStorypoint[1])
-                                i = columnCounter
-                                i++
-                                button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
-                                length = button.parentNode.parentNode.parentNode.childNodes.length
-                                while i < length
-                                   nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
-                                   if typeof nextStorypoint != "undefined"
-                                        nextStorypoint = nextStorypoint.split("_")
-                                        RemoveParticularEdge(nextStorypoint[1], currentStorypoint[1])
-                                        currentStorypoint = nextStorypoint
-                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("oldEdgeStartpoint", "undefined")
-                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", "undefined")
-                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
-                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
-                                   i++
-                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", "undefined")
-                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", "undefined")
-                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
-                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
-                                return
+                        previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + previousColumn).attr("selectedOwner")
+                    nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + nextColumn).attr("selectedOwner")
+                    previousStorypoint = previousStorypoint.split("_")
+                    if typeof $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint") != "undefined"
+                        oldEdgeStartpoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
+                        oldEdgeStartpoint = oldEdgeStartpoint.split("_")
+                        RemoveParticularEdge(oldEdgeStartpoint[1], previousStorypoint[1])
+                    storypoint = $(this).attr("storypointOwner")
+                    oldStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
+                    currentStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner")
+                    if typeof currentStorypoint != "undefined"
+                        $("#" + currentStorypoint).on "remove.btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, ->
+                            prevColumn = columnCounter
+                            prevColumn--
+                            currentStorypoint = currentStorypoint.split("_")
+                            if prevColumn > 0
+                                previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + prevColumn).attr("selectedOwner")
+                                previousStorypoint = previousStorypoint.split("_")
+                                RemoveParticularEdge(currentStorypoint[1], previousStorypoint[1])
+                            else 
+                                previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                                previousStorypoint = previousStorypoint.split("_")
+                                RemoveParticularEdge(currentStorypoint[1],previousStorypoint[1])
+                            i = columnCounter
+                            i++
+                            button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
+                            length = button.parentNode.parentNode.parentNode.childNodes.length
+                            while i < length
+                               nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                               if typeof nextStorypoint != "undefined"
+                                    nextStorypoint = nextStorypoint.split("_")
+                                    RemoveParticularEdge(nextStorypoint[1], currentStorypoint[1])
+                                    currentStorypoint = nextStorypoint
+                               $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("oldEdgeStartpoint", "undefined")
+                               $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", "undefined")
+                               $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
+                               $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
+                               i++
+                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", "undefined")
+                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", "undefined")
+                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
+                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
+                            return
                         if typeof oldStorypoint != "undefined"
                             $("#" + oldStorypoint).unbind("remove.btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
                             
