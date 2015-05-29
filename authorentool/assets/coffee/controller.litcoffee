@@ -176,13 +176,22 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
                 # Click Event für btnNeuesStorypointDelete
                 $("#btnNeuesStorypointDelete_" + counter).click ->
-                    if confirm "Wollen Sie den Storypoint wirklich löschen?"
-                        window.safeButtonCounter--
-                        checkSafeButton()
-                        AddoDeleteNewNodes("",$("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
-                        $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
-                            $("#fhlNeuerStorypoint_" + counter).remove()
-                        return
+                    $("#dialog-confirm-Storypoint").css("display","block")
+                    $('#dialog-confirm-Storypoint').dialog
+                      modal: true
+                      buttons:
+                        'Löschen': ->
+                                $(this).dialog 'close'
+                                window.safeButtonCounter--
+                                checkSafeButton()
+                                AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
+                                $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
+                                    $("#fhlNeuerStorypoint_" + counter).remove()
+                                return
+                        'Abbrechen': ->
+                                $(this).dialog 'close'
+                                return
+                        
         
                 # Click Event für btnStorypointEinklappen
                 btnEinklappen("#btnStorypointEinklappen_" + counter, "#fstNeuesStorypointContent_" + counter)

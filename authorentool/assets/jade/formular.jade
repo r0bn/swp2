@@ -31,10 +31,10 @@ block content
                         .form-group
                             label.col-lg-2.control-label(for="inSize") Größe der Story
                             .col-lg-6
-                                input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Stor")
+                                input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
                             .col-lg-1
                                 .dropdown
-                                    button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Einheit
+                                    button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
                                         span.caret 
                                     ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                         li(role='presentation')
@@ -219,7 +219,9 @@ block content
                     span.ui-icon.ui-icon-circle-close(style="float:left; margin-left:50%; margin-top:10%; transform:scale(2)")
                 p(id = "saveFunctionErrorText",style="float:left; margin-left:10%; margin-right:10%; margin-top:5%") Die Story konnte nicht gespeichert werden. Der Fehlercode ist im Tab 'XML Editor' ganz unten einzusehen.
                                                         // STORYPOINT - MULTIREFERENZBOX SCHATTENKOPIEN
-            
+            div(id="dialog-confirm-Storypoint" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie den Storypoint wirklich löschen?
+                    
             .form-group(id="fgpMultipleStorypointRefs", style="display:none")
                 .col-lg-3(id="colStorypointRefDeep")
                     .dropdown
