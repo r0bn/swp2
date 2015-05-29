@@ -87,4 +87,10 @@ public interface SpiritApp {
 	// public Context getContext();
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
+	
+	public void openPicture(String pictureURL);
+
+	public void hidePicture();
+
+	public void endStory();
 }

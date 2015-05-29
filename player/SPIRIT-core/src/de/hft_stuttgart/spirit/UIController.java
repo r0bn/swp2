@@ -266,4 +266,9 @@ public interface UIController {
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
 	
+	public void showPicture(String picturePath);
+
+	public void hidePicture();
+
+	public void endStory();
 }

@@ -251,5 +251,20 @@ public class Facade implements UIController {
 	public List<Poi> getArmlFromSdCard(String fullPath) {
 		return app.getArmlFromSdCard(fullPath);
 	}
+	
+	@Override
+	public void showPicture(String picturePath) {
+		app.openPicture(picturePath);
+	}
+
+	@Override
+	public void hidePicture() {
+		app.hidePicture();
+	}
+
+	@Override
+	public void endStory() {
+		app.endStory();
+	}
 
 }

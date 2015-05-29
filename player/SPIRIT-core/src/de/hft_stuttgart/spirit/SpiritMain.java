@@ -684,4 +684,20 @@ public class SpiritMain extends ApplicationAdapter implements
 	public void setStory(PlayableStory story) {
 		this.story = story;
 	}
+	
+	
+	@Override
+	public void openPicture(String pictureURL) {
+        webview.showPicture(pictureURL);
+	}
+
+	@Override
+	public void hidePicture() {
+		webview.hidePicture();
+	}
+
+	@Override
+	public void endStory() {
+		webview.endStory();
+	}
 }
