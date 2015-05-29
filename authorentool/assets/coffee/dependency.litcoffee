@@ -389,7 +389,7 @@
             
 
 
-        #Storypoint
+        # Erstellt die Logik hinter den Storypoint Reference Dropdownlisten
         createDropdownStorypointRef = (counter,rowCounter, columnCounter, buttonID, currentObjID) ->
 
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
@@ -557,6 +557,7 @@
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
                         storypoint = storypoint.split("_")
                         AddEdge(storypoint[1], previousStorypoint[1])
+                        addItemToEdge(storypoint[1], previousStorypoint[1], "HAHAHAHA")
                         if typeof nextStorypoint != "undefined"
                            nextStorypoint = nextStorypoint.split("_")
                            RemoveParticularEdge(nextStorypoint[1], oldEdgeStartpoint[1])
@@ -578,7 +579,8 @@
                     return
                 j++  
             return
-                    
+        
+        # Findet den Storypoint zu dem das Object gehört            
         edgeStorypointfinder = (objectID, searchedParent) ->
             found = false
             foundID = ""
@@ -594,23 +596,24 @@
                 tmpObj = parentNode
             return foundID
 
-
+        # Fügt eine neue Kante hinzu
         AddEdge = (StorypointID1, StorypointID2) ->
             if typeof StorypointID1 == "undefined" || typeof StorypointID2 == "undefined"
                 return
-            edge = {
-                from: StorypointID1,
-                to: StorypointID2,
-                arrows: 'to'
-            }
-            window.edges.push(edge)
-            container = document.getElementById('divDependencyBox');
-            data = {
-                nodes: window.nodes,
-                edges: window.edges
-            }
-            network = new vis.Network(container, data, {});
-            return
+            else
+                edge = {
+                    from: StorypointID1,
+                    to: StorypointID2,
+                    arrows: 'to'
+                }
+                window.edges.push(edge)
+                container = document.getElementById('divDependencyBox');
+                data = {
+                    nodes: window.nodes,
+                    edges: window.edges
+                }
+                network = new vis.Network(container, data, {});
+                return
 
         # Findet einen Knoten anhand seiner ID und löscht alle Verbindungen die von ihm weg gingen
         # Wenn nodeRemoved gesetzt ist (true), dann werden alle Referenzen gelöscht
@@ -630,21 +633,53 @@
             }
             network = new vis.Network(container, data, {});
             return
-
+            
+        # Fügt ein Item einer Kante hinzu. Sollte es keine Kante geben, wird diese neu erstellt
+        addItemToEdge = (FromStorypoint, ToStorypoint, ItemLabel) ->
+            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined" || typeof ItemLabel == "undefined"
+                return
+            else
+                i = 0
+                found = -1
+                while i < window.edges.length
+                    if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
+                        found = i
+                    i++
+                if found > -1
+                    window.edges[found].label = ItemLabel
+                else
+                    edge = {
+                        from: FromStorypoint,
+                        to: ToStorypoint,
+                        label: ItemLabel,
+                        font: {align: 'top'},
+                        arrows: 'to'
+                    }
+                    window.edges.push(edge)
+                container = document.getElementById('divDependencyBox');
+                data = {
+                    nodes: window.nodes,
+                    edges: window.edges
+                }
+                network = new vis.Network(container, data, {});
+                return
         # Löscht eine bestimmte Kante aus dem Graph
         RemoveParticularEdge = (FromStorypoint, ToStorypoint) ->
-            i = 0
-            while i < window.edges.length
-                if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
-                    window.edges.splice(i,1);
-                i++
-            container = document.getElementById('divDependencyBox');
-            data = {
-                nodes: window.nodes,
-                edges: window.edges
-            }
-            network = new vis.Network(container, data, {});
-            return
+            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
+                return
+            else
+                i = 0
+                while i < window.edges.length
+                    if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
+                        window.edges.splice(i,1);
+                    i++
+                container = document.getElementById('divDependencyBox');
+                data = {
+                    nodes: window.nodes,
+                    edges: window.edges
+                }
+                network = new vis.Network(container, data, {});
+                return
 
             #Methode zum hinzufügen und löschen von neuen Knoten wenn diese per createNewStorypoint neu angelegt werden
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
