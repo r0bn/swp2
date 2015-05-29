@@ -13,7 +13,18 @@
             btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
             # Click Event für btnItemDelete
             $("#btnItemDelete_" + interactionCounter).click ->
-               $("#fgpNeu_Item_" + interactionCounter).remove() if (confirm('Möchten Sie das Item wirklich löschen?'))
+                $("#dialog-confirm-Item").css("display","block")
+                $('#dialog-confirm-Item').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            $("#fgpNeu_Item_" + interactionCounter).toggle "drop", 200, () ->
+                                $("#fgpNeu_Item_" + interactionCounter).remove()
+                            return
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+                            return
 
             # Click Event für btnItemEinklappen
             btnEinklappen("#btnItemEinklappen_" + interactionCounter, "#fstNeuesItemContent_" + interactionCounter)
@@ -47,7 +58,18 @@
 
             # Click Event für btnQuizDelete
             $("#btnQuizDelete_" + interactionCounter).click ->
-               $("#fgpNeu_Quiz_" + interactionCounter).remove() if (confirm('Möchten Sie das Quiz wirklich löschen?'))
+                $("#dialog-confirm-Quiz").css("display","block")
+                $('#dialog-confirm-Quiz').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            $("#fgpNeu_Quiz_" + interactionCounter).toggle "drop", 200, () ->
+                                $("#fgpNeu_Quiz_" + interactionCounter).remove()
+                            return
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+                            return
 
             # Dropdown Event for btnSetQuizOnTrueReferences
             $("#btnSetQuizOnTrueReferences_" + interactionCounter).click ->
@@ -89,7 +111,18 @@
 
                 # Click Event für btnQuizAnswerDelete
                 $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
-                    $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
+                    $("#dialog-confirm-Antwort").css("display","block")
+                    $('#dialog-confirm-Antwort').dialog
+                      modal: true
+                      buttons:
+                        'Löschen': ->
+                                $(this).dialog 'close'
+                                $("#" + answer.id).toggle "drop", 200, () ->
+                                    $("#" + answer.id).remove()
+                                return
+                        'Abbrechen': ->
+                                $(this).dialog 'close'
+                                return
                 helpRek( $("#" + answer.id))
             helpRek( $("#" + stuff.id))
 
@@ -117,8 +150,18 @@
 
                 # Click Event für btnChooserDelete
                 $("#btnChooserDelete_" + interactionCounter).click ->
-                   $("#fgpNeu_Chooser_" + interactionCounter).remove() if (confirm('Möchten Sie den Chooser wirklich löschen?'))
-        
+                    $("#dialog-confirm-Chooser").css("display","block")
+                    $('#dialog-confirm-Chooser').dialog
+                      modal: true
+                      buttons:
+                        'Löschen': ->
+                                $(this).dialog 'close'
+                                $("#fgpNeu_Chooser_" + interactionCounter).toggle "drop", 200, () ->
+                                    $("#fgpNeu_Chooser_" + interactionCounter).remove()
+                                return
+                        'Abbrechen': ->
+                                $(this).dialog 'close'
+                                return
                 # Click Event für btnChooserEinklappen
                 btnEinklappen("#btnChooserEinklappen_" + interactionCounter, "#fstNeuerChooserContent_" + interactionCounter)
 
@@ -160,7 +203,18 @@
 
                     # Click Event für btnChooserDelete
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
-                        $("#" + answer.id).remove() if (confirm('Möchten Sie die Antwort wirklich löschen?'))
+                        $("#dialog-confirm-Antwort").css("display","block")
+                        $('#dialog-confirm-Antwort').dialog
+                          modal: true
+                          buttons:
+                            'Löschen': ->
+                                    $(this).dialog 'close'
+                                    $("#" + answer.id).toggle "drop", 200, () ->
+                                        $("#" + answer.id).remove()
+                                    return
+                            'Abbrechen': ->
+                                    $(this).dialog 'close'
+                                    return
                     helpRek( $("#" + answer.id))
                 helpRek( $("#" + stuff.id))
 
