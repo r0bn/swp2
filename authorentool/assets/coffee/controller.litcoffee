@@ -111,13 +111,22 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 xml = startSynchro()
                 $scope.xmlFile = xml
                 $scope.saveXML()
-                $("#saveFunction").css("display", "block")
-                $("#saveFunction").dialog
-                  modal: true
-                  buttons: {
-                    Ok: -> 
-                      $(this).dialog "close";
-                    }
+                if $scope.xmlError != "XML valide!"
+                    $("#saveFunctionError").css("display", "block")
+                    $("#saveFunctionError").dialog
+                      modal: true
+                      buttons: {
+                        Ok: -> 
+                          $(this).dialog "close";
+                        }
+                else 
+                    $("#saveFunctionSuccess").css("display", "block")
+                    $("#saveFunctionSuccess").dialog
+                      modal: true
+                      buttons: {
+                        Ok: -> 
+                          $(this).dialog "close";
+                        }
                 return
 
             
