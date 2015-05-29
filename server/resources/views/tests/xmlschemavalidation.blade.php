@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="robots" content="noindex,nofollow">
     <title>XML VALIDATION TEST</title>
     <link rel="stylesheet" href="/css/app2.css"/>
 </head>
