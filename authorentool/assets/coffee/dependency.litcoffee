@@ -303,6 +303,10 @@
             return itemArray
             
             
+        itemHelper = (storypointId, calcID) ->
+            splitted = storypointId.split("_")
+            return calcID = calcID + "_" + splitted[2]
+            
             
             
             
@@ -311,11 +315,9 @@
 
             #Hier muss das Array geändert werden. Da muss noch ne Methode rein, damit man alle Items findet
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
-            storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
+            #storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
             itemArray = getAllItems()
-            alert itemArray[0]
-            alert itemArray[1]
-            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
+            #storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
             ############################
             
             copyForm = document.getElementById("liSkChooserItemRef")
@@ -323,25 +325,25 @@
 
             $("#ulSkChooserItemRef_"+counter).empty()
             i = 0
-            z = storypointArray.length
+            z = itemArray.length
             z++
             while i < z
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_tmp_" + i
                 stuff.style.display="block"
                 
-                if i == storypointArray.length
+                if i == itemArray.length
                     document.getElementById("ulSkChooserItemRef_"+counter).appendChild(stuff)
-                    tmpStoryname = "Ref löschen"
+                    tmpItemname = "Ref löschen"
                 else
-                    inputID = helper(storypointArray[i], "inStorypoint")
+                    inputID = itemHelper(itemArray[i], "inItemID")
                     document.getElementById("ulSkChooserItemRef_"+counter).appendChild(stuff)
-                    tmpStoryname = $("#" + inputID).val()
-                    if tmpStoryname == ""
-                        tmpStoryname = $("#" + inputID).attr("placeholder") 
-                $("#" + stuff.id).find("a").attr("storypointOwner",storypointArray[i])
-                $("#" + stuff.id).find("a").text(tmpStoryname)
-                $("#" + stuff.id).find("a").html(tmpStoryname)
+                    tmpItemname = $("#" + inputID).val()
+                    if tmpItemname == ""
+                        tmpItemname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").attr("itemOwner",itemArray[i])
+                $("#" + stuff.id).find("a").text(tmpItemname)
+                $("#" + stuff.id).find("a").html(tmpItemname)
                 i++
 
             lauf = 0
@@ -350,46 +352,42 @@
             j = 0
             while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
-                if j == storypointArray.length
+                if j == itemArray.length
                     $("#ddnChooserItem_"+indexe).click ->
-                        storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                        storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                        #storypoint = storypoint.split("_")
+                        #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
                 else $("#ddnChooserItem_"+indexe).click ->
                     $("#btnSetChooserItemReferences_"+counter).val($(this).text())
                     $("#btnSetChooserItemReferences_"+counter).html($(this).text() + "<span class='caret' />")
-                    storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                    storypoint = storypoint.split("_")
-                    storypoint_2 = $(this).attr("storypointOwner")
-                    storypoint_2 = storypoint_2.split("_")
-                    RemoveEdge(storypoint[1])
-                    AddEdge(storypoint[1], storypoint_2[1])
+                    #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                    #storypoint = storypoint.split("_")
+                    #storypoint_2 = $(this).attr("itemOwner")
+                    #storypoint_2 = storypoint_2.split("_")
+                    #RemoveEdge(storypoint[1])
+                    #AddEdge(storypoint[1], storypoint_2[1])
                     return
 
-                $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
+                $("#" + itemArray[j]).find("button:nth-child(4)").click ->
                     tmpCounter = $(this).attr("id").split("_")[1]
-                    tmpStorypointValue = $("#inStorypoint_" + tmpCounter).val()
-                    if tmpStorypointValue == ''
-                        tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
+                    tmpItemValue = $("#inItemID_" + tmpCounter).val()
+                    if tmpItemValue == ''
+                        tmpItemValue = $("#inItemID_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetChooserItemReferences_"+ counter).val() == tmpStorypointValue
-                        storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                        storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                    if $("#btnSetChooserItemReferences_"+ counter).val() == tmpItemValue
+                        #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                        #storypoint = storypoint.split("_")
+                        #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
                 j++
             return
             
-            
 
-            
-            
-            
 
         #Storypoint
         createDropdownStorypointRef = (counter,rowCounter, columnCounter, buttonID, currentObjID) ->
