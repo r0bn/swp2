@@ -460,12 +460,12 @@
                                 nextStorypoint = nextStorypoint.split("_")
                                 RemoveParticularEdge(nextStorypoint[1], storypoint[1])
                                 storypoint = nextStorypoint
-                           $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", undefined)
+                           $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", "undefined")
                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
                            $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
                            i++
                         
-                        $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", undefined)
+                        $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", "undefined")
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
                         return
@@ -523,6 +523,44 @@
                             oldEdgeStartpoint = oldEdgeStartpoint.split("_")
                             RemoveParticularEdge(oldEdgeStartpoint[1], previousStorypoint[1])
                         storypoint = $(this).attr("storypointOwner")
+                        oldStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint")
+                        currentStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner")
+                        if typeof currentStorypoint != "undefined"
+                            $("#" + currentStorypoint).on "remove", ->
+                                prevColumn = columnCounter
+                                prevColumn--
+                                currentStorypoint = currentStorypoint.split("_")
+                                if prevColumn > 0
+                                    previousStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + prevColumn).attr("selectedOwner")
+                                    previousStorypoint = previousStorypoint.split("_")
+                                    RemoveParticularEdge(currentStorypoint[1], previousStorypoint[1])
+                                else 
+                                    previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                                    previousStorypoint = previousStorypoint.split("_")
+                                    RemoveParticularEdge(currentStorypoint[1],previousStorypoint[1])
+                                i = columnCounter
+                                i++
+                                button = document.getElementById("btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter)
+                                length = button.parentNode.parentNode.parentNode.childNodes.length
+                                while i < length
+                                   nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                                   if typeof nextStorypoint != "undefined"
+                                        nextStorypoint = nextStorypoint.split("_")
+                                        RemoveParticularEdge(nextStorypoint[1], currentStorypoint[1])
+                                        currentStorypoint = nextStorypoint
+                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("oldEdgeStartpoint", "undefined")
+                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner", "undefined")
+                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).val("Neue Ref setzen")
+                                   $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).html("Neue Ref setzen <span class='caret' />")
+                                   i++
+                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", "undefined")
+                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("selectedOwner", "undefined")
+                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
+                                $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
+                                return
+                        if typeof oldStorypoint != "undefined"
+                            $("#" + oldStorypoint).unbind("remove")
+                            
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
                         storypoint = storypoint.split("_")
                         AddEdge(storypoint[1], previousStorypoint[1])
@@ -547,7 +585,7 @@
                     return
                 j++  
             return
-
+                    
         edgeStorypointfinder = (objectID, searchedParent) ->
             found = false
             foundID = ""
@@ -565,6 +603,8 @@
 
 
         AddEdge = (StorypointID1, StorypointID2) ->
+            if typeof StorypointID1 == "undefined" || typeof StorypointID2 == "undefined"
+                return
             edge = {
                 from: StorypointID1,
                 to: StorypointID2,
