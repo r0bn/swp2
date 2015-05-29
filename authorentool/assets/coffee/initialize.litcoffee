@@ -1,17 +1,3 @@
-        initSafeButton = () -> 
-            $("#btnCreateNewStorypoint").click ->
-                window.safeButtonCounter++
-                #alert window.safeButtonCounter
-                checkSafeButton()
-                return
-            $("#btnSaveStory").click ->
-                xml = startSynchro()
-                $scope.xmlFile = xml
-                $scope.saveXML()
-                $("#saveFunction" ).attr("display", "block")
-                $("#saveFunction").dialog();
-                return
-
 
         checkSafeButton = () ->
             if window.safeButtonCounter > 0            

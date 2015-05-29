@@ -100,7 +100,25 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initScrollbar()
 
         window.safeButtonCounter = 0
-        initSafeButton()
+
+        $("#btnCreateNewStorypoint").click ->
+            window.safeButtonCounter++
+            #alert window.safeButtonCounter
+            checkSafeButton()
+            return
+
+        $("#btnSaveStory").click ->
+                xml = startSynchro()
+                $scope.xmlFile = xml
+                $scope.saveXML()
+                $("#saveFunction").css("display", "block")
+                $("#saveFunction").dialog
+                  modal: true
+                  buttons: {
+                    Ok: -> 
+                      $(this).dialog "close";
+                    }
+                return
 
             
         $scope.createNewStorypoint = (counter) ->
