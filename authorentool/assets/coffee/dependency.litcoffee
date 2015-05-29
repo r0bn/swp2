@@ -666,24 +666,35 @@
                 createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
                 return
             $("#btnStorypointRefDelete_"+counter + "_" +rowCounter + "_" + columnCounter).click ->
-                if (confirm('Möchten Sie diese Referenzen wirklich löschen?'))
-                    storypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_1").attr("selectedOwner")
-                    if typeof storypoint != "undefined"
-                        storypoint = storypoint.split("_")
-                        previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
-                        previousStorypoint = previousStorypoint.split("_")
-                        RemoveParticularEdge(storypoint[1],previousStorypoint[1])
-                        i = 1
-                        i++
-                        while i < 4
-                           nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
-                           if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
-                               nextStorypoint = nextStorypoint.split("_")
-                               RemoveParticularEdge(nextStorypoint[1], storypoint[1])
-                           storypoint = nextStorypoint
-                           i++
-                    $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).remove()
-                    $("#fgpMultipleItemRefs_" + counter + "_" + rowCounter).remove() 
-                    return
+                $("#dialog-confirm-Referenzen").css("display","block")
+                $('#dialog-confirm-Referenzen').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            storypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_1").attr("selectedOwner")
+                            if typeof storypoint != "undefined"
+                                storypoint = storypoint.split("_")
+                                previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                                previousStorypoint = previousStorypoint.split("_")
+                                RemoveParticularEdge(storypoint[1],previousStorypoint[1])
+                                i = 1
+                                i++
+                                while i < 4
+                                   nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + i).attr("selectedOwner")
+                                   if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
+                                       nextStorypoint = nextStorypoint.split("_")
+                                       RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                                   storypoint = nextStorypoint
+                                   i++
+                            $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).toggle "drop", 200, () ->
+                                $("#fgpMultipleStorypointRefs_" + counter + "_" + rowCounter).remove()
+                            $("#fgpMultipleItemRefs_" + counter + "_" + rowCounter).toggle "drop", 200, () ->
+                                $("#fgpMultipleItemRefs_" + counter + "_" + rowCounter).remove() 
+                            return
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+                            return
+                    
                 return
             return
