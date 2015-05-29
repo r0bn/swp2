@@ -91,11 +91,13 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.storypointCounter = 0
         window.quizAnswerCounter = 10
         window.chooserAnswerCounter = 10
+        window.interactioncounter = 10;
+        
         
         # Nodes and Edges for the dependency graph
         window.nodes = []
         window.edges = []
-        window.interactioncounter = 10;
+
         initHelpSystem()
         initScrollbar()
 

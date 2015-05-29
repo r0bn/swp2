@@ -283,12 +283,24 @@
             
             #Item
             
-        getAllItems = (buttonID, currentStorypointID) ->
+        getAllItems = () ->
             
+            itemArray = []
+            i = 10; 
+            itemIndex = 11
+            while i < window.interactioncounter
+                tempItem = $("#fgpNeu_Item_"+itemIndex).attr("id")
+                if typeof tempItem == 'undefined'	
+                    itemIndex++
+                    i++
+                    continue
+                else
+                    itemArray.push(tempItem)
             
+                itemIndex++
+                i++
             
-            
-            return 
+            return itemArray
             
             
             
@@ -300,7 +312,9 @@
             #Hier muss das Array geändert werden. Da muss noch ne Methode rein, damit man alle Items findet
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
-            itemArray = getAllItems(buttonID, "#"+currentStorypointID)
+            itemArray = getAllItems()
+            alert itemArray[0]
+            alert itemArray[1]
             storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
             ############################
             
