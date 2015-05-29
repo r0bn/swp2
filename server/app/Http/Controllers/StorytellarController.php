@@ -1,97 +1,159 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-use App\Story;
+use App\Interfaces\FileHelper as FileHelperInterface;
+use App\Interfaces\Story as StoryInterface;
+use App\Interfaces\TempStory as TempStoryInterface;
+use App\Interfaces\XmlParser as XmlParserInterface;
+use App\Interfaces\XmlValidator as XmlValidatorInterface;
 
-use App\PostStory;
 
-class StorytellarController extends Controller {
+class StorytellarController extends Controller
+{
+    protected $story;
+    protected $tempStory;
+    protected $xmlParser;
+    protected $xmlValidator;
+
+    public function __construct(FileHelperInterface $filehelper,
+                                StoryInterface $story,
+                                TempStoryInterface $tempStory,
+                                XmlParserInterface $xmlParser,
+                                XmlValidatorInterface $xmlValidator)
+    {
+        $this->fileHelper = $filehelper;
+        $this->story = $story;
+        $this->tempStory = $tempStory;
+        $this->xmlParser = $xmlParser;
+        $this->xmlValidator = $xmlValidator;
+    }
+
+
+    public function getStories(Request $request)
+    {
+        $retVal = null;
+
+        if ($request->all()) {
+            $retVal = $this->story->getFilteredStories($request);
+        } else {
+            $retVal = $this->story->getAllStories();
+        }
+
+        return $retVal;
+    }
+
+    public function getOpenStories()
+    {
+        return $this->story->getAllOpenStories();
+    }
+
+    public function getStory($id)
+    {
+        return $this->story->getStory($id);
+    }
+
+    public function getStoryMediaFiles($id)
+    {
+        return $this->fileHelper->getStoryMediaFiles($id);
+    }
+
+    public function createStory(Request $request)
+    {
+        $retVal = null;
+
+        $xmlString = $request->input('xml');
+
+        if ($request->input('final') && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString))) {
+            $retVal = $this->story->createStory($xmlString);
+        } else {
+            $workingTitle = $request->input('working_title');
+            $retVal = $this->story->createStorySlot($xmlString, $workingTitle);
+        }
+
+        return $retVal;
+    }
+
+    public function updateStory(Request $request, $id)
+    {
+        if ($id != 1 || $id != 2 || $id != 3) {
+            $xmlString = $request->input('xml');
+
+            if ($request->input('final') && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString))) {
+                $this->story->updateStory($xmlString, $id);
+            } else {
+                $workingTitle = $request->input('working_title');
+                $this->story->updateStorySlot($xmlString, $id, $workingTitle);
+            }
+        }
+    }
+
+    public function deleteStory($id)
+    {
+        if ($id != 1 || $id != 2 || $id != 3) {
+            $this->story->deleteStory($id);
+        }
+    }
+
+    public function addFile(Request $request, $id)
+    {
+        $file = $request->file('file');
+        $this->fileHelper->storeStoryMediaFile($id, $file);
+    }
+
+    public function deleteFile($id, $filename)
+    {
+        if ($id != 1 || $id != 2 || $id != 3) {
+            $this->fileHelper->deleteStoryMediaFile($id, $filename);
+        }
+    }
+
 
     /**
-     * Get all stories.
-     *
-     * @return json
+     * Temporary for player testing group.
      */
-    public function getStories()
+
+    public function getTempStories(Request $request)
     {
-        $stories = array();
+        $retVal = null;
 
-        foreach(Story::all() as $entry) {
-            $story = array();
+        if ($request->all()) {
+            $retVal = $this->tempStory->getFilteredStories($request);
+        } else {
+            $retVal = $this->tempStory->getAllStories();
+        }
 
-            $story['id'] = $entry->id;
-            $story['title'] = $entry->title;
-            $story['description'] = $entry->description;
-            $story['author'] = $entry->author;
-            $story['size'] = $entry->size;
-            $story['creation_date'] = $entry->creation_date;
-            $story['location'] = $entry->location;
-            $story['radius'] = $entry->radius;
+        return $retVal;
+    }
 
-            $stories[] = $story;
+    public function getTempStory($id)
+    {
+        return $this->tempStory->getStory($id);
+    }
+
+
+    /**
+     * Temporary for xml schema validation testing.
+     */
+
+    public function getXmlSchemaValidation()
+    {
+        return \View::make('tests.xmlschemavalidation');
+    }
+
+    public function postXmlSchemaValidation(Request $request)
+    {
+        $xmlString = $request->input('xmlstring');
+
+        $retVal = false;
+
+        if ($xmlString != '' && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString))) {
+            $retVal = true;
         }
 
         $headers['Content-Type'] = 'application/json; charset=utf-8';
-
-        return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
-    }
-
-
-    /**
-     * Get a specific story by id.
-     *
-     * @param  Story  $id
-     * @return xml
-     */
-    public function getStory($id)
-    {
-        $story = Story::findOrFail($id);
-
-        return $story->xml_file;
-    }
-
-
-    /**
-     * Create a new story.
-     *
-     * @param  Request  $request
-     * @return string
-     */
-    public function createStory(Request $request)
-    {
-
-        $story = new PostStory;
-
-        $story->title = $request->input('title');
-        $story->description = $request->input('description');
-        $story->author = $request->input('author');
-        $story->size = $request->input('size');
-        $story->creation_date = $request->input('creation_date');
-        $story->location = $request->input('location');
-        $story->radius = $request->input('radius');
-
-        $story->xml_file = $request->input('xml');
-
-        $story->save();
-
-        $storyId = $story->id;
-
-        $files = $request->file('media');
-
-        if (count($files) != 0) {
-            foreach($files as $file) {
-                $mediaPath = 'media/' . $storyId;
-                $filename = $file->getClientOriginalName();
-                $upload = $file->move($mediaPath, $filename);
-            }
-        }
-
-        return "check http://www.storytellar.de/media/" . $storyId . "/<filename> if the uploaded file is available!";
-
+        return response()->json($retVal, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 
 }

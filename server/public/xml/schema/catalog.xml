@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+    <!-- / -->
+    <system systemId="http://www.opengis.net/arml/2.0/ExARML.xsd"
+            uri="ExARML.xsd"/>
+    <system systemId="http://www.opengis.net/arml/2.0/Dependency.xsd"
+            uri="Dependency.xsd"/>
+    <system systemId="http://www.opengis.net/arml/2.0/Story.xsd"
+            uri="Story.xsd"/>
+
+    <!-- GCO -->
+    <system systemId="http://www.isotc211.org/2005/gco/gco.xsd"
+            uri="gco/gco.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gco/basicTypes.xsd"
+            uri="gco/basicTypes.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gco/gcoBase.xsd"
+            uri="gco/gcoBase.xsd"/>
+
+    <!-- GMD -->
+    <system systemId="http://www.isotc211.org/2005/gmd/applicationSchema.xsd"
+            uri="gmd/applicationSchema.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/citation.xsd"
+            uri="gmd/citation.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/constraints.xsd"
+            uri="gmd/constraints.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/content.xsd"
+            uri="gmd/content.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/dataQuality.xsd"
+            uri="gmd/dataQuality.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/distribution.xsd"
+            uri="gmd/distribution.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/extent.xsd"
+            uri="gmd/extent.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/freeText.xsd"
+            uri="gmd/freeText.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/gmd.xsd"
+            uri="gmd/gmd.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/identification.xsd"
+            uri="gmd/identification.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/maintenance.xsd"
+            uri="gmd/maintenance.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/metadataApplication.xsd"
+            uri="gmd/metadataApplication.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/metadataEntity.xsd"
+            uri="gmd/metadataEntity.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/metadataExtension.xsd"
+            uri="gmd/metadataExtension.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/portrayalCatalogue.xsd"
+            uri="gmd/portrayalCatalogue.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/referenceSystem.xsd"
+            uri="gmd/referenceSystem.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gmd/spatialRepresentation.xsd"
+            uri="gmd/spatialRepresentation.xsd"/>
+
+    <!-- GML -->
+    <system systemId="http://schemas.opengis.net/gml/3.2/basicTypes.xsd"
+            uri="gml/basicTypes.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/coordinateOperations.xsd"
+            uri="gml/coordinateOperations.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/coordinateReferenceSystems.xsd"
+            uri="gml/coordinateReferenceSystems.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/coordinateSystems.xsd"
+            uri="gml/coordinateSystems.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/coverage.xsd"
+            uri="gml/coverage.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/datums.xsd"
+            uri="gml/datums.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/defaultStyle.xsd"
+            uri="gml/defaultStyle.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/deprecatedTypes.xsd"
+            uri="gml/deprecatedTypes.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/dictionary.xsd"
+            uri="gml/dictionary.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/direction.xsd"
+            uri="gml/direction.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/dynamicFeature.xsd"
+            uri="gml/dynamicFeature.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/feature.xsd"
+            uri="gml/feature.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/geometryAggregates.xsd"
+            uri="gml/geometryAggregates.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/geometryBasic0d1d.xsd"
+            uri="gml/geometryBasic0d1d.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/geometryBasic2d.xsd"
+            uri="gml/geometryBasic2d.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/geometryComplexes.xsd"
+            uri="gml/geometryComplexes.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/geometryPrimitives.xsd"
+            uri="gml/geometryPrimitives.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/gml.xsd"
+            uri="gml/gml.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/gmlBase.xsd"
+            uri="gml/gmlBase.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/grids.xsd"
+            uri="gml/grids.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/measures.xsd"
+            uri="gml/measures.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/observation.xsd"
+            uri="gml/observation.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/referenceSystems.xsd"
+            uri="gml/referenceSystems.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/smill20.xsd"
+            uri="gml/smill20.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/smill20-language.xsd"
+            uri="gml/smill20-language.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/temporal.xsd"
+            uri="gml/temporal.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/temporalReferenceSystems.xsd"
+            uri="gml/temporalReferenceSystems.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/temporalTopology.xsd"
+            uri="gml/temporalTopology.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/topology.xsd"
+            uri="gml/topology.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/units.xsd"
+            uri="gml/units.xsd"/>
+    <system systemId="http://schemas.opengis.net/gml/3.2/valueObjects.xsd"
+            uri="gml/valueObjects.xsd"/>
+
+    <!-- GSR -->
+    <system systemId="http://www.isotc211.org/2005/gsr/gsr.xsd"
+            uri="gsr/gsr.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gsr/spatialReferencing.xsd"
+            uri="gsr/spatialReferencing.xsd"/>
+
+
+    <!-- GSS -->
+    <system systemId="http://www.isotc211.org/2005/gss/geometry.xsd"
+            uri="gss/geometry.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gss/gss.xsd"
+            uri="gss/gss.xsd"/>
+
+
+    <!-- GTS -->
+    <system systemId="http://www.isotc211.org/2005/gts/gts.xsd"
+            uri="gts/gts.xsd"/>
+    <system systemId="http://www.isotc211.org/2005/gts/temporalObjects.xsd"
+            uri="gts/temporalObjects.xsd"/>
+
+
+    <!-- XLINK -->
+    <system systemId="http://www.w3.org/1999/xlink.xsd"
+            uri="xlink/xlink.xsd"/>
+
+
+    <!-- XML -->
+    <system systemId="http://www.w3.org/XML/1998/xml.xsd"
+            uri="xml/xml.xsd"/>
+
+    <system systemId="http://www.w3.org/2001/xml.xsd"
+            uri="xml/xml2001.xsd"/>
+
+</catalog>

@@ -13,23 +13,46 @@
 
 
 /**
- * Download Routes for stories (player)
+ * Routes for stories (authorentool)
  *
- * This determines the routes for downloading all story
- * metadata and a specific story by id.
+ * Determines the routes for every stroy handling interaction.
  */
-Route::get('stories', 'StorytellarController@getStories');// deprecated
-
 Route::get('story', 'StorytellarController@getStories');
+
+Route::get('story/open', 'StorytellarController@getOpenStories');
 
 Route::get('story/{id}', 'StorytellarController@getStory');
 
+Route::get('story/{id}/media', 'StorytellarController@getStoryMediaFiles');
 
-/**
- * Upload Routes for a story (authorentool)
- *
- * This determines the routes for uploading story files.
- */
-Route::post('createstory', 'StorytellarController@createStory'); // deprecated
+
+Route::post('story/{id}', 'StorytellarController@updateStory');
 
 Route::post('story', 'StorytellarController@createStory');
+
+Route::delete('story/{id}/media/{filename}', 'StorytellarController@deleteFile');
+
+Route::delete('story/{id}', 'StorytellarController@deleteStory');
+
+Route::put('story/{id}/media', 'StorytellarController@addFile');
+
+
+
+/**
+ * Temporary routes for stories (player)
+ *
+ * This determines only the routes for downloading.
+ */
+Route::get('temp', 'StorytellarController@getTempStories');
+
+Route::get('temp/{id}', 'StorytellarController@getTempStory');
+
+
+
+/**
+ * Temporary routes for xml schema validation
+ */
+
+Route::get('docs/tests/xmlschemavalidation', 'StorytellarController@getXmlSchemaValidation');
+
+Route::post('docs/tests/xmlschemavalidation', 'StorytellarController@postXmlSchemaValidation');

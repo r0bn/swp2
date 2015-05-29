@@ -6,6 +6,6 @@ class Story extends Model {
 
     protected $table = 'stories';
 
-    protected $fillable = ['title', 'description', 'author', 'size', 'creation_date', 'location', 'radius', 'media', 'xml_file'];
+    protected $fillable = ['title', 'description', 'author', 'revision', 'size', 'size_uom', 'location', 'radius', 'radius_uom', 'xml_file', 'working_title', 'final'];
 
 }

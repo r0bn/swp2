@@ -10,16 +10,16 @@
 
 ### Database Blueprint
   - id (DBMS Auto-Increment Value)
-  - title (VARCHAR (255))
-  - description (TEXT (65,535))
-  - author (VARCHAR (255))
-  - revision (INT)
-  - size (INT)
-  - size_uom (VARCHAR (255))
-  - location (VARCHAR (255))
-  - radius (INT)
-  - radius_uom (VARCHAR (255))
-  - xml_file (BLOB)
+  - title (string (255))
+  - description (string (255))
+  - author (string (255))
+  - size (string (255))
+  - **not final:** size_uom (string (255)) may be added
+  - creation_date (string (255))
+  - location (string (255))
+  - radius (string (255))
+  - **not final:** radius_uom (string (255)) may be added
+  - xml_file (blob)
   - created_at (timestamp - framework related)
   - updated_at (timestamp - framework related)
 
@@ -28,22 +28,16 @@
 CREATE TABLE `stories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `author` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `revision` int(11) NOT NULL,
-  `size` int(11) NOT NULL,
-  `size_uom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `size` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `creation_date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `location` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `radius` int(11) NOT NULL,
-  `radius_uom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `radius` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `media` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `xml_file` blob NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ```
-
-### XML handling concept
-  - Validate XML against schema
-  - Extract story metadata (title, description, author, revision, size, size_uom, location, radius, radius_uom)
-  - Validate metadata against database fields
