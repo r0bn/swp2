@@ -14,6 +14,7 @@
    * Create new story
    * Update/edit story
    * Delete story
+ * XML validation test website
  * Filter story metadata
  * Temporay route for testing (player)
    * List of all stories
@@ -210,6 +211,12 @@ To delete a story including all it's media files you have to call the following 
 http://api.storytellar.de/story/<id>
 ```
 This will delete the story from the database and remove all files assigned to the media folder.
+
+### XML validation test website
+You can enter your XML content here to test if it's valid. The same validation process is applied for the routes mentioned above:
+```
+http://api.storytellar.de/docs/tests/xmlschemavalidation
+```
 
 ### Filter story metadata
 To filter specific values of a story, the following route needs to be called:
