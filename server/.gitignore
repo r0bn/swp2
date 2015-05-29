@@ -1,6 +1,6 @@
 /vendor
 /node_modules
 /public/media
-/.idea
-/server/.idea
+server/.idea
+.idea/
 .env
