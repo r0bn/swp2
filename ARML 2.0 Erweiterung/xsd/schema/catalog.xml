@@ -1,24 +1,23 @@
-  <?xml version="1.0"?>
-  <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
- 
- <!-- / -->
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+    <!-- / -->
     <system systemId="http://www.opengis.net/arml/2.0/ExARML.xsd"
             uri="ExARML.xsd"/>
     <system systemId="http://www.opengis.net/arml/2.0/Dependency.xsd"
             uri="Dependency.xsd"/>
     <system systemId="http://www.opengis.net/arml/2.0/Story.xsd"
             uri="Story.xsd"/>
- 
- 
- <!-- GCO -->
+
+    <!-- GCO -->
     <system systemId="http://www.isotc211.org/2005/gco/gco.xsd"
-            uri="gco/gco.xsd" />
+            uri="gco/gco.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gco/basicTypes.xsd"
-            uri="gco/basicTypes.xsd" />
+            uri="gco/basicTypes.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gco/gcoBase.xsd"
-            uri="gco/gcoBase.xsd" />
-            
- <!-- GMD -->
+            uri="gco/gcoBase.xsd"/>
+
+    <!-- GMD -->
     <system systemId="http://www.isotc211.org/2005/gmd/applicationSchema.xsd"
             uri="gmd/applicationSchema.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gmd/citation.xsd"
@@ -53,9 +52,8 @@
             uri="gmd/referenceSystem.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gmd/spatialRepresentation.xsd"
             uri="gmd/spatialRepresentation.xsd"/>
-            
- <!-- GML -->
-            
+
+    <!-- GML -->
     <system systemId="http://schemas.opengis.net/gml/3.2/basicTypes.xsd"
             uri="gml/basicTypes.xsd"/>
     <system systemId="http://schemas.opengis.net/gml/3.2/coordinateOperations.xsd"
@@ -118,42 +116,38 @@
             uri="gml/units.xsd"/>
     <system systemId="http://schemas.opengis.net/gml/3.2/valueObjects.xsd"
             uri="gml/valueObjects.xsd"/>
-            
-            
-            
- <!-- GSR -->
 
+    <!-- GSR -->
     <system systemId="http://www.isotc211.org/2005/gsr/gsr.xsd"
             uri="gsr/gsr.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gsr/spatialReferencing.xsd"
             uri="gsr/spatialReferencing.xsd"/>
 
 
- <!-- GSS -->
-
+    <!-- GSS -->
     <system systemId="http://www.isotc211.org/2005/gss/geometry.xsd"
             uri="gss/geometry.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gss/gss.xsd"
             uri="gss/gss.xsd"/>
 
 
- <!-- GTS -->
-
+    <!-- GTS -->
     <system systemId="http://www.isotc211.org/2005/gts/gts.xsd"
             uri="gts/gts.xsd"/>
     <system systemId="http://www.isotc211.org/2005/gts/temporalObjects.xsd"
             uri="gts/temporalObjects.xsd"/>
 
 
- <!-- XLINK -->
-
+    <!-- XLINK -->
     <system systemId="http://www.w3.org/1999/xlink.xsd"
             uri="xlink/xlink.xsd"/>
- 
 
- <!-- XML -->
 
-     <system systemId="http://www.w3.org/XML/1998/xml.xsd"
+    <!-- XML -->
+    <system systemId="http://www.w3.org/XML/1998/xml.xsd"
             uri="xml/xml.xsd"/>
 
-  </catalog>
+    <system systemId="http://www.w3.org/2001/xml.xsd"
+            uri="xml/xml2001.xsd"/>
+
+</catalog>
