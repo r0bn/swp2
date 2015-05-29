@@ -112,6 +112,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 $scope.xmlFile = xml
                 $scope.saveXML()
                 if $scope.xmlError != "XML valide!"
+                    $("#saveFunctionErrorText").text($scope.xmlError)
                     $("#saveFunctionError").css("display", "block")
                     $("#saveFunctionError").dialog
                       modal: true
