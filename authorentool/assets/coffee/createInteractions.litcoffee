@@ -74,11 +74,17 @@
             # Dropdown Event for btnSetQuizOnTrueReferences
             $("#btnSetQuizOnTrueReferences_" + interactionCounter).click ->
                 # für OnTrue
+                oldValue = $("#btnSetQuizOnTrueReferences_" + interactionCounter).attr("currentEdge")
+                if typeof oldValue != "undefined"
+                    $("#btnSetQuizOnTrueReferences_" + interactionCounter).attr("oldValue", oldValue)
                 createDropdownQuizOnTrue(interactionCounter, "#btnSetQuizOnTrueReferences_" + interactionCounter, "#" + stuff.id)
 
             # Dropdown Event for btnSetQuizOnFalseReferences
             $("#btnSetQuizOnFalseReferences_" + interactionCounter).click ->
                 # für OnFalse
+                oldValue = $("#btnSetQuizOnFalseReferences_" + interactionCounter).attr("currentEdge")
+                if typeof oldValue != "undefined"
+                    $("#btnSetQuizOnFalseReferences_" + interactionCounter).attr("oldValue", oldValue)
                 createDropdownQuizOnFalse(interactionCounter, "#btnSetQuizOnFalseReferences_" + interactionCounter, "#" + stuff.id)
 
             btnEinklappen("#btnQuizEinklappen_" + interactionCounter, "#fstNeuesQuizContent_" + interactionCounter)
@@ -197,6 +203,9 @@
 
                     # Dropdown Event for btnSetChooserStorypointReferences
                     $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).click ->
+                        oldValue = $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("currentEdge")
+                        if typeof oldValue != "undefined"
+                            $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("oldValue", oldValue)
                         createChooserStorypointReference(ChooserAnswerCounter, "#btnSetChooserStorypointReferences_" + ChooserAnswerCounter, "#" + stuff.id)
                         
    

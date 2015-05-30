@@ -95,7 +95,12 @@
                     $("#ddnQuizOnTrueStorypoint_"+indexe).click ->
                         storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        oldEdge = $("#btnSetQuizOnTrueReferences_"+counter).attr("oldValue")
+                        if typeof oldEdge != "undefined"
+                            oldEdge = oldEdge.split("_")
+                            RemoveParticularEdge(storypoint[1], oldEdge[1])
+                        $("#btnSetQuizOnTrueReferences_"+counter).attr("oldValue", "undefined")
+                        $("#btnSetQuizOnTrueReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetQuizOnTrueReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetQuizOnTrueReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
@@ -105,8 +110,12 @@
                     storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
                     storypoint = storypoint.split("_")
                     storypoint_2 = $(this).attr("storypointOwner")
+                    $("#btnSetQuizOnTrueReferences_"+counter).attr("currentEdge", storypoint_2)
                     storypoint_2 = storypoint_2.split("_")
-                    RemoveEdge(storypoint[1])
+                    oldEdge = $("#btnSetQuizOnTrueReferences_"+counter).attr("oldValue")
+                    if typeof oldEdge != "undefined"
+                        oldEdge = oldEdge.split("_")
+                        RemoveParticularEdge(storypoint[1], oldEdge[1])
                     AddEdge(storypoint[1], storypoint_2[1])
                     return
 
@@ -120,7 +129,7 @@
                     if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue
                         storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        # RemoveEdge(storypoint[1])
                         $("#btnSetQuizOnTrueReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetQuizOnTrueReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -171,7 +180,12 @@
                     $("#ddnQuizOnFalseStorypoint_"+indexe).click ->
                         storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        oldEdge = $("#btnSetQuizOnFalseReferences_"+counter).attr("oldValue")
+                        if typeof oldEdge != "undefined"
+                            oldEdge = oldEdge.split("_")
+                            RemoveParticularEdge(storypoint[1], oldEdge[1])
+                        $("#btnSetQuizOnFalseReferences_"+counter).attr("oldValue", "undefined")
+                        $("#btnSetQuizOnFalseReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetQuizOnFalseReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetQuizOnFalseReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
@@ -181,8 +195,12 @@
                     storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
                     storypoint = storypoint.split("_")
                     storypoint_2 = $(this).attr("storypointOwner")
+                    $("#btnSetQuizOnFalseReferences_"+counter).attr("currentEdge", storypoint_2)
                     storypoint_2 = storypoint_2.split("_")
-                    RemoveEdge(storypoint[1])
+                    oldEdge = $("#btnSetQuizOnFalseReferences_"+counter).attr("oldValue")
+                    if typeof oldEdge != "undefined"
+                        oldEdge = oldEdge.split("_")
+                        RemoveParticularEdge(storypoint[1], oldEdge[1])
                     AddEdge(storypoint[1], storypoint_2[1])
                     return
 
@@ -195,7 +213,7 @@
                     if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue
                         storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        # RemoveEdge(storypoint[1])
                         $("#btnSetQuizOnFalseReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetQuizOnFalseReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -249,7 +267,12 @@
                     $("#ddnChooserStorypoint_"+indexe).click ->
                         storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        oldEdge = $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue")
+                        if typeof oldEdge != "undefined"
+                            oldEdge = oldEdge.split("_")
+                            RemoveParticularEdge(storypoint[1], oldEdge[1])
+                        $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue", "undefined")
+                        $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetChooserStorypointReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         return
@@ -259,8 +282,12 @@
                     storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
                     storypoint = storypoint.split("_")
                     storypoint_2 = $(this).attr("storypointOwner")
+                    $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", storypoint_2)
                     storypoint_2 = storypoint_2.split("_")
-                    RemoveEdge(storypoint[1])
+                    oldEdge = $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue")
+                    if typeof oldEdge != "undefined"
+                        oldEdge = oldEdge.split("_")
+                        RemoveParticularEdge(storypoint[1], oldEdge[1])
                     AddEdge(storypoint[1], storypoint_2[1])
                     return
 
@@ -572,7 +599,7 @@
                     if $("#btnSetStorypointReferences_"+ counter).val() == tmpStorypointValue
                         storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                        # RemoveEdge(storypoint[1])
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val("Neue Ref setzen")
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
                     return
