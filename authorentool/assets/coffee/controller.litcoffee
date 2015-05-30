@@ -97,7 +97,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         # Nodes and Edges for the dependency graph
         window.nodes = []
         window.edges = []
-
+        window.duplicateEdges = []
         initHelpSystem()
         initScrollbar()
 

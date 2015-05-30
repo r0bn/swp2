@@ -557,7 +557,6 @@
                         $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).attr("oldEdgeStartpoint", storypoint)
                         storypoint = storypoint.split("_")
                         AddEdge(storypoint[1], previousStorypoint[1])
-                        addItemToEdge(storypoint[1], previousStorypoint[1], "HAHAHAHA")
                         if typeof nextStorypoint != "undefined"
                            nextStorypoint = nextStorypoint.split("_")
                            RemoveParticularEdge(nextStorypoint[1], oldEdgeStartpoint[1])
@@ -597,23 +596,37 @@
             return foundID
 
         # Fügt eine neue Kante hinzu
-        AddEdge = (StorypointID1, StorypointID2) ->
-            if typeof StorypointID1 == "undefined" || typeof StorypointID2 == "undefined"
+        AddEdge = (FromStorypoint, ToStorypoint) ->
+            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
                 return
             else
-                edge = {
-                    from: StorypointID1,
-                    to: StorypointID2,
-                    arrows: 'to'
-                }
-                window.edges.push(edge)
-                container = document.getElementById('divDependencyBox');
-                data = {
-                    nodes: window.nodes,
-                    edges: window.edges
-                }
-                network = new vis.Network(container, data, {});
-                return
+                i = 0
+                found = -1
+                while i < window.edges.length
+                    if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
+                        found = i
+                    i++
+                if found > -1
+                    edge = {
+                        from: FromStorypoint,
+                        to: ToStorypoint,
+                        arrows: 'to'
+                    }
+                    window.duplicateEdges.push(edge)
+                else
+                    edge = {
+                        from: FromStorypoint,
+                        to: ToStorypoint,
+                        arrows: 'to'
+                    }
+                    window.edges.push(edge)
+                    container = document.getElementById('divDependencyBox');
+                    data = {
+                        nodes: window.nodes,
+                        edges: window.edges
+                    }
+                    network = new vis.Network(container, data, {});
+                    return
 
         # Findet einen Knoten anhand seiner ID und löscht alle Verbindungen die von ihm weg gingen
         # Wenn nodeRemoved gesetzt ist (true), dann werden alle Referenzen gelöscht
@@ -647,6 +660,12 @@
                     i++
                 if found > -1
                     window.edges[found].label = ItemLabel
+                    i = 0
+                    found = -1
+                    while i < window.duplicateEdges.length
+                        if window.duplicateEdges[i].from == FromStorypoint && window.duplicateEdges[i].to == ToStorypoint
+                            window.duplicateEdges[found].label = ItemLabel
+                        i++
                 else
                     edge = {
                         from: FromStorypoint,
@@ -669,10 +688,21 @@
                 return
             else
                 i = 0
-                while i < window.edges.length
-                    if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
-                        window.edges.splice(i,1);
+                found = -1
+                while i < window.duplicateEdges.length
+                    if window.duplicateEdges[i].from == FromStorypoint && window.duplicateEdges[i].to == ToStorypoint
+                        found = i
+                        i = window.duplicateEdges.length
                     i++
+                if found > -1
+                    window.duplicateEdges.splice(found,1);
+                else
+                    i = 0
+                    while i < window.edges.length
+                        if window.edges[i].from == FromStorypoint && window.edges[i].to == ToStorypoint
+                            window.edges.splice(i,1);
+                            i = window.edges.length
+                        i++ 
                 container = document.getElementById('divDependencyBox');
                 data = {
                     nodes: window.nodes,
