@@ -639,6 +639,14 @@
                 if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
                     window.edges.splice(i,1);
                 i++
+            i = 0
+            while i < window.duplicateEdges.length
+                if window.duplicateEdges[i].from == StorypointID
+                    window.duplicateEdges.splice(i,1);
+                
+                if nodeRemoved == true && typeof window.duplicateEdges[i] != "undefined" && window.duplicateEdges[i].to == StorypointID
+                    window.duplicateEdges.splice(i,1);
+                i++
             container = document.getElementById('divDependencyBox');
             data = {
                 nodes: window.nodes,
