@@ -243,7 +243,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentenvideo">
-                            <Href xlink:href="#Studentenvideo.mp4" />
+                            <Href xlink:href="Studentenvideo.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_B_PdR">
@@ -275,7 +275,7 @@
                 <Geometry>
                     <assets>
                         <Image id="Piratenzeugs">
-                            <href xlink:href="#Piratenzeugs.png" />
+                            <href xlink:href="Piratenzeug.jpg" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_KT">
@@ -308,7 +308,7 @@
                 <Geometry>
                     <assets>
                         <Image id="gebrauchter_Rucksack">
-                            <href xlink:href="#Rucksack.png" />
+                            <href xlink:href="alter_Rucksack.jpg" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_OTC">
@@ -340,7 +340,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Piratengespraech">
-                            <Href xlink:href="#Piratengespraech.mp4" />
+                            <Href xlink:href="Piratengespraech.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Pirat">
@@ -369,7 +369,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Studentengespraech">
-                            <Href xlink:href="#Studentengespraech.mp4" />
+                            <Href xlink:href="Studentengespraech.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Student">
@@ -398,7 +398,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Ende">
-                            <Href xlink:href="#Ende.mp4" />
+                            <Href xlink:href="Ende.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_E_1" >

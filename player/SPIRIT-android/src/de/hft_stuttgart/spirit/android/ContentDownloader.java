@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -316,6 +317,7 @@ public class ContentDownloader {
 			String name = null;
 			String video = null;
 			String image = null;
+			String trackable = null;
 			String pathToFile = null;
 
 			while (event != parser.END_DOCUMENT) {
@@ -330,7 +332,11 @@ public class ContentDownloader {
 						image = parser.getAttributeValue(0);
 						Log.d(ContentDownloader.class.toString(), "Image-ID: "
 								+ image);
+					} else if(name.equals("Trackable")) {
+						trackable = parser.getAttributeValue(0);
+						Log.d(ContentDownloader.class.toString(), trackable);
 					}
+					
 					if (video != null) {
 						if (name.equals("Href")) {
 							pathToFile = parser.getAttributeValue(0);
@@ -349,6 +355,17 @@ public class ContentDownloader {
 											+ pathToFile);
 							mediaMap.put(image, pathToFile);
 							image = null;
+						}
+					}
+					if (trackable != null) {
+						if (name.equals("src")) {
+							parser.next();
+							pathToFile = parser.getText();
+							Log.d(ContentDownloader.class.toString(),
+									"Trackable-ID: " + trackable + "  Path: "
+											+ pathToFile);
+							mediaMap.put(trackable, pathToFile);
+							trackable = null;
 						}
 					}
 					break;
