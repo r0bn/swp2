@@ -10,71 +10,78 @@ block content
         br
         .row(id="rowFormular")
             .col-md-9.column(id="colColumn1")
-                form.form-horizontal
-                    fieldset
-                        legend Storydaten
-                        .form-group
-                            label.col-lg-2.control-label(for="inTitel") Titel
-                            .col-lg-8
-                                input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
+                .row
+                    .col-md-11
+                        form.form-horizontal
+                            fieldset
+                                legend Storydaten
+                                .form-group
+                                    label.col-lg-2.control-label(for="inTitel") Titel
+                                    .col-lg-8
+                                        input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
 
-                        .form-group
-                            label.col-lg-2.control-label(for="ttaDescription") Beschreibung
-                            .col-lg-8
-                                textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
+                                .form-group
+                                    label.col-lg-2.control-label(for="ttaDescription") Beschreibung
+                                    .col-lg-8
+                                        textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
 
-                        .form-group
-                            label.col-lg-2.control-label(for="inAutor") Autor
-                            .col-lg-8
-                                input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
+                                .form-group
+                                    label.col-lg-2.control-label(for="inAutor") Autor
+                                    .col-lg-8
+                                        input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
 
-                        .form-group
-                            label.col-lg-2.control-label(for="inSize") Größe der Story
-                            .col-lg-6
-                                input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
-                            .col-lg-1
-                                .dropdown
-                                    button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
-                                        span.caret 
-                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                        li(role='presentation')
-                                            a(id="ddnkb", role='menuitem', tabindex='0') KB
-                                        li(role='presentation')
-                                            a(id="ddnmb", role='menuitem', tabindex='1') MB
-                                        li(role='presentation')
-                                            a(id="ddngb", role='menuitem', tabindex='2') GB
-                        .form-group
-                            label.col-lg-2.control-label(for="inLatLngLocation") Ort
+                                .form-group
+                                    label.col-lg-2.control-label(for="inSize") Größe der Story
+                                    .col-lg-6
+                                        input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
+                                    .col-lg-1
+                                        .dropdown
+                                            button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
+                                                span.caret 
+                                            ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                li(role='presentation')
+                                                    a(id="ddnkb", role='menuitem', tabindex='0') KB
+                                                li(role='presentation')
+                                                    a(id="ddnmb", role='menuitem', tabindex='1') MB
+                                                li(role='presentation')
+                                                    a(id="ddngb", role='menuitem', tabindex='2') GB
+                                .form-group
+                                    label.col-lg-2.control-label(for="inLatLngLocation") Ort
 
-                            .col-lg-8
-                                input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
-                                #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-                                    .modal-dialog   
-                                        .modal-content
-                                            .modal-body
-                                                .form-group
-                                                    .col-lg-6
-                                                        input.form-control.controls.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
-                                                    button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
-                                                .form-group  
-                                                    #gmeg_map_canvas(style='width:900px;height:400px')
-                            .col-lg-2
-                                button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
+                                    .col-lg-8
+                                        input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
+                                        #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                                            .modal-dialog   
+                                                .modal-content
+                                                    .modal-body
+                                                        .form-group
+                                                            .col-lg-6
+                                                                input.form-control.controls.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
+                                                            button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                                                        .form-group  
+                                                            #gmeg_map_canvas(style='width:900px;height:400px')
+                                    .col-lg-2
+                                        button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
 
-                        .form-group
-                            label.col-lg-2.control-label(for="inRadius") Radius um den Ort
-                            .col-lg-6
-                                input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
-                            .col-lg-1
-                                .dropdown
-                                    button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
-                                        span.caret 
-                                    ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                        li(role='presentation')
-                                            a(id="ddnme", role='menuitem', tabindex='0') Meter
-                                        li(role='presentation')
-                                            a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
+                                .form-group
+                                    label.col-lg-2.control-label(for="inRadius") Radius um den Ort
+                                    .col-lg-6
+                                        input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
+                                    .col-lg-1
+                                        .dropdown
+                                            button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
+                                                span.caret 
+                                            ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                li(role='presentation')
+                                                    a(id="ddnme", role='menuitem', tabindex='0') Meter
+                                                li(role='presentation')
+                                                    a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
 
+                
+                    .col-md-1
+                        .col.lg-12.column(style="margin-top:3%")
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button", style="margin-right:90%") Story speichern
+                                span.glyphicon.glyphicon-save-file
                 
                 form.form-horizontal(id="fhlStorypoints")
                     fieldset
@@ -194,14 +201,6 @@ block content
                                 fieldset
                                     legend Abhängigkeiten
                                         div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
-
-
-
-
-        .row
-            .col.lg-12.column(style="margin-top:3%")
-                button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnSaveStory", type="button", style="margin-right:90%; display:none") Story speichern
-                    span.glyphicon.glyphicon-save-file
                 
 
 
@@ -280,23 +279,23 @@ block content
                         .col-lg-5
                             label.control-label(id="lblItemID", for="inItemID") Item ID
                         .col-lg-7
-                            input.form-control(type="text",maxlength="255", id="inItemID", placeholder="ITEM ID")
+                            input.form-control(type="text",maxlength="255", id="inItemID", placeholder="Item ID")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblItemDescription", for="inItemDescription") Beschreibung
                         .col-lg-7
-                            input.form-control(type="text",maxlength="255", id="inItemDescription", placeholder="ITEM Description")
+                            input.form-control(type="text",maxlength="255", id="inItemDescription", placeholder="Itembeschreibung")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text",maxlength="255", id="inItemStorypointRef", placeholder="ITEM STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inItemStorypointRef", placeholder="Item Storypointreferenz")
                     .form-group
                         .col-lg-6
                         .col-lg-6
                             .checkbox
-                                input(id="inItemIsCollected", type='checkbox', placeholder="ITEM IS COLLECTED")
-                                label(id="lblItemIsCollected", for='inItemIsCollected') Item Is Collected
+                                input(id="inItemIsCollected", type='checkbox', placeholder="Item ist aufgenommen")
+                                label(id="lblItemIsCollected", for='inItemIsCollected') Item wird aufgenommen
                                 // ------------------- QUIZ
             .form-group(id="fgpNeu_Quiz", style="display: none") 
                 .col-lg-1
@@ -325,7 +324,7 @@ block content
                         .col-lg-5
                             label.control-label( id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text",maxlength="255", id="inQuizStorypointRef", placeholder="QUIZ STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inQuizStorypointRef", placeholder="Quiz Storypointreferenz")
                     .form-group
                         .col-lg-4
                             label.control-label(id="lblQuizOnTrue", for="btnSetQuizOnTrueReferences") Quiz OnTrue
@@ -352,7 +351,7 @@ block content
                         .col-lg-5
                             label.control-label(id="lblQuizQuestion", for="inQuizQuestion") Question
                         .col-lg-7
-                            input.form-control(type="text",maxlength="255", id="inQuizQuestion", placeholder="Quiz Question")
+                            input.form-control(type="text",maxlength="255", id="inQuizQuestion", placeholder="Quiz Frage")
                     .form-group
                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                 span Antwort hinzufügen
@@ -360,11 +359,11 @@ block content
                 .col-lg-1
                     label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
                 .col-lg-2
-                    input.form-control(type="text",maxlength="255", id="inQuizAnswerID", placeholder="Quiz Answer ID")
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerID", placeholder="Quiz Antwort ID")
                 .col-lg-1
                     label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
                 .col-lg-5
-                    input.form-control(type="text",maxlength="255", id="inQuizAnswerText", placeholder="Quiz Answer Text")
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerText", placeholder="Quiz Antwort Text")
                 .col-lg-1
                     .dropdown
                         button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
@@ -418,12 +417,12 @@ block content
                         .col-lg-5
                             label.control-label( id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
                         .col-lg-7
-                            input.form-control(disabled, type="text",maxlength="255", id="inChooserStorypointRef", placeholder="Chooser STORYPOINTREF")
+                            input.form-control(disabled, type="text",maxlength="255", id="inChooserStorypointRef", placeholder="Chooser Storypointreferenz")
                     .form-group
                         .col-lg-5
                             label.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage
                         .col-lg-7
-                            input.form-control(type="text",maxlength="255", id="inChooserQuestion", placeholder="Chooser Question")
+                            input.form-control(type="text",maxlength="255", id="inChooserQuestion", placeholder="Chooser Frage")
                     .form-group
                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
                                 span Antwort hinzufügen
@@ -433,13 +432,13 @@ block content
                     .col-lg-1
                         label.control-label(id="lblChooserAnswerID", for="inChooserAnswerID") ID
                     .col-lg-3
-                        input.form-control(type="text",maxlength="255", id="inChooserAnswerID", placeholder="Chooser Answer ID")
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerID", placeholder="Chooser Antwort ID")
                     .col-lg-1
                     .col-lg-2
                         label.control-label(id="lblChooserAnswerItemRef", for="btnSetChooserItemReferences") ItemRef
                     .col-lg-4
                         .dropdown
-                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Take Item ...
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
                                 span.caret
                     
                             ul.dropdown-menu(id="ulSkChooserItemRef", role="menu", aria-labelledby="dropdownMenu1")
@@ -451,7 +450,7 @@ block content
                     .col-lg-1
                         label.control-label(id="lblChooserAnswerText", for="inChooserAnswerText") Text
                     .col-lg-3
-                        input.form-control(type="text",maxlength="255", id="inChooserAnswerText", placeholder="Chooser Answer Text")
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerText", placeholder="Chooser Antwort Text")
                     .col-lg-1
                     .col-lg-2
                         label.control-label(id="lblChooserAnswerFeatureRef", for="btnSetChooserStorypointReferences") StorypointRef
