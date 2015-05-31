@@ -1,9 +1,11 @@
 
         checkSafeButton = () ->
-            if window.safeButtonCounter > 0            
-                $("#btnSaveStory").css("display","block")
+            if window.safeButtonCounter > 0
+                document.getElementById('btnSaveStory').disabled = false;
+                #$("#btnSaveStory").css("display","block")
             else
-                $("#btnSaveStory").css("display","none")
+                document.getElementById('btnSaveStory').disabled = true;
+                #$("#btnSaveStory").css("display","none")
             return
 
 
