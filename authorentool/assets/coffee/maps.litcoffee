@@ -4,6 +4,8 @@
                 position: location,
                 map: window.map
             });
+             # Zentriert die Map animiert
+            window.map.panTo marker.getPosition()
             marker.set("markerOwner", window.mapCaller)
             markers.push(marker)
             if window.mapCaller == "btnMap" && $("#ddnradius").val() != "Einheit"
@@ -146,10 +148,11 @@
                   $lightbox.find('.modal-dialog').css 'width': $mapDiv.width()
                   $lightbox.find('.close').removeClass 'hidden'
                   i = 0
+                  found = -1
                   while i < markers.length
                        if markers[i].get("markerOwner") == window.mapCaller
                             markers[i].setMap window.map
-                            markers[i].getMap().setCenter(markers[i].position);
+                            
                             if markers[i] instanceof google.maps.Circle
                                 rad = $("#inRadius").val()
                                 if $("#ddnradius").val() == "Einheit"
@@ -157,8 +160,14 @@
                                 else if $("#ddnradius").val() == "Kilometer"
                                     rad = rad * 1000
                                 markers[i].set('radius', Math.ceil(rad))
+                            else
+                                found = i
+                                
                        i++
+                  
                   google.maps.event.trigger window.map, 'resize'
+                  if found > -1
+                    window.map.setCenter markers[found].getPosition()
                   return
                 $lightbox.on 'hide.bs.modal', (e) ->
                     setAllMap(null, markers)
