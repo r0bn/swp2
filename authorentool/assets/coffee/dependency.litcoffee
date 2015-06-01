@@ -275,6 +275,7 @@
                         $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetChooserStorypointReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
+                        checkPlayableStory() #########################################################
                         return
                 else $("#ddnChooserStorypoint_"+indexe).click ->
                     $("#btnSetChooserStorypointReferences_"+counter).val($(this).text())
@@ -289,6 +290,7 @@
                         oldEdge = oldEdge.split("_")
                         RemoveParticularEdge(storypoint[1], oldEdge[1])
                     AddEdge(storypoint[1], storypoint_2[1])
+                    checkPlayableStory() ###############################################################
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -339,13 +341,8 @@
             
         createChooserItemReference = (counter, buttonID, currentObjID) ->
 
-
-            #Hier muss das Array geändert werden. Da muss noch ne Methode rein, damit man alle Items findet
             currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
-            #storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
             itemArray = getAllItems()
-            #storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
-            ############################
             
             copyForm = document.getElementById("liSkChooserItemRef")
             window.dropdownLiCounter++;
@@ -831,3 +828,57 @@
                     
                 return
             return
+            
+            
+            
+            
+            
+            
+            
+        checkPlayableStory = () ->
+            
+            checkStartPointSearch()
+                
+            return
+            
+            
+            
+        checkStartPointSearch = () ->
+            storypointCheckArray = []
+            i = 0
+            while i < window.nodes.length
+                storyPointTo = window.nodes[i]
+                storyPointToId = storyPointTo.id + ""
+                storypointCheckArray.push(checkStorypointToPointer(storyPointToId, storypointCheckArray))
+                i++
+
+            checkCommand = false
+            i = 0
+            while i < storypointCheckArray.length
+                if !storypointCheckArray[i]
+                    checkCommand = true
+                    break
+                i++
+                
+            alert "Es gibt mind. einen Startpunkt: " + checkCommand
+            return
+
+
+        checkStorypointToPointer = (storyPointToId, storypointCheckArray) ->
+            j = 0
+            while j < window.edges.length
+                if window.edges[j].to == storyPointToId
+                    return true #Heißt: Der Punkt x hat ein Pfeil auf sich zeigend
+                j++
+            return false #Heißt: Der Punkt x hat keinen Pfeil der auf sich zeigt
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
