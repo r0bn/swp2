@@ -160,7 +160,7 @@
                         <gml:pos>48.780332 9.172515</gml:pos>
                     </gml:Point>
                 </Geometry>
-                <anchorRef xlink:href="imageTracker" />
+                <anchorRef xlink:href="#Punkt_A_Feature_Tracker" />
                 <InteractionList>
                     <InteractionRef xlink:href="#Punkt_A_Quiz" />
                 </InteractionList>
