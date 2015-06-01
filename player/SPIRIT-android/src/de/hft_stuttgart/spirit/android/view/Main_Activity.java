@@ -37,10 +37,11 @@ import android.location.Address;
 import android.location.Geocoder;
 
 /**
+ * This Activity is the Main Activity of the StorytellAR Application.
+ *It contains the two fragments which hold the installed stories and the stories which can be downloaded.
  * 
  * @author Lukas
- *	This Activity is the Main Activity of the StorytellAR Application.
- *	It contains the two fragments which hold the installed stories and the stories which can be downloaded.
+ *	
  */
 @SuppressWarnings("deprecation")
 public class Main_Activity extends ActionBarActivity implements ActionBar.TabListener{

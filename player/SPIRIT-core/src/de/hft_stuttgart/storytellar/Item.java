@@ -4,8 +4,10 @@
 package de.hft_stuttgart.storytellar;
 
 /**
- * @author Oliver
  * Interaction of a scene as item to pick up
+ * 
+ * @author Oliver
+ * 
  */
 public class Item implements Interaction{
 

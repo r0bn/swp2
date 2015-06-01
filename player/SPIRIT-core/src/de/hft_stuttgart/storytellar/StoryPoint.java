@@ -10,8 +10,9 @@ import java.util.List;
 import de.hft_stuttgart.spirit.Poi;
 
 /**
+ * That part of the Story that plays at a certain Location with Videos, images, etc.
+ * 
  * @author Marcel
- *That part of the Story that plays at a certain Location with Videos, images, etc.
  */
 public class StoryPoint extends Poi{
 	

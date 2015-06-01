@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *  Describes the scenes and items for a dependency of a scene
+ * 
  * @author Oliver
- * Describes the scenes and items for a dependency of a scene
+ *
  */
 public class Dependency {
 

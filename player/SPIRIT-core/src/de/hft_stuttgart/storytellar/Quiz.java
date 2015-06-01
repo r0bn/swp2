@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Oliver
  * Interaction of a scene as quiz with question and answers.
+ * 
+ * @author Oliver
+ * 
  */
 public class Quiz implements Interaction{
 	

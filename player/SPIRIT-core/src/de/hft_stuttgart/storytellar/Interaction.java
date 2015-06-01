@@ -1,8 +1,10 @@
 package de.hft_stuttgart.storytellar;
 
 /**
- * @author Oliver
  * Interface for interactions of a scene
+ * 
+ * @author Oliver
+ *
  */
 public interface Interaction {
 

@@ -25,11 +25,12 @@ import android.view.inputmethod.InputMethodManager;
 
 
 /**
- * @author Stefan
- * 
  * The StoryFilter Class is a paracelable class in which the FiterComponents are defined. It is used to pass custom 
  * objects between the FragmentActivitys, the FilterActivity and the StoryDetails_Activity.
  * It also provides a function to build the filter path URL which can be used to get filtered stories from the server. 
+ * 
+ * @author Stefan
+ * 
  *
  */
 public class StoryFilter implements Parcelable {

@@ -25,6 +25,9 @@ import android.os.Environment;
 import android.util.Log;
 
 /**
+ * Download and administration of stories. Story-Metadata ans Story-Content can be downloaded from the server.
+ * 
+ * 
  * @author Mirjam
  *
  */

@@ -11,8 +11,10 @@ import de.hft_stuttgart.spirit.Poi;
 
 
 /**
- * @author Marcel
  * Is the actual Story for the StoryTellar project
+ * 
+ * @author Marcel
+ * 
  */
 public class PlayableStory {
 	
