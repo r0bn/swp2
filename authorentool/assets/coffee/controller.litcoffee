@@ -105,7 +105,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initHelpSystem()
         initScrollbar()
 
+
+            
         window.safeButtonCounter = 0
+
+
+        #check dependencies
+        $("#btnCheckStory").click ->
+            checkPlayableStory()   
+            return
 
         $("#btnCreateNewStorypoint").click ->
             window.safeButtonCounter++

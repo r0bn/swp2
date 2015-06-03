@@ -275,7 +275,6 @@
                         $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetChooserStorypointReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
-                        checkPlayableStory() #########################################################
                         return
                 else $("#ddnChooserStorypoint_"+indexe).click ->
                     $("#btnSetChooserStorypointReferences_"+counter).val($(this).text())
@@ -290,7 +289,6 @@
                         oldEdge = oldEdge.split("_")
                         RemoveParticularEdge(storypoint[1], oldEdge[1])
                     AddEdge(storypoint[1], storypoint_2[1])
-                    checkPlayableStory() ###############################################################
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
