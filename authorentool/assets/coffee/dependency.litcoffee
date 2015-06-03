@@ -833,44 +833,184 @@
             
             
             
-            
-            
         checkPlayableStory = () ->
             
-            checkStartPointSearch()
+            foundStartpoint = false
+            graphOK = false
+            foundEndpoint = false
+            
+            #Methods to test if a Story is playable
+            foundStartpoint = checkStartPointSearch()
+            
+            if !foundStartpoint
+                alert "Story hat keinen Startpunkt"
+                return
+            #if foundStartpoint now is true, that means that there is at least 1 startPoint, anywhere.
+            
+            #Check if All Story-Endpoints are reachable from an Startpoint
+            
+            reachableEndpoints = checkEndpointFromStartpoint()
+            
+            if !reachableEndpoints
+                alert "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
+                return
                 
-            return
+                
+            #checkCommand = "Die Story ist nicht spielbar"
+            #if foundStartpoint && reachableEndpoints
+                #checkCommand = "Die Story ist spielbar"
+                
+            alert "Die Story ist spielbar!"
+            return 
             
             
             
+        #Method to check if a Story has at least one Startpoint
         checkStartPointSearch = () ->
             storypointCheckArray = []
             i = 0
             while i < window.nodes.length
                 storyPointTo = window.nodes[i]
                 storyPointToId = storyPointTo.id + ""
-                storypointCheckArray.push(checkStorypointToPointer(storyPointToId, storypointCheckArray))
+                storypointCheckArray.push(checkStorypointToPointer(storyPointToId))
                 i++
 
-            checkCommand = false
+            checkStartpoint = false
             i = 0
             while i < storypointCheckArray.length
                 if !storypointCheckArray[i]
-                    checkCommand = true
+                    checkStartpoint = true
                     break
                 i++
                 
-            alert "Es gibt mind. einen Startpunkt: " + checkCommand
-            return
+            #Sofern checkStartpoint true ist, gibt es mindestens einen Startpunkt und die Story ist
+            #in dieser Hinsicht spielbar. Sofern checkStartpoint false ist, ist die Story gar nicht spielbar
+            return checkStartpoint
 
 
-        checkStorypointToPointer = (storyPointToId, storypointCheckArray) ->
+        #Gibt zu einem Storypoint zurueck, ob dieser einen Pfeil auf sich hat (true) oder nicht (false)
+        #Sofern er keinen Pfeil auf sich hat, ist es ein moeglicher Startpunkt der Story
+        #Also man kann von diesem Punkt aus die Story starten
+        checkStorypointToPointer = (storyPointToId) ->
             j = 0
             while j < window.edges.length
                 if window.edges[j].to == storyPointToId
                     return true #Heißt: Der Punkt x hat ein Pfeil auf sich zeigend
                 j++
             return false #Heißt: Der Punkt x hat keinen Pfeil der auf sich zeigt
+            
+            
+            
+            
+        
+        #Methode zum zu ueberpruefen ob ein Endpunkt von einem Startpunkt erreichbar ist
+        checkEndpointFromStartpoint = () ->
+
+            reachableEndpoint = false
+            endpointStorypointArray = []
+            endpointStorypointArray = getAllEndpointStorypoints()
+            
+            if endpointStorypointArray.length == 0
+                alert "Story hat keinen Endpunkt"
+                return false
+                
+                #return "Story hat keinen Endpunkt"
+            
+            
+            #Now all Endstorypoints are known. Now test if you can reach them from a startPoint
+            startpointStorypointArray = []
+            i = 0
+            while i < window.storypointCounter
+                i++
+                tempStorypointId = $("#fhlNeuerStorypoint_"+i).attr("id")
+                if typeof tempStorypointId != 'undefined'
+                    #if the next if-statement is false, the storypoint has NO references of it and is a startpoint => Add it.
+                    tempStorypointId = tempStorypointId.split("_")[1]
+                    if !checkStorypointToPointer(tempStorypointId)
+                        startpointStorypointArray.push(tempStorypointId)
+                        
+            #Now all Startstorypoints are known. Now test if you can reach a endStorypoint from a startStorypoint
+            
+            reachableEndpoint = findPath(startpointStorypointArray, endpointStorypointArray)
+            return reachableEndpoint
+            
+            
+        #Methode to calculate if an Endstorypoint is reachable from a Startstorypoint
+        findPath = (startpointStorypointArray, endpointStorypointArray) ->
+        
+            endstorypointCounter = 0
+            while endstorypointCounter < endpointStorypointArray.length
+                
+                #get All Points that points to this spezial Point.
+                pointerPathArrayToEndstorypoint = []
+                pointerPathArrayToEndstorypoint = getAllStorypointsWhichPointsOnGiven(endpointStorypointArray[endstorypointCounter])
+                
+                
+                #Testen, ob pointerPathArrayToEndstorypoint.length == 0, wenn ja, kann man beim Endpunkt auch anfangen und ist somit
+                #sofort fertig => gültige Story
+                if pointerPathArrayToEndstorypoint.length == 0
+                    if startpointStorypointArray.indexOf(endpointStorypointArray[endstorypointCounter])
+                        return true
+                
+                
+                #Alle Vorgänger prüfen:
+                precursorStorypointCounter = 0
+                while precursorStorypointCounter < pointerPathArrayToEndstorypoint.length
+                    
+                    if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
+                        return true
+                    else 
+                        #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
+                        #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
+                        # die Methode abbrechen darf, ohne dass die anderen Endstorypoints geprüft worden sind, sofern es
+                        # bei diesem einem KEINEN Startstorypoint gibt.
+                        
+                        fakeEndpointStorypointArray = []
+                        fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
+                        
+                        if !findPath(startpointStorypointArray, fakeEndpointStorypointArray)
+                            precursorStorypointCounter++
+                            continue
+                        else
+                            return true
+
+                        #return true
+                    
+                    precursorStorypointCounter++
+                
+                endstorypointCounter++
+            return false
+            
+            
+            
+        #Methode that returns all Storypoints that references on a given Storypoint
+        getAllStorypointsWhichPointsOnGiven = (givenStorypointId) ->
+            
+            storypointToStorypointArray = []            
+            j = 0
+            while j < window.edges.length
+                if window.edges[j].to == givenStorypointId
+                    storypointToStorypointArray.push(window.edges[j].from)
+                j++
+
+            return storypointToStorypointArray
+            
+            
+        #This Methode returns all Storypoints which are Endpoints too.
+        getAllEndpointStorypoints = () ->
+        
+            endpointStorypointArray = []
+            i = 0 
+            while i < window.storypointCounter
+                i++
+                tempStorypointId = $("#fhlNeuerStorypoint_"+ i).attr("id")
+                if typeof tempStorypointId != 'undefined'
+                    if document.getElementById("inEndOfStory_"+i).checked
+                        tempStorypointId = tempStorypointId.split("_")[1]
+                        endpointStorypointArray.push(tempStorypointId)
+            
+            return endpointStorypointArray
+            
             
             
             
