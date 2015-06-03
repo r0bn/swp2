@@ -148,7 +148,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.createNewStorypoint = (counter) ->
         
                 window.storypointCounter = counter
-                console.log "test"
                 copyForm = document.getElementById("fhlNeuerStorypoint")
                 stuff = copyForm.cloneNode(true)
                 counter = 1 if counter == undefined
@@ -255,6 +254,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                             storypointName = $("#inStorypoint_"+counter).attr("placeholder")
                         alert "Bitte überprüfen Sie Ihre Referenzen. Eventuell sind noch Referenzen von:" + storypointName + " vorhanden."
                     return
+                    
+                return
 
         
    
