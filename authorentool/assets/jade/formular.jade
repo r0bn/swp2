@@ -11,7 +11,7 @@ block content
         .row(id="rowFormular")
             .col-md-9.column(id="colColumn1")
                 .row
-                    .col-md-8
+                    .col-md-11
                         form.form-horizontal
                             fieldset
                                 legend Storydaten
@@ -78,15 +78,11 @@ block content
                                                     a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
 
                 
-                    .col-md-2
+                    .col-md-1
                         .col.lg-12.column(style="margin-top:3%")
                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button", style="margin-right:90%") Story speichern
                                 span.glyphicon.glyphicon-upload
 
-                    .col-md-2
-                        .col.lg-12.column(style="margin-top:3%")
-                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button", style="margin-right:90%") Check Playable
-                                span.glyphicon.glyphicon-check
                 
                 form.form-horizontal(id="fhlStorypoints")
                     fieldset
@@ -206,7 +202,12 @@ block content
                                 fieldset
                                     legend Abhängigkeiten
                                         div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
-                
+                            .row
+                                .col-md-10
+                                .col-md-2
+                                    .col.lg-12.column(style="margin-top:3%")
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button", style="margin-right:90%") Check Playable
+                                            span.glyphicon.glyphicon-check
 
 
 

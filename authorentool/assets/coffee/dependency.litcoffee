@@ -15,7 +15,31 @@
             return storypointArray					
 
 
+
+
+        selectAvailibleStorypointsForStorypointRef = (storypointArray, currentStorypointID) ->
+            #loescht sich selbst aus dem array wieder raus, da eine Ref auf sich selbst keinen Sinn macht
+            index = storypointArray.indexOf(currentStorypointID)
+            storypointArray.splice(index,1)
+            
+            #loescht alle Storypoint raus, die Endpunkte sind, da es nach diesen keine weiteren Referenzen geben kann.
+            #Und das würde es, sollte man diese bei Referenz erstellen beim Storypoint auswählen. Daher werden dort
+            #gesonderte Array geliefert
+            
+            tempEndpointArray = getAllEndpointStorypoints()
+            i = 0
+            while i < tempEndpointArray.length
+                index = storypointArray.indexOf("fhlNeuerStorypoint_" +tempEndpointArray[i])
+                storypointArray.splice(index,1)
+                i++
+            
+            return storypointArray
+
+
+
+
         selectAvailibleStorypoints = (storypointArray, currentStorypointID) ->
+            #loescht sich selbst aus dem array wieder raus, da eine Ref auf sich selbst keinen Sinn macht
             index = storypointArray.indexOf(currentStorypointID)
             storypointArray.splice(index,1)
             return storypointArray
@@ -418,7 +442,7 @@
             storypointArray = []
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
-            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
+            storypointArray = selectAvailibleStorypointsForStorypointRef(storypointArray, currentStorypointID)
             
             copyForm = document.getElementById("liSkStorypointRef")
             window.dropdownLiCounter++;
@@ -947,7 +971,7 @@
                 #Testen, ob pointerPathArrayToEndstorypoint.length == 0, wenn ja, kann man beim Endpunkt auch anfangen und ist somit
                 #sofort fertig => gültige Story
                 if pointerPathArrayToEndstorypoint.length == 0
-                    if startpointStorypointArray.indexOf(endpointStorypointArray[endstorypointCounter])
+                    if startpointStorypointArray.indexOf(endpointStorypointArray[endstorypointCounter] >= 0)
                         return true
                 
                 
@@ -1008,12 +1032,6 @@
                         endpointStorypointArray.push(tempStorypointId)
             
             return endpointStorypointArray
-            
-            
-            
-            
-            
-            
             
             
             

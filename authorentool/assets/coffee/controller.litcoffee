@@ -246,21 +246,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
                 helpRek($("#" + stuff.id))
 
-
-                #braucht man evtl. doch nciht, da die KOmpl. aufs selbe rauskommt, weil beim lsöchen muss gesucht werden.
                 #ClickEvent für inEndOfStory_Checkbox
                 $("#inEndOfStory_"+counter).click ->
-                    if document.getElementById("inEndOfStory_"+counter).checked
-                        window.endStorypoints.push(counter+"")
-                    else
-                        indexPos = window.endStorypoints.indexOf(counter+"")
-                        window.endStorypoints.splice(indexPos,1)
-                
-                #Jeder Neue storypoint wird auf jeden Fall in das startStorypointArray geschrieben:
-                
-                window.startStorypoints.push(counter+"")
-                
-                console.log "test"
+                    if $("#inEndOfStory_"+counter).is(" :checked ")
+                        RemoveEdge(counter+"", false)
+                        storypointName = $("#inStorypoint_"+counter).val()
+                        if storypointName == ''
+                            storypointName = $("#inStorypoint_"+counter).attr("placeholder")
+                        alert "Bitte überprüfen Sie Ihre Referenzen. Eventuell sind noch Referenzen von:" + storypointName + " vorhanden."
+                    return
+
         
    
 
