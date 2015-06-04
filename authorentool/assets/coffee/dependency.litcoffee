@@ -992,6 +992,13 @@
                         fakeEndpointStorypointArray = []
                         fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
                         
+                        checkArray = getAllStorypointsWhichPointsOnGiven(fakeEndpointStorypointArray[precursorStorypointCounter])
+                        if checkArrayEquals(endpointStorypointArray, checkArray)
+                            #man muss hier true returnen, weil dieser Fall nur in den Rekursiven Aufrufen auftauchen kann. Dann wird
+                            #true an if !find... übergeben und in else als "return true" ausgewertet, was dann komplett alles returnt.
+                            return false
+                            
+                            
                         if !findPath(startpointStorypointArray, fakeEndpointStorypointArray)
                             precursorStorypointCounter++
                             continue
@@ -1004,6 +1011,35 @@
                 
                 endstorypointCounter++
             return false
+            
+            
+            
+        checkArrayEquals = (endpointStorypointArray, checkArray) ->
+            
+            if endpointStorypointArray.length != checkArray.length
+                return false
+            
+            checkBooleanArray = []
+            #Prüfe ob endpointStorypointArrays Elemente alle in checkArray vorkommen
+            endpointStorypointArray.forEach (s, i, o) ->
+                # Die Variable o enthält eine Referenz auf das Array.
+                if checkArray.indexOf(s) >= 0
+                    checkBooleanArray.push(true)
+                else
+                    checkBooleanArray.push(false)
+            #Prüfe ob checkArrays Elemente alle in endpointStorypointArray vorkommen
+            checkArray.forEach (s, i, o) ->
+                # Die Variable o enthält eine Referenz auf das Array.
+                if endpointStorypointArray.indexOf(s) >= 0
+                    checkBooleanArray.push(true)
+                else
+                    checkBooleanArray.push(false)
+
+            if checkBooleanArray.indexOf(false) >= 0
+                return false
+            else
+                return true
+            
             
             
             

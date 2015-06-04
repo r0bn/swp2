@@ -267,7 +267,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                             $('#dialog-confirm-EndpointSet').dialog
                               modal: true
                               buttons:
-                                'Löschen': ->
+                                'Deklarieren': ->
                                         $(this).dialog 'close'
                                         
                                         #Delete all Interactions for this Storypoint
