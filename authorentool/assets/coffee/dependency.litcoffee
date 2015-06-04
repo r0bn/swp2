@@ -307,12 +307,14 @@
                     storypoint = storypoint.split("_")
                     storypoint_2 = $(this).attr("storypointOwner")
                     $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", storypoint_2)
-                    storypoint_2 = storypoint_2.split("_")
                     oldEdge = $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue")
+                    $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue", storypoint_2)
+                    storypoint_2 = storypoint_2.split("_")
+                    
                     if typeof oldEdge != "undefined"
                         oldEdge = oldEdge.split("_")
                         RemoveParticularEdge(storypoint[1], oldEdge[1])
-                    AddEdge(storypoint[1], storypoint_2[1])
+                    addItemToEdge(storypoint[1], storypoint_2[1], $("#btnSetChooserItemReferences_"+counter).val())
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -405,6 +407,12 @@
                         #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
+                        storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                        storypoint = storypoint.split("_")
+                        storypoint_2 =$("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge")
+                        if typeof storypoint_2 != 'undefined'
+                            storypoint_2 = storypoint_2.split("_")
+                            addItemToEdge(storypoint[1], storypoint_2[1])
                         return
                 else $("#ddnChooserItem_"+indexe).click ->
                     $("#btnSetChooserItemReferences_"+counter).val($(this).text())
@@ -415,6 +423,12 @@
                     #storypoint_2 = storypoint_2.split("_")
                     #RemoveEdge(storypoint[1])
                     #AddEdge(storypoint[1], storypoint_2[1])
+                    storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                    storypoint = storypoint.split("_")
+                    storypoint_2 =$("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge")
+                    if typeof storypoint_2 != 'undefined'
+                        storypoint_2 = storypoint_2.split("_")
+                        addItemToEdge(storypoint[1], storypoint_2[1],$(this).text())
                     return
 
                 $("#" + itemArray[j]).find("button:nth-child(4)").click ->
@@ -678,34 +692,40 @@
         # Wenn nodeRemoved gesetzt ist (true), dann werden alle Referenzen gelöscht
         RemoveEdge = (StorypointID, nodeRemoved) ->
             i = 0
+            toBeRemoved = []
             while i < window.edges.length
                 if window.edges[i].from == StorypointID
-                    window.edges.splice(i,1);
+                    toBeRemoved.push(i)
                 
                 if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
-                    window.edges.splice(i,1);
+                    toBeRemoved.push(i)
                 i++
+            i = toBeRemoved.length
+            while i > -1
+                window.edges.splice(toBeRemoved[i],1)
+                i--
             i = 0
+            toBeRemoved = []
             while i < window.duplicateEdges.length
                 if window.duplicateEdges[i].from == StorypointID
-                    window.duplicateEdges.splice(i,1);
+                    toBeRemoved.push(i)
                 
                 if nodeRemoved == true && typeof window.duplicateEdges[i] != "undefined" && window.duplicateEdges[i].to == StorypointID
-                    window.duplicateEdges.splice(i,1);
+                    toBeRemoved.push(i)
                 i++
-            container = document.getElementById('divDependencyBox');
-            data = {
-                nodes: window.nodes,
-                edges: window.edges
-            }
-            network = new vis.Network(container, data, {});
+            i = toBeRemoved.length
+            while i > -1
+                window.duplicateEdges.splice(toBeRemoved[i],1)
+                i--
             return
             
         # Fügt ein Item einer Kante hinzu. Sollte es keine Kante geben, wird diese neu erstellt
         addItemToEdge = (FromStorypoint, ToStorypoint, ItemLabel) ->
-            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined" || typeof ItemLabel == "undefined"
+            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
                 return
             else
+                if typeof ItemLabel == 'undefined'
+                    ItemLabel = ""
                 i = 0
                 found = -1
                 while i < window.edges.length

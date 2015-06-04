@@ -163,6 +163,16 @@
                         'Löschen': ->
                                 $(this).dialog 'close'
                                 $("#fgpNeu_Chooser_" + interactionCounter).toggle "drop", 200, () ->
+                                    currentObj = $("#btnChooserAnswer_" + interactionCounter).parent().next()
+                                    while typeof currentObj != 'undefined'
+                                        id = currentObj.attr("id").split("_")
+                                        oldValue = $("#btnSetChooserStorypointReferences_" + id[1]).attr("oldValue")
+                                        if typeof oldValue != 'undefined'
+                                            oldValue = oldValue.split("_")
+                                            storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+id[1], "fhlNeuerStorypoint" )
+                                            storypoint = storypoint.split("_")
+                                            RemoveParticularEdge(storypoint[1], oldValue[1])
+                                        currentObj = currentObj.next()
                                     $("#fgpNeu_Chooser_" + interactionCounter).remove()
                                 return
                         'Abbrechen': ->
@@ -210,7 +220,7 @@
                         
    
 
-                    # Click Event für btnChooserDelete
+                    # Click Event für btnChooserAnswerDelete
                     $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
                         $("#dialog-confirm-Antwort").css("display","block")
                         $('#dialog-confirm-Antwort').dialog
@@ -219,6 +229,12 @@
                             'Löschen': ->
                                     $(this).dialog 'close'
                                     $("#" + answer.id).toggle "drop", 200, () ->
+                                        oldValue = $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).attr("oldValue")
+                                        if typeof oldValue != 'undefined'
+                                            oldValue = oldValue.split("_")
+                                            storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+ChooserAnswerCounter, "fhlNeuerStorypoint" )
+                                            storypoint = storypoint.split("_")
+                                            RemoveParticularEdge(storypoint[1], oldValue[1])
                                         $("#" + answer.id).remove()
                                     return
                             'Abbrechen': ->
