@@ -93,6 +93,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.chooserAnswerCounter = 10
         window.interactioncounter = 10;
         
+        #dependencyCounter
+        window.zyklusCounter = 0
+        
+        
         # EndstorypointArray and StartstorypointArray
         window.endStorypoints = []
         window.startStorypoints = []
@@ -112,7 +116,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         #check dependencies
         $("#btnCheckStory").click ->
+            window.zyklusCounter = 0
             hint = checkPlayableStory()
+            if hint == ''
+                hint = "In dieser Story kommt möglicherweise ein Zyklus vor, der es nicht erlaubt die Story auf alles zu prüfen"
             $("#dialog-confirm-Playable-text").text(hint)
             $("#dialog-confirm-Playable").css("display", "block")
             $("#dialog-confirm-Playable").dialog

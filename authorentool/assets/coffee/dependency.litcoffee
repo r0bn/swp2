@@ -875,7 +875,8 @@
             reachableEndpoints = checkEndpointFromStartpoint()
             
             if typeof reachableEndpoints == 'string'
-                return "Story hat keinen Endpunkt"
+                return reachableEndpoints
+                #return "Story hat keinen Endpunkt"
             
             if !reachableEndpoints
                 return "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
@@ -930,7 +931,6 @@
         #Methode zum zu ueberpruefen ob ein Endpunkt von einem Startpunkt erreichbar ist
         checkEndpointFromStartpoint = () ->
 
-            reachableEndpoint = false
             endpointStorypointArray = []
             endpointStorypointArray = getAllEndpointStorypoints()
             
@@ -961,6 +961,13 @@
             
         #Methode to calculate if an Endstorypoint is reachable from a Startstorypoint
         findPath = (startpointStorypointArray, endpointStorypointArray) ->
+        
+        
+            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. 
+            window.zyklusCounter++
+            if window.zyklusCounter > 150
+                return "Möglicher ZYKLUS gefunden. Story kann unter umständen nicht korrekt überprüft werden."
+                        
         
             endstorypointCounter = 0
             while endstorypointCounter < endpointStorypointArray.length
@@ -993,20 +1000,21 @@
                         fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
                         
                         checkArray = getAllStorypointsWhichPointsOnGiven(fakeEndpointStorypointArray[precursorStorypointCounter])
+                        
                         if checkArrayEquals(endpointStorypointArray, checkArray)
-                            #man muss hier true returnen, weil dieser Fall nur in den Rekursiven Aufrufen auftauchen kann. Dann wird
-                            #true an if !find... übergeben und in else als "return true" ausgewertet, was dann komplett alles returnt.
+                            #Hier werden nur Zyklen der länge 1 erkannt!
                             return false
                             
-                            
-                        if !findPath(startpointStorypointArray, fakeEndpointStorypointArray)
+                        tempVar = findPath(startpointStorypointArray, fakeEndpointStorypointArray)
+                        if !tempVar
                             precursorStorypointCounter++
                             continue
                         else
-                            return true
+                            if typeof tempVar == 'string'
+                                return tempVar
+                            else
+                                return true
 
-                        #return true
-                    
                     precursorStorypointCounter++
                 
                 endstorypointCounter++
