@@ -112,7 +112,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         #check dependencies
         $("#btnCheckStory").click ->
-            checkPlayableStory()   
+            hint = checkPlayableStory()
+            $("#dialog-confirm-Playable-text").text(hint)
+            $("#dialog-confirm-Playable").css("display", "block")
+            $("#dialog-confirm-Playable").dialog
+              modal: true
+              buttons: {
+                Ok: -> 
+                  $(this).dialog "close";
+                } 
             return
 
         $("#btnCreateNewStorypoint").click ->

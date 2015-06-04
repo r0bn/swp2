@@ -867,25 +867,25 @@
             foundStartpoint = checkStartPointSearch()
             
             if !foundStartpoint
-                alert "Story hat keinen Startpunkt"
-                return
+                return "Story hat keinen Startpunkt"
             #if foundStartpoint now is true, that means that there is at least 1 startPoint, anywhere.
             
             #Check if All Story-Endpoints are reachable from an Startpoint
             
             reachableEndpoints = checkEndpointFromStartpoint()
             
+            if typeof reachableEndpoints == 'string'
+                return "Story hat keinen Endpunkt"
+            
             if !reachableEndpoints
-                alert "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
-                return
+                return "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
                 
                 
             #checkCommand = "Die Story ist nicht spielbar"
             #if foundStartpoint && reachableEndpoints
                 #checkCommand = "Die Story ist spielbar"
                 
-            alert "Die Story ist spielbar!"
-            return 
+            return "Die Story ist spielbar!" 
             
             
             
@@ -934,11 +934,11 @@
             endpointStorypointArray = []
             endpointStorypointArray = getAllEndpointStorypoints()
             
+            
+            #If there is no Endpoint the Story is not playable and a hint will be thrown
             if endpointStorypointArray.length == 0
-                alert "Story hat keinen Endpunkt"
-                return false
-                
-                #return "Story hat keinen Endpunkt"
+                #alert "Story hat keinen Endpunkt"
+                return "Story hat keinen Endpunkt"
             
             
             #Now all Endstorypoints are known. Now test if you can reach them from a startPoint
