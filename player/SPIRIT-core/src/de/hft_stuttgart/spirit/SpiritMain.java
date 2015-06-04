@@ -316,7 +316,7 @@ public class SpiritMain extends ApplicationAdapter implements
 	public void spiritLogik() {
 		// storyengine usw aktualisieren
 		spiritFacade.updateStoryEngine();
-
+		
 		// Filme starten und stoppen
 		// Fall 1: Film abbrechen
 		if (!spiritFilm.isNull()) {

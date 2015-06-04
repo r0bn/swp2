@@ -5,6 +5,7 @@ package de.hft_stuttgart.storytellar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  Describes the scenes and items for a dependency of a scene
@@ -71,10 +72,23 @@ public class Dependency {
 	}
 	
 	/**
-	 * Check if conditions of dependency are fulfilled. not implemented yet.
+	 * Check if conditions of dependency are fulfilled.
 	 * @return true if conditions are fulfilled, else false
 	 */
-	public Boolean isFulfilled(){
+	public Boolean isFulfilled(Map<String,Interaction> interactions, Map<String,StoryPoint> sPoints){
+		//Check if required items are collected
+		for (int i = 0; i < items.size(); i++) {
+			if (!((Item)interactions.get(items.get(i))).getIsCollected()) {
+				return false;
+			}
+		}
+		//Check if required storypoints are fulfilled
+		for (int i = 0; i < storypoints.size(); i++) {
+			if (!sPoints.get(storypoints.get(i)).getStatus().equals(StorypointStatus.DONE)) {
+				return false;
+			}
+		}
+		//Return true if all dependencys are fulfilled
 		return true;
 	}
 	

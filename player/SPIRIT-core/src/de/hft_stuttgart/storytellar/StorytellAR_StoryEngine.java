@@ -11,7 +11,15 @@ import de.hft_stuttgart.spirit.UIController;
 public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	
 	enum EngineStates {
-		OPEN,IN_SCENE_START,IN_SCENE,IN_SCENE_PICTURE_START,IN_SCENE_PICTURE,IN_SCENE_PICTURE_END,IN_SCENE_VIDEO_START,IN_SCENE_VIDEO,IN_SCENE_VIDEO_END
+		OPEN,
+		IN_SCENE_START,
+		IN_SCENE,
+		IN_SCENE_PICTURE_START,
+		IN_SCENE_PICTURE,
+		IN_SCENE_PICTURE_END,
+		IN_SCENE_VIDEO_START,
+		IN_SCENE_VIDEO,
+		IN_SCENE_VIDEO_END
 	}
 
 	PlayableStory story;
@@ -85,6 +93,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			break;
 		case IN_SCENE_PICTURE_END:
 			facade.hidePicture();
+			activeStoryPoint.setStatus(StorypointStatus.DONE);
 			addOpenStoryPointsToSonar();
 			state = EngineStates.OPEN;
 			break;
@@ -97,6 +106,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			break;
 		case IN_SCENE_VIDEO_END:
 			facade.removeAllVideos();
+			activeStoryPoint.setStatus(StorypointStatus.DONE);
 			addOpenStoryPointsToSonar();
 			state = EngineStates.OPEN;
 			break;
@@ -165,13 +175,13 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	private void addOpenStoryPointsToSonar() {
 		facade.deleteAllGhosts();
 		for(StoryPoint storyPoint : story.getStorypoints().values()) {
-			boolean isFullfilled = true;
-			for(Dependency dep : storyPoint.getDependency()){
-				if(!dep.isFulfilled()){
+			boolean isFullfilled = storyPoint.isPlayable(story.getInteractions(),story.getStorypoints());
+			/*for(Dependency dep : storyPoint.getDependency()){
+				if(!dep.isFulfilled(story.getInteractions(),story.getStorypoints())){
 					isFullfilled = false;
 					break;
 				}
-			}
+			}*/
 			if(storyPoint.getStatus() == StorypointStatus.OPEN && isFullfilled) {
 				Location loc = new Location(storyPoint.getName());
 				loc.setLatitude(storyPoint.getLatitude());

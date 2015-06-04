@@ -6,6 +6,7 @@ package de.hft_stuttgart.storytellar;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hft_stuttgart.spirit.Poi;
 
@@ -40,6 +41,22 @@ public class StoryPoint extends Poi{
 		this.video = video;
 		this.interaction = interaction;
 		this.isEndStorypoint = isEndStorypoint;
+	}
+	
+	/**
+	 * Check if one of the dependencys of this storypoint is fulfilled
+	 * @param interactions Interaction-objects of the story
+	 * @param sPoints StoryPoint-objects of the story
+	 * @return true if at least one dependency is fulfilled
+	 */
+	
+	public Boolean isPlayable(Map<String,Interaction> interactions, Map<String,StoryPoint> sPoints){
+		for (int i = 0; i < dependencies.size(); i++) {
+			if (!dependencies.get(i).isFulfilled(interactions, sPoints)) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
