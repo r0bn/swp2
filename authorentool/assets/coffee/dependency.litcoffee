@@ -854,6 +854,8 @@
             
             
             
+        ##############################################Methodes to check if the Graph/Story is playable#########################################
+            
             
         checkPlayableStory = () ->
             
@@ -1038,3 +1040,72 @@
             
             
             
+            
+            
+        ##################################Methode für inEndOfStory in controller.litcoffee ############################################
+            
+        #Methode um alle Referenzen (in den Buttonfeldern) zu einem bestimmten Referenznamen zu löschen. 
+        removeAllShownGUIReferencesByName = (searchName) ->
+            
+            #Schleifen, damit alle Buttoninhalte innerhalb der StorypointReferenzen gelöscht werden
+            i = 1
+            while i <= window.storypointCounter
+
+                if typeof $("#btnCreateReferences_"+i) == 'undefined'
+                    continue
+            
+                j = 1
+                rowCounter = $("#btnCreateReferences_" + i).attr("rowCounter")
+                while j <= rowCounter
+                    
+                    k = 1
+                    while k <= 3
+                        if typeof $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k) != 'undefined'
+                            if $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val() == searchName
+                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
+                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
+                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")    
+                        
+                        k++
+                    j++
+                i++;
+        
+            return
+            
+            
+        #Methode to remove all Interactions to a given (Storypoint-) counter
+        removeAllInteractions = (counter) ->
+            i = 10
+            while i < window.interactioncounter
+                i++
+                if typeof $("#fgpNeu_Chooser_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Chooser_" + i, counter)
+                        $("#fgpNeu_Chooser_" + i).remove()
+                        continue
+                        
+                if typeof $("#fgpNeu_Quiz_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Quiz_" + i, counter)
+                        $("#fgpNeu_Quiz_" + i).remove()
+                        continue
+                    
+                if typeof $("#fgpNeu_Item_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Item_" + i, counter)
+                        $("#fgpNeu_Item_" + i).remove()
+                        continue
+                
+            return
+        
+        
+        checkRightStorypoint = (interactionID, counter) ->
+            
+            #Gets the StorypointID to which the given Interaction belongs
+            storypointId = edgeStorypointfinder(interactionID, "fhlNeuerStorypoint" )
+            expectedStorypointID = "fhlNeuerStorypoint_" + counter
+            if storypointId == expectedStorypointID
+                return true
+
+            return false
+        
+        
+        
+

@@ -158,6 +158,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 setIDs($("#" + stuff.id), counter)
                 # Labels neu setzen
                 $("#lblInputStorypoint_" + counter).attr("for","inStorypoint_" + counter)
+                # Set Storyname Placeholder 
+                actPlaceholder = $("#inStorypoint_"+counter).attr("placeholder") + " "
+                $("#inStorypoint_"+counter).attr("placeholder", actPlaceholder + counter)
+                
                 # FeatureName Trigger
                 $("#inStorypoint_"+counter).keyup ->
                     inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
@@ -178,6 +182,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
+                
+                
                 
                 $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
                 # Click Event für btnStorypointMap                 
@@ -248,13 +254,34 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 #ClickEvent für inEndOfStory_Checkbox
                 $("#inEndOfStory_"+counter).click ->
                     if $("#inEndOfStory_"+counter).is(" :checked ")
-                        RemoveEdge(counter+"", false)
-                        storypointName = $("#inStorypoint_"+counter).val()
-                        if storypointName == ''
-                            storypointName = $("#inStorypoint_"+counter).attr("placeholder")
-                        alert "Bitte überprüfen Sie Ihre Referenzen. Eventuell sind noch Referenzen von:" + storypointName + " vorhanden."
-                    return
-                    
+                        
+                            $("#dialog-confirm-EndpointSet").css("display","block")
+                            $('#dialog-confirm-EndpointSet').dialog
+                              modal: true
+                              buttons:
+                                'Löschen': ->
+                                        $(this).dialog 'close'
+                                        
+                                        #Delete all Interactions for this Storypoint
+                                        removeAllInteractions(counter)
+                                        #Delete all Edges from this Storypoint
+                                        RemoveEdge(counter+"", false)
+                                        #Delete all References at Storypoint - References
+                                        storypointName = $("#inStorypoint_"+counter).val()
+                                        if storypointName == ''
+                                            storypointName = $("#inStorypoint_"+counter).attr("placeholder")
+                                        removeAllShownGUIReferencesByName(storypointName)
+                                        
+                                        #Disable the create Interaction button
+                                        $("#btnCreateInteraction_" + counter).attr("disabled", true)
+                                        
+                                        return
+                                'Abbrechen': ->
+                                        $(this).dialog 'close'
+                                        return
+
+                    else
+                        $("#btnCreateInteraction_" + counter).attr("disabled", false)
                 return
 
         
