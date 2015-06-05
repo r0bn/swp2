@@ -27,10 +27,12 @@
             #gesonderte Array geliefert
             
             tempEndpointArray = getAllEndpointStorypoints()
+
             i = 0
             while i < tempEndpointArray.length
                 index = storypointArray.indexOf("fhlNeuerStorypoint_" +tempEndpointArray[i])
-                storypointArray.splice(index,1)
+                if index != -1
+                    storypointArray.splice(index,1)
                 i++
             
             return storypointArray
@@ -324,9 +326,12 @@
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
                     if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue
-                        storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
-                        storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                    
+                        ##########################################################################################################
+                        ##########################################CookieSUCHTI#########################################
+                        #storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
+                        # storypoint = storypoint.split("_")
+                        # RemoveEdge(storypoint[1])
                         $("#btnSetChooserStorypointReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -981,10 +986,10 @@
             #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 15 mal (!!!) diese Methode aufgerufen werden, 
             #so lässt die Wahrscheinlichkeit nach, dass hier was richtiges ausgewertet wird...
             window.zyklusCounter++
-            if window.zyklusCounter > 15
-                return "Möglicher ZYKLUS gefunden. Story kann unter umständen nicht korrekt überprüft werden."
+            if window.zyklusCounter > 150
+                return "Möglicher Zyklus gefunden oder es gibt keinen Weg vom Startpunkt zum Endpunkt. Story kann unter Umständen nicht korrekt überprüft werden."
                         
-        
+            everyPathArray = []
             endstorypointCounter = 0
             while endstorypointCounter < endpointStorypointArray.length
                 
@@ -1014,7 +1019,6 @@
                     #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
                     #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
                         #return true
-                        
                         
                         
                     else 
@@ -1195,6 +1199,16 @@
                 i++
                 if typeof $("#fgpNeu_Chooser_" + i).attr("id") != "undefined"
                     if checkRightStorypoint("#fgpNeu_Chooser_" + i, counter)
+                        currentObj = $("#btnChooserAnswer_" + i).parent().next()
+                        while typeof currentObj != 'undefined'
+                            id = currentObj.attr("id").split("_")
+                            oldValue = $("#btnSetChooserStorypointReferences_" + id[1]).attr("oldValue")
+                            if typeof oldValue != 'undefined'
+                                oldValue = oldValue.split("_")
+                                storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+id[1], "fhlNeuerStorypoint" )
+                                storypoint = storypoint.split("_")
+                                RemoveParticularEdge(storypoint[1], oldValue[1])
+                            currentObj = currentObj.next()
                         $("#fgpNeu_Chooser_" + i).remove()
                         continue
                         
