@@ -14,11 +14,20 @@
               $medien.find('.close').removeClass 'hidden'
               return
 
-        selectFromMedienBib = (targetId) ->
+        selectFromMedienBib1 = () ->
+            targetId = $(event.target).parent().parent().find("input[type='text']").attr('id')
+            console.log targetId
             $('#medienLightbox').modal("show")
 
             $('#medienLightbox .btn-select').click (handler) ->
-                console.log "do"
                 $("##{targetId}").val($(this).data("filename"))
                 $('#medienLightbox').modal("hide")
+
+        selectFromMedienBib2 = () ->
+            targetId = $(event.target).parent().parent().find("input[type='text']").attr('id')
+            console.log targetId
+            $('#medienLightbox2').modal("show")
+            $('#medienLightbox2 .btn-select').click (handler) ->
+                $("##{targetId}").val($(this).data("filename"))
+                $('#medienLightbox2').modal("hide")
 

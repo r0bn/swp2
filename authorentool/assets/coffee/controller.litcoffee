@@ -4,11 +4,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", "$filter", ($scope, $routeParams, $http, server, xmlService, media, $filter) ->
 
         $scope.storyId = $routeParams.story
-
         $scope.codeMirrorUpdateUI = false
+        orderBy = $filter('orderBy')
 
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
@@ -29,11 +29,19 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.updateMedia = () ->
             media.getMediaFiles $scope.storyId, (mediaFiles) ->
                 $scope.mediaData = mediaFiles
+                $scope.orderBib('file', false)
+
+        $scope.orderBib = (predicate, reverse) ->
+            $scope.mediaData = orderBy($scope.mediaData, predicate, reverse)
+
 
         # this will be initial executed and get all available story's
-        $http.get("http://api.storytellar.de/story")
-            .success (data) ->
-                $scope.storys = data
+        server.getStoryList (data) ->
+            $scope.storys = data
+            for s in $scope.storys
+                if s.id is $scope.storyId
+                    console.log s
+                    $scope.story = s
 
 
         # this saves the current xml file
@@ -59,7 +67,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         return
 
                 console.log $scope.xmlFile
-                server.updateStory $scope.storyId, $scope.xmlFile
+                server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
 
         $scope.uploadMediaFile = () ->
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
@@ -91,7 +99,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.storypointCounter = 0
         window.quizAnswerCounter = 10
         window.chooserAnswerCounter = 10
-        window.interactioncounter = 10;
+        window.interactioncounter = 10
         
         #dependencyCounter
         window.zyklusCounter = 0
@@ -109,8 +117,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initHelpSystem()
         initScrollbar()
 
-
-            
         window.safeButtonCounter = 0
 
 
@@ -123,9 +129,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $("#dialog-confirm-Playable").dialog
               modal: true
               buttons: {
-                Ok: -> 
-                  $(this).dialog "close";
-                } 
+                Ok: ->
+                  $(this).dialog "close"
+                }
             return
 
         $("#btnCreateNewStorypoint").click ->
@@ -374,9 +380,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # Creates a story on the server
         $scope.createStory = () ->
-            $server.createStory()
-            $server.getStoryList (data) ->
-                    $scope.storys = data
+            $server.createStory (id)->
+                console.log id
+                $location.path "/story/#{id}"
+
 
     ]
 
