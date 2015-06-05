@@ -199,16 +199,17 @@ block content
                                 div(id="divHelpBox", style="width: 300px; height:200px; overflow-y: auto; font-size: 12pt")
 
                             form.form-horizontal
+                                .row
+                                    
                                 fieldset
-                                    legend Abhängigkeiten
-                                        div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
-                            .row
-                                .col-md-10
-                                .col-md-2
-                                    .col.lg-12.column(style="margin-top:3%")
-                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button", style="margin-right:90%") Check Playable
-                                            span.glyphicon.glyphicon-check
-
+                                    .row
+                                        .col-md-10
+                                            legend Abhängigkeiten
+                                                div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center; margin-top:1%")
+                                        .col-md-2
+                                            .col.lg-12.column(style="margin-top:3%")
+                                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button", style="margin-right:90%") Prüfen
+                                                    span.glyphicon.glyphicon-check
 
 
 

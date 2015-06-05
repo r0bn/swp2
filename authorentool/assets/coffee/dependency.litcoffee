@@ -756,6 +756,9 @@
                 }
                 network = new vis.Network(container, data, {});
                 return
+                
+                
+                
         # Löscht eine bestimmte Kante aus dem Graph
         RemoveParticularEdge = (FromStorypoint, ToStorypoint) ->
             if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
@@ -975,9 +978,10 @@
         findPath = (startpointStorypointArray, endpointStorypointArray) ->
         
         
-            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. 
+            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 15 mal (!!!) diese Methode aufgerufen werden, 
+            #so lässt die Wahrscheinlichkeit nach, dass hier was richtiges ausgewertet wird...
             window.zyklusCounter++
-            if window.zyklusCounter > 150
+            if window.zyklusCounter > 15
                 return "Möglicher ZYKLUS gefunden. Story kann unter umständen nicht korrekt überprüft werden."
                         
         
