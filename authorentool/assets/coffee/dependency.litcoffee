@@ -1131,7 +1131,7 @@
         ##################################Methode für inEndOfStory in controller.litcoffee ############################################
             
         #Methode um alle Referenzen (in den Buttonfeldern) zu einem bestimmten Referenznamen zu löschen. 
-        removeAllShownGUIReferencesByName = (searchName, storypointId) ->
+        removeAllShownGUIReferencesByName = (searchName) ->
             
             #Schleifen, damit alle Buttoninhalte innerhalb der StorypointReferenzen gelöscht werden
             i = 1
