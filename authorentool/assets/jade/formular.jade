@@ -202,14 +202,17 @@ block content
                                 .row
                                     
                                 fieldset
-                                    .row
+                                    .row(style="margin-top:1%")
                                         .col-md-10
                                             legend Abhängigkeiten
-                                                div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center; margin-top:1%")
                                         .col-md-2
-                                            .col.lg-12.column(style="margin-top:3%")
-                                                button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button", style="margin-right:90%") Prüfen
-                                                    span.glyphicon.glyphicon-check
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button") Prüfen
+                                                span.glyphicon.glyphicon-check
+
+                                    .row
+                                        .col-md-12
+                                            div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
+
 
 
 

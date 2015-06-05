@@ -118,8 +118,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $("#btnCheckStory").click ->
             window.zyklusCounter = 0
             hint = checkPlayableStory()
-            if hint == ''
-                hint = "In dieser Story kommt möglicherweise ein Zyklus vor, der es nicht erlaubt die Story auf alles zu prüfen"
             $("#dialog-confirm-Playable-text").text(hint)
             $("#dialog-confirm-Playable").css("display", "block")
             $("#dialog-confirm-Playable").dialog
@@ -285,7 +283,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                                         storypointName = $("#inStorypoint_"+counter).val()
                                         if storypointName == ''
                                             storypointName = $("#inStorypoint_"+counter).attr("placeholder")
-                                        removeAllShownGUIReferencesByName(storypointName)
+                                        removeAllShownGUIReferencesByName(storypointName, counter)
                                         
                                         #Disable the create Interaction button
                                         $("#btnCreateInteraction_" + counter).attr("disabled", true)

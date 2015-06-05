@@ -1131,7 +1131,7 @@
         ##################################Methode für inEndOfStory in controller.litcoffee ############################################
             
         #Methode um alle Referenzen (in den Buttonfeldern) zu einem bestimmten Referenznamen zu löschen. 
-        removeAllShownGUIReferencesByName = (searchName) ->
+        removeAllShownGUIReferencesByName = (searchName, storypointId) ->
             
             #Schleifen, damit alle Buttoninhalte innerhalb der StorypointReferenzen gelöscht werden
             i = 1
@@ -1148,10 +1148,13 @@
                     while k <= 3
                         if typeof $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k) != 'undefined'
                             if $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val() == searchName
+                                
+                                fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner")
+                                toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("id").split("_")[1]
+                                RemoveParticularEdge(fromStorypoint, toStorypoint)
                                 $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
                                 $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
                                 $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")    
-                        
                         k++
                     j++
                 i++;
