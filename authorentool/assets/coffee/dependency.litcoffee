@@ -1131,31 +1131,57 @@
         ##################################Methode für inEndOfStory in controller.litcoffee ############################################
             
         #Methode um alle Referenzen (in den Buttonfeldern) zu einem bestimmten Referenznamen zu löschen. 
-        removeAllShownGUIReferencesByName = (searchName) ->
+        removeAllShownGUIReferencesByName = (searchName, storypointId) ->
             
             #Schleifen, damit alle Buttoninhalte innerhalb der StorypointReferenzen gelöscht werden
             i = 1
             while i <= window.storypointCounter
 
+                if i == storypointId
+                    i++
+                    continue
                 if typeof $("#btnCreateReferences_"+i) == 'undefined'
+                    i++
                     continue
             
                 j = 1
                 rowCounter = $("#btnCreateReferences_" + i).attr("rowCounter")
+
+                if typeof rowCounter == 'undefined'
+                    i++
+                    continue
+                    
                 while j <= rowCounter
                     
-                    k = 1
-                    while k <= 3
+                    k = 3
+                    while k >= 1
                         if typeof $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k) != 'undefined'
                             if $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val() == searchName
-                                
-                                fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner")
-                                toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("id").split("_")[1]
-                                RemoveParticularEdge(fromStorypoint, toStorypoint)
-                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
-                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
-                                $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")    
-                        k++
+                                if k > 1
+                                    nextK = k
+                                    nextK--
+                                    fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner").split("_")[1]
+                                    toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).attr("selectedOwner").split("_")[1]
+                                    #Lösche die Kante zwischen den beiden Punkten
+                                    RemoveParticularEdge(fromStorypoint, toStorypoint)
+                                    #Lösche den Inhalt des k.ten Button
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")
+                                    #Lösche auch den Inhalt den k-1.ten Button
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).html("Neue Ref setzen <span class='caret' />")
+                                #Hier ist man bei der allerersten Referenzsetzung, daher muss hier zwischen selectOwner und Storypunkt selbst
+                                #unterschieden werden.
+                                else
+                                    fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner").split("_")[1]
+                                    toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("id").split("_")[1]
+                                    RemoveParticularEdge(fromStorypoint, toStorypoint)
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")
+                        k--
                     j++
                 i++;
         
@@ -1194,7 +1220,7 @@
                 return true
 
             return false
-        
-        
+            
+
         
 

@@ -283,18 +283,21 @@ The following code is a angularJS (https://angularjs.org/) Application.
                                         storypointName = $("#inStorypoint_"+counter).val()
                                         if storypointName == ''
                                             storypointName = $("#inStorypoint_"+counter).attr("placeholder")
-                                        removeAllShownGUIReferencesByName(storypointName)
+                                        removeAllShownGUIReferencesByName(storypointName, counter)
                                         
                                         #Disable the create Interaction button
                                         $("#btnCreateInteraction_" + counter).attr("disabled", true)
+                                        $("#ddnInteractions_"+counter).attr("disabled",true)
                                         
                                         return
                                 'Abbrechen': ->
                                         $(this).dialog 'close'
+                                        document.getElementById("inEndOfStory_"+counter).checked = false
                                         return
 
                     else
                         $("#btnCreateInteraction_" + counter).attr("disabled", false)
+                        $("#ddnInteractions_"+counter).attr("disabled",false)
                 return
 
         
