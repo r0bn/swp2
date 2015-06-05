@@ -4,11 +4,15 @@
             table.table.table-striped.table-hover
                 thead
                     tr
-                        th Name 
-                        th Typ
-                        th Größe 
-                        th Erstellt 
-                        th Aktion 
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('file', reverse)") Name 
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
+                        th  
+                            a(href="",ng-click="reverse=!reverse;orderBib('size', reverse)") Größe
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('created_at', reverse)") Erstellt
+                        th Aktion
                 tbody
                     tr(ng-repeat="obj in mediaData")
                         td {{ obj.file }}

@@ -4,11 +4,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", "$filter", ($scope, $routeParams, $http, server, xmlService, media, $filter) ->
 
         $scope.storyId = $routeParams.story
-
         $scope.codeMirrorUpdateUI = false
+        orderBy = $filter('orderBy')
 
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
@@ -29,6 +29,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.updateMedia = () ->
             media.getMediaFiles $scope.storyId, (mediaFiles) ->
                 $scope.mediaData = mediaFiles
+                $scope.orderBib('file', false)
+
+        $scope.orderBib = (predicate, reverse) ->
+            $scope.mediaData = orderBy($scope.mediaData, predicate, reverse)
+
 
         # this will be initial executed and get all available story's
         $http.get("http://api.storytellar.de/story")
@@ -91,7 +96,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.storypointCounter = 0
         window.quizAnswerCounter = 10
         window.chooserAnswerCounter = 10
-        window.interactioncounter = 10;
+        window.interactioncounter = 10
         
         #dependencyCounter
         window.zyklusCounter = 0
