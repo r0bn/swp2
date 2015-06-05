@@ -891,20 +891,13 @@
             #if foundStartpoint now is true, that means that there is at least 1 startPoint, anywhere.
             
             #Check if All Story-Endpoints are reachable from an Startpoint
-            
             reachableEndpoints = checkEndpointFromStartpoint()
             
             if typeof reachableEndpoints == 'string'
                 return reachableEndpoints
-                #return "Story hat keinen Endpunkt"
             
             if !reachableEndpoints
                 return "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
-                
-                
-            #checkCommand = "Die Story ist nicht spielbar"
-            #if foundStartpoint && reachableEndpoints
-                #checkCommand = "Die Story ist spielbar"
                 
             return "Die Story ist spielbar!" 
             
@@ -957,7 +950,6 @@
             
             #If there is no Endpoint the Story is not playable and a hint will be thrown
             if endpointStorypointArray.length == 0
-                #alert "Story hat keinen Endpunkt"
                 return "Story hat keinen Endpunkt"
             
             
@@ -1008,8 +1000,19 @@
                 precursorStorypointCounter = 0
                 while precursorStorypointCounter < pointerPathArrayToEndstorypoint.length
                     
-                    if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
+                    #Diese If-Bedingung muss testen, ob im gesamten pointerPathArrayToEndstorypoint-Array einer dabei ist, der in
+                    #startpointStorypointArray drinne ist.
+                    if checkRightPath(startpointStorypointArray, pointerPathArrayToEndstorypoint)
                         return true
+                        
+                        
+                    #Braucht man nicht, da hier geprüft werden muss, ob wirklich alles schon drinne ist und nicht step by step im
+                    #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
+                    #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
+                        #return true
+                        
+                        
+                        
                     else 
                         #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
                         #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
@@ -1100,6 +1103,21 @@
             return endpointStorypointArray
             
             
+            
+            
+        checkRightPath = (startpointStorypointArray, endpointStorypointArray) ->
+            
+            rightPath = false
+            i = 0
+            while i < endpointStorypointArray.length
+                
+                if startpointStorypointArray.indexOf(endpointStorypointArray[i]) >= 0
+                    rightPath = true
+                    break
+                i++
+            
+            
+            return rightPath
             
             
             
