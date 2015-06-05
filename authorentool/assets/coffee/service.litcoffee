@@ -23,12 +23,12 @@
                     .error () ->
                         console.log "error"
 
-            createStory : () ->
+            createStory : (cb) ->
                 $http.post("#{serverUrl}/story", { xml : "start here" })
-                    .success () ->
-                        console.log "created"
-                    .error () ->
-                        console.log "error"
+                    .success (data) ->
+                        cb(data)
+                    .error (err) ->
+                        console.log err
 
             updateStory : (id, xml) ->
                 $http.post("#{serverUrl}/story/#{id}", { xml : xml })

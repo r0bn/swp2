@@ -109,8 +109,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initHelpSystem()
         initScrollbar()
 
-
-            
         window.safeButtonCounter = 0
 
 
@@ -123,9 +121,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $("#dialog-confirm-Playable").dialog
               modal: true
               buttons: {
-                Ok: -> 
-                  $(this).dialog "close";
-                } 
+                Ok: ->
+                  $(this).dialog "close"
+                }
             return
 
         $("#btnCreateNewStorypoint").click ->
@@ -371,9 +369,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # Creates a story on the server
         $scope.createStory = () ->
-            $server.createStory()
-            $server.getStoryList (data) ->
-                    $scope.storys = data
+            $server.createStory (id)->
+                console.log id
+                $location.path "/story/#{id}"
+
 
     ]
 
