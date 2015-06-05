@@ -36,9 +36,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
 
         # this will be initial executed and get all available story's
-        $http.get("http://api.storytellar.de/story")
-            .success (data) ->
-                $scope.storys = data
+        server.getStoryList (data) ->
+            $scope.storys = data
+            for s in $scope.storys
+                if s.id is $scope.storyId
+                    console.log s
+                    $scope.story = s
 
 
         # this saves the current xml file
@@ -64,7 +67,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         return
 
                 console.log $scope.xmlFile
-                server.updateStory $scope.storyId, $scope.xmlFile
+                server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
 
         $scope.uploadMediaFile = () ->
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->

@@ -16,8 +16,11 @@
                         include ./formular.jade
                     .tab-pane.fade.active.in(id="XML", style="display:none")
                         .row
-                            .col-md-4
-                                button.btn.btn-primary.btn-lg(ng-click="saveXML()",style="margin:20px") Speichern 
+                            .col-md-4(style="margin:20px")
+                                button.btn.btn-primary.btn-lg(ng-click="saveXML()") Speichern 
+                                br 
+                                input(type="checkbox",ng-model="story.final")  
+                                | Final
                             .col-md-8
                                 | {{ xmlError }}
                         .row

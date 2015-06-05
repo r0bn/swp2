@@ -11,6 +11,8 @@
                     .label.label-danger.home-label(ng-show="story.draft") Draft 
                     p.list-group-item-text
                         | {{ story.description }}
+                        span(ng-show="story.draft") 
+                            b {{ story.working_title }} 
                         br
                         br
                         | Author: {{ story.author }}

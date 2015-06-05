@@ -6,10 +6,13 @@
             getStoryList : (cb) ->
                 $http.get("#{serverUrl}/story")
                     .success (data) ->
+                        for d in data
+                            d.final = true
                         $http.get("#{serverUrl}/story/open")
                             .success (data2) ->
                                 for d in data2
                                     d.draft = true
+                                    d.final = false
                                 cb(data.concat(data2))
                             .error () ->
                                 console.log "error"
@@ -24,14 +27,14 @@
                         console.log "error"
 
             createStory : (cb) ->
-                $http.post("#{serverUrl}/story", { xml : "start here" })
+                $http.post("#{serverUrl}/story", { xml : "start here", working_title : "draft story" })
                     .success (data) ->
                         cb(data)
                     .error (err) ->
                         console.log err
 
-            updateStory : (id, xml) ->
-                $http.post("#{serverUrl}/story/#{id}", { xml : xml })
+            updateStory : (id, xml, final) ->
+                $http.post("#{serverUrl}/story/#{id}", { xml : xml, final : final })
                     .success () ->
                         console.log "updated"
                     .error (err) ->
