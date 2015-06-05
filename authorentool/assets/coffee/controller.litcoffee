@@ -104,6 +104,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
         #dependencyCounter
         window.zyklusCounter = 0
         
+        #everyPathArray, for checking every Path in the dependencys
+        window.everyPathArray = []
+        
         
         # EndstorypointArray and StartstorypointArray
         window.endStorypoints = []

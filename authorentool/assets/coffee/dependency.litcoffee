@@ -975,80 +975,116 @@
                         
             #Now all Startstorypoints are known. Now test if you can reach a endStorypoint from a startStorypoint
             
-            reachableEndpoint = findPath(startpointStorypointArray, endpointStorypointArray)
+            findAllPath(startpointStorypointArray, endpointStorypointArray)
+            reachableEndpoint = checkEveryPath()
+
+            #reachableEndpoint = findPath(startpointStorypointArray, endpointStorypointArray)
             return reachableEndpoint
+   
+            
+        checkEveryPath = () ->
+            
+            if window.everyPathArray.indexOf(false) >= 0
+                return false
+            
+            i = 0
+            while i < window.everyPathArray.length
+                if typeof window.everyPathArray[i] == 'string'
+                    if window.everyPathArray.length >= 1
+                        return "Bei mindestens einem Pfad ist folgender Fehler aufgetreten: " +  window.everyPathArray[i]
+                    else
+                        return window.everyPathArray[i]
+                    
+                i++
+            return true
+            
+            
+            
+        findAllPath = (startpointStorypointArray, endpointStorypointArray) ->
+            
+            window.everyPathArray = []
+
+            #Für jeden Endstorypoint wird hier einmal findPath aufgerufen
+            endstorypointCounter = 0
+            while endstorypointCounter < endpointStorypointArray.length
+                firstStorypointAsArray = []
+                firstStorypointAsArray.push(endpointStorypointArray[endstorypointCounter])
+                findPath(startpointStorypointArray, firstStorypointAsArray)
+                endstorypointCounter++
+            return
+            
             
             
         #Methode to calculate if an Endstorypoint is reachable from a Startstorypoint
         findPath = (startpointStorypointArray, endpointStorypointArray) ->
         
-        
-            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 15 mal (!!!) diese Methode aufgerufen werden, 
+            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 150 mal (!!!) diese Methode aufgerufen werden, 
             #so lässt die Wahrscheinlichkeit nach, dass hier was richtiges ausgewertet wird...
             window.zyklusCounter++
             if window.zyklusCounter > 150
                 return "Möglicher Zyklus gefunden oder es gibt keinen Weg vom Startpunkt zum Endpunkt. Story kann unter Umständen nicht korrekt überprüft werden."
                         
-            everyPathArray = []
-            endstorypointCounter = 0
-            while endstorypointCounter < endpointStorypointArray.length
                 
-                #get All Points that points to this spezial Point.
-                pointerPathArrayToEndstorypoint = []
-                pointerPathArrayToEndstorypoint = getAllStorypointsWhichPointsOnGiven(endpointStorypointArray[endstorypointCounter])
+            #get All Points that points to this spezial Point.
+            pointerPathArrayToEndstorypoint = []
+            pointerPathArrayToEndstorypoint = getAllStorypointsWhichPointsOnGiven(endpointStorypointArray[0])
+            
+            
+            #Testen, ob pointerPathArrayToEndstorypoint.length == 0, wenn ja, kann man beim Endpunkt auch anfangen und ist somit
+            #sofort fertig => gültiger Storypath
+            if pointerPathArrayToEndstorypoint.length == 0
+                if startpointStorypointArray.indexOf(endpointStorypointArray[0] >= 0)
+                    window.everyPathArray.push(true)
+                    return true
+            
+            
+            #Alle Vorgänger prüfen:
+            precursorStorypointCounter = 0
+            while precursorStorypointCounter < pointerPathArrayToEndstorypoint.length
                 
-                
-                #Testen, ob pointerPathArrayToEndstorypoint.length == 0, wenn ja, kann man beim Endpunkt auch anfangen und ist somit
-                #sofort fertig => gültige Story
-                if pointerPathArrayToEndstorypoint.length == 0
-                    if startpointStorypointArray.indexOf(endpointStorypointArray[endstorypointCounter] >= 0)
-                        return true
-                
-                
-                #Alle Vorgänger prüfen:
-                precursorStorypointCounter = 0
-                while precursorStorypointCounter < pointerPathArrayToEndstorypoint.length
+                #Diese If-Bedingung muss testen, ob im gesamten pointerPathArrayToEndstorypoint-Array einer dabei ist, der in
+                #startpointStorypointArray drinne ist.
+                if checkRightPath(startpointStorypointArray, pointerPathArrayToEndstorypoint)
+                    window.everyPathArray.push(true)
+                    return true
                     
-                    #Diese If-Bedingung muss testen, ob im gesamten pointerPathArrayToEndstorypoint-Array einer dabei ist, der in
-                    #startpointStorypointArray drinne ist.
-                    if checkRightPath(startpointStorypointArray, pointerPathArrayToEndstorypoint)
-                        return true
+                    
+                #Braucht man nicht, da hier geprüft werden muss, ob wirklich alles schon drinne ist und nicht step by step im
+                #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
+                #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
+                    #return true
+                    
+                    
+                else 
+                    #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
+                    #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
+                    # die Methode abbrechen darf, ohne dass die anderen Endstorypoints geprüft worden sind, sofern es
+                    # bei diesem einem KEINEN Startstorypoint gibt.
+                    
+                    fakeEndpointStorypointArray = []
+                    fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
+                    
+                    checkArray = getAllStorypointsWhichPointsOnGiven(fakeEndpointStorypointArray[precursorStorypointCounter])
+                    
+                    #Braucht man evtl. nicht, da dies eigentlich nicht mehr möglich ist
+                    if checkArrayEquals(endpointStorypointArray, checkArray)
+                        #Hier werden nur Zyklen der länge 1 erkannt!
+                        window.everyPathArray.push(false)
+                        return false
                         
-                        
-                    #Braucht man nicht, da hier geprüft werden muss, ob wirklich alles schon drinne ist und nicht step by step im
-                    #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
-                    #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
-                        #return true
-                        
-                        
-                    else 
-                        #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
-                        #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
-                        # die Methode abbrechen darf, ohne dass die anderen Endstorypoints geprüft worden sind, sofern es
-                        # bei diesem einem KEINEN Startstorypoint gibt.
-                        
-                        fakeEndpointStorypointArray = []
-                        fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
-                        
-                        checkArray = getAllStorypointsWhichPointsOnGiven(fakeEndpointStorypointArray[precursorStorypointCounter])
-                        
-                        if checkArrayEquals(endpointStorypointArray, checkArray)
-                            #Hier werden nur Zyklen der länge 1 erkannt!
-                            return false
-                            
-                        tempVar = findPath(startpointStorypointArray, fakeEndpointStorypointArray)
-                        if !tempVar
-                            precursorStorypointCounter++
-                            continue
-                        else
-                            if typeof tempVar == 'string'
-                                return tempVar
-                            else
-                                return true
+                    tempVar = findPath(startpointStorypointArray, fakeEndpointStorypointArray)
+                    if !tempVar
+                        precursorStorypointCounter++
+                        continue
+                    else
+                        window.everyPathArray.push(tempVar)
+                        #return tempVar
+                        #if typeof tempVar == 'string'
+                            #return tempVar
+                        #else
+                            #return true
 
-                    precursorStorypointCounter++
-                
-                endstorypointCounter++
+                precursorStorypointCounter++
             return false
             
             
