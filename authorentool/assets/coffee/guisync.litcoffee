@@ -65,9 +65,12 @@
                 xml += '            <anchors>\n'
                 xml += '                <Geometry>\n'
                 xml += '                    <assets>\n'
-                xml += '                        <Video id="' + synchronizeInputHelper("inAsset_"+ id) + '">\n'
-                xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '.mp4" />\n'
-                xml += '                        </Video>\n'
+                if $("inAsset_"+ id).val() != ''
+                    videoID = synchronizeInputHelper("inAsset_"+ id)
+                    videoID = videoID.split(".")
+                    xml += '                        <Video id="' + videoID[0] + '">\n'
+                    xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\n'
+                    xml += '                        </Video>\n'
                 xml += '                    </assets>\n'
                 xml += '                    <gml:Point gml:id="' + synchronizeInputHelper("inStorypoint_"+ id) + '_GPS">\n'
                 xml += '                        <gml:pos>' + synchronizeGPSCalc("inAnchorPoint_" + id) + '</gml:pos>\n'
@@ -166,7 +169,12 @@
             return xml
             
         synchronizeGPSCalc = (inputID) ->
-            return $("#"+inputID).val().replace ",",""
+            gps = $("#"+inputID).val()
+            if gps == ''
+                gps = "0.0 0.0"
+            else
+                gps.replace ",",""
+            return gps
             
         synchronizeInputHelper = (inputID) ->
             if $("#"+inputID).val() != ""
