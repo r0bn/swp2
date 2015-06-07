@@ -131,7 +131,7 @@
                 id = $(this).attr("id")
                 id = id.split("_")
                 id = id[1]
-                interactions = $("#fgpInteractions_"+id).next().next().next()
+                interactions = $("#fgpInteractions_"+id).next()
                 while typeof interactions.attr("id") != "undefined"
                     interID = interactions.attr("id")
                     interID = interID.split("_")
@@ -141,7 +141,14 @@
                         xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
                         xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
                         xml += '                <Question>' + synchronizeInputHelper("inQuizQuestion_"+ interID[2]) + '</Question>\n'
-
+                        answer = $("#btnQuizAnswer_" + interID[2]).parent().next()
+                        while typeof answer.attr("id") != "undefined"
+                            answer_id = answer.attr("id").split("_")
+                            answer_id = answer_id[1]
+                            xml += '                <Answer id="' + synchronizeInputHelper("inQuizAnswerID_"+answer_ID) + '">\n"'
+                            xml += '                    <Text>' + synchronizeInputHelper("inQuizAnswerText_" +answer_ID) + '</Text>\n'
+                            xml += '                    <Status>' + $("#ddnState_" + answer_ID).val() + '</Status>\n'
+                            xml += '                </Answer>\n'
                                       #  <Answer id="Punkt_A_Quiz_Answer_1">
                                       #      <Text> Ja </Text>
                                       #      <Status> true </Status>
@@ -150,6 +157,7 @@
                                     #        <Text> Nein </Text>
                                    #         <Status> false </Status>
                                     #    </Answer>
+                            answer = answer.next()
                         xml += '            </Quiz>\n'
                     interactions = interactions.next()
             return xml
