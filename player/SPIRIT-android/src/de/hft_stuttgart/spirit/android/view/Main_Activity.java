@@ -60,6 +60,9 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
      */
     ViewPager mViewPager;
 
+    private static final int TIME_INTERVAL = 2000; // desired time between two back presses to close the app
+    private long mBackPressed;
+
     /**
      * This method is called, when the Activity is created.
      */
@@ -173,7 +176,27 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
 
     	    return false;
     }
-   
+    
+    /**
+     * Back button listener.
+     * Will close the application if the back button is pressed twice in a TIME_INTERVAL.
+     */
+    
+    @Override
+    public void onBackPressed()
+    {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) 
+        { 
+        	  Intent intent = new Intent(Intent.ACTION_MAIN);
+              intent.addCategory(Intent.CATEGORY_HOME);
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              startActivity(intent);
+        }
+        else { Toast.makeText(getBaseContext(), "Zum Beenden erneut tippen.", Toast.LENGTH_SHORT).show(); }
+
+        mBackPressed = System.currentTimeMillis();
+    }
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
