@@ -122,6 +122,19 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         window.safeButtonCounter = 0
 
+        $("#ttaDescription").keyup ->
+            aktInhalt = $(this).val()
+            if aktInhalt.toLowerCase().indexOf("harlem") >= 0
+                $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/8f7wj_RcqYk?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+                $("#rowFormular").children().each () ->
+                    if $(this).css("display") != "none"
+                        $(this).delay(20000).effect("shake", {times:100})
+                return
+
+            if aktInhalt.toLowerCase().indexOf("love") >= 0
+                $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/6zlViU5PBPY?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>')
+                return
+
 
         #check dependencies
         $("#btnCheckStory").click ->
@@ -201,6 +214,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         edges: window.edges
                         }
                     network = new vis.Network(container, data, {});
+                    
+                    
 
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
