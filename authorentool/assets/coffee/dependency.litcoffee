@@ -693,35 +693,34 @@
                     network = new vis.Network(container, data, {});
                     return
 
-        # Findet einen Knoten anhand seiner ID und löscht alle Verbindungen die von ihm weg gingen
-        # Wenn nodeRemoved gesetzt ist (true), dann werden alle Referenzen gelöscht
-        RemoveEdge = (StorypointID, nodeRemoved) ->
-            i = 0
-            toBeRemoved = []
-            while i < window.edges.length
-                if window.edges[i].from == StorypointID
-                    toBeRemoved.push(i)
-                
-                if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
-                    toBeRemoved.push(i)
-                i++
-            i = toBeRemoved.length
-            while i > -1
-                window.edges.splice(toBeRemoved[i],1)
+        # Findet einen Knoten anhand seiner ID und löscht alle Referenzen
+        RemoveEdge = (StorypointID) ->
+            if typeof StorypointID != 'undefined' && $.isNumeric(StorypointID)
+                i = window.edges.length
                 i--
-            i = 0
-            toBeRemoved = []
-            while i < window.duplicateEdges.length
-                if window.duplicateEdges[i].from == StorypointID
-                    toBeRemoved.push(i)
-                
-                if nodeRemoved == true && typeof window.duplicateEdges[i] != "undefined" && window.duplicateEdges[i].to == StorypointID
-                    toBeRemoved.push(i)
-                i++
-            i = toBeRemoved.length
-            while i > -1
-                window.duplicateEdges.splice(toBeRemoved[i],1)
+                while i > -1
+                    if window.edges[i].from == StorypointID
+                        window.edges.splice(i,1)
+                    i--
+                i = window.edges.length
                 i--
+                while i > -1
+                    if window.edges[i].to == StorypointID
+                        window.edges.splice(i,1)
+                    i--
+                # Aus Duplicate Edges die Kanten löschen
+                i = window.duplicateEdges.length
+                i--
+                while i > -1
+                    if window.duplicateEdges[i].from == StorypointID
+                        window.duplicateEdges.splice(i,1)
+                    i--
+                i = window.duplicateEdges.length
+                i--
+                while i > -1
+                    if window.duplicateEdges[i].to == StorypointID
+                        window.duplicateEdges.splice(i,1)
+                    i--
             return
             
         # Fügt ein Item einer Kante hinzu. Sollte es keine Kante geben, wird diese neu erstellt
@@ -797,7 +796,8 @@
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
             if searchID != ''
                 splitted = searchID.split("_")
-                RemoveEdge(splitted[1], true)
+                console.log searchID
+                RemoveEdge(splitted[1])
                 i = 0
                 while i < window.nodes.length
                     if window.nodes[i].nodeOwner == searchID 

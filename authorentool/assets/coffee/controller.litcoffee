@@ -259,8 +259,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         createChooser(counter)
                 # Click Events für ddnInteraction
                 initDdnInteraction(counter)
-                if counter > 6
-                    $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/lTcRfJyEKkM?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+                # if counter > 6
+                    # $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/lTcRfJyEKkM?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
                     
                 # Neues Feature Button machen.
                 button = document.getElementById("fgpStorypoint");
