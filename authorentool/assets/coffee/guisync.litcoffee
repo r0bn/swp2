@@ -23,7 +23,10 @@
             xml += '                <gml:pos>' + synchronizeGPSCalc("inLatLngLocation") + '</gml:pos>\n'
             xml += '            </gml:Point>\n'
             xml += '        </Location>\n'
-            xml += '        <Radius uom="' + synchronizeInputHelper("ddnradius") + '">' + synchronizeInputHelper("inRadius") + '</Radius>\n'
+            radius =  synchronizeInputHelper("inRadius")
+            if $.isNumeric(radius) == false
+                radius = 0
+            xml += '        <Radius uom="' + synchronizeInputHelper("ddnradius") + '">' + radius + '</Radius>\n'
             xml += '    </Story>\n'
             return xml
 
@@ -173,7 +176,8 @@
             if gps == ''
                 gps = "0.0 0.0"
             else
-                gps.replace ",",""
+                tmp = gps.split(",")
+                gps = tmp[0].toFixed(6) + " " + tmp[1].toFixed(6)
             return gps
             
         synchronizeInputHelper = (inputID) ->
