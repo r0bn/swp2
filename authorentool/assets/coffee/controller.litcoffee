@@ -238,6 +238,13 @@ The following code is a angularJS (https://angularjs.org/) Application.
                                 $(this).dialog 'close'
                                 window.safeButtonCounter--
                                 checkSafeButton()
+                                rowCounter = $("#btnCreateReferences_" + counter).attr("rowCounter")
+                                if typeof rowCounter != 'undefined'
+                                    row = 1
+                                    while row <= rowCounter
+                                        if typeof $("#btnStorypointRefDelete_"+ counter + "_" + row + "_1").attr("id") != 'undefined'
+                                            $("#btnStorypointRefDelete_"+ counter + "_" + row + "_1").click()
+                                        row++
                                 AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                                 $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
                                     $("#fhlNeuerStorypoint_" + counter).remove()
