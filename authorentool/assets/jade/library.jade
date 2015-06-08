@@ -4,11 +4,15 @@
             table.table.table-striped.table-hover
                 thead
                     tr
-                        th Name 
-                        th Type
-                        th Size
-                        th Created
-                        th Action
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('file', reverse)") Name 
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
+                        th  
+                            a(href="",ng-click="reverse=!reverse;orderBib('size', reverse)") Größe
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('created_at', reverse)") Erstellt
+                        th Aktion
                 tbody
                     tr(ng-repeat="obj in mediaData")
                         td {{ obj.file }}
@@ -17,11 +21,11 @@
                         td {{ obj.size }} bytes
                         td {{ obj.created_at }}
                         td
-                            a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Open 
-                            button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj.file)") Delete 
+                            a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen
+                            button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj.file)") Löschen 
     .row
         .col-md-4
             input(type="file",file-model="mediaFileUpload")
             br
-            button.btn.btn-primary.btn(ng-click="uploadMediaFile()") Upload 
+            button.btn.btn-primary.btn(ng-click="uploadMediaFile()") Hochladen
 

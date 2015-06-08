@@ -15,7 +15,33 @@
             return storypointArray					
 
 
+
+
+        selectAvailibleStorypointsForStorypointRef = (storypointArray, currentStorypointID) ->
+            #loescht sich selbst aus dem array wieder raus, da eine Ref auf sich selbst keinen Sinn macht
+            index = storypointArray.indexOf(currentStorypointID)
+            storypointArray.splice(index,1)
+            
+            #loescht alle Storypoint raus, die Endpunkte sind, da es nach diesen keine weiteren Referenzen geben kann.
+            #Und das würde es, sollte man diese bei Referenz erstellen beim Storypoint auswählen. Daher werden dort
+            #gesonderte Array geliefert
+            
+            tempEndpointArray = getAllEndpointStorypoints()
+
+            i = 0
+            while i < tempEndpointArray.length
+                index = storypointArray.indexOf("fhlNeuerStorypoint_" +tempEndpointArray[i])
+                if index != -1
+                    storypointArray.splice(index,1)
+                i++
+            
+            return storypointArray
+
+
+
+
         selectAvailibleStorypoints = (storypointArray, currentStorypointID) ->
+            #loescht sich selbst aus dem array wieder raus, da eine Ref auf sich selbst keinen Sinn macht
             index = storypointArray.indexOf(currentStorypointID)
             storypointArray.splice(index,1)
             return storypointArray
@@ -275,7 +301,6 @@
                         $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", "undefined")
                         $("#btnSetChooserStorypointReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
-                        checkPlayableStory() #########################################################
                         return
                 else $("#ddnChooserStorypoint_"+indexe).click ->
                     $("#btnSetChooserStorypointReferences_"+counter).val($(this).text())
@@ -284,13 +309,14 @@
                     storypoint = storypoint.split("_")
                     storypoint_2 = $(this).attr("storypointOwner")
                     $("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge", storypoint_2)
-                    storypoint_2 = storypoint_2.split("_")
                     oldEdge = $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue")
+                    $("#btnSetChooserStorypointReferences_"+counter).attr("oldValue", storypoint_2)
+                    storypoint_2 = storypoint_2.split("_")
+                    
                     if typeof oldEdge != "undefined"
                         oldEdge = oldEdge.split("_")
                         RemoveParticularEdge(storypoint[1], oldEdge[1])
-                    AddEdge(storypoint[1], storypoint_2[1])
-                    checkPlayableStory() ###############################################################
+                    addItemToEdge(storypoint[1], storypoint_2[1], $("#btnSetChooserItemReferences_"+counter).val())
                     return
 
                 $("#" + storypointArray[j]).find("button:nth-child(4)").click ->
@@ -300,9 +326,12 @@
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
                     if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue
-                        storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
-                        storypoint = storypoint.split("_")
-                        RemoveEdge(storypoint[1])
+                    
+                        ##########################################################################################################
+                        ##########################################CookieSUCHTI#########################################
+                        #storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
+                        # storypoint = storypoint.split("_")
+                        # RemoveEdge(storypoint[1])
                         $("#btnSetChooserStorypointReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -383,6 +412,12 @@
                         #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
+                        storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                        storypoint = storypoint.split("_")
+                        storypoint_2 =$("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge")
+                        if typeof storypoint_2 != 'undefined'
+                            storypoint_2 = storypoint_2.split("_")
+                            addItemToEdge(storypoint[1], storypoint_2[1])
                         return
                 else $("#ddnChooserItem_"+indexe).click ->
                     $("#btnSetChooserItemReferences_"+counter).val($(this).text())
@@ -393,6 +428,12 @@
                     #storypoint_2 = storypoint_2.split("_")
                     #RemoveEdge(storypoint[1])
                     #AddEdge(storypoint[1], storypoint_2[1])
+                    storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
+                    storypoint = storypoint.split("_")
+                    storypoint_2 =$("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge")
+                    if typeof storypoint_2 != 'undefined'
+                        storypoint_2 = storypoint_2.split("_")
+                        addItemToEdge(storypoint[1], storypoint_2[1],$(this).text())
                     return
 
                 $("#" + itemArray[j]).find("button:nth-child(4)").click ->
@@ -420,7 +461,7 @@
             storypointArray = []
             storypointArray = getAllStorypoints(buttonID, "#"+currentStorypointID)
 
-            storypointArray = selectAvailibleStorypoints(storypointArray, currentStorypointID)
+            storypointArray = selectAvailibleStorypointsForStorypointRef(storypointArray, currentStorypointID)
             
             copyForm = document.getElementById("liSkStorypointRef")
             window.dropdownLiCounter++;
@@ -652,38 +693,43 @@
                     network = new vis.Network(container, data, {});
                     return
 
-        # Findet einen Knoten anhand seiner ID und löscht alle Verbindungen die von ihm weg gingen
-        # Wenn nodeRemoved gesetzt ist (true), dann werden alle Referenzen gelöscht
-        RemoveEdge = (StorypointID, nodeRemoved) ->
-            i = 0
-            while i < window.edges.length
-                if window.edges[i].from == StorypointID
-                    window.edges.splice(i,1);
-                
-                if nodeRemoved == true && typeof window.edges[i] != "undefined" && window.edges[i].to == StorypointID
-                    window.edges.splice(i,1);
-                i++
-            i = 0
-            while i < window.duplicateEdges.length
-                if window.duplicateEdges[i].from == StorypointID
-                    window.duplicateEdges.splice(i,1);
-                
-                if nodeRemoved == true && typeof window.duplicateEdges[i] != "undefined" && window.duplicateEdges[i].to == StorypointID
-                    window.duplicateEdges.splice(i,1);
-                i++
-            container = document.getElementById('divDependencyBox');
-            data = {
-                nodes: window.nodes,
-                edges: window.edges
-            }
-            network = new vis.Network(container, data, {});
+        # Findet einen Knoten anhand seiner ID und löscht alle Referenzen
+        RemoveEdge = (StorypointID) ->
+            if typeof StorypointID != 'undefined' && $.isNumeric(StorypointID)
+                i = window.edges.length
+                i--
+                while i > -1
+                    if window.edges[i].from == StorypointID
+                        window.edges.splice(i,1)
+                    i--
+                i = window.edges.length
+                i--
+                while i > -1
+                    if window.edges[i].to == StorypointID
+                        window.edges.splice(i,1)
+                    i--
+                # Aus Duplicate Edges die Kanten löschen
+                i = window.duplicateEdges.length
+                i--
+                while i > -1
+                    if window.duplicateEdges[i].from == StorypointID
+                        window.duplicateEdges.splice(i,1)
+                    i--
+                i = window.duplicateEdges.length
+                i--
+                while i > -1
+                    if window.duplicateEdges[i].to == StorypointID
+                        window.duplicateEdges.splice(i,1)
+                    i--
             return
             
         # Fügt ein Item einer Kante hinzu. Sollte es keine Kante geben, wird diese neu erstellt
         addItemToEdge = (FromStorypoint, ToStorypoint, ItemLabel) ->
-            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined" || typeof ItemLabel == "undefined"
+            if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
                 return
             else
+                if typeof ItemLabel == 'undefined'
+                    ItemLabel = ""
                 i = 0
                 found = -1
                 while i < window.edges.length
@@ -714,6 +760,9 @@
                 }
                 network = new vis.Network(container, data, {});
                 return
+                
+                
+                
         # Löscht eine bestimmte Kante aus dem Graph
         RemoveParticularEdge = (FromStorypoint, ToStorypoint) ->
             if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
@@ -747,7 +796,8 @@
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
             if searchID != ''
                 splitted = searchID.split("_")
-                RemoveEdge(splitted[1], true)
+                console.log searchID
+                RemoveEdge(splitted[1])
                 i = 0
                 while i < window.nodes.length
                     if window.nodes[i].nodeOwner == searchID 
@@ -832,39 +882,62 @@
             
             
             
-            
+        ##############################################Methodes to check if the Graph/Story is playable#########################################
             
             
         checkPlayableStory = () ->
             
-            checkStartPointSearch()
+            foundStartpoint = false
+            graphOK = false
+            foundEndpoint = false
+            
+            #Methods to test if a Story is playable
+            foundStartpoint = checkStartPointSearch()
+            
+            if !foundStartpoint
+                return "Story hat keinen Startpunkt"
+            #if foundStartpoint now is true, that means that there is at least 1 startPoint, anywhere.
+            
+            #Check if All Story-Endpoints are reachable from an Startpoint
+            reachableEndpoints = checkEndpointFromStartpoint()
+            
+            if typeof reachableEndpoints == 'string'
+                return reachableEndpoints
+            
+            if !reachableEndpoints
+                return "Story kann nicht zuende gespielt werden. Ein Endpunkt ist nicht von einem Startpunkt erreichbar"
                 
-            return
+            return "Die Story ist spielbar!" 
             
             
             
+        #Method to check if a Story has at least one Startpoint
         checkStartPointSearch = () ->
             storypointCheckArray = []
             i = 0
             while i < window.nodes.length
                 storyPointTo = window.nodes[i]
                 storyPointToId = storyPointTo.id + ""
-                storypointCheckArray.push(checkStorypointToPointer(storyPointToId, storypointCheckArray))
+                storypointCheckArray.push(checkStorypointToPointer(storyPointToId))
                 i++
 
-            checkCommand = false
+            checkStartpoint = false
             i = 0
             while i < storypointCheckArray.length
                 if !storypointCheckArray[i]
-                    checkCommand = true
+                    checkStartpoint = true
                     break
                 i++
                 
-            alert "Es gibt mind. einen Startpunkt: " + checkCommand
-            return
+            #Sofern checkStartpoint true ist, gibt es mindestens einen Startpunkt und die Story ist
+            #in dieser Hinsicht spielbar. Sofern checkStartpoint false ist, ist die Story gar nicht spielbar
+            return checkStartpoint
 
 
-        checkStorypointToPointer = (storyPointToId, storypointCheckArray) ->
+        #Gibt zu einem Storypoint zurueck, ob dieser einen Pfeil auf sich hat (true) oder nicht (false)
+        #Sofern er keinen Pfeil auf sich hat, ist es ein moeglicher Startpunkt der Story
+        #Also man kann von diesem Punkt aus die Story starten
+        checkStorypointToPointer = (storyPointToId) ->
             j = 0
             while j < window.edges.length
                 if window.edges[j].to == storyPointToId
@@ -875,10 +948,329 @@
             
             
             
+        
+        #Methode zum zu ueberpruefen ob ein Endpunkt von einem Startpunkt erreichbar ist
+        checkEndpointFromStartpoint = () ->
+
+            endpointStorypointArray = []
+            endpointStorypointArray = getAllEndpointStorypoints()
+            
+            
+            #If there is no Endpoint the Story is not playable and a hint will be thrown
+            if endpointStorypointArray.length == 0
+                return "Story hat keinen Endpunkt"
+            
+            
+            #Now all Endstorypoints are known. Now test if you can reach them from a startPoint
+            startpointStorypointArray = []
+            i = 0
+            while i < window.storypointCounter
+                i++
+                tempStorypointId = $("#fhlNeuerStorypoint_"+i).attr("id")
+                if typeof tempStorypointId != 'undefined'
+                    #if the next if-statement is false, the storypoint has NO references of it and is a startpoint => Add it.
+                    tempStorypointId = tempStorypointId.split("_")[1]
+                    if !checkStorypointToPointer(tempStorypointId)
+                        startpointStorypointArray.push(tempStorypointId)
+                        
+            #Now all Startstorypoints are known. Now test if you can reach a endStorypoint from a startStorypoint
+            
+            findAllPath(startpointStorypointArray, endpointStorypointArray)
+            reachableEndpoint = checkEveryPath()
+
+            #reachableEndpoint = findPath(startpointStorypointArray, endpointStorypointArray)
+            return reachableEndpoint
+   
+            
+        checkEveryPath = () ->
+            
+            if window.everyPathArray.indexOf(false) >= 0
+                return false
+            
+            i = 0
+            while i < window.everyPathArray.length
+                if typeof window.everyPathArray[i] == 'string'
+                    if window.everyPathArray.length >= 1
+                        return "Bei mindestens einem Pfad ist folgender Fehler aufgetreten: " +  window.everyPathArray[i]
+                    else
+                        return window.everyPathArray[i]
+                    
+                i++
+            return true
+            
+            
+            
+        findAllPath = (startpointStorypointArray, endpointStorypointArray) ->
+            
+            window.everyPathArray = []
+
+            #Für jeden Endstorypoint wird hier einmal findPath aufgerufen
+            endstorypointCounter = 0
+            while endstorypointCounter < endpointStorypointArray.length
+                firstStorypointAsArray = []
+                firstStorypointAsArray.push(endpointStorypointArray[endstorypointCounter])
+                findPath(startpointStorypointArray, firstStorypointAsArray)
+                endstorypointCounter++
+            return
+            
+            
+            
+        #Methode to calculate if an Endstorypoint is reachable from a Startstorypoint
+        findPath = (startpointStorypointArray, endpointStorypointArray) ->
+        
+            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 150 mal (!!!) diese Methode aufgerufen werden, 
+            #so lässt die Wahrscheinlichkeit nach, dass hier was richtiges ausgewertet wird...
+            window.zyklusCounter++
+            if window.zyklusCounter > 150
+                return "Möglicher Zyklus gefunden oder es gibt keinen Weg vom Startpunkt zum Endpunkt. Story kann unter Umständen nicht korrekt überprüft werden."
+                        
+                
+            #get All Points that points to this spezial Point.
+            pointerPathArrayToEndstorypoint = []
+            pointerPathArrayToEndstorypoint = getAllStorypointsWhichPointsOnGiven(endpointStorypointArray[0])
+            
+            
+            #Testen, ob pointerPathArrayToEndstorypoint.length == 0, wenn ja, kann man beim Endpunkt auch anfangen und ist somit
+            #sofort fertig => gültiger Storypath
+            if pointerPathArrayToEndstorypoint.length == 0
+                if startpointStorypointArray.indexOf(endpointStorypointArray[0] >= 0)
+                    window.everyPathArray.push(true)
+                    return true
+            
+            
+            #Alle Vorgänger prüfen:
+            precursorStorypointCounter = 0
+            while precursorStorypointCounter < pointerPathArrayToEndstorypoint.length
+                
+                #Diese If-Bedingung muss testen, ob im gesamten pointerPathArrayToEndstorypoint-Array einer dabei ist, der in
+                #startpointStorypointArray drinne ist.
+                if checkRightPath(startpointStorypointArray, pointerPathArrayToEndstorypoint)
+                    window.everyPathArray.push(true)
+                    return true
+                    
+                    
+                #Braucht man nicht, da hier geprüft werden muss, ob wirklich alles schon drinne ist und nicht step by step im
+                #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
+                #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
+                    #return true
+                    
+                    
+                else 
+                    #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
+                    #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
+                    # die Methode abbrechen darf, ohne dass die anderen Endstorypoints geprüft worden sind, sofern es
+                    # bei diesem einem KEINEN Startstorypoint gibt.
+                    
+                    fakeEndpointStorypointArray = []
+                    fakeEndpointStorypointArray.push(pointerPathArrayToEndstorypoint[precursorStorypointCounter])
+                    
+                    checkArray = getAllStorypointsWhichPointsOnGiven(fakeEndpointStorypointArray[precursorStorypointCounter])
+                    
+                    #Braucht man evtl. nicht, da dies eigentlich nicht mehr möglich ist
+                    if checkArrayEquals(endpointStorypointArray, checkArray)
+                        #Hier werden nur Zyklen der länge 1 erkannt!
+                        window.everyPathArray.push(false)
+                        return false
+                        
+                    tempVar = findPath(startpointStorypointArray, fakeEndpointStorypointArray)
+                    if !tempVar
+                        precursorStorypointCounter++
+                        continue
+                    else
+                        window.everyPathArray.push(tempVar)
+                        #return tempVar
+                        #if typeof tempVar == 'string'
+                            #return tempVar
+                        #else
+                            #return true
+
+                precursorStorypointCounter++
+            return false
+            
+            
+            
+        checkArrayEquals = (endpointStorypointArray, checkArray) ->
+            
+            if endpointStorypointArray.length != checkArray.length
+                return false
+            
+            checkBooleanArray = []
+            #Prüfe ob endpointStorypointArrays Elemente alle in checkArray vorkommen
+            endpointStorypointArray.forEach (s, i, o) ->
+                # Die Variable o enthält eine Referenz auf das Array.
+                if checkArray.indexOf(s) >= 0
+                    checkBooleanArray.push(true)
+                else
+                    checkBooleanArray.push(false)
+            #Prüfe ob checkArrays Elemente alle in endpointStorypointArray vorkommen
+            checkArray.forEach (s, i, o) ->
+                # Die Variable o enthält eine Referenz auf das Array.
+                if endpointStorypointArray.indexOf(s) >= 0
+                    checkBooleanArray.push(true)
+                else
+                    checkBooleanArray.push(false)
+
+            if checkBooleanArray.indexOf(false) >= 0
+                return false
+            else
+                return true
+            
+            
+            
+            
+        #Methode that returns all Storypoints that references on a given Storypoint
+        getAllStorypointsWhichPointsOnGiven = (givenStorypointId) ->
+            
+            storypointToStorypointArray = []            
+            j = 0
+            while j < window.edges.length
+                if window.edges[j].to == givenStorypointId
+                    storypointToStorypointArray.push(window.edges[j].from)
+                j++
+
+            return storypointToStorypointArray
+            
+            
+        #This Methode returns all Storypoints which are Endpoints too.
+        getAllEndpointStorypoints = () ->
+        
+            endpointStorypointArray = []
+            i = 0 
+            while i < window.storypointCounter
+                i++
+                tempStorypointId = $("#fhlNeuerStorypoint_"+ i).attr("id")
+                if typeof tempStorypointId != 'undefined'
+                    if document.getElementById("inEndOfStory_"+i).checked
+                        tempStorypointId = tempStorypointId.split("_")[1]
+                        endpointStorypointArray.push(tempStorypointId)
+            
+            return endpointStorypointArray
+            
+            
+            
+            
+        checkRightPath = (startpointStorypointArray, endpointStorypointArray) ->
+            
+            rightPath = false
+            i = 0
+            while i < endpointStorypointArray.length
+                
+                if startpointStorypointArray.indexOf(endpointStorypointArray[i]) >= 0
+                    rightPath = true
+                    break
+                i++
+            
+            
+            return rightPath
             
             
             
             
             
             
+        ##################################Methode für inEndOfStory in controller.litcoffee ############################################
             
+        #Methode um alle Referenzen (in den Buttonfeldern) zu einem bestimmten Referenznamen zu löschen. 
+        removeAllShownGUIReferencesByName = (searchName, storypointId) ->
+            
+            #Schleifen, damit alle Buttoninhalte innerhalb der StorypointReferenzen gelöscht werden
+            i = 1
+            while i <= window.storypointCounter
+
+                if i == storypointId
+                    i++
+                    continue
+                if typeof $("#btnCreateReferences_"+i) == 'undefined'
+                    i++
+                    continue
+            
+                j = 1
+                rowCounter = $("#btnCreateReferences_" + i).attr("rowCounter")
+
+                if typeof rowCounter == 'undefined'
+                    i++
+                    continue
+                    
+                while j <= rowCounter
+                    
+                    k = 3
+                    while k >= 1
+                        if typeof $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k) != 'undefined'
+                            if $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val() == searchName
+                                if k > 1
+                                    nextK = k
+                                    nextK--
+                                    fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner").split("_")[1]
+                                    toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).attr("selectedOwner").split("_")[1]
+                                    #Lösche die Kante zwischen den beiden Punkten
+                                    RemoveParticularEdge(fromStorypoint, toStorypoint)
+                                    #Lösche den Inhalt des k.ten Button
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")
+                                    #Lösche auch den Inhalt den k-1.ten Button
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + nextK).html("Neue Ref setzen <span class='caret' />")
+                                #Hier ist man bei der allerersten Referenzsetzung, daher muss hier zwischen selectOwner und Storypunkt selbst
+                                #unterschieden werden.
+                                else
+                                    fromStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner").split("_")[1]
+                                    toStorypoint = $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("id").split("_")[1]
+                                    RemoveParticularEdge(fromStorypoint, toStorypoint)
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).attr("selectedOwner", "undefined")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).val("Neue Ref setzen")
+                                    $("#btnSetStorypointReferences_"+i + "_" +j + "_" + k).html("Neue Ref setzen <span class='caret' />")
+                        k--
+                    j++
+                i++;
+        
+            return
+            
+            
+        #Methode to remove all Interactions to a given (Storypoint-) counter
+        removeAllInteractions = (counter) ->
+            i = 10
+            while i < window.interactioncounter
+                i++
+                if typeof $("#fgpNeu_Chooser_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Chooser_" + i, counter)
+                        currentObj = $("#btnChooserAnswer_" + i).parent().next()
+                        while typeof currentObj != 'undefined'
+                            id = currentObj.attr("id").split("_")
+                            oldValue = $("#btnSetChooserStorypointReferences_" + id[1]).attr("oldValue")
+                            if typeof oldValue != 'undefined'
+                                oldValue = oldValue.split("_")
+                                storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+id[1], "fhlNeuerStorypoint" )
+                                storypoint = storypoint.split("_")
+                                RemoveParticularEdge(storypoint[1], oldValue[1])
+                            currentObj = currentObj.next()
+                        $("#fgpNeu_Chooser_" + i).remove()
+                        continue
+                        
+                if typeof $("#fgpNeu_Quiz_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Quiz_" + i, counter)
+                        $("#fgpNeu_Quiz_" + i).remove()
+                        continue
+                    
+                if typeof $("#fgpNeu_Item_" + i).attr("id") != "undefined"
+                    if checkRightStorypoint("#fgpNeu_Item_" + i, counter)
+                        $("#fgpNeu_Item_" + i).remove()
+                        continue
+                
+            return
+        
+        
+        checkRightStorypoint = (interactionID, counter) ->
+            
+            #Gets the StorypointID to which the given Interaction belongs
+            storypointId = edgeStorypointfinder(interactionID, "fhlNeuerStorypoint" )
+            expectedStorypointID = "fhlNeuerStorypoint_" + counter
+            if storypointId == expectedStorypointID
+                return true
+
+            return false
+            
+
+        
+

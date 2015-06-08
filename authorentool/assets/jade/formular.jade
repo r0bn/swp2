@@ -14,74 +14,84 @@ block content
                     .col-md-11
                         form.form-horizontal
                             fieldset
-                                legend Storydaten
-                                .form-group
-                                    label.col-lg-2.control-label(for="inTitel") Titel
-                                    .col-lg-8
-                                        input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
-
-                                .form-group
-                                    label.col-lg-2.control-label(for="ttaDescription") Beschreibung
-                                    .col-lg-8
-                                        textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
-
-                                .form-group
-                                    label.col-lg-2.control-label(for="inAutor") Autor
-                                    .col-lg-8
-                                        input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
-
-                                .form-group
-                                    label.col-lg-2.control-label(for="inSize") Größe der Story
-                                    .col-lg-6
-                                        input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
+                                .row
+                                    .col-lg-10
+                                        legend Storydaten
                                     .col-lg-1
-                                        .dropdown
-                                            button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
-                                                span.caret 
-                                            ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                                li(role='presentation')
-                                                    a(id="ddnkb", role='menuitem', tabindex='0') KB
-                                                li(role='presentation')
-                                                    a(id="ddnmb", role='menuitem', tabindex='1') MB
-                                                li(role='presentation')
-                                                    a(id="ddngb", role='menuitem', tabindex='2') GB
-                                .form-group
-                                    label.col-lg-2.control-label(for="inLatLngLocation") Ort
-
-                                    .col-lg-8
-                                        input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
-                                        #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-                                            .modal-dialog   
-                                                .modal-content
-                                                    .modal-body
-                                                        .form-group
-                                                            .col-lg-6
-                                                                input.form-control.controls.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
-                                                            button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
-                                                        .form-group  
-                                                            #gmeg_map_canvas(style='width:900px;height:400px')
-                                    .col-lg-2
-                                        button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
-
-                                .form-group
-                                    label.col-lg-2.control-label(for="inRadius") Radius um den Ort
-                                    .col-lg-6
-                                        input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button", style="margin-right:90%") Story speichern 
+                                            span.glyphicon.glyphicon-upload
                                     .col-lg-1
-                                        .dropdown
-                                            button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
-                                                span.caret 
-                                            ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
-                                                li(role='presentation')
-                                                    a(id="ddnme", role='menuitem', tabindex='0') Meter
-                                                li(role='presentation')
-                                                    a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
+                                        .checkbox
+                                            input(id="inFinal", type='checkbox', placeholder="Final")
+                                            label(id="lblFinal", for='inFinal') Final
+                                        
+                                .row     
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inTitel") Titel
+                                        .col-lg-10
+                                            input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
 
-                
-                    .col-md-1
-                        .col.lg-12.column(style="margin-top:3%")
-                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button", style="margin-right:90%") Story speichern
-                                span.glyphicon.glyphicon-save-file
+                                    .form-group
+                                        label.col-lg-2.control-label(for="ttaDescription") Beschreibung
+                                        .col-lg-10
+                                            textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inAutor") Autor
+                                        .col-lg-10
+                                            input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inSize") Größe der Story
+                                        .col-lg-8
+                                            input.form-control(type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
+                                        .col-lg-2
+                                            .dropdown
+                                                button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnkb", role='menuitem', tabindex='0') KB
+                                                    li(role='presentation')
+                                                        a(id="ddnmb", role='menuitem', tabindex='1') MB
+                                                    li(role='presentation')
+                                                        a(id="ddngb", role='menuitem', tabindex='2') GB
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inLatLngLocation") Ort
+
+                                        .col-lg-8
+                                            input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
+                                            #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                                                .modal-dialog   
+                                                    .modal-content
+                                                        .modal-body
+                                                            .form-group
+                                                                .col-lg-6
+                                                                    input.form-control.controls.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
+                                                                button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                                                            .form-group  
+                                                                #gmeg_map_canvas(style='width:900px;height:400px')
+                                        .col-lg-2
+                                            button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inRadius") Radius um den Ort
+                                        .col-lg-8
+                                            input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
+                                        .col-lg-2
+                                            .dropdown
+                                                button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnme", role='menuitem', tabindex='0') Meter
+                                                    li(role='presentation')
+                                                        a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
+
+                        
+
+
+
                 
                 form.form-horizontal(id="fhlStorypoints")
                     fieldset
@@ -150,7 +160,7 @@ block content
                                 .col-lg-6
                                     input.form-control(disabled, type="text",maxlength="255", id="inAnchorImg", placeholder="Referenzbild aus MedienBib auswählen")
                                 .col-lg-2
-                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button",onclick="selectFromMedienBib('inAnchorImg_1')") MBib
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button",onclick="selectFromMedienBib1()") MBib
 
                                                                                          // -------------ASSETS
                             .form-group
@@ -159,7 +169,7 @@ block content
                                 .col-lg-6
                                     input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Anzeigebild/Anzeigevideo aus MedienBib auswählen")
                                 .col-lg-2
-                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", onclick="selectFromMedienBib('inAsset_1')") MBib
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(type="button", onclick="selectFromMedienBib2()") MBib
                                                     // ------------ REFERENZEN
                             .form-group(id="fgpReferences")
                                 .form-group(id="fgpButtonReferences")
@@ -195,13 +205,22 @@ block content
                                     .col-lg-4
                                         button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnHelpEinklappen", type='button', ng-click="btnHelpEinklappenClick()")
                                             span.glyphicon.glyphicon-resize-small(id="resize")
-                                div(id="divHelpBox", style="width: 300px; height:200px; overflow-y: auto; font-size: 12pt")
+                                div(id="divHelpBox", style="display: none;width: 300px; height:200px; overflow-y: auto; font-size: 12pt")
 
                             form.form-horizontal
+                                .row
+                                    
                                 fieldset
-                                    legend Abhängigkeiten
-                                        div(id="divDependencyBox", style="width: 300px; min-height:100px; text-align:center;")
-                
+                                    .row(style="margin-top:1%")
+                                        .col-md-10
+                                            legend Abhängigkeiten
+                                        .col-md-2
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button") Prüfen 
+                                                span.glyphicon.glyphicon-check
+
+                                    .row
+                                        .col-md-12
+                                            div(id="divDependencyBox", style=" width: 300px; min-height:100px; text-align:center;")
 
 
 
@@ -229,7 +248,18 @@ block content
             div(id="dialog-confirm-Antwort" title="Wirklich?",style="height: auto;display: none")
                 p Möchten Sie die Antwort wirklich löschen?
             div(id="dialog-confirm-Referenzen" title="Wirklich?",style="height: auto;display: none")
-                p Möchten Sie die Antwort wirklich löschen?                
+                p Möchten Sie die Antwort wirklich löschen?
+            div(id="dialog-confirm-EndpointSet" title="Wirklich?",style="height: auto;display: none")
+                p Wenn Sie diesen Punkt als Endpunkt deklarieren, werden alle Interaktionen dieses Punktes gelöscht, sowie alle Referenzen, die mittels des Buttons: 'Referenz erstellen' erstellt wurden. Fortfahren?
+                
+                
+                        // Benutzer-Hinweise CheckPlayable
+            div(id="dialog-confirm-Playable" title="Hinweis",style="height: auto;display: none")
+                p(id="dialog-confirm-Playable-text") dummy
+                
+                                              
+                                              
+                                              
                                                                     
             .form-group(id="fgpMultipleStorypointRefs", style="display:none")
                 .col-lg-3(id="colStorypointRefDeep")

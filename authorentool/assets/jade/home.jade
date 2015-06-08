@@ -1,19 +1,21 @@
 .container-fluid
+    .row
+        .col-md-3.col-centered
+            button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Story erstellen 
     // this view's an initial menu with all available story's
     .row
-        .col-md-6.col-centered(style="margin-top:100px")
-            .list-group(ng-repeat="story in storys")
+        .col-md-12.col-centered(style="margin-top:100px")
+            .list-group.home-grid(ng-repeat="story in storys")
                 a.list-group-item(href="#/story/{{story.id}}")
                     h4.list-group-item-heading {{ story.title }}
                     .label.label-danger.home-label(ng-show="story.draft") Draft 
                     p.list-group-item-text
                         | {{ story.description }}
+                        span(ng-show="story.draft") 
+                            b {{ story.working_title }} 
                         br
                         br
                         | Author: {{ story.author }}
                         br
                         | Erstellt: {{ story.creation_date }}
 
-    .row
-        .col-md-3.col-centered
-                button.btn.btn-primary.btn-lg(style="display:block;margin:0 auto",ng-click="createStory()") Create Story

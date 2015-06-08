@@ -4,11 +4,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", "$filter", ($scope, $routeParams, $http, server, xmlService, media, $filter) ->
 
         $scope.storyId = $routeParams.story
-
         $scope.codeMirrorUpdateUI = false
+        orderBy = $filter('orderBy')
 
         # Codemirror Options
         # Details: https://codemirror.net/doc/manual.html#config
@@ -29,11 +29,19 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.updateMedia = () ->
             media.getMediaFiles $scope.storyId, (mediaFiles) ->
                 $scope.mediaData = mediaFiles
+                $scope.orderBib('file', false)
+
+        $scope.orderBib = (predicate, reverse) ->
+            $scope.mediaData = orderBy($scope.mediaData, predicate, reverse)
+
 
         # this will be initial executed and get all available story's
-        $http.get("http://api.storytellar.de/story")
-            .success (data) ->
-                $scope.storys = data
+        server.getStoryList (data) ->
+            $scope.storys = data
+            for s in $scope.storys
+                if s.id is $scope.storyId
+                    console.log s
+                    $scope.story = s
 
 
         # this saves the current xml file
@@ -59,7 +67,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         return
 
                 console.log $scope.xmlFile
-                server.updateStory $scope.storyId, $scope.xmlFile
+                server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
 
         $scope.uploadMediaFile = () ->
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
@@ -91,7 +99,18 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.storypointCounter = 0
         window.quizAnswerCounter = 10
         window.chooserAnswerCounter = 10
-        window.interactioncounter = 10;
+        window.interactioncounter = 10
+        
+        #dependencyCounter
+        window.zyklusCounter = 0
+        
+        #everyPathArray, for checking every Path in the dependencys
+        window.everyPathArray = []
+        
+        
+        # EndstorypointArray and StartstorypointArray
+        window.endStorypoints = []
+        window.startStorypoints = []
         
         
         # Nodes and Edges for the dependency graph
@@ -102,6 +121,34 @@ The following code is a angularJS (https://angularjs.org/) Application.
         initScrollbar()
 
         window.safeButtonCounter = 0
+
+        $("#ttaDescription").keyup ->
+            aktInhalt = $(this).val()
+            if aktInhalt.toLowerCase().indexOf("harlem") >= 0
+                $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/8f7wj_RcqYk?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+                $("#rowFormular").children().each () ->
+                    if $(this).css("display") != "none"
+                        $(this).delay(21000).effect("shake", {times:100})
+                return
+
+            if aktInhalt.toLowerCase().indexOf("love") >= 0
+                $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/6zlViU5PBPY?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>')
+                return
+
+
+        #check dependencies
+        $("#btnCheckStory").click ->
+            window.zyklusCounter = 0
+            hint = checkPlayableStory()
+            $("#dialog-confirm-Playable-text").text(hint)
+            $("#dialog-confirm-Playable").css("display", "block")
+            $("#dialog-confirm-Playable").dialog
+              modal: true
+              buttons: {
+                Ok: ->
+                  $(this).dialog "close"
+                }
+            return
 
         $("#btnCreateNewStorypoint").click ->
             window.safeButtonCounter++
@@ -136,7 +183,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.createNewStorypoint = (counter) ->
         
                 window.storypointCounter = counter
-                console.log "test"
                 copyForm = document.getElementById("fhlNeuerStorypoint")
                 stuff = copyForm.cloneNode(true)
                 counter = 1 if counter == undefined
@@ -147,6 +193,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 setIDs($("#" + stuff.id), counter)
                 # Labels neu setzen
                 $("#lblInputStorypoint_" + counter).attr("for","inStorypoint_" + counter)
+                # Set Storyname Placeholder 
+                actPlaceholder = $("#inStorypoint_"+counter).attr("placeholder") + " "
+                $("#inStorypoint_"+counter).attr("placeholder", actPlaceholder + counter)
+                
                 # FeatureName Trigger
                 $("#inStorypoint_"+counter).keyup ->
                     inIDSetter($("#inStorypoint_"+counter), $("#lgdNeuerStorypointFieldset_"+counter), "Storypoint: ", "Neuer Storypoint")
@@ -164,9 +214,13 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         edges: window.edges
                         }
                     network = new vis.Network(container, data, {});
+                    
+                    
 
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
+                
+                
                 
                 $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
                 # Click Event für btnStorypointMap                 
@@ -184,6 +238,31 @@ The following code is a angularJS (https://angularjs.org/) Application.
                                 $(this).dialog 'close'
                                 window.safeButtonCounter--
                                 checkSafeButton()
+                                rowCounter = $("#btnCreateReferences_" + counter).attr("rowCounter")
+                                if typeof rowCounter != 'undefined'
+                                    row = 1
+                                    while row <= rowCounter
+                                        if typeof $("#btnStorypointRefDelete_"+ counter + "_" + row + "_1").attr("id") != 'undefined'
+                                            storypoint = $("#btnSetStorypointReferences_"+counter + "_" + row + "_1").attr("selectedOwner")
+                                            if typeof storypoint != "undefined"
+                                                storypoint = storypoint.split("_")
+                                                columnCounter = 1
+                                                previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +row + "_" + columnCounter, "fhlNeuerStorypoint" )
+                                                previousStorypoint = previousStorypoint.split("_")
+                                                RemoveParticularEdge(storypoint[1],previousStorypoint[1])
+                                                i = 1
+                                                i++
+                                                while i < 4
+                                                   nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +row + "_" + i).attr("selectedOwner")
+                                                   if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
+                                                       nextStorypoint = nextStorypoint.split("_")
+                                                       RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                                                   storypoint = nextStorypoint
+                                                   i++
+                                                $("#fgpMultipleStorypointRefs_" + counter + "_" + row).remove()
+                                                $("#fgpMultipleItemRefs_" + counter + "_" + row).remove() 
+
+                                        row++
                                 AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                                 $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->
                                     $("#fhlNeuerStorypoint_" + counter).remove()
@@ -220,8 +299,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         createChooser(counter)
                 # Click Events für ddnInteraction
                 initDdnInteraction(counter)
-                if counter > 6
-                    $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/lTcRfJyEKkM?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
+                # if counter > 6
+                    # $("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/lTcRfJyEKkM?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
                     
                 # Neues Feature Button machen.
                 button = document.getElementById("fgpStorypoint");
@@ -234,7 +313,42 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 AddoDeleteNewNodes( "Storypoint: " +counter ,"", counter )
                 helpRek($("#" + stuff.id))
 
-                console.log "test"
+                #ClickEvent für inEndOfStory_Checkbox
+                $("#inEndOfStory_"+counter).click ->
+                    if $("#inEndOfStory_"+counter).is(" :checked ")
+                        
+                            $("#dialog-confirm-EndpointSet").css("display","block")
+                            $('#dialog-confirm-EndpointSet').dialog
+                              modal: true
+                              buttons:
+                                'Deklarieren': ->
+                                        $(this).dialog 'close'
+                                        
+                                        #Delete all Interactions for this Storypoint
+                                        removeAllInteractions(counter)
+                                        #Delete all Edges from this Storypoint
+                                        RemoveEdge(counter+"", false)
+                                        #Delete all References at Storypoint - References
+                                        storypointName = $("#inStorypoint_"+counter).val()
+                                        if storypointName == ''
+                                            storypointName = $("#inStorypoint_"+counter).attr("placeholder")
+                                        removeAllShownGUIReferencesByName(storypointName, counter)
+                                        
+                                        #Disable the create Interaction button
+                                        $("#btnCreateInteraction_" + counter).attr("disabled", true)
+                                        $("#ddnInteractions_"+counter).attr("disabled",true)
+                                        
+                                        return
+                                'Abbrechen': ->
+                                        $(this).dialog 'close'
+                                        document.getElementById("inEndOfStory_"+counter).checked = false
+                                        return
+
+                    else
+                        $("#btnCreateInteraction_" + counter).attr("disabled", false)
+                        $("#ddnInteractions_"+counter).attr("disabled",false)
+                return
+
         
    
 
@@ -309,9 +423,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         # Creates a story on the server
         $scope.createStory = () ->
-            $server.createStory()
-            $server.getStoryList (data) ->
-                    $scope.storys = data
+            $server.createStory (id)->
+                console.log id
+                $location.path "/story/#{id}"
+
 
     ]
 

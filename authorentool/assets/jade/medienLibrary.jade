@@ -2,6 +2,7 @@ block vars
 
 block scripts
 
+
 block content
     #medienLightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
         .modal-dialog   
@@ -13,19 +14,50 @@ block content
                             .col-md-12
                                 .row
                                     .col-md-12
+                                        input(type="text",id="medBibFilter",ng-model="medBibFilter",style="display:none;")
                                         table.table.table-striped.table-hover
                                             thead
                                                 tr
-                                                    th Name 
-                                                    th Type
-                                                    th - 
-                                                    th - 
+                                                    th  
+                                                        a(href="",ng-click="reverse=!reverse;orderBib('file', reverse)") Name 
+                                                    th 
+                                                        a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
+                                                    th
                                             tbody
-                                                tr(ng-repeat="obj in mediaData")
+                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'jpg' }")
                                                     td {{ obj.file }}
                                                     td 
                                                         span.label.label-default {{ obj.extension }}
                                                     td
-                                                        a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Open 
-                                                        button.btn.btn-primary.btn-xs.btn-select(style="margin-right:5px",data-filename="{{obj.file}}") Select 
+                                                        a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen 
+                                                        button.btn.btn-primary.btn-xs.btn-select(style="margin-right:5px",data-filename="{{obj.file}}") Auswählen 
+
+    #medienLightbox2.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+        .modal-dialog   
+            .modal-content
+                .modal-body
+                    .form-group  
+                        button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                        #medienBib(style='width:800px;height:400px')
+                            .col-md-12
+                                .row
+                                    .col-md-12
+                                        input(type="text",id="medBibFilter",ng-model="medBibFilter",style="display:none;")
+                                        table.table.table-striped.table-hover
+                                            thead
+                                                tr
+                                                    th  
+                                                        a(href="",ng-click="reverse=!reverse;orderBib('file', reverse)") Name 
+                                                    th 
+                                                        a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
+                                                    th
+                                            tbody
+                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'mp4' }")
+                                                    td {{ obj.file }}
+                                                    td 
+                                                        span.label.label-default {{ obj.extension }}
+                                                    td
+                                                        a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen 
+                                                        button.btn.btn-primary.btn-xs.btn-select(style="margin-right:5px",data-filename="{{obj.file}}") Auswählen 
+
 

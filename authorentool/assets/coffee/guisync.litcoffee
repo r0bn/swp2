@@ -23,7 +23,10 @@
             xml += '                <gml:pos>' + synchronizeGPSCalc("inLatLngLocation") + '</gml:pos>\n'
             xml += '            </gml:Point>\n'
             xml += '        </Location>\n'
-            xml += '        <Radius uom="' + synchronizeInputHelper("ddnradius") + '">' + synchronizeInputHelper("inRadius") + '</Radius>\n'
+            radius =  synchronizeInputHelper("inRadius")
+            if $.isNumeric(radius) == false
+                radius = 0
+            xml += '        <Radius uom="' + synchronizeInputHelper("ddnradius") + '">' + radius + '</Radius>\n'
             xml += '    </Story>\n'
             return xml
 
@@ -39,16 +42,28 @@
                 xml += '                <Accessible>'+ $("#inInternet_" + id[1]).is( ":checked" ) + '</Accessible>\n'
                 xml += '                <Internet>'+ $("#inInternet_" + id[1]).is( ":checked" )+ '</Internet>\n'
                 xml += '            </Metadata>\n'
-                xml += '            <Container>\n'
-                xml += '                <Storypointlist />\n'
-                xml += '                <Itemlist />\n'
-                xml += '            </Container>\n'
+                xml = synchronizeDependecyContainers(xml, id[1])
                 if $("#inEndOfStory_" + id[1]).is( ":checked" ) == true
                     xml += '            <EndOfStory>true</EndOfStory>\n'
                 xml += '        </Storypoint>\n'
             xml += '    </Dependency>\n'
             return xml
-            
+        synchronizeDependecyContainers = (xml, storypointID) ->
+                rowCounter = $("#btnCreateReferences_" + storypointID).attr("rowCounter")
+                if typeof rowCounter != 'undefined'
+                    row = 1
+                    while row <= rowCounter
+                        tmp_xml = ""
+                        # Zugriff auf alle dropdowns in einer Zeile und deren Werte in tmp_xml schreiben
+                        # dann prüfen ob tmp_xml leer ist => alle Werte waren Neue Ref setzen, oder undefined
+                        # wenn nicht leer, dann in xml schreiben.
+                        row++
+                else
+                    xml += '            <Container>\n'
+                    xml += '                <Storypointlist />\n'
+                    xml += '                <Itemlist />\n'
+                    xml += '            </Container>\n'
+                return xml    
         synchronizeARMLTag = (xml) ->
             xml += '    <ARElements>\n'
             xml = synchronizeFeatures(xml)
@@ -65,9 +80,12 @@
                 xml += '            <anchors>\n'
                 xml += '                <Geometry>\n'
                 xml += '                    <assets>\n'
-                xml += '                        <Video id="' + synchronizeInputHelper("inAsset_"+ id) + '">\n'
-                xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '.mp4" />\n'
-                xml += '                        </Video>\n'
+                if $("#inAsset_"+ id).val() != ''
+                    videoID = synchronizeInputHelper("inAsset_"+ id)
+                    videoID = videoID.split(".")
+                    xml += '                        <Video id="' + videoID[0] + '">\n'
+                    xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\n'
+                    xml += '                        </Video>\n'
                 xml += '                    </assets>\n'
                 xml += '                    <gml:Point gml:id="' + synchronizeInputHelper("inStorypoint_"+ id) + '_GPS">\n'
                 xml += '                        <gml:pos>' + synchronizeGPSCalc("inAnchorPoint_" + id) + '</gml:pos>\n'
@@ -125,48 +143,78 @@
                 id = $(this).attr("id")
                 id = id.split("_")
                 id = id[1]
-                interactions = $("#fgpInteractions_"+id).next().next().next()
+                interactions = $("#fgpInteractions_"+id).next()
                 while typeof interactions.attr("id") != "undefined"
                     interID = interactions.attr("id")
                     interID = interID.split("_")
                     if interID[1] == "Quiz"
                         xml += '            <Quiz id="' + synchronizeInputHelper("inQuizID_"+ interID[2]) + '">\n'
                         xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
-                        xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
-                        xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        if $("#btnSetQuizOnTrueReferences_"+ interID[2]).val() != '' && $("#btnSetQuizOnTrueReferences_"+ interID[2]).val() != 'Neue Ref setzen'
+                            xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("btnSetQuizOnTrueReferences_"+ interID[2]) + '_Feature" />\n'
+                        else
+                            xml += '                <OnTrue xlink:href="#" />\n'
+                        if $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != '' && $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != 'Neue Ref setzen'
+                            xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("btnSetQuizOnFalseReferences_"+ interID[2]) + '_Feature" />\n'
                         xml += '                <Question>' + synchronizeInputHelper("inQuizQuestion_"+ interID[2]) + '</Question>\n'
-
-                                      #  <Answer id="Punkt_A_Quiz_Answer_1">
-                                      #      <Text> Ja </Text>
-                                      #      <Status> true </Status>
-                                     #   </Answer>
-                                    #   <Answer id="Punkt_A_Quiz_Answer_2">
-                                    #        <Text> Nein </Text>
-                                   #         <Status> false </Status>
-                                    #    </Answer>
+                        answer = $("#btnQuizAnswer_" + interID[2]).parent().next()
+                        while typeof answer.attr("id") != "undefined"
+                            answer_id = answer.attr("id").split("_")
+                            answer_id = answer_id[1]
+                            xml += '                <Answer id="' + synchronizeInputHelper("inQuizAnswerID_"+answer_id) + '">\n'
+                            xml += '                    <Text>' + synchronizeInputHelper("inQuizAnswerText_" +answer_id) + '</Text>\n'
+                            if $("#ddnState_" + answer_id).val() == "Wahr"
+                                xml += '                    <Status>True</Status>\n'
+                            else
+                                xml += '                    <Status>False</Status>\n'
+                            xml += '                </Answer>\n'
+                            answer = answer.next()
                         xml += '            </Quiz>\n'
                     interactions = interactions.next()
             return xml
 
         synchronizeChoosers = (xml) ->
-        
-              #  <Chooser id="Punkt_B_Chooser">
-              #      <FeatureRef xlink:href="#Punkt_B_Feature" />
-              #      <Question> Wohin willst du gehen? </Question>
-              #      <Answer id="Punkt_B_Chooser_Answer_1">
-              #          <Text> Kap Tormentoso </Text>
-              #          <ItemRef xlink:href="#Punkt_B_E1" />
-              #          <FeatureRef xlink:href="#Punkt_B_Feature" />
-              #      </Answer>
-              #      <Answer id="Punkt_B_Chooser_Answer_2" >
-              #          <Text> OneTableClub </Text>
-              #          <ItemRef xlink:href="#Punkt_B_E2" />
-              #      </Answer>
-              #  </Chooser>
+            $('#fhlStorypoints').find('.form-horizontal').each ->
+                id = $(this).attr("id")
+                id = id.split("_")
+                id = id[1]
+                interactions = $("#fgpInteractions_"+id).next()
+                while typeof interactions.attr("id") != "undefined"
+                    interID = interactions.attr("id")
+                    interID = interID.split("_")
+                    if interID[1] == "Chooser"
+                        xml += '            <Chooser id="' + synchronizeInputHelper("inChooserID_"+ interID[2]) + '">\n'
+                        xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <Question>' + synchronizeInputHelper("inChooserQuestion_"+ interID[2]) + '</Question>\n'
+                        answer = $("#btnChooserAnswer_" + interID[2]).parent().next()
+                        while typeof answer.attr("id") != "undefined"
+                            answer_id = answer.attr("id").split("_")
+                            answer_id = answer_id[1]
+                            xml += '                <Answer id="' + synchronizeInputHelper("inChooserAnswerID_"+answer_id) + '">\n'
+                            xml += '                    <Text>' + synchronizeInputHelper("inChooserAnswerText_" +answer_id) + '</Text>\n'
+                            if $("#btnSetChooserItemReferences_"+ answer_id).val() != '' && $("#btnSetChooserItemReferences_"+ answer_id).val() != 'Neue Ref setzen'
+                                xml += '                    <ItemRef>' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id) + '</ItemRef>\n'
+                            if $("#btnSetChooserStorypointReferences_"+ answer_id).val() != '' && $("#btnSetChooserStorypointReferences_"+ answer_id).val() != 'Neue Ref setzen'
+                                xml += '                    <FeatureRef xlink:href="#' + synchronizeInputHelper("btnSetChooserStorypointReferences_" +answer_id) + '" />\n'
+                            xml += '                </Answer>\n'
+                            answer = answer.next()
+                        xml += '            </Chooser>\n'
+                    interactions = interactions.next()
             return xml
             
         synchronizeGPSCalc = (inputID) ->
-            return $("#"+inputID).val().replace ",",""
+            gps = $("#"+inputID).val()
+            if gps == ''
+                gps = "0.0 0.0"
+            else
+                tmp = gps.split(",")
+                if tmp.length == 2
+                    x = $.trim(tmp[0])
+                    y = $.trim(tmp[1])
+                    gps = parseFloat(x).toFixed(6) + " " + parseFloat(y).toFixed(6)
+                else
+                    gps = "0.0 0.0"
+            return gps
             
         synchronizeInputHelper = (inputID) ->
             if $("#"+inputID).val() != ""

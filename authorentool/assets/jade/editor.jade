@@ -16,13 +16,16 @@
                         include ./formular.jade
                     .tab-pane.fade.active.in(id="XML", style="display:none")
                         .row
-                            .col-md-12
-                                div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile",ui-refresh='codeMirrorUpdateUI')
-                        .row
+                            .col-md-4(style="margin:20px")
+                                button.btn.btn-primary.btn-lg(ng-click="saveXML()") Speichern 
+                                br 
+                                input(type="checkbox",ng-model="story.final")  
+                                | Final
                             .col-md-8
                                 | {{ xmlError }}
-                            .col-md-4
-                                button.btn.btn-primary.btn-lg.pull-right(ng-click="saveXML()") Save
+                        .row
+                            .col-md-12
+                                div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile",ui-refresh='codeMirrorUpdateUI')
 
                     .tab-pane.fade.active.in(id="MedienEditor", style="display:none")
                         include ./library.jade 
