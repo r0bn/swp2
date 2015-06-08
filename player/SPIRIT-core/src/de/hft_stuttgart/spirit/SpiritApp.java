@@ -4,11 +4,11 @@ import java.util.List;
 
 /**
  * Die App muss diese Methoden implementieren. Sie werden von der Storyengine
- * Ã¼ber die Facade aufgerufen.
+ * über die Facade aufgerufen.
  */
 public interface SpiritApp {
 	/**
-	 * Gibt die komplette Playlist zurÃ¼ck. Es handelt sich hier um eine Queue,
+	 * Gibt die komplette Playlist zurück. Es handelt sich hier um eine Queue,
 	 * d.h. das aktuell spielende und bereits abgespielte Videos sind hier nicht
 	 * mehr enthalten.
 	 * 
@@ -93,4 +93,12 @@ public interface SpiritApp {
 	public void hidePicture();
 
 	public void endStory();
+
+	public boolean vuforiaIsReady();
+
+	public void setText(String text);
+
+	public void hideText();
+
+	public void log(String who, String what);
 }

@@ -11,5 +11,6 @@ package de.hft_stuttgart.storytellar;
 public enum StorypointStatus {
 	OPEN, 
 	ACTIVE, 
-	DONE
+	DONE,
+	QEUED
 }

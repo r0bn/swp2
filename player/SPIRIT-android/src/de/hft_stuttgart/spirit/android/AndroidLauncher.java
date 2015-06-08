@@ -12,6 +12,8 @@ import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.nfc.NdefMessage;
@@ -34,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -75,7 +78,10 @@ public class AndroidLauncher extends AndroidApplication implements
 	
 	ImageView imageView;
 	RelativeLayout.LayoutParams imageParams;
-
+	
+	TextView textView;
+	RelativeLayout.LayoutParams textParams;
+	
 	private NfcAdapter mNfcAdapter;
 	private NfcLibgdxInterface nfcInterface;
 
@@ -261,8 +267,21 @@ public class AndroidLauncher extends AndroidApplication implements
 		imageParams = new RelativeLayout.LayoutParams(900, 500);
 		imageParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		imageParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		imageView.setVisibility(View.INVISIBLE);
+		imageView.setVisibility(View.GONE);
 		layout.addView(imageView,imageParams);
+		
+		textView = new TextView(this);
+		Point windowSize = new Point();
+		getWindowManager().getDefaultDisplay().getSize(windowSize);
+		textParams = new LayoutParams((int)(windowSize.x*0.7f),(int)(windowSize.y*0.1f));
+		textParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		textView.setVisibility(View.GONE);
+		textView.setTextSize(40);
+		textView.setBackgroundColor(0x80010178);
+		textView.setTextColor(0xFFFFFFFF);
+		textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+		layout.addView(textView,textParams);
 
 		setContentView(layout);
 	}
@@ -450,7 +469,7 @@ public class AndroidLauncher extends AndroidApplication implements
 				// Deactivate current dataset
 				imageTracker.deactivateDataSet(imageTracker.getActiveDataSet());
 
-				// nur 1 ziel erwÃ¼nscht, daher alle anderen lÃ¶schen
+				// nur 1 ziel erwünscht, daher alle anderen löschen
 				while (dataSetUserDef.getNumTrackables() > 0) {
 					dataSetUserDef.getTrackable(0).stopExtendedTracking();
 					dataSetUserDef.destroy(dataSetUserDef.getTrackable(0));
@@ -707,5 +726,35 @@ public class AndroidLauncher extends AndroidApplication implements
 	public void endStory() {
 		Intent i = new Intent(this, Main_Activity.class);
 		startActivity(i);
+	}
+
+	@Override
+	public void setText(String text) {
+		final String finalText = text;
+		textView.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				textView.setText(finalText);
+				textView.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+
+	@Override
+	public void hideText() {
+		textView.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				textView.setText("");
+				textView.setVisibility(View.GONE);
+			}
+		});
+	}
+
+	@Override
+	public void log(String who, String what) {
+		Log.w(who,what);
 	}
 }

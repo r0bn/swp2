@@ -12,21 +12,21 @@ import java.util.List;
  * @author Oliver
  * 
  */
-public class Quiz implements Interaction{
+public class Chooser implements Interaction{
 	
 	private String question;
 	private List<String> answers;
-	private List<String> nextStorypoints; // Not available for waychooser-quiz
+	private List<String> items; // Not available for normal quiz
 
-	public Quiz(){
+	public Chooser(){
 		this.answers = new ArrayList<String>();
-		this.nextStorypoints = new ArrayList<String>();
+		this.items = new ArrayList<String>();
 	}
 	
-	public Quiz(String question, List<String> answers, List<String> nextScenes, List<String> items){
+	public Chooser(String question, List<String> answers, List<String> nextScenes, List<String> items){
 		this.question = question;
 		this.answers = answers;
-		this.nextStorypoints = nextScenes;
+		this.items = items;
 	}
 	
 	/**
@@ -57,11 +57,12 @@ public class Quiz implements Interaction{
 		this.answers = answers;
 	}
 
-	/**
-	 * @param nextScenes the nextScenes to set
-	 */
-	public void setNextStorypoints(List<String> nextScenes) {
-		this.nextStorypoints = nextScenes;
+	public List<String> getItems() {
+		return items;
+	}
+
+	public void setItems(List<String> items) {
+		this.items = items;
 	}
 
 	@Override
@@ -83,17 +84,13 @@ public class Quiz implements Interaction{
 		for (int i = 0; i < answers.size(); i++) {
 			strng += "Answer " + String.valueOf((i + 1)) + ": \n";
 			strng += "Text: " + answers.get(i);
-			if(nextStorypoints.size() > i){
-				strng += " NextStorypoint: " + nextStorypoints.get(i);
+			if(items.size() > i){
+				strng += " Item: " + items.get(i) + "\n";
 			} else {
-				strng += " NextStorypoint: [undef]";
+				strng += " Item: [undef]\n";
 			}
 		}
 		return strng;
-	}
-
-	public List<String> getNextStorypoints() {
-		return nextStorypoints;
 	}
 
 }

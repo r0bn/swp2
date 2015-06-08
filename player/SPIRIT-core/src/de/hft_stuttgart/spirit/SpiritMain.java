@@ -198,7 +198,7 @@ public class SpiritMain extends ApplicationAdapter implements
 			if (System.currentTimeMillis() - lastVuforiaTrackableFound > 2000) {
 				/*
 				 * wenn mehr als 2 sekunden keine trackable gefunden wurde und
-				 * aktuell auch ein film lÃ¤uft -> neue trackable erstellen
+				 * aktuell auch ein film läuft -> neue trackable erstellen
 				 */
 				if (spiritFilm.isPlaying()) {
 					createReference();
@@ -252,14 +252,14 @@ public class SpiritMain extends ApplicationAdapter implements
 	private void handleTouch() {
 		// System.out.println("Touch: " + Gdx.input.getX() + "/"
 		// + Gdx.input.getY());
-		// // MenÃ¼
+		// // Menü
 		if (isWeiterButtonTouched()) {
 			if (spiritFilm.getPlaylistEntry().isLoopEnabled()) {
 				// wenn film im loop-modus -> button bedeutet weiter
 				events.add(new SpiritEvent(Event.SkipButtonPressed));
 			} else {
 				// wenn film nicht im loop-modus -> button bedeutet nicht weiter
-				// (meistens untertitel an o.Ã¤.)
+				// (meistens untertitel an o.ä.)
 				events.add(new SpiritEvent(Event.NotSkipButtonPressed));
 			}
 		}
@@ -316,7 +316,7 @@ public class SpiritMain extends ApplicationAdapter implements
 	public void spiritLogik() {
 		// storyengine usw aktualisieren
 		spiritFacade.updateStoryEngine();
-		
+
 		// Filme starten und stoppen
 		// Fall 1: Film abbrechen
 		if (!spiritFilm.isNull()) {
@@ -324,7 +324,7 @@ public class SpiritMain extends ApplicationAdapter implements
 				if (spiritFilm.getPlaylistEntry().cancelVideoAtPosition > 0) {
 					if (spiritFilm.getPosition() > spiritFilm
 							.getPlaylistEntry().cancelVideoAtPosition) {
-						filmFinished(); // zerstÃ¶ren + event auslÃ¶sen
+						filmFinished(); // zerstören + event auslösen
 					}
 				}
 			}
@@ -372,7 +372,9 @@ public class SpiritMain extends ApplicationAdapter implements
 	@Override
 	public void dispose() {
 		model.dispose();
-		vuforia.onDestroy();
+		if(vuforia.isReady()){			
+			vuforia.onDestroy();
+		}
 		guiAtlas.dispose();
 		sonarAtlas.dispose();
 		batch.dispose();
@@ -699,5 +701,25 @@ public class SpiritMain extends ApplicationAdapter implements
 	@Override
 	public void endStory() {
 		webview.endStory();
+	}
+
+	@Override
+	public boolean vuforiaIsReady() {
+		return vuforia.isReady();
+	}
+
+	@Override
+	public void setText(String text) {
+		webview.setText(text);
+	}
+
+	@Override
+	public void hideText() {
+		webview.hideText();
+	}
+
+	@Override
+	public void log(String who, String what) {
+		webview.log(who, what);
 	}
 }

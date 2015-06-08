@@ -282,7 +282,7 @@ public class StoryXMLParser {
 			addItemfromNode(subnodes.item(i), story);
 		}
 		
-		subnodes = element.getElementsByTagName("WayChooser");
+		subnodes = element.getElementsByTagName("Chooser");
 		for (int i = 0; i < subnodes.getLength(); i++) {
 			addWaychooserfromNode(subnodes.item(i), story);
 		}
@@ -367,7 +367,7 @@ public class StoryXMLParser {
 		String itemref;
 		String featureref = "";
 		String quizId = node.getAttributes().getNamedItem("id").getNodeValue();
-		Quiz quiz = new Quiz();
+		Chooser chooser = new Chooser();
 		List<String> answers = new ArrayList<String>();
 		List<String> items = new ArrayList<String>();
 		
@@ -378,23 +378,23 @@ public class StoryXMLParser {
 				featureref = featureref.replace("#", "");
 			}
 			if (subnode.getNodeName().equals("Question")) {
-				quiz.setQuestion(subnode.getTextContent());
+				chooser.setQuestion(subnode.getTextContent());
 			}
 			if (subnode.getNodeName().equals("Answer")) {
 				answers.add(((Element)subnode).getElementsByTagName("Text").item(0).getTextContent());
 				itemref = ((Element)subnode).getElementsByTagName("ItemRef").item(0)
 						.getAttributes().getNamedItem("xlink:href").getNodeValue();
-				itemref.replace("#", "");
+				itemref = itemref.replace("#", "");
 				items.add(itemref);
 			}
 			subnode = subnode.getNextSibling();
 		} while (subnode.getNextSibling()!=null);
-		quiz.setAnswers(answers);
-		quiz.setItems(items);
+		chooser.setAnswers(answers);
+		chooser.setItems(items);
 		
 		StoryPoint sPoint = ((StoryPoint)story.getStorypoints().get(featureRef.get(featureref)));
 		sPoint.setInteraction(quizId);
-		story.addInteraction(quizId, quiz);
+		story.addInteraction(quizId, chooser);
 	}
 	
 	/**

@@ -267,4 +267,26 @@ public class Facade implements UIController {
 		app.endStory();
 	}
 
+	@Override
+	public boolean vuforiaIsReady() {
+		return app.vuforiaIsReady();
+	}
+
+	@Override
+	public void setText(String text) {
+		app.setText(text);
+	}
+
+	@Override
+	public void hideText() {
+		app.hideText();
+	}
+
+	@Override
+	public void log(String who, String what) {
+		app.log(who, what);
+	}
+	
+	
+
 }
