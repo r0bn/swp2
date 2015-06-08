@@ -162,7 +162,33 @@
             return xml
 
         synchronizeChoosers = (xml) ->
-        
+            $('#fhlStorypoints').find('.form-horizontal').each ->
+                id = $(this).attr("id")
+                id = id.split("_")
+                id = id[1]
+                interactions = $("#fgpInteractions_"+id).next()
+                while typeof interactions.attr("id") != "undefined"
+                    interID = interactions.attr("id")
+                    interID = interID.split("_")
+                    if interID[1] == "Chooser"
+                        xml += '            <Chooser id="' + synchronizeInputHelper("inChooserID_"+ interID[2]) + '">\n'
+                        xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        xml += '                <Question>' + synchronizeInputHelper("inChooserQuestion_"+ interID[2]) + '</Question>\n'
+                        answer = $("#btnChooserAnswer_" + interID[2]).parent().next()
+                        while typeof answer.attr("id") != "undefined"
+                            answer_id = answer.attr("id").split("_")
+                            answer_id = answer_id[1]
+                            xml += '                <Answer id="' + synchronizeInputHelper("inChooserAnswerID_"+answer_id) + '">\n'
+                            xml += '                    <Text>' + synchronizeInputHelper("inChooserAnswerText_" +answer_id) + '</Text>\n'
+                            if $("#btnSetChooserItemReferences_"+ answer_id).val() != '' && $("#btnSetChooserItemReferences_"+ answer_id).val() != 'Neue Ref setzen'
+                                xml += '                    <ItemRef>' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id) + '</ItemRef>\n'
+                            if $("#btnSetChooserStorypointReferences_"+ answer_id).val() != '' && $("#btnSetChooserStorypointReferences_"+ answer_id).val() != 'Neue Ref setzen'
+                                xml += '                    <FeatureRef xlink:href="#' + synchronizeInputHelper("btnSetChooserStorypointReferences_" +answer_id) + '" />\n'
+                            xml += '                </Answer>\n'
+                            answer = answer.next()
+                        xml += '            </Chooser>\n'
+                    interactions = interactions.next()
+            return xml
               #  <Chooser id="Punkt_B_Chooser">
               #      <FeatureRef xlink:href="#Punkt_B_Feature" />
               #      <Question> Wohin willst du gehen? </Question>
