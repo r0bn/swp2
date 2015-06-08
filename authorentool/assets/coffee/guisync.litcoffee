@@ -68,7 +68,7 @@
                 xml += '            <anchors>\n'
                 xml += '                <Geometry>\n'
                 xml += '                    <assets>\n'
-                if $("inAsset_"+ id).val() != ''
+                if $("#inAsset_"+ id).val() != ''
                     videoID = synchronizeInputHelper("inAsset_"+ id)
                     videoID = videoID.split(".")
                     xml += '                        <Video id="' + videoID[0] + '">\n'
@@ -138,25 +138,24 @@
                     if interID[1] == "Quiz"
                         xml += '            <Quiz id="' + synchronizeInputHelper("inQuizID_"+ interID[2]) + '">\n'
                         xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
-                        xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
-                        xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id) + '_Feature" />\n'
+                        if $("#btnSetQuizOnTrueReferences_"+ interID[2]).val() != '' && $("#btnSetQuizOnTrueReferences_"+ interID[2]).val() != 'Neue Ref setzen'
+                            xml += '                <OnTrue xlink:href="#'+ synchronizeInputHelper("btnSetQuizOnTrueReferences_"+ interID[2]) + '_Feature" />\n'
+                        else
+                            xml += '                <OnTrue xlink:href="#" />\n'
+                        if $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != '' && $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != 'Neue Ref setzen'
+                            xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("btnSetQuizOnFalseReferences_"+ interID[2]) + '_Feature" />\n'
                         xml += '                <Question>' + synchronizeInputHelper("inQuizQuestion_"+ interID[2]) + '</Question>\n'
                         answer = $("#btnQuizAnswer_" + interID[2]).parent().next()
                         while typeof answer.attr("id") != "undefined"
                             answer_id = answer.attr("id").split("_")
                             answer_id = answer_id[1]
-                            xml += '                <Answer id="' + synchronizeInputHelper("inQuizAnswerID_"+answer_ID) + '">\n"'
-                            xml += '                    <Text>' + synchronizeInputHelper("inQuizAnswerText_" +answer_ID) + '</Text>\n'
-                            xml += '                    <Status>' + $("#ddnState_" + answer_ID).val() + '</Status>\n'
+                            xml += '                <Answer id="' + synchronizeInputHelper("inQuizAnswerID_"+answer_id) + '">\n'
+                            xml += '                    <Text>' + synchronizeInputHelper("inQuizAnswerText_" +answer_id) + '</Text>\n'
+                            if $("#ddnState_" + answer_id).val() == "Wahr"
+                                xml += '                    <Status>True</Status>\n'
+                            else
+                                xml += '                    <Status>False</Status>\n'
                             xml += '                </Answer>\n'
-                                      #  <Answer id="Punkt_A_Quiz_Answer_1">
-                                      #      <Text> Ja </Text>
-                                      #      <Status> true </Status>
-                                     #   </Answer>
-                                    #   <Answer id="Punkt_A_Quiz_Answer_2">
-                                    #        <Text> Nein </Text>
-                                   #         <Status> false </Status>
-                                    #    </Answer>
                             answer = answer.next()
                         xml += '            </Quiz>\n'
                     interactions = interactions.next()
@@ -185,7 +184,12 @@
                 gps = "0.0 0.0"
             else
                 tmp = gps.split(",")
-                gps = tmp[0].toFixed(6) + " " + tmp[1].toFixed(6)
+                if tmp.length == 2
+                    x = $.trim(tmp[0])
+                    y = $.trim(tmp[1])
+                    gps = parseFloat(x).toFixed(6) + " " + parseFloat(y).toFixed(6)
+                else
+                    gps = "0.0 0.0"
             return gps
             
         synchronizeInputHelper = (inputID) ->
