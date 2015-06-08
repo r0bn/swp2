@@ -189,20 +189,6 @@
                         xml += '            </Chooser>\n'
                     interactions = interactions.next()
             return xml
-              #  <Chooser id="Punkt_B_Chooser">
-              #      <FeatureRef xlink:href="#Punkt_B_Feature" />
-              #      <Question> Wohin willst du gehen? </Question>
-              #      <Answer id="Punkt_B_Chooser_Answer_1">
-              #          <Text> Kap Tormentoso </Text>
-              #          <ItemRef xlink:href="#Punkt_B_E1" />
-              #          <FeatureRef xlink:href="#Punkt_B_Feature" />
-              #      </Answer>
-              #      <Answer id="Punkt_B_Chooser_Answer_2" >
-              #          <Text> OneTableClub </Text>
-              #          <ItemRef xlink:href="#Punkt_B_E2" />
-              #      </Answer>
-              #  </Chooser>
-            return xml
             
         synchronizeGPSCalc = (inputID) ->
             gps = $("#"+inputID).val()
