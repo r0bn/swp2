@@ -243,7 +243,25 @@ The following code is a angularJS (https://angularjs.org/) Application.
                                     row = 1
                                     while row <= rowCounter
                                         if typeof $("#btnStorypointRefDelete_"+ counter + "_" + row + "_1").attr("id") != 'undefined'
-                                            $("#btnStorypointRefDelete_"+ counter + "_" + row + "_1").click()
+                                            storypoint = $("#btnSetStorypointReferences_"+counter + "_" + row + "_1").attr("selectedOwner")
+                                            if typeof storypoint != "undefined"
+                                                storypoint = storypoint.split("_")
+                                                columnCounter = 1
+                                                previousStorypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +row + "_" + columnCounter, "fhlNeuerStorypoint" )
+                                                previousStorypoint = previousStorypoint.split("_")
+                                                RemoveParticularEdge(storypoint[1],previousStorypoint[1])
+                                                i = 1
+                                                i++
+                                                while i < 4
+                                                   nextStorypoint = $("#btnSetStorypointReferences_"+counter + "_" +row + "_" + i).attr("selectedOwner")
+                                                   if typeof nextStorypoint != "undefined" && typeof storypoint != "undefined"
+                                                       nextStorypoint = nextStorypoint.split("_")
+                                                       RemoveParticularEdge(nextStorypoint[1], storypoint[1])
+                                                   storypoint = nextStorypoint
+                                                   i++
+                                                $("#fgpMultipleStorypointRefs_" + counter + "_" + row).remove()
+                                                $("#fgpMultipleItemRefs_" + counter + "_" + row).remove() 
+
                                         row++
                                 AddoDeleteNewNodes("", $("#fhlNeuerStorypoint_" + counter).attr("nodeOwner"), counter)
                                 $("#fhlNeuerStorypoint_" + counter).toggle "drop", 200, () ->

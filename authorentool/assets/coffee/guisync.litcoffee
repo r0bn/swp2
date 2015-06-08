@@ -42,16 +42,28 @@
                 xml += '                <Accessible>'+ $("#inInternet_" + id[1]).is( ":checked" ) + '</Accessible>\n'
                 xml += '                <Internet>'+ $("#inInternet_" + id[1]).is( ":checked" )+ '</Internet>\n'
                 xml += '            </Metadata>\n'
-                xml += '            <Container>\n'
-                xml += '                <Storypointlist />\n'
-                xml += '                <Itemlist />\n'
-                xml += '            </Container>\n'
+                xml = synchronizeDependecyContainers(xml, id[1])
                 if $("#inEndOfStory_" + id[1]).is( ":checked" ) == true
                     xml += '            <EndOfStory>true</EndOfStory>\n'
                 xml += '        </Storypoint>\n'
             xml += '    </Dependency>\n'
             return xml
-            
+        synchronizeDependecyContainers = (xml, storypointID) ->
+                rowCounter = $("#btnCreateReferences_" + storypointID).attr("rowCounter")
+                if typeof rowCounter != 'undefined'
+                    row = 1
+                    while row <= rowCounter
+                        tmp_xml = ""
+                        # Zugriff auf alle dropdowns in einer Zeile und deren Werte in tmp_xml schreiben
+                        # dann prüfen ob tmp_xml leer ist => alle Werte waren Neue Ref setzen, oder undefined
+                        # wenn nicht leer, dann in xml schreiben.
+                        row++
+                else
+                    xml += '            <Container>\n'
+                    xml += '                <Storypointlist />\n'
+                    xml += '                <Itemlist />\n'
+                    xml += '            </Container>\n'
+                return xml    
         synchronizeARMLTag = (xml) ->
             xml += '    <ARElements>\n'
             xml = synchronizeFeatures(xml)
