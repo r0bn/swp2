@@ -143,8 +143,8 @@ public class SpiritMain extends ApplicationAdapter implements
 		float scale = 0.1f * Gdx.graphics.getHeight() / webViewX.getHeight();
 		webViewX.setSize(scale * webViewX.getWidth(),
 				scale * webViewX.getHeight());
-		font = new BitmapFont(Gdx.files.internal("roboto.fnt"),
-				Gdx.files.internal("roboto.png"), false);
+		font = new BitmapFont(Gdx.files.internal("fonto.fnt"),
+				Gdx.files.internal("fonto_0.png"), false);
 		gui = new Gui(guiAtlas, font);
 		sonar = new Sonar(sonarAtlas, font, geoTools);
 		signalToGhostEffect = new SignalToGhostEffect(guiAtlas);

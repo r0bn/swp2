@@ -280,7 +280,6 @@ public class AndroidLauncher extends AndroidApplication implements
 		textView.setTextSize(40);
 		textView.setBackgroundColor(0x80010178);
 		textView.setTextColor(0xFFFFFFFF);
-		textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 		layout.addView(textView,textParams);
 
 		setContentView(layout);
