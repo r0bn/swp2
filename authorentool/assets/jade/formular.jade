@@ -275,7 +275,7 @@ block content
                         .dropdown
                             button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
                                 span.caret 
-                            ul.dropdown-menu(id="ulItemRef", role="menu", aria-labelledby="dropdownMenu1")
+                            ul.dropdown-menu(id="ulSkStorypointItemRef", role="menu", aria-labelledby="dropdownMenu1")
 
                                             // ---------------------- STORYPOINT - REFERENZ SCHATTEN
 
@@ -499,7 +499,8 @@ block content
             li(id="liSkChooserItemRef", role="presentation", style="display:none")
                 a(id="ddnChooserItem", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
 
-
+            li(id="liSkStorypointItemRef", role="presentation", style="display:none")
+                a(id="ddnStorypointItem", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
 
             include ./medienLibrary.jade
                 //.tab-pane.fade(id="XML")

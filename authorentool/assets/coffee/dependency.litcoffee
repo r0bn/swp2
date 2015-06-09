@@ -453,7 +453,82 @@
             return
             
 
+        createStorypointItemReference = (counter, rowCounter, columnCounter, buttonID, currentObjID) ->
+            currentStorypointID = $(currentObjID).closest(".form-horizontal").attr("id")
+            itemArray = getAllItems()
 
+            copyForm = document.getElementById("liSkStorypointItemRef")
+            window.dropdownLiCounter++;
+
+            $("#ulSkStorypointItemRef_"+counter + "_" + rowCounter + "_" + columnCounter).empty()
+            i = 0
+            z = itemArray.length
+            z++
+            
+            #######
+            ####### Fügt ITEM Einträge hinzu
+            #######
+            while i < z
+                stuff = copyForm.cloneNode(true)
+                stuff.id = stuff.id + "_" +counter + "_" + rowCounter + "_" + columnCounter + "_tmp_" + i
+                stuff.style.display="block"
+                
+                if i == itemArray.length
+                    document.getElementById("ulSkStorypointItemRef_"+counter + "_" + rowCounter + "_" + columnCounter).appendChild(stuff)
+                    tmpItemname = "Ref löschen"
+                else
+                    inputID = itemHelper(itemArray[i], "inItemID")
+                    document.getElementById("ulSkStorypointItemRef_"+counter + "_" + rowCounter + "_" + columnCounter).appendChild(stuff)
+                    tmpItemname = $("#" + inputID).val()
+                    if tmpItemname == ""
+                        tmpItemname = $("#" + inputID).attr("placeholder") 
+                $("#" + stuff.id).find("a").attr("id",$("#" + stuff.id).find("a").attr("id") + "_"+counter + "_" +rowCounter + "_" + columnCounter) 
+                $("#" + stuff.id).find("a").attr("itemOwner",itemArray[i])
+                $("#" + stuff.id).find("a").text(tmpItemname)
+                $("#" + stuff.id).find("a").html(tmpItemname)
+                i++          
+            lauf = 0
+            setReferenceDropdownIDs($("#ulSkStorypointItemRef_" +counter + "_" + rowCounter + "_" + columnCounter), lauf)
+            j = 0
+            while j < z
+                indexe = window.dropdownLiCounter + "_" + (j+1)
+                if j == itemArray.length
+                    
+                    $("#ddnStorypointItem_"+counter + "_" +rowCounter + "_" + columnCounter+"_"+indexe).click ->
+                        $("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).val("Neue Ref setzen")
+                        $("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
+                        storypoint = edgeStorypointfinder("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
+                        storypoint = storypoint.split("_")
+                        storypoint_2 =$("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).attr("selectedOwner")
+                        if typeof storypoint_2 != 'undefined'
+                            storypoint_2 = storypoint_2.split("_")
+                            addItemToEdge(storypoint[1], storypoint_2[1])
+                        return
+                else 
+                    $("#ddnStorypointItem_"+counter + "_" +rowCounter + "_" + columnCounter+"_"+indexe).click ->
+                        $("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).val($(this).text())
+                        $("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).html($(this).text() + "<span class='caret' />")
+                        storypoint = edgeStorypointfinder("#btnSetStorypointItemReferences_"+counter, "fhlNeuerStorypoint" )
+                        storypoint = storypoint.split("_")
+                        storypoint_2 =$("#btnSetStorypointItemReferences_"+counter).attr("selectedOwner")
+                        if typeof storypoint_2 != 'undefined'
+                            storypoint_2 = storypoint_2.split("_")
+                            addItemToEdge(storypoint[1], storypoint_2[1],$(this).text())
+                        return
+
+                $("#" + itemArray[j]).find("button:nth-child(4)").click ->
+                    tmpCounter = $(this).attr("id").split("_")[1]
+                    tmpItemValue = $("#inItemID_" + tmpCounter).val()
+                    if tmpItemValue == ''
+                        tmpItemValue = $("#inItemID_" + tmpCounter).attr("placeholder")
+
+                    if $("#btnSetStorypointItemReferences_"+counter + "_" + rowCounter + "_" + columnCounter).val() == tmpItemValue
+                        $("#btnSetStorypointItemReferences_" +counter + "_" + rowCounter + "_" + columnCounter).val("Neue Ref setzen")
+                        $("#btnSetStorypointItemReferences_" +counter + "_" + rowCounter + "_" + columnCounter).html("Neue Ref setzen <span class='caret' />")
+                    return
+                j++
+            return
+           
         # Erstellt die Logik hinter den Storypoint Reference Dropdownlisten
         createDropdownStorypointRef = (counter,rowCounter, columnCounter, buttonID, currentObjID) ->
 
@@ -561,8 +636,12 @@
                         setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), rowCounter)
                         setIDs($("#colItemRefDeep_"+counter + "_" +rowCounter + "_" + newElemCounter), newElemCounter)
                         createDropdownStorypointRef(counter,rowCounter,newElemCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter, currentObjID)
+                        createStorypointItemReference(counter, rowCounter, columnCounter, "#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + columnCounter, currentObjID)
                         $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter).click ->
                             createDropdownStorypointRef(counter,rowCounter,newElemCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + newElemCounter, currentObjID)
+                            return
+                        $("#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + newElemCounter).click ->
+                            createStorypointItemReference(counter, rowCounter, newElemCounter, "#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + newElemCounter, currentObjID)
                             return
                     oldEdgeStartpoint
                     previousColumn = columnCounter
@@ -842,8 +921,12 @@
             setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), rowCounter)
             setIDs($('#fgpMultipleItemRefs_' + counter + "_" + rowCounter), columnCounter)
             createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
+            createStorypointItemReference(counter, rowCounter, columnCounter, "#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
             $("#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter).click ->
                 createDropdownStorypointRef(counter,rowCounter,columnCounter, "#btnSetStorypointReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
+                return
+            $("#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + columnCounter).click ->
+                createStorypointItemReference(counter, rowCounter, columnCounter, "#btnSetItemReferences_" + counter + "_" + rowCounter + "_" + columnCounter, storypointID)
                 return
             $("#btnStorypointRefDelete_"+counter + "_" +rowCounter + "_" + columnCounter).click ->
                 $("#dialog-confirm-Referenzen").css("display","block")
