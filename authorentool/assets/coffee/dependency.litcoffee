@@ -728,7 +728,7 @@
             if typeof FromStorypoint == "undefined" || typeof ToStorypoint == "undefined"
                 return
             else
-                if typeof ItemLabel == 'undefined'
+                if typeof ItemLabel == 'undefined' || ItemLabel == "Neue Ref setzen"
                     ItemLabel = ""
                 i = 0
                 found = -1
