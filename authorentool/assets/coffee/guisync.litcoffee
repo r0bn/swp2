@@ -64,13 +64,29 @@
                                 tmp_xml += '                    <StorypointRef xlink:href="#' + $("#" + ddns2ID).val().replace(" ", "") +  '"/>\n'
                                 if typeof ddns3ID != 'undefined' && $("#" + ddns3ID).val() != "" && $("#" + ddns3ID).val() != 'Neue Ref setzen'
                                     tmp_xml += '                    <StorypointRef xlink:href="#' + $("#" + ddns3ID).val().replace(" ", "") +  '"/>\n'
+                        tmp_item_xml = ""
+                        ddns1ID = $("#btnSetStorypointItemReferences_" + storypointID + "_" + row + "_1").attr("id")
+                        ddns2ID = $("#btnSetStorypointItemReferences_" + storypointID + "_" + row + "_2").attr("id")
+                        ddns3ID = $("#btnSetStorypointItemReferences_" + storypointID + "_" + row + "_3").attr("id")
+                        if typeof ddns1ID != 'undefined' && $("#" + ddns1ID).val() != "" && $("#" + ddns1ID).val() != 'Neue Ref setzen'
+                            tmp_item_xml = '                    <ItemRef xlink:href="#' + $("#" + ddns1ID).val().replace(" ", "") +  '"/>\n'
+                            if typeof ddns2ID != 'undefined' && $("#" + ddns2ID).val() != "" && $("#" + ddns2ID).val() != 'Neue Ref setzen'
+                                tmp_item_xml += '                    <ItemRef xlink:href="#' + $("#" + ddns2ID).val().replace(" ", "") +  '"/>\n'
+                                if typeof ddns3ID != 'undefined' && $("#" + ddns3ID).val() != "" && $("#" + ddns3ID).val() != 'Neue Ref setzen'
+                                    tmp_item_xml += '                    <ItemRef xlink:href="#' + $("#" + ddns3ID).val().replace(" ", "") +  '"/>\n'
                         dependencyXML += '            <Container>\n'
                         dependencyXML += '                <Storypointlist>\n'
                         dependencyXML += tmp_xml
                         dependencyXML += '                </Storypointlist>\n'
-                        dependencyXML += '                <Itemlist />\n'
+                        if tmp_item_xml == ""
+                            dependencyXML += '                <Itemlist />\n'
+                        else
+                            dependencyXML += '                <Itemlist>\n'
+                            dependencyXML += tmp_item_xml
+                            dependencyXML += '                </Itemlist>\n'
                         dependencyXML += '            </Container>\n'
-                        tmp_xml = "";
+                        tmp_xml = ""
+                        tmp_item_xml = ""
                         row++
                 $('#fhlStorypoints').find('.form-horizontal').each ->
                     currentStorypointId = $(this).attr("id")

@@ -8,7 +8,7 @@
             stuff.style.display="block"
             document.getElementById("fstNeuesStorypointContent_"+counter).appendChild(stuff)
             setIDs($("#" + stuff.id), interactionCounter)
-
+            $("#inItemID_" + interactionCounter).attr("placeholder", $("#inItemID_" + interactionCounter).attr("placeholder") + interactionCounter)
             btnSwitchDown("#btnSwitchDown_" + interactionCounter, "#" + stuff.id)
             btnSwitchUp("#btnSwitchUp_" + interactionCounter, "#" + stuff.id)
             # Click Event für btnItemDelete
