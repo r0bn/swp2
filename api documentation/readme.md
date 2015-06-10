@@ -150,7 +150,7 @@ Media files restrictions:
    * image/png
    * image/mp4
 
- * Maximum filesize 5000000 bytes (5 MB)
+ * Maximum filesize 25000000 bytes (25 MB)
 
  * File extensions
    * .jpg
