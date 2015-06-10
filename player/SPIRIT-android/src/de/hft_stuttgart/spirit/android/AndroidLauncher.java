@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -280,6 +281,8 @@ public class AndroidLauncher extends AndroidApplication implements
 		textView.setTextSize(40);
 		textView.setBackgroundColor(0x80010178);
 		textView.setTextColor(0xFFFFFFFF);
+		textView.setGravity(Gravity.CENTER);
+		textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 		layout.addView(textView,textParams);
 
 		setContentView(layout);
@@ -734,6 +737,11 @@ public class AndroidLauncher extends AndroidApplication implements
 			
 			@Override
 			public void run() {
+				if(finalText.length() > 35) {
+					textView.setTextSize(20);
+				} else {
+					textView.setTextSize(40);
+				}
 				textView.setText(finalText);
 				textView.setVisibility(View.VISIBLE);
 			}

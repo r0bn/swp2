@@ -45,7 +45,6 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		state = EngineStates.OPEN;
 		buttonPressed = -1;
 		addOpenStoryPointsToSonar();
-		facade.showAllGhostNamesInRadar();
 	}
 
 	// Wird nach jedem Frame aufgerufen
@@ -54,18 +53,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		if (!facade.vuforiaIsReady()) {
 			return;
 		}
-		
-		//Logging
-		for(StoryPoint point : story.getStorypoints().values()) {
-			String log = "";
-			log += "Punkt: " + point.getName() + "; ";
-			log += "Dependencies: ";
-			for(Dependency dep : point.getDependency()) {
-				log+= dep.isFulfilled(story.getInteractions(),story.getStorypoints()) + " ";
-			}
-			log+= "Status: " + point.getStatus();
-			facade.log("Story Engine", log);
-		}
+	
 		switch (state) {
 		case OPEN:
 			

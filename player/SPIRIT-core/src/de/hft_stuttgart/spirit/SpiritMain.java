@@ -48,7 +48,7 @@ public class SpiritMain extends ApplicationAdapter implements
 	public CameraInputController camController;
 	ModelInstance instance;
 	public ModelBatch modelBatch;
-	BitmapFont font;
+	BitmapFont ARfont;
 	Sprite webViewX;
 
 	float x = 0f;
@@ -143,20 +143,21 @@ public class SpiritMain extends ApplicationAdapter implements
 		float scale = 0.1f * Gdx.graphics.getHeight() / webViewX.getHeight();
 		webViewX.setSize(scale * webViewX.getWidth(),
 				scale * webViewX.getHeight());
-		font = new BitmapFont(Gdx.files.internal("fonto.fnt"),
+		ARfont = new BitmapFont(Gdx.files.internal("fonto.fnt"),
 				Gdx.files.internal("fonto_0.png"), false);
-		gui = new Gui(guiAtlas, font);
-		sonar = new Sonar(sonarAtlas, font, geoTools);
+		gui = new Gui(guiAtlas, ARfont);
+		sonar = new Sonar(sonarAtlas, new BitmapFont(Gdx.files.internal("roboto.fnt"),
+				Gdx.files.internal("roboto.png"), false), geoTools);
 		signalToGhostEffect = new SignalToGhostEffect(guiAtlas);
 		fadeEffect = new FadeEffect();
 		batch = new SpriteBatch();
 		customTextButton = new TextButton[6];
-		customTextButton[0] = new TextButton(guiAtlas, font,positionA.Left,positionB.TOP);
-		customTextButton[1] = new TextButton(guiAtlas, font,positionA.Right,positionB.TOP);
-		customTextButton[2] = new TextButton(guiAtlas, font,positionA.Left,positionB.CENTER);
-		customTextButton[3] = new TextButton(guiAtlas, font,positionA.Right,positionB.CENTER);
-		customTextButton[4] = new TextButton(guiAtlas, font,positionA.Left,positionB.BOTTOM);
-		customTextButton[5] = new TextButton(guiAtlas, font,positionA.Right,positionB.BOTTOM);
+		customTextButton[0] = new TextButton(guiAtlas, ARfont,positionA.Left,positionB.TOP);
+		customTextButton[1] = new TextButton(guiAtlas, ARfont,positionA.Right,positionB.TOP);
+		customTextButton[2] = new TextButton(guiAtlas, ARfont,positionA.Left,positionB.CENTER);
+		customTextButton[3] = new TextButton(guiAtlas, ARfont,positionA.Right,positionB.CENTER);
+		customTextButton[4] = new TextButton(guiAtlas, ARfont,positionA.Left,positionB.BOTTOM);
+		customTextButton[5] = new TextButton(guiAtlas, ARfont,positionA.Right,positionB.BOTTOM);
 	}
 
 	boolean workaround = false;
@@ -378,7 +379,7 @@ public class SpiritMain extends ApplicationAdapter implements
 		guiAtlas.dispose();
 		sonarAtlas.dispose();
 		batch.dispose();
-		font.dispose();
+		ARfont.dispose();
 		fadeEffect.dispose();
 	}
 
