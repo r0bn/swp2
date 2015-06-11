@@ -6,6 +6,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         'ngRoute'
         'storyTellarCtrl'
         'storyTellarServices'
+        'configApp'
         'ui.codemirror'
     ]
 
@@ -16,13 +17,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     templateUrl: 'login.html'
                     controller : 'loginCtrl'
                 })
-                .when('/home/:token', {
+                .when('/home/', {
                     templateUrl: 'home.html'
                     controller : 'homeCtrl'
+                    auth : true
                 })
                 .when('/story/:story', {
                     templateUrl: 'editor.html'
                     controller : 'editorCtrl'
+                    auth : true
                 })
                 .otherwise {
                     redirectTo: "/"
@@ -31,3 +34,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
             # use the HTML5 History API
             #$locationProvider.html5Mode(true)
     ]
+
+    # check authentication
+    storyTellarApp.run ($location, $rootScope, $route, storytellarAuthentication) ->
+        $rootScope.$on '$locationChangeStart', (evt, next, current) ->
+            nextPath = $location.path()
+            nextRoute = $route.routes[nextPath]
+
+            if nextRoute && nextRoute.auth && !storytellarAuthentication.isAuthenticated()
+                $location.path("/")
+
+            if nextPath is "/" && storytellarAuthentication.isAuthenticated()
+                $location.path("/home")
+

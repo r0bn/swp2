@@ -430,9 +430,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     ]
 
-    storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellerServer", ($scope, $location, $server) ->
+    storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellarAuthentication", ($scope, $location, $server) ->
 
-
+        $scope.login = () ->
+            if $server.isValid("dummy", "dummy")
+                $location.path("/home")
 
     ]
 

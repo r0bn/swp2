@@ -82,6 +82,21 @@
         }
     ]
 
+    storyTellarServices.factory 'storytellarAuthentication', [ '$http', 'disableAuthentication', ($http, disableAuth) ->
+        serverUrl = "http://api.storytellar.de"
+        isAuthenticated = disableAuth 
+        {
+            isValid : (user, password) ->
+                isAuthenticated = true
+                return true
+
+            isAuthenticated : () ->
+                return isAuthenticated
+
+        }
+    ]
+
+
     storyTellarServices.factory 'xmlServices', [ () ->
         {
             isValidXML : (xml) ->
