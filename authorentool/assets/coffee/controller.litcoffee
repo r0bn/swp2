@@ -8,6 +8,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         $scope.storyId = $routeParams.story
         $scope.codeMirrorUpdateUI = false
+        $scope.isUploading = false
+        $scope.isDeleting = false
         orderBy = $filter('orderBy')
 
         # Codemirror Options
@@ -26,10 +28,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 $scope.xmlFile = data
                 $scope.updateMedia()
 
-        $scope.updateMedia = () ->
+        $scope.updateMedia = (cb) ->
             media.getMediaFiles $scope.storyId, (mediaFiles) ->
                 $scope.mediaData = mediaFiles
                 $scope.orderBib('file', false)
+                cb() if cb?
 
         $scope.orderBib = (predicate, reverse) ->
             $scope.mediaData = orderBy($scope.mediaData, predicate, reverse)
@@ -70,12 +73,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
 
         $scope.uploadMediaFile = () ->
+            $scope.isUploading = true
             media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
-                $scope.updateMedia()
+                $scope.updateMedia () ->
+                    $scope.isUploading = false
 
         $scope.deleteMediaFile = (filename) ->
+            $scope.isDeleting = true
             media.deleteFile $scope.storyId, filename, () ->
-                $scope.updateMedia()
+                $scope.updateMedia () ->
+                    $scope.isDeleting = false
 
         #jQuery Namespace Binding
         (($) ->

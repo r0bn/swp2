@@ -52,6 +52,7 @@
                         cb(data)
                     .error (err) ->
                         console.log err
+                        cb([])
 
             getDownloadPath : (storyId, filename) ->
                 return "#{serverUrl}/media/#{storyId}/#{filename}"
