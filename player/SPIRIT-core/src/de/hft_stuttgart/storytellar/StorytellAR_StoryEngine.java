@@ -9,12 +9,21 @@ import de.hft_stuttgart.spirit.SpiritEvent;
 import de.hft_stuttgart.spirit.SpiritStoryEngine;
 import de.hft_stuttgart.spirit.UIController;
 
+/**
+ * This class handles the scenes in a PlayableStory
+ * @author Lukas
+ *
+ */
 public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 
+	/**
+	 * This enum is used for the state machine in StorytellAR_StoryEngine
+	 * @author Lukas
+	 *
+	 */
 	private enum EngineStates {
 		OPEN, 
-		IN_SCENE_START, 
-		IN_SCENE,
+		IN_SCENE_START,
 		IN_SCENE_END,
 		IN_SCENE_PICTURE_START, 
 		IN_SCENE_PICTURE, 
@@ -37,6 +46,11 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 
 	long millis;
 
+	/**
+	 * Creates a new instance of the engine
+	 * @param spiritFacade The facade that handles the interaction
+	 * @param story The story to be played.
+	 */
 	public StorytellAR_StoryEngine(UIController spiritFacade,
 			PlayableStory story) {
 		facade = spiritFacade;
@@ -46,17 +60,21 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		addOpenStoryPointsToSonar();
 	}
 
-	// Wird nach jedem Frame aufgerufen
+	/**
+	 * The update-method is called after every frame. the game loggic is implemented here.
+	 */
 	@Override
 	public void update() {
+		/*Do not handle any logic when the camera(vuforia) is not ready.*/
 		if (!facade.vuforiaIsReady()) {
 			return;
 		}
 	
+		/*In this statemachine the logic is handled. See "StorytellAR_StoryEngine.png" in documentation for more details*/
 		switch (state) {
 		case OPEN:
 			
-			//If a StoryPoint is queued, start it
+			/*If a StoryPoint is queued, start it*/
 			boolean breaker = false;
 			for(StoryPoint point: story.getStorypoints().values()) {
 				if(point.getStatus() == StorypointStatus.QUEUED) {
@@ -67,11 +85,12 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			}
 			if(breaker)break;
 			
+			/*If the distance to an available Storypoint is under 10m start it.*/
 			Location loc = facade.getClosestGhost();
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() != 10) {
+				if (facade.getDistanceUserToClosestGhost() <= 10) {
 					activeStoryPoint = closest;
 					state = EngineStates.IN_SCENE_START;
 				}
@@ -79,14 +98,14 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				facade.endStory();
 			}
 
-			// AR / Sonar wechsel durch Tabletwinkel
+			/* AR / Sonar change with tabletangle*/
 			if (facade.getTabletAngle() < 30 && state == EngineStates.OPEN) {
 				facade.switchToSonarView();
 			} else {
 				facade.switchToARView();
 			}
 			break;
-		case IN_SCENE_START:
+		case IN_SCENE_START:/*Start the video or Picture of the actual scene*/
 			facade.switchToARView();
 			activeStoryPoint.setStatus(StorypointStatus.ACTIVE);
 
@@ -96,23 +115,21 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				 state = EngineStates.IN_SCENE_PICTURE_START;
 			}
 			break;
-		case IN_SCENE:
-			break;
-		case IN_SCENE_PICTURE_START:
+		case IN_SCENE_PICTURE_START:/*Show picture of the scene*/
 			facade.showPicture(activeStoryPoint.getVideo());
 			millis = System.currentTimeMillis();
 			state = EngineStates.IN_SCENE_PICTURE;
 			break;
-		case IN_SCENE_PICTURE:
+		case IN_SCENE_PICTURE:/*Wait 3s then hide picture*/
 			if (System.currentTimeMillis() - millis > 3000) {
 				state = EngineStates.IN_SCENE_PICTURE_END;
 			}
 			break;
-		case IN_SCENE_PICTURE_END:
+		case IN_SCENE_PICTURE_END:/*Start the interaction of the scene*/
 			facade.hidePicture();
 			state = EngineStates.IN_SCENE_INTERACTION_START;
 			break;
-		case IN_SCENE_VIDEO_START:
+		case IN_SCENE_VIDEO_START:/*Start the video of the scene*/
 			PlaylistEntry pe = new PlaylistEntry(
 					activeStoryPoint.getVideo());
 			pe.setLoop(false);
@@ -122,13 +139,13 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			facade.startFilm();
 			state = EngineStates.IN_SCENE_VIDEO;
 			break;
-		case IN_SCENE_VIDEO:
+		case IN_SCENE_VIDEO:/*Wait for video to end(is caused by the Filmende-event in checkEvents())*/
 			break;
-		case IN_SCENE_VIDEO_END:
+		case IN_SCENE_VIDEO_END:/*Start interaction*/
 			facade.removeAllVideos();
 			state = EngineStates.IN_SCENE_INTERACTION_START;
 			break;
-		case IN_SCENE_INTERACTION_START:
+		case IN_SCENE_INTERACTION_START:/*If an interaction exists for the scene, start it*/
 			activeInteraction = story.getInteractions().get(activeStoryPoint.getInteraction());
 			if(activeInteraction instanceof Quiz) {	
 				Quiz activeQuiz = (Quiz) activeInteraction;
@@ -187,7 +204,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				state = EngineStates.IN_SCENE_END;
 			}
 			break;
-		case IN_SCENE_END:
+		case IN_SCENE_END:/*Close active storypoint and search for new enabled storypoints*/
 			activeStoryPoint.setStatus(StorypointStatus.DONE);
 			addOpenStoryPointsToSonar();
 			state = EngineStates.OPEN;
@@ -255,7 +272,9 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 
 	}
 
-	//TODO als Graph aufbauen
+	/**
+	 * Adds enabled storypoints to the Sonar
+	 */
 	private void addOpenStoryPointsToSonar() {
 		facade.deleteAllGhosts();
 		for(StoryPoint storyPoint : story.getStorypoints().values()) {
