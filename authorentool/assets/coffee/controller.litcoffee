@@ -417,14 +417,17 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl.controller "homeCtrl", ["$scope", "$location", "storytellerServer", ($scope, $location, $server) ->
 
+        $scope.createDisabled = false
+
         # this will be initial executed and get all available story's
         $server.getStoryList (data) ->
             $scope.storys = data
 
         # Creates a story on the server
         $scope.createStory = () ->
+
+            $scope.createDisabled = true
             $server.createStory (id)->
-                console.log id
                 $location.path "/story/#{id}"
 
 
