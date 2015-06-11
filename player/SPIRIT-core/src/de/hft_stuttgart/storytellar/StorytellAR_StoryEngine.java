@@ -30,7 +30,6 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 
 	PlayableStory story;
 	UIController facade;
-	boolean doIt = true;
 	EngineStates state;
 	StoryPoint activeStoryPoint;
 	Interaction activeInteraction;
@@ -57,10 +56,10 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		switch (state) {
 		case OPEN:
 			
-			//If a StoryPoint is already Activated, start it
+			//If a StoryPoint is queued, start it
 			boolean breaker = false;
 			for(StoryPoint point: story.getStorypoints().values()) {
-				if(point.getStatus() == StorypointStatus.QEUED) {
+				if(point.getStatus() == StorypointStatus.QUEUED) {
 					activeStoryPoint = point;
 					state = EngineStates.IN_SCENE_START;
 					breaker = true;
@@ -164,7 +163,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 						story.getStorypoints().get(possibleNextStoryPoints.get(i)).setStatus(StorypointStatus.DONE);
 					} 
 				}
-				story.getStorypoints().get(possibleNextStoryPoints.get(buttonPressed)).setStatus(StorypointStatus.QEUED);
+				story.getStorypoints().get(possibleNextStoryPoints.get(buttonPressed)).setStatus(StorypointStatus.QUEUED);
 				buttonPressed = -1;
 				state = EngineStates.IN_SCENE_END;
 			}
