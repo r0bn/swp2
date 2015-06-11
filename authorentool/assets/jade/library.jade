@@ -25,7 +25,7 @@
                             button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj.file)") Löschen 
     .row
         .col-md-4
-            input(type="file",file-model="mediaFileUpload")
+            input(type="file",file-model="mediaFileUpload",accept=".jpg,.jpeg,.mp4,.png")
             br
             button.btn.btn-primary.btn(ng-click="uploadMediaFile()") Hochladen
 
