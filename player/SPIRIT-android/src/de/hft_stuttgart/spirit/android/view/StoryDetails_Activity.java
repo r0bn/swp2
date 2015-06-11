@@ -10,7 +10,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
 	public final static String EXTRA_AUTHOR = "de.hft_stuttgart.spirit.android.view.AUTHOR";
 	public final static String EXTRA_UPDATEDAT = "de.hft_stuttgart.spirit.android.view.CREATIONDATE";
 	public final static String EXTRA_STOREORINSTALLED = "de.hft_stuttgart.spirit.android.view.STOREORINSTALLED";
+	public final static String EXTRA_SIZE = "de.hft_stuttgart.spirit.android.view.SIZE";
 	
 	private final static String TAG = StoryDetails_Activity.class.toString();
 	
@@ -80,6 +83,16 @@ public class StoryDetails_Activity extends ActionBarActivity {
 		textv = (TextView)findViewById(R.id.CreationDateView);
 		if (intent.hasExtra(EXTRA_UPDATEDAT)) {
 			textv.setText(intent.getStringExtra(EXTRA_UPDATEDAT));
+			logmessage += "Set creation date by intent to \"" + textv.getText() + "\"\n";
+		} else {
+			textv.setText("#UNDEF");
+			logmessage += "Set creation date by default to \"" + textv.getText() + "\"\n";
+		}
+		
+		// Update storySize in activity
+		textv = (TextView)findViewById(R.id.StorySize);
+		if (intent.hasExtra(EXTRA_SIZE)) {
+			textv.setText(intent.getStringExtra(EXTRA_SIZE) + " MB");
 			logmessage += "Set creation date by intent to \"" + textv.getText() + "\"\n";
 		} else {
 			textv.setText("#UNDEF");
@@ -151,7 +164,7 @@ public class StoryDetails_Activity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Toast toast;
         switch (id) {
 		case R.id.action_start:
@@ -178,18 +191,42 @@ public class StoryDetails_Activity extends ActionBarActivity {
         	startActivity(i_delete);
 			return true;
 		case R.id.action_download:
-			toast = Toast.makeText(getApplicationContext(),"Download Story "+intent.getStringExtra(EXTRA_STORYNAME)+" (ID: "+intent.getIntExtra(EXTRA_STORYID, -1)+")",Toast.LENGTH_SHORT);
-        	toast.show();
-        	DownloadStory task = new DownloadStory();
-        	task.execute();
-        	Intent i_download = new Intent(getApplicationContext(),Main_Activity.class);
-	 		if (intent.hasExtra("StoreFragmentStoryFilter")){	
-	 			i_download.putExtra("StoreFragmentStoryFilter", intent.getParcelableExtra("StoreFragmentStoryFilter"));
-	 		}
-	 		if (intent.hasExtra("InstalledFragmentStoryFilter")){	
-	 			i_download.putExtra("InstalledFragmentStoryFilter", intent.getParcelableExtra("InstalledFragmentStoryFilter"));
-	 		} 
-        	startActivity(i_download);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			  //  builder.setTitle("Confirm");
+			   // builder.setMessage("Jetzt die komplette Story herunterladen?");EXTRA_SIZE
+				builder.setTitle("Jetzt die vollen "+intent.getStringExtra(EXTRA_SIZE) +" MB für die Story herunterladen?");
+			    builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+			        public void onClick(DialogInterface dialog, int which) {
+			        	Toast.makeText(getApplicationContext(),"Download Story "+intent.getStringExtra(EXTRA_STORYNAME)+" (ID: "+intent.getIntExtra(EXTRA_STORYID, -1)+")",Toast.LENGTH_SHORT).show();
+			        	DownloadStory task = new DownloadStory();
+			        	task.execute();
+			        	Intent i_download = new Intent(getApplicationContext(),Main_Activity.class);
+				 		if (intent.hasExtra("StoreFragmentStoryFilter")){	
+				 			i_download.putExtra("StoreFragmentStoryFilter", intent.getParcelableExtra("StoreFragmentStoryFilter"));
+				 		}
+				 		if (intent.hasExtra("InstalledFragmentStoryFilter")){	
+				 			i_download.putExtra("InstalledFragmentStoryFilter", intent.getParcelableExtra("InstalledFragmentStoryFilter"));
+				 		} 
+			        	startActivity(i_download);
+			            dialog.dismiss();
+			        }
+
+			    });
+
+			    builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+
+			        @Override
+			        public void onClick(DialogInterface dialog, int which) {
+			            // Do nothing
+			            dialog.dismiss();
+			        }
+			    });
+
+			    AlertDialog alert = builder.create();
+			    alert.show();
+
 		default:
 			return false;
 		}
