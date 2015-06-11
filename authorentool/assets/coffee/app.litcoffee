@@ -13,6 +13,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
         ($routeProvider, $locationProvider) ->
             $routeProvider
                 .when('/', {
+                    templateUrl: 'login.html'
+                    controller : 'loginCtrl'
+                })
+                .when('/home/:token', {
                     templateUrl: 'home.html'
                     controller : 'homeCtrl'
                 })

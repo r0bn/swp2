@@ -1,6 +1,0 @@
-authorentool:
-    build: .
-    ports:
-        - "8000:4001"
-    volumes:
-        - ./:/src

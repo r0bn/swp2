@@ -430,6 +430,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     ]
 
+    storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellerServer", ($scope, $location, $server) ->
+
+
+
+    ]
+
     storyTellarCtrl.directive 'fileModel', [ () ->
         {
             restrict: 'A'
