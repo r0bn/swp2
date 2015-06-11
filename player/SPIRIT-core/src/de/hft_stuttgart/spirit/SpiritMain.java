@@ -265,27 +265,27 @@ public class SpiritMain extends ApplicationAdapter implements
 			}
 		}
 		// CustomTextButtons
-		if (isCustomButtonPressed(0)) {
+		if (isCustomButtonPressed(0) && customTextButton[0].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton0));
 			disableAllCustomTextButtons();
 		}
-		if (isCustomButtonPressed(1)) {
+		if (isCustomButtonPressed(1) && customTextButton[1].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton1));
 			disableAllCustomTextButtons();
 		}
-		if (isCustomButtonPressed(2)) {
+		if (isCustomButtonPressed(2) && customTextButton[2].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton2));
 			disableAllCustomTextButtons();
 		}
-		if (isCustomButtonPressed(3)) {
+		if (isCustomButtonPressed(3) && customTextButton[3].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton3));
 			disableAllCustomTextButtons();
 		}
-		if (isCustomButtonPressed(4)) {
+		if (isCustomButtonPressed(4) && customTextButton[4].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton4));
 			disableAllCustomTextButtons();
 		}
-		if (isCustomButtonPressed(5)) {
+		if (isCustomButtonPressed(5) && customTextButton[5].isActive) {
 			events.add(new SpiritEvent(Event.CustomButton5));
 			disableAllCustomTextButtons();
 		}

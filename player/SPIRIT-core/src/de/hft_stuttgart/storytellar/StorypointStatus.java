@@ -12,5 +12,5 @@ public enum StorypointStatus {
 	OPEN, 
 	ACTIVE, 
 	DONE,
-	QEUED
+	QUEUED
 }
