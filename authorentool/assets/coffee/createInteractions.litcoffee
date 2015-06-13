@@ -165,14 +165,17 @@
                                 $("#fgpNeu_Chooser_" + interactionCounter).toggle "drop", 200, () ->
                                     currentObj = $("#btnChooserAnswer_" + interactionCounter).parent().next()
                                     while typeof currentObj != 'undefined'
-                                        id = currentObj.attr("id").split("_")
-                                        oldValue = $("#btnSetChooserStorypointReferences_" + id[1]).attr("oldValue")
-                                        if typeof oldValue != 'undefined'
-                                            oldValue = oldValue.split("_")
-                                            storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+id[1], "fhlNeuerStorypoint" )
-                                            storypoint = storypoint.split("_")
-                                            RemoveParticularEdge(storypoint[1], oldValue[1])
-                                        currentObj = currentObj.next()
+                                        if typeof currentObj.attr("id") != 'undefined'
+                                            id = currentObj.attr("id").split("_")
+                                            oldValue = $("#btnSetChooserStorypointReferences_" + id[1]).attr("oldValue")
+                                            if typeof oldValue != 'undefined'
+                                                oldValue = oldValue.split("_")
+                                                storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+id[1], "fhlNeuerStorypoint" )
+                                                storypoint = storypoint.split("_")
+                                                RemoveParticularEdge(storypoint[1], oldValue[1])
+                                            currentObj = currentObj.next()
+                                        else
+                                            currentObj = undefined
                                     $("#fgpNeu_Chooser_" + interactionCounter).remove()
                                 return
                         'Abbrechen': ->
