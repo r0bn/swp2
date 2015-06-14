@@ -1,0 +1,15 @@
+.container
+    .row
+        .col-md-4.col-centered
+            .login-panel.panel.panel-default
+                .panel-heading
+                    h3.panel-title Password
+                .panel-body
+                    form(role="form")
+                        fieldset
+                            .form-group(ng-class="{'has-error' : isError}")
+                                input.form-control(placeholder="Password",name="password",type="text",autofocus="")
+                            a.btn.btn-sm.btn-success(ng-click="login()") Login
+                            span.help-block Momentan noch kein Password nötig! Einfach Login klicken.
+
+

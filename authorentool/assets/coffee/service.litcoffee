@@ -52,6 +52,7 @@
                         cb(data)
                     .error (err) ->
                         console.log err
+                        cb([])
 
             getDownloadPath : (storyId, filename) ->
                 return "#{serverUrl}/media/#{storyId}/#{filename}"
@@ -81,6 +82,21 @@
                     console.log err
         }
     ]
+
+    storyTellarServices.factory 'storytellarAuthentication', [ '$http', 'disableAuthentication', ($http, disableAuth) ->
+        serverUrl = "http://api.storytellar.de"
+        isAuthenticated = disableAuth 
+        {
+            isValid : (user, password) ->
+                isAuthenticated = true
+                return true
+
+            isAuthenticated : () ->
+                return isAuthenticated
+
+        }
+    ]
+
 
     storyTellarServices.factory 'xmlServices', [ () ->
         {

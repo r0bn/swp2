@@ -22,10 +22,23 @@
                         td {{ obj.created_at }}
                         td
                             a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen
-                            button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj.file)") Löschen 
+                            button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj.file)",ng-show="!isDeleting") Löschen 
     .row
-        .col-md-4
-            input(type="file",file-model="mediaFileUpload")
+        .col-md-4(ng-show="!isUploading")
+            input(type="file",file-model="mediaFileUpload",accept=".jpg,.jpeg,.mp4,.png")
             br
             button.btn.btn-primary.btn(ng-click="uploadMediaFile()") Hochladen
+        .col-md-4(ng-show="isUploading")
+            .alert.alert-warning
+                h4 Upload
+                p File is uploading.
+                .progress.progress-striped.active
+                    .progress-bar(style="width:100%")
+
+        .col-md-4(ng-show="isDeleting")
+            .alert.alert-warning
+                h4 Deleting 
+                p Server requested to delete file. 
+                .progress.progress-striped.active
+                    .progress-bar.progress-bar-danger(style="width:100%")
 
