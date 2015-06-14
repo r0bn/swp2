@@ -15,16 +15,17 @@ block content
                         form.form-horizontal
                             fieldset
                                 .row
-                                    .col-lg-10
-                                        legend Storydaten
-                                    .col-lg-1
-                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button", style="margin-right:90%") Story speichern 
+                                    .col-xs-12.col-lg-7
+                                        legend.ellipsis Storydaten
+                                    .col-xs-7.col-lg-2
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(disabled, id="btnSaveStory", type="button") Story speichern 
                                             span.glyphicon.glyphicon-upload
-                                    .col-lg-1
-                                        .checkbox
+                                    .col-xs-5.col-lg-3
+                                        .checkbox.pull-right
                                             input(id="inFinal", type='checkbox', placeholder="Final")
                                             label(id="lblFinal", for='inFinal') Final
-                                        
+                                .clearfix.visible-xs-block
+                                br
                                 .row     
                                     .form-group
                                         label.col-lg-2.control-label(for="inTitel") Titel
@@ -34,7 +35,7 @@ block content
                                     .form-group
                                         label.col-lg-2.control-label(for="ttaDescription") Beschreibung
                                         .col-lg-10
-                                            textarea.form-control(rows="3", id="ttaDescription",maxlength="255", style="max-width: 700px; max-height: 200px", placeholder="Beschreibung der Story")
+                                            textarea.form-control(rows="3", id="ttaDescription",maxlength="255", max-height: 200px", placeholder="Beschreibung der Story")
 
                                     .form-group
                                         label.col-lg-2.control-label(for="inAutor") Autor
@@ -43,10 +44,10 @@ block content
 
                                     .form-group
                                         label.col-lg-2.control-label(for="inSize") Größe der Story
-                                        .col-lg-8
+                                        .col-xs-10.col-lg-9
                                             input.form-control(disabled, type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
-                                        .col-lg-2
-                                            .dropdown
+                                        .col-xs-2.col-lg-1
+                                            .dropdown.pull-right
                                                 button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
                                                     span.caret 
                                                 ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
@@ -76,10 +77,10 @@ block content
 
                                     .form-group
                                         label.col-lg-2.control-label(for="inRadius") Radius um den Ort
-                                        .col-lg-8
+                                        .col-xs-8.col-sm-10.col-lg-8
                                             input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
-                                        .col-lg-2
-                                            .dropdown
+                                        .col-xs-4.col-sm-2.col-lg-2
+                                            .dropdown.pull-right
                                                 button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
                                                     span.caret 
                                                 ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
@@ -102,10 +103,10 @@ block content
                     .col-lg-1
                     fieldset
                         .form-group
-                            .col-lg-9
-                                legend(id="lgdNeuerStorypointFieldset") Neuer Storypoint 
-                            .col-lg-3
-                                .btn-group.dropup(id="bgpControlGroup", role="group" aria-label="...")
+                            .col-xs-6.col-lg-9
+                                legend.ellipsis(id="lgdNeuerStorypointFieldset") Neuer Storypoint 
+                            .col-xs-6.col-lg-3
+                                .btn-group.dropup.pull-right(id="bgpControlGroup", role="group" aria-label="...")
                                     button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
                                         span.glyphicon.glyphicon-menu-up  
                                     button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
@@ -182,7 +183,7 @@ block content
                             .form-group(id="fgpInteractions")
                                 .col-lg-5
                                     label.control-label(id="lblInteractions", for="ddnInteractions") Interaktion wählen
-                                .col-lg-4
+                                .col-xs-5.col-lg-4
                                     .dropup
                                         button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
                                             span.caret 
@@ -193,7 +194,7 @@ block content
                                                 a(role='menuitem', id="ddnQuiz", tabindex='1', value="Quiz") Quiz
                                             li(role='presentation')
                                                 a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
-                                .col-lg-3
+                                .col-xs-7.col-lg-3
                                     button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateInteraction", interactionCounter="10000", type="button") Interaktion erstellen
 
 
@@ -262,7 +263,7 @@ block content
                                               
                                                                     
             .form-group(id="fgpMultipleStorypointRefs", style="display:none")
-                .col-lg-3(id="colStorypointRefDeep")
+                .col-xs-3(id="colStorypointRefDeep")
                     .dropdown
                         button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP Ref wählen
                             span.caret 
@@ -271,7 +272,7 @@ block content
                     button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnStorypointRefDelete", type='button') 
                         span.glyphicon.glyphicon-trash
             .form-group(id="fgpMultipleItemRefs", style="display:none")
-                .col-lg-3(id="colItemRefDeep")
+                .col-xs-3(id="colItemRefDeep")
                         .dropdown
                             button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
                                 span.caret 
@@ -291,10 +292,10 @@ block content
             .form-group(id="fgpNeu_Item", style="display: none")
                 .col-lg-1
                 fieldset
-                    .col-lg-9
-                        legend(id="lgdNeuesItemFieldset") Neues Item 
-                    .col-lg-3
-                        .btn-group.dropup(id="bgpItemControlGroup", role="group" aria-label="...")
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuesItemFieldset") Neues Item 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpItemControlGroup", role="group" aria-label="...")
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
                                 span.glyphicon.glyphicon-menu-up  
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
@@ -321,8 +322,7 @@ block content
                         .col-lg-7
                             input.form-control(disabled, type="text",maxlength="255", id="inItemStorypointRef", placeholder="Item Storypointreferenz")
                     .form-group
-                        .col-lg-6
-                        .col-lg-6
+                        .col-lg-offset-6.col-lg-6
                             .checkbox
                                 input(id="inItemIsCollected", type='checkbox', placeholder="Item ist aufgenommen")
                                 label(id="lblItemIsCollected", for='inItemIsCollected') Item wird aufgenommen
@@ -330,10 +330,10 @@ block content
             .form-group(id="fgpNeu_Quiz", style="display: none") 
                 .col-lg-1
                 fieldset                      
-                    .col-lg-9
-                        legend(id="lgdNeuesQuizFieldset") Neues Quiz 
-                    .col-lg-3
-                        .btn-group.dropup(id="bgpQuizControlGroup", role="group" aria-label="...")
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuesQuizFieldset") Neues Quiz 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpQuizControlGroup", role="group" aria-label="...")
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
                                 span.glyphicon.glyphicon-menu-up  
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
@@ -383,7 +383,8 @@ block content
                         .col-lg-7
                             input.form-control(type="text",maxlength="255", id="inQuizQuestion", placeholder="Quiz Frage")
                     .form-group
-                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
+                        .col-xs-12
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
                                 span Antwort hinzufügen
             .form-group(id="fgpAnswer", style="display: none")
                 .col-lg-1
@@ -422,10 +423,10 @@ block content
             .form-group(id="fgpNeu_Chooser", style="display: none")
                 .col-lg-1
                 fieldset                      
-                    .col-lg-9
-                        legend(id="lgdNeuerChooserFieldset") Neuer Chooser 
-                    .col-lg-3
-                        .btn-group.dropup(id="bgpChooserControlGroup", role="group" aria-label="...")
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuerChooserFieldset") Neuer Chooser 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpChooserControlGroup", role="group" aria-label="...")
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
                                 span.glyphicon.glyphicon-menu-up  
                             button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
@@ -454,7 +455,8 @@ block content
                         .col-lg-7
                             input.form-control(type="text",maxlength="255", id="inChooserQuestion", placeholder="Chooser Frage")
                     .form-group
-                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
+                        .col-xs-12
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
                                 span Antwort hinzufügen
 
             .form-group(id="fgpChooserAnswer", style="display: none")
