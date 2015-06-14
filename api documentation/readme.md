@@ -14,6 +14,10 @@
    * Create new story
    * Update/edit story
    * Delete story
+ * User management
+   * Registration
+   * Authentication/Token
+   * Own stories
  * XML validation test website
  * Filter story metadata
  * Temporay route for testing (player)
@@ -125,6 +129,8 @@ http://api.storytellar.de/story/<id>/media/<filename>
 ```
 This deletes the file for the given story id.
 
+When a file gets removed, the story will automatically be flagged as not final.
+
 Example for story ID 38 with the file "Piratenzeug.jpg":
 ```
 http://api.storytellar.de/story/38/media/Piratenzeug.jpg
@@ -142,6 +148,8 @@ http://api.storytellar.de/story/<id>/media
 > **NOTE:** Since uploading files via put is impossible for HTML forms, you can add an extra parameter with the name "_method" and value "PUT" to it for achieving the same result via post method.
 
 This will add a media file to a story for the given id.
+
+When a file gets added, the story will automatically be flagged as not final.
 
 Media files restrictions:
 
@@ -172,17 +180,17 @@ To create a new story the following post route applies:
 http://api.storytellar.de/story
 ```
  * Method: POST
- * Parameters: final (optional), working_title (optional), xml
+ * Parameters: final (optional), working_title (optional), xml, authorization header (optional, read on...)
  * Response: Story ID integer
 
 > **Note:** The server will automatically extract the xml metadata from the XML file when the final parameter is given and the story is valid.
 
-If the parameter `final` (content doesn't matter) is set, the XML file/string has to be valid in all ways (media files, well formatted and schema valid). Don't set that parameter without checking! The server will check if the xml is well formatted and schema valid, if that fails the story will not be tagged as final and remain open.
+A story can be assigned to a user with a valid token. All you have to do is set the `Authorization`header with:
+```
+Bearer <your_token>
+```
 
-Let's create a final story for example: The route has to be called via post method and contain a parameter "final" and "xml" with the xml file content as string.
-
-Let's create a story that is not final, which could be called "preparing a story": The parameter `xml` and `working_title` has to be filled, it doesn't matter if it's a valid xml string or not. Don't include the parameter "final" within your post. You can now edit this story... (see next chapters).
-You can find your story under the route for non-final stories!
+If the parameter `final` (content doesn't matter) is set, the XML file/string has to be valid in all ways (media files, well formed, schema valid and the stored media files on the server have to match the XML). Don't set that parameter without checking! The server will check if the xml is well formatted and schema valid, if that fails the story will not be tagged as final and remain open.
 
 Valid XML metadata tags have to follow these rules:
 
@@ -211,6 +219,96 @@ To delete a story including all it's media files you have to call the following 
 http://api.storytellar.de/story/<id>
 ```
 This will delete the story from the database and remove all files assigned to the media folder.
+
+
+### User Management
+The server uses JWT tokens to authenticate a user.
+
+**Registration**
+
+To register a user the following route applies:
+```
+http://api.storytellar.de/register
+```
+ * Method: POST
+ * Parameters: username, password
+
+The parameters have to fulfill following rules:
+ * username: Required, length: 1-255 characters, unique on the users table
+ * password: Required, length: 1-60 characters
+
+If the registration is valid, the status code will be 200. If any errors occur the status code will be 400 plus a JSON response with: "error": "validation_error"
+
+**Authentication/Token**
+
+Once a useraccount is setup, a valid token can be received from:
+```
+http://api.storytellar.de/authenticate
+```
+ * Method: POST
+ * Parameters: username, password
+
+If the user is successfully authenticated, the response will be a JSON with the JWT:
+```JSON
+{
+  "token": "<token_here>"
+}
+```
+
+For invalid credentials the status code will be 401 with the following JSON as response:
+```JSON
+{
+  "error": "invalid_credentials"
+}
+```
+
+The token is valid for 12 hours.
+
+It is possible to refresh a token for 2 weeks under:
+```
+http://api.storytellar.de/reauthenticate
+```
+ * Method: POST
+ * Parameters: username, password
+ * Repsonse: JSON with field "newToken" with the value of the refreshed token
+
+**Own stories**
+
+To receive the stories for an user:
+```
+http://api.storytellar.de/user
+```
+ * Method: GET
+ * 
+All you have do is set the `Authorization` value in the request header with the following data:
+
+```
+Bearer <your_token>
+```
+
+The response will be a JSON with all the stories assigned to the bearer token.
+Example:
+```JSON
+[
+  {
+    "id": "38",
+    "final": "1",
+    "working_title": null,
+    "title": "Kneipentour",
+    "description": "Die Legende von Block 4",
+    "author": "Arno Claus",
+    "revision": "7",
+    "size": "40",
+    "size_uom": "MB",
+    "location": "48.780332 9.172515",
+    "radius": "5",
+    "radius_uom": "km",
+    "created_at": "2015-05-25 05:22:52",
+    "updated_at": "2015-05-25 05:22:52"
+  }
+]
+```
+> **Note:** Compared to the main story route does this response contain the final status + working title value as well.
 
 ### XML validation test website
 You can enter your XML content here to test if it's valid. The same validation process is applied for the routes mentioned above:
