@@ -36,6 +36,36 @@ class Story implements StoryInterface
         return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 
+    public function getUserStories($userId)
+    {
+        $stories = array();
+
+        foreach (\App\Story::where('user_id', '=', $userId)->get() as $entry) {
+            $story = array();
+
+            $story['id'] = $entry->id;
+            $story['final'] = $entry->final;
+            $story['working_title'] = $entry->working_title;
+            $story['title'] = $entry->title;
+            $story['description'] = $entry->description;
+            $story['author'] = $entry->author;
+            $story['revision'] = $entry->revision;
+            $story['size'] = $entry->size;
+            $story['size_uom'] = $entry->size_uom;
+            $story['location'] = $entry->location;
+            $story['radius'] = $entry->radius;
+            $story['radius_uom'] = $entry->radius_uom;
+            $story['created_at'] = $entry->created_at->toDateTimeString();
+            $story['updated_at'] = $entry->updated_at->toDateTimeString();
+
+            $stories[] = $story;
+        }
+
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+
+        return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
+    }
+
 
     public function getAllOpenStories()
     {
@@ -92,9 +122,11 @@ class Story implements StoryInterface
         return $story->id;
     }
 
-    public function createStorySlot($xml, $workingTitle)
+    public function createStorySlot($xml, $workingTitle, $userId)
     {
         $story = new \App\Story;
+
+        $story->user_id = $userId;
 
         $story->working_title = $workingTitle;
 
@@ -296,6 +328,16 @@ class Story implements StoryInterface
         }
 
         return $retVal;
+    }
+
+
+    public function changeFinalStatus($id, $status)
+    {
+        $story = \App\Story::findOrFail($id);
+
+        $story->final = $status;
+
+        $story->save();
     }
 
 

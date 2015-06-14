@@ -14,11 +14,15 @@ interface Story
 
     public function createStory($xml);
 
-    public function createStorySlot($xml, $workingTitle);
+    public function createStorySlot($xml, $workingTitle, $userId);
 
     public function updateStory($xml, $id);
 
     public function updateStorySlot($xml, $id, $workingTitle);
 
     public function deleteStory($id);
+
+    public function changeFinalStatus($id, $status);
+
+    public function getUserStories($userId);
 }

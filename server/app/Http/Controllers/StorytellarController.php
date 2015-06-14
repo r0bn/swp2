@@ -12,6 +12,7 @@ use App\Interfaces\XmlValidator as XmlValidatorInterface;
 
 class StorytellarController extends Controller
 {
+    protected $filehelper;
     protected $story;
     protected $tempStory;
     protected $xmlParser;
@@ -44,6 +45,14 @@ class StorytellarController extends Controller
         return $retVal;
     }
 
+    public function getUserStories()
+    {
+        $token = \JWTAuth::getToken();
+        $user = \JWTAuth::toUser($token);
+
+        return $this->story->getUserStories($user->id);
+    }
+
     public function getOpenStories()
     {
         return $this->story->getAllOpenStories();
@@ -62,15 +71,19 @@ class StorytellarController extends Controller
     public function createStory(Request $request)
     {
         $retVal = null;
+        $userId = null;
 
         $xmlString = $request->input('xml');
 
-        if ($request->input('final') && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString))) {
-            $retVal = $this->story->createStory($xmlString);
-        } else {
-            $workingTitle = $request->input('working_title');
-            $retVal = $this->story->createStorySlot($xmlString, $workingTitle);
+        if ($request->header('Authorization')) {
+            $token = \JWTAuth::getToken();
+            $user = \JWTAuth::toUser($token);
+
+            $userId = $user->id;
         }
+
+        $workingTitle = $request->input('working_title');
+        $retVal = $this->story->createStorySlot($xmlString, $workingTitle, $userId);
 
         return $retVal;
     }
@@ -80,7 +93,7 @@ class StorytellarController extends Controller
         if ($id != 1 || $id != 2 || $id != 3) {
             $xmlString = $request->input('xml');
 
-            if ($request->input('final') && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString))) {
+            if ($request->input('final') && $this->xmlValidator->validateXmlSchema($xmlString) && $this->xmlValidator->validateXmlMetadata($this->xmlParser->getXmlMetadata($xmlString)) && $this->xmlValidator->validateXmlMediaFiles($id, $xmlString)) {
                 $this->story->updateStory($xmlString, $id);
             } else {
                 $workingTitle = $request->input('working_title');
@@ -98,14 +111,20 @@ class StorytellarController extends Controller
 
     public function addFile(Request $request, $id)
     {
-        $file = $request->file('file');
-        $this->fileHelper->storeStoryMediaFile($id, $file);
+        if ($id != 1 || $id != 2 || $id != 3) {
+            $file = $request->file('file');
+            $this->fileHelper->storeStoryMediaFile($id, $file);
+
+            $this->story->changeFinalStatus($id, false);
+        }
     }
 
     public function deleteFile($id, $filename)
     {
         if ($id != 1 || $id != 2 || $id != 3) {
             $this->fileHelper->deleteStoryMediaFile($id, $filename);
+
+            $this->story->changeFinalStatus($id, false);
         }
     }
 
@@ -153,6 +172,7 @@ class StorytellarController extends Controller
         }
 
         $headers['Content-Type'] = 'application/json; charset=utf-8';
+
         return response()->json($retVal, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 

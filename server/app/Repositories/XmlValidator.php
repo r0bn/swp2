@@ -53,4 +53,30 @@ class XmlValidator implements XmlValidatorInterface
         return $retVal;
     }
 
+
+    public function validateXmlMediaFiles($id, $xml)
+    {
+        $retVal = null;
+
+        $xmlParser = new XmlParser();
+        $xmlMediaFiles = $xmlParser->getXmlMediaFiles($xml);
+
+        $allFiles = array();
+
+        foreach (\Storage::allFiles($id) as $fileData) {
+            $fileInfo = pathinfo($fileData);
+            $allFiles[] = $fileInfo['basename'];
+        }
+
+        $diff = array_diff($xmlMediaFiles, $allFiles);
+
+        if (empty($diff)) {
+            $retVal = true;
+        } else {
+            $retVal = false;
+        }
+
+        return $retVal;
+    }
+
 }

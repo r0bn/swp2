@@ -66,7 +66,7 @@ class FileHelper implements FileHelperInterface
         $mimeType = $file->getClientMimeType();
 
         $fileextension = $file->guessClientExtension();
-        if ((($mimeType == 'image/jpeg' || $mimeType == 'image/png' || $mimeType == 'video/mp4') && $filesize <= 5000000) &&
+        if ((($mimeType == 'image/jpeg' || $mimeType == 'image/png' || $mimeType == 'video/mp4') && $filesize <= 25000000) &&
             ($fileextension == 'jpg' || $fileextension == 'jpeg' || $fileextension == 'png' || $fileextension == 'mp4')
         ) {
             $retVal = true;

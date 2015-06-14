@@ -28,6 +28,30 @@ class XmlParser implements XmlParserInterface
     }
 
 
+    public function getXmlMediaFiles($xmlString)
+    {
+        $xml = simplexml_load_string($xmlString);
+
+        $xml->registerXPathNamespace('x', 'http://www.opengis.net/arml/2.0');
+        $xml->registerXPathNamespace('xlink', 'http://www.w3.org/1999/xlink');
+
+        $files = $xml->xpath('//x:Href/@xlink:href');
+        $tracker = $xml->xpath('//x:src');
+
+        $filesArray = array();
+
+        foreach ($files as $file) {
+            $filesArray[] = $file->__toString();
+        }
+
+        foreach ($tracker as $track) {
+            $filesArray[] = $track->__toString();
+        }
+
+        return array_unique($filesArray);
+    }
+
+
     public function getXmlMetadataSlot($xmlString)
     {
         $xmlMetadata = null;

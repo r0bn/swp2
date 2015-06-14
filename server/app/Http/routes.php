@@ -17,6 +17,7 @@
  *
  * Determines the routes for every stroy handling interaction.
  */
+
 Route::get('story', 'StorytellarController@getStories');
 
 Route::get('story/open', 'StorytellarController@getOpenStories');
@@ -37,22 +38,34 @@ Route::delete('story/{id}', 'StorytellarController@deleteStory');
 Route::put('story/{id}/media', 'StorytellarController@addFile');
 
 
-
 /**
  * Temporary routes for stories (player)
  *
  * This determines only the routes for downloading.
  */
+
 Route::get('temp', 'StorytellarController@getTempStories');
 
 Route::get('temp/{id}', 'StorytellarController@getTempStory');
 
 
-
 /**
- * Temporary routes for xml schema validation
+ * Routes for xml schema validation
  */
 
 Route::get('docs/tests/xmlschemavalidation', 'StorytellarController@getXmlSchemaValidation');
 
 Route::post('docs/tests/xmlschemavalidation', 'StorytellarController@postXmlSchemaValidation');
+
+
+/**
+ * Authentication and user management
+ */
+
+Route::post('register', 'RegisterController@register');
+
+Route::post('authenticate', 'AuthenticateController@authenticate');
+
+Route::get('reauthenticate', ['middleware' => ['jwt.refresh'], 'uses' => 'AuthenticateController@reauthenticate']);
+
+Route::get('user', ['middleware' => ['jwt.auth'], 'uses' => 'StorytellarController@getUserStories']);
