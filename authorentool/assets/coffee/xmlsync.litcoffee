@@ -35,14 +35,7 @@
             
             #######################Bis hierhin wird alle ordentlich eingetragen
             ###########################################StorypointDaten
-            
-            armlTag = xmlString.split("<ARElements>")[1].split("</ARElements>")[0]
-            armlTag = armlTag.split("<Interactions>")[0]
-            armlTag = "<SP_List>" + armlTag + "</SP_List>"
-            
-            xmlDoc = $.parseXML(armlTag)
-            $xml = $(xmlDoc)
-            
+            $xml
                 ####################Löschen ALler bisherigen Storypoints
             
             list = document.getElementById("fhlStorypoints");
@@ -63,23 +56,22 @@
             ##############Hier schleife
 
             
-            xmlDoc = $.parseXML(armlTag)
-            $featureXml = $(xmlDoc)
-            
-            $xml.find("Feature").each ->
+            $xml.find('Feature').each ->
                 createNewStorypointX(counter)
-
                 $("#inStorypoint_"+counter).val($(this).attr('id').split("_Feature")[0])
-                counter++                    
-            
-            
-            #$xml.find('Trackable').each ->
-                    
-
-            
-            
+                video = $(this).find('Href').attr('xlink:href')
+                if typeof video != 'undefined'
+                    video = video.split("#")
+                    $('#inAsset_' + counter).val(video[1])
+                $("#inAnchorPoint_" + counter).val($(this).find("pos").text())
+                trackerID = $(this).find('anchorRef').attr('xlink:href')
+                $xml.find('Trackable').each ->
+                    if $(this).find('tracker').attr('xlink:href') == trackerID
+                        $('#inAnchorImg_' + counter).val($(this).find('src').text())
+                counter++
+                return
             dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
-            
+            #$xml.find('Trackable').each ->
             
             
             
