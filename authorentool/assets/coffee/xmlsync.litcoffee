@@ -53,26 +53,92 @@
             counter = 1
             
             
+            ##############Array, damit man weiß welche Features es alle gibt.
+            featureArray = []
+
             ##############Hier schleife
 
             
             $xml.find('Feature').each ->
+                
+                #Array für die InteractionList für einen Storypoint
+                interactionArray = []
+                
+                
                 createNewStorypointX(counter)
-                $("#inStorypoint_"+counter).val($(this).attr('id').split("_Feature")[0])
-                video = $(this).find('Href').attr('xlink:href')
-                if typeof video != 'undefined'
-                    video = video.split("#")
-                    $('#inAsset_' + counter).val(video[1])
+                featureId = $(this).attr('id').split("_Feature")[0]
+                $("#inStorypoint_"+counter).val(featureId)
+                featureArray.push(featureId)
+                
+                ############## video is wrong, cause images could be given too...
+                shownObject = $(this).find('Href').attr('xlink:href')
+                if typeof shownObject != 'undefined'
+                    shownObject = shownObject.split("#")[1]
+                    $('#inAsset_' + counter).val(shownObject)
                 $("#inAnchorPoint_" + counter).val($(this).find("pos").text())
                 trackerID = $(this).find('anchorRef').attr('xlink:href')
                 $xml.find('Trackable').each ->
                     if $(this).find('tracker').attr('xlink:href') == trackerID
                         $('#inAnchorImg_' + counter).val($(this).find('src').text())
+                        
+                interactionId = ""
+                $(this).find('InteractionRef').each ->
+                    interactionId = $(this).attr('xlink:href').split("#")[1]
+                    console.log('InteraktionRef_ID: ' + interactionId)
+                    interactionArray.push(interactionId)
+
+                i = 0
+                while i < interactionArray.length
+                
+                    saveTime = true
+                    
+                    
+                    $xml.find('Quiz').each ->
+                        #console.log($(this).attr('id'))
+                        if $(this).attr('id') == interactionArray[i]
+                            $("#ddnInteractions_" + counter).val("Quiz")
+                            createQuiz(counter)
+                            console.log('Quiz Gefunden')
+                            saveTime = false
+                            
+                    if saveTime
+                        $xml.find('Chooser').each ->
+                            #console.log($(this).attr('id'))
+                            if $(this).attr('id') == interactionArray[i]
+                                $("#ddnInteractions_" + counter).val("Chooser")
+                                createChooser(counter)
+                                console.log('Chooser gefunden')
+                                saveTime = false
+                                
+                    if saveTime
+                        $xml.find('Item').each ->
+                            #console.log($(this).attr('id'))
+                            if $(this).attr('id') == interactionArray[i]
+                                $("#ddnInteractions_" + counter).val("Item")
+                                createItem(counter)
+                                console.log('Item Gefunden')            
+                    
+                    i++
+                    
+                        
                 counter++
                 return
-            dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
-            #$xml.find('Trackable').each ->
+                
             
+            
+            #Jetzt per EdgeStorypointFinder die Id des Storypoints herrausfinden und dann die Sachen dort eintragen.
+            #Bei dependencyTag und bei den Interaktionen
+            
+            $xml.find('Interaction').each ->
+                
+                
+                
+                
+                
+                
+                
+            
+            dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
             
             
             return
