@@ -76,20 +76,22 @@ public class Dependency {
 	 * @return true if conditions are fulfilled, else false
 	 */
 	public Boolean isFulfilled(Map<String,Interaction> interactions, Map<String,StoryPoint> sPoints){
+		boolean itemsFullfilled = items.size()>0 ? false : true;
+		boolean storypointsFullfiled = storypoints.size() > 0 ? false : true;
 		//Check if required items are collected
 		for (int i = 0; i < items.size(); i++) {
-			if (!((Item)interactions.get(items.get(i))).getIsCollected()) {
-				return false;
+			if (((Item)interactions.get(items.get(i))).getIsCollected()) {
+				itemsFullfilled = true;
 			}
 		}
 		//Check if required storypoints are fulfilled
 		for (int i = 0; i < storypoints.size(); i++) {
-			if (!sPoints.get(storypoints.get(i)).getStatus().equals(StorypointStatus.DONE)) {
-				return false;
+			if (sPoints.get(storypoints.get(i)).getStatus().equals(StorypointStatus.DONE)) {
+				storypointsFullfiled = true;
 			}
 		}
 		//Return true if all dependencys are fulfilled
-		return true;
+		return itemsFullfilled&storypointsFullfiled;
 	}
 	
 	public String toString(){

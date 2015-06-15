@@ -86,7 +86,7 @@ public class Sonar {
 			if (ghost.showNameInRadar) {
 				textAnzeige = ghost.location.name + ", ";
 			}
-			textAnzeige += distanceToGhost + "m";
+			textAnzeige += (int)distanceToGhost + "m";
 			if (point.getY() > Gdx.graphics.getHeight() / 2) {
 				font.draw(
 						batch,

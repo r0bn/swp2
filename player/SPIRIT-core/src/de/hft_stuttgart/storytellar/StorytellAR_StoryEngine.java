@@ -163,8 +163,8 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				state = EngineStates.IN_SCENE_INTERACTION_CHOOSER;
 			} else if (activeInteraction instanceof Item) {
 				Item activeItem = (Item) activeInteraction;
-				facade.setText("Willst du " + activeItem.getDescription() + " aufnehmen?");
-				facade.setButtonText("Ja", 0);
+				facade.setText("Du nimmst " + activeItem.getDescription() + " auf.");
+				facade.setButtonText("Ok", 0);
 				state = EngineStates.IN_SCENE_INTERACTION_ITEM;
 			} else {				
 				state = EngineStates.IN_SCENE_END;
