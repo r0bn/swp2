@@ -37,13 +37,11 @@
             ###########################################StorypointDaten
             $xml
                 ####################Löschen ALler bisherigen Storypoints
-            
-            list = document.getElementById("fhlStorypoints");
-            i = 1
-            while i < list.length
-                if typeof list.childNodes[i] != 'undefined'
-                    list.removeChild(list.childNodes[i]) 
-                i++
+
+            $("#fhlStorypoints").children().each ->
+                if typeof $(this).attr("id") != 'undefined' && $(this).attr("id") != "fgpStorypoint"
+                    $(this).remove()
+                    return
                 ####################Alle Kanten und Knoten des Graphen löschen
             window.nodes = []
             window.edges = []
@@ -140,7 +138,61 @@
             
             dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
             
-            
+            $xml.find('Dependency').each ->
+                $(this).find('Storypoint').each ->
+                    feature = $(this).find('FeatureRef').attr('xlink:href')
+                    featureID = feature.split('#')[1]
+                    if typeof featureID != 'undefined'
+                        featureID = featureID.split("_Feature")[0]
+                        access = $(this).find('Accessible').text()
+                        internet = $(this).find('Internet').text()
+                        endOfStory = $(this).find('EndOfStory').text()
+                        i = 1
+                        storypointID = 0
+                        while i < counter
+                            if $('#inStorypoint_' + i).val() == featureID
+                                storypointID = i
+                                if internet == "true"
+                                    document.getElementById('inInternet_' + i).checked = true
+                                if access == "true"
+                                    document.getElementById('inAccessable_' + i).checked = true
+                                if typeof endOfStory != 'undefined'
+                                    if endOfStory.trim() == "true"
+                                       document.getElementById('inEndOfStory_' + i).checked = true
+                            i++
+                            
+                        rowCounter = 0
+                        
+                        $(this).find('Container').each ->
+                            rowCounter++
+                            columnCounter = 1
+                            $(this).find('Storypointlist').each ->
+                                $('#btnCreateReferences_' + storypointID).click()
+                                
+                                $(this).find('StorypointRef').each ->
+                                    reference = $(this).attr("xlink:href").split('#')[1].split('_Feature')[0]
+                                    test = $('#ulStorypointRef_'+storypointID + '_' +rowCounter + '_' +columnCounter).children()
+                                    z = 0
+                                    while z < test.length
+                                        if $(test[z]).children().text() == reference
+                                            $(test[z]).children().click()
+                                            break
+                                        z++
+                                    columnCounter++
+                                    return
+                            columnCounter = 1
+                            $(this).find('Itemlist').each ->
+                                $(this).find('ItemRef').each ->
+                                    reference = $(this).attr("xlink:href")
+                                    test = $('#ulSkStorypointItemRef_'+storypointID + '_' +rowCounter + '_' +columnCounter).children()
+                                    z = 0
+                                    while z < test.length
+                                        if $(test[z]).children().text() == reference
+                                            $(test[z]).children().click()
+                                            break
+                                        z++
+                                    columnCounter++
+                                    return
             return
 
            
