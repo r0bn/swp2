@@ -26,6 +26,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         server.getStoryXML $scope.storyId, (data) ->
                 $scope.xmlFile = data
+                xml = $scope.xmlFile
+                startXMLSynchro(xml)
                 $scope.updateMedia()
 
         $scope.updateMedia = (cb) ->
@@ -254,7 +256,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     $("#XML").css("display", "block")
                     $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
 
-                    #xml = startSynchro()
+                    xml = startSynchro()
                     #$scope.xmlFile = xml
                     
                     return
