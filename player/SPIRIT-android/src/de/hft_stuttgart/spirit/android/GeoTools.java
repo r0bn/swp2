@@ -16,6 +16,8 @@ public class GeoTools implements SensorListener, LocationListener {
 	private SensorManager sm;
 	private float mOrientation;
 	private float standWinkel = 0;
+	
+	int refreshes = 0;
 
 	public enum Orientation {
 		SENKRECHT, WAAGERECHT
@@ -38,68 +40,76 @@ public class GeoTools implements SensorListener, LocationListener {
 	}
 
 	private boolean updateLocation(Location newLocation) {
-		// prüfen ob die neue Location akzeptiert wird
-		// if (newLocation != null) {
-		// Log.w("UpdateLocation",
-		// newLocation.getProvider() + ": " + newLocation.getLongitude()
-		// + " / " + newLocation.getLatitude() + ", "
-		// + new Date(newLocation.getTime()));
-		// }
-		if (newLocation != null) {
-			// wenn es aktuell keine gibt -> akzeptieren
-			if (location == null) {
-				location = newLocation;
-				// Log.w("UpdateLocation","akzeptiert da noch keine Location bekannt");
-				return true;
-			} else {
-				// es gibt bereits eine location
-				// 2 grundfälle, aktuelle ist von GPS oder network
-				if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-					// bisher GPS
-					if (newLocation.getProvider().equals(
-							LocationManager.GPS_PROVIDER)) {
-						// neue location ist auch GPS, akzeptieren wenn neuer
-						if (newLocation.getTime() > location.getTime()) {
-							location = newLocation;
-							// Log.w("UpdateLocation","akzeptiert, bisher GPS, jetzt GPS aber aktuell");
-							return true;
-						} else {
-							// Log.w("UpdateLocation","nicht akzeptiert, bisher GPS, neues Ergebnis zu alt");
-							return false;
-						}
-					} else {
-						// neue location ist Network, nur akzeptieren wenn
-						// deutlich
-						// neuer (hier 10 sekunden)
-						if (newLocation.getTime() - location.getTime() > 10000) {
-							location = newLocation;
-							// Log.w("UpdateLocation","akzeptiert, bisher GPS aber Network deutlich aktueller");
-							return true;
-						} else {
-							// Log.w("UpdateLocation","nicht akzeptiert, bisher GPS, neu Network nicht aktuell genug");
-							return false;
-						}
-					}
-				} else {
-					// bisher Network
-					// -> immer akzeptieren wenn die neue Location neuer ist,
-					// egal
-					// von welcher Quelle
-					// TODO:
-					// http://developer.android.com/reference/android/location/Location.html#getElapsedRealtimeNanos()
-					if (newLocation.getTime() > location.getTime()) {
-						location = newLocation;
-						// Log.w("UpdateLocation","akzeptiert, bisher Netzwerk, neues ist aktueller");
-						return true;
-					} else {
-						// Log.w("UpdateLocation","nicht akzeptiert, neues nicht aktueller als bisheriges");
-						return false;
-					}
-				}
-			}
-
+//		// prüfen ob die neue Location akzeptiert wird
+//		// if (newLocation != null) {
+//		// Log.w("UpdateLocation",
+//		// newLocation.getProvider() + ": " + newLocation.getLongitude()
+//		// + " / " + newLocation.getLatitude() + ", "
+//		// + new Date(newLocation.getTime()));
+//		// }
+//		if (newLocation != null) {
+//			// wenn es aktuell keine gibt -> akzeptieren
+//			if (location == null) {
+//				location = newLocation;
+//				// Log.w("UpdateLocation","akzeptiert da noch keine Location bekannt");
+//				return true;
+//			} else {
+//				// es gibt bereits eine location
+//				// 2 grundfälle, aktuelle ist von GPS oder network
+//				if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+//					// bisher GPS
+//					if (newLocation.getProvider().equals(
+//							LocationManager.GPS_PROVIDER)) {
+//						// neue location ist auch GPS, akzeptieren wenn neuer
+//						if (newLocation.getTime() > location.getTime()) {
+//							location = newLocation;
+//							// Log.w("UpdateLocation","akzeptiert, bisher GPS, jetzt GPS aber aktuell");
+//							return true;
+//						} else {
+//							// Log.w("UpdateLocation","nicht akzeptiert, bisher GPS, neues Ergebnis zu alt");
+//							return false;
+//						}
+//					} else {
+//						// neue location ist Network, nur akzeptieren wenn
+//						// deutlich
+//						// neuer (hier 10 sekunden)
+//						if (newLocation.getTime() - location.getTime() > 10000) {
+//							location = newLocation;
+//							// Log.w("UpdateLocation","akzeptiert, bisher GPS aber Network deutlich aktueller");
+//							return true;
+//						} else {
+//							// Log.w("UpdateLocation","nicht akzeptiert, bisher GPS, neu Network nicht aktuell genug");
+//							return false;
+//						}
+//					}
+//				} else {
+//					// bisher Network
+//					// -> immer akzeptieren wenn die neue Location neuer ist,
+//					// egal
+//					// von welcher Quelle
+//					// TODO:
+//					// http://developer.android.com/reference/android/location/Location.html#getElapsedRealtimeNanos()
+//					if (newLocation.getTime() > location.getTime()) {
+//						location = newLocation;
+//						// Log.w("UpdateLocation","akzeptiert, bisher Netzwerk, neues ist aktueller");
+//						return true;
+//					} else {
+//						// Log.w("UpdateLocation","nicht akzeptiert, neues nicht aktueller als bisheriges");
+//						return false;
+//					}
+//				}
+//			}
+//
+//		} else {
+//			return false; // neue location ist null
+//		}
+		refreshes++;
+		Log.d("Coordiantes", newLocation.getProvider() + ": " + newLocation.getAccuracy() + " numRefreshes: " + refreshes);
+		if(newLocation!=null) {
+			location = newLocation;
+			return true;
 		} else {
-			return false; // neue location ist null
+			return false;
 		}
 	}
 
