@@ -64,7 +64,7 @@
                 
                 
                 createNewStorypointX(counter)
-                featureId = $(this).attr('id')
+                featureId = $(this).attr('id').split("_Feature")[0]
                 $("#inStorypoint_"+counter).val(featureId)
                 featureArray.push(featureId)
                 
@@ -178,20 +178,9 @@
                 
             
             
-            #Jetzt per EdgeStorypointFinder die Id des Storypoints herrausfinden und dann die Sachen dort eintragen.
-            #Bei dependencyTag und bei den Interaktionen
-            
-            $xml.find('Interaction').each ->
-                
-                
-                
-                
-                
-                
-                
-            
-            dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
-            
+             #Jetzt per EdgeStorypointFinder die Id des Storypoints herrausfinden und dann die Sachen dort eintragen.
+             #Bei dependencyTag und bei den Interaktionen
+
             $xml.find('Dependency').each ->
                 $(this).find('Storypoint').each ->
                     feature = $(this).find('FeatureRef').attr('xlink:href')
@@ -234,6 +223,7 @@
                                         z++
                                     columnCounter++
                                     return
+                                return
                             columnCounter = 1
                             $(this).find('Itemlist').each ->
                                 $(this).find('ItemRef').each ->
@@ -247,6 +237,11 @@
                                         z++
                                     columnCounter++
                                     return
+                                return
+                            return
+                        return
+                    return
+                return
             return
 
            

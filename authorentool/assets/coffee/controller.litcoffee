@@ -26,6 +26,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         server.getStoryXML $scope.storyId, (data) ->
                 $scope.xmlFile = data
+                xml = $scope.xmlFile
+                startXMLSynchro(xml)
                 $scope.updateMedia()
 
         $scope.updateMedia = (cb) ->
