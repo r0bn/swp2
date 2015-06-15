@@ -103,34 +103,43 @@
             
             # Click Event für btnQuizAnswer
             $("#btnQuizAnswer_" + interactionCounter).click ->
-                window.quizAnswerCounter++
-                quizAnswerCounter = window.quizAnswerCounter
-                copyAnswer = document.getElementById("fgpAnswer")
-                answer = copyAnswer.cloneNode(true)
-                answer.id = answer.id + "_" + quizAnswerCounter
-                answer.style.display="block"
-                document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer)
-                setIDs($("#" + answer.id), quizAnswerCounter)
-
-                # Click event für ddnstate
-                createQuizDropdown( quizAnswerCounter ) 
-
-                # Click Event für btnQuizAnswerDelete
-                $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
-                    $("#dialog-confirm-Antwort").css("display","block")
-                    $('#dialog-confirm-Antwort').dialog
-                      modal: true
-                      buttons:
-                        'Löschen': ->
-                                $(this).dialog 'close'
-                                $("#" + answer.id).toggle "drop", 200, () ->
-                                    $("#" + answer.id).remove()
-                                return
-                        'Abbrechen': ->
-                                $(this).dialog 'close'
-                                return
-                helpRek( $("#" + answer.id))
+                createQuizAnswers(interactionCounter)
             helpRek( $("#" + stuff.id))
+
+
+
+
+        createQuizAnswers = (interactionCounter) ->
+            window.quizAnswerCounter++
+            quizAnswerCounter = window.quizAnswerCounter
+            copyAnswer = document.getElementById("fgpAnswer")
+            answer = copyAnswer.cloneNode(true)
+            answer.id = answer.id + "_" + quizAnswerCounter
+            answer.style.display="block"
+            document.getElementById("fstNeuesQuizContent_" + interactionCounter).appendChild(answer)
+            setIDs($("#" + answer.id), quizAnswerCounter)
+
+            # Click event für ddnstate
+            createQuizDropdown( quizAnswerCounter ) 
+
+            # Click Event für btnQuizAnswerDelete
+            $("#btnQuizAnswerDelete_" + quizAnswerCounter).click ->
+                $("#dialog-confirm-Antwort").css("display","block")
+                $('#dialog-confirm-Antwort').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            $("#" + answer.id).toggle "drop", 200, () ->
+                                $("#" + answer.id).remove()
+                            return
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+                            return
+            helpRek( $("#" + answer.id))
+
+
+
 
         createQuizDropdown = (counter) ->
             #DropdownMenu QuizStatus
@@ -199,51 +208,55 @@
 
                 # Click Event für btnChooserAnswer
                 $("#btnChooserAnswer_" + interactionCounter).click ->
-                    window.chooserAnswerCounter++
-                    ChooserAnswerCounter = window.chooserAnswerCounter
-                    copyAnswer = document.getElementById("fgpChooserAnswer")
-                    answer = copyAnswer.cloneNode(true)
-                    answer.id = answer.id + "_" + ChooserAnswerCounter
-                    answer.style.display="block"
-                    document.getElementById("fstNeuerChooserContent_" + interactionCounter).appendChild(answer)
-                    setIDs($("#" + answer.id), ChooserAnswerCounter)
-
-
-                    # Dropdown Event for btnSetChooserItemReferences
-                    $("#btnSetChooserItemReferences_" + ChooserAnswerCounter).click ->
-                        createChooserItemReference(ChooserAnswerCounter, "#btnSetChooserItemReferences_" + ChooserAnswerCounter, "#" + stuff.id)
-                     
-
-                    # Dropdown Event for btnSetChooserStorypointReferences
-                    $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).click ->
-                        oldValue = $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("currentEdge")
-                        if typeof oldValue != "undefined"
-                            $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("oldValue", oldValue)
-                        createChooserStorypointReference(ChooserAnswerCounter, "#btnSetChooserStorypointReferences_" + ChooserAnswerCounter, "#" + stuff.id)
-                        
-   
-
-                    # Click Event für btnChooserAnswerDelete
-                    $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
-                        $("#dialog-confirm-Antwort").css("display","block")
-                        $('#dialog-confirm-Antwort').dialog
-                          modal: true
-                          buttons:
-                            'Löschen': ->
-                                    $(this).dialog 'close'
-                                    $("#" + answer.id).toggle "drop", 200, () ->
-                                        oldValue = $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).attr("oldValue")
-                                        if typeof oldValue != 'undefined'
-                                            oldValue = oldValue.split("_")
-                                            storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+ChooserAnswerCounter, "fhlNeuerStorypoint" )
-                                            storypoint = storypoint.split("_")
-                                            RemoveParticularEdge(storypoint[1], oldValue[1])
-                                        $("#" + answer.id).remove()
-                                    return
-                            'Abbrechen': ->
-                                    $(this).dialog 'close'
-                                    return
-                    helpRek( $("#" + answer.id))
+                    createChooserAnswers(interactionCounter, stuff)
                 helpRek( $("#" + stuff.id))
 
+
+        #needed the stuff.id. So create a stuff and give it to this function
+        createChooserAnswers = (interactionCounter, stuff) ->
+            window.chooserAnswerCounter++
+            ChooserAnswerCounter = window.chooserAnswerCounter
+            copyAnswer = document.getElementById("fgpChooserAnswer")
+            answer = copyAnswer.cloneNode(true)
+            answer.id = answer.id + "_" + ChooserAnswerCounter
+            answer.style.display="block"
+            document.getElementById("fstNeuerChooserContent_" + interactionCounter).appendChild(answer)
+            setIDs($("#" + answer.id), ChooserAnswerCounter)
+
+
+            # Dropdown Event for btnSetChooserItemReferences
+            $("#btnSetChooserItemReferences_" + ChooserAnswerCounter).click ->
+                createChooserItemReference(ChooserAnswerCounter, "#btnSetChooserItemReferences_" + ChooserAnswerCounter, "#" + stuff.id)
+             
+
+            # Dropdown Event for btnSetChooserStorypointReferences
+            $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).click ->
+                oldValue = $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("currentEdge")
+                if typeof oldValue != "undefined"
+                    $("#btnSetChooserStorypointReferences_" + interactionCounter).attr("oldValue", oldValue)
+                createChooserStorypointReference(ChooserAnswerCounter, "#btnSetChooserStorypointReferences_" + ChooserAnswerCounter, "#" + stuff.id)
+                
+
+
+            # Click Event für btnChooserAnswerDelete
+            $("#btnChooserAnswerDelete_" + ChooserAnswerCounter).click ->
+                $("#dialog-confirm-Antwort").css("display","block")
+                $('#dialog-confirm-Antwort').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            $("#" + answer.id).toggle "drop", 200, () ->
+                                oldValue = $("#btnSetChooserStorypointReferences_" + ChooserAnswerCounter).attr("oldValue")
+                                if typeof oldValue != 'undefined'
+                                    oldValue = oldValue.split("_")
+                                    storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+ChooserAnswerCounter, "fhlNeuerStorypoint" )
+                                    storypoint = storypoint.split("_")
+                                    RemoveParticularEdge(storypoint[1], oldValue[1])
+                                $("#" + answer.id).remove()
+                            return
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+                            return
+            helpRek( $("#" + answer.id))
 

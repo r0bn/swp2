@@ -66,7 +66,7 @@
                 
                 
                 createNewStorypointX(counter)
-                featureId = $(this).attr('id').split("_Feature")[0]
+                featureId = $(this).attr('id')
                 $("#inStorypoint_"+counter).val(featureId)
                 featureArray.push(featureId)
                 
@@ -98,8 +98,33 @@
                         if $(this).attr('id') == interactionArray[i]
                             $("#ddnInteractions_" + counter).val("Quiz")
                             createQuiz(counter)
-                            console.log('Quiz Gefunden')
+
+                            $("#inQuizID_"+window.interactioncounter).val($(this).attr('id'))
+                            ontrue = $xml.find('OnTrue').attr("xlink:href").split("#")[1]
+                            $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).val(ontrue)
+                            $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).html(ontrue + " <span class='caret' />")
+                            onfalse = $xml.find('OnFalse').attr("xlink:href").split("#")[1]
+                            $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).val(onfalse)
+                            $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).html(onfalse + " <span class='caret' />")
+                            $("#inQuizQuestion_" + window.interactioncounter).val($(this).find('Question').text())
+                            
+                            #############Antworten erstellen beim Quiz
+                            $(this).find('Answer').each ->
+                                createQuizAnswers(window.interactioncounter)
+                                # window.quizAnswerCounter
+                                $("#inQuizAnswerID_" + window.quizAnswerCounter).val($(this).attr('id'))
+                                $("#inQuizAnswerText_" + window.quizAnswerCounter).val($(this).find('Text').text())
+                                status = $(this).find('Status').text()
+                                if status.trim() == "true"
+                                    $("#ddnState_"+window.quizAnswerCounter).val("Wahr")
+                                    $("#ddnState_"+window.quizAnswerCounter).html("Wahr <span class='caret' />")
+                                else
+                                    $("#ddnState_"+window.quizAnswerCounter).val("Falsch")
+                                    $("#ddnState_"+window.quizAnswerCounter).html("Falsch <span class='caret' />")
+                            
                             saveTime = false
+
+                            
                             
                     if saveTime
                         $xml.find('Chooser').each ->
@@ -107,6 +132,30 @@
                             if $(this).attr('id') == interactionArray[i]
                                 $("#ddnInteractions_" + counter).val("Chooser")
                                 createChooser(counter)
+                                
+                                $("#inChooserID_" + window.interactioncounter).val($(this).attr('id'))
+                                $("#inChooserQuestion_" + window.interactioncounter).val($(this).find('Question').text())
+                                
+                                #################Antworten erstellen beim Chooser
+                                
+                                $(this).find('Answer').each ->
+                                    #sadly createChooserAnswers need a stuff.id. Therefore: build it here
+                                    copyForm = document.getElementById("fgpNeu_" + $("#ddnInteractions_" + counter).val())
+                                    stuff = copyForm.cloneNode(true)
+                                    stuff.id = stuff.id + "_" + window.interactioncounter
+                                    createChooserAnswers(window.interactioncounter, stuff)
+                                    # window.chooserAnswerCounter
+                                    $("#inChooserAnswerID_" + window.chooserAnswerCounter).val($(this).attr('id'))
+                                    $("#inChooserAnswerText_" + window.chooserAnswerCounter).val($(this).find('Text').text())
+                                    itemRef = $(this).find('ItemRef').attr("xlink:href").split("#")[1]
+                                    if itemRef != ""
+                                        $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).val(itemRef)
+                                        $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).html(itemRef + " <span class='caret' />")
+                                    featureRef = $(this).find('FeatureRef').attr("xlink:href").split("#")[1]
+                                    if featureRef != ""
+                                        $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).val(featureRef)
+                                        $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).html(featureRef + " <span class='caret' />")
+                                    
                                 console.log('Chooser gefunden')
                                 saveTime = false
                                 
@@ -116,11 +165,16 @@
                             if $(this).attr('id') == interactionArray[i]
                                 $("#ddnInteractions_" + counter).val("Item")
                                 createItem(counter)
+                                $("#inItemID_" + window.interactioncounter).val($(this).attr('id'))
+                                $("#inItemDescription_" + window.interactioncounter).val($(this).find('Description').text())
+                                collected = $(this).find('IsCollected').text().trim()
+                                if collected == "true"
+                                    document.getElementById("inItemIsCollected_" + window.interactioncounter).checked = true
+                                
                                 console.log('Item Gefunden')            
                     
                     i++
-                    
-                        
+
                 counter++
                 return
                 
