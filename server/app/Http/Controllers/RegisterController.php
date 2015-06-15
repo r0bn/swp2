@@ -13,7 +13,7 @@ class RegisterController extends Controller
 
         $validator = \Validator::make($credentials, [
             'username' => 'required|min:1|max:255|unique:users',
-            'password' => 'required|min:1|max:60',
+            'password' => 'required|min:5|max:60',
         ]);
 
         if ($validator->fails()) {

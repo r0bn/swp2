@@ -235,7 +235,7 @@ http://api.storytellar.de/register
 
 The parameters have to fulfill following rules:
  * username: Required, length: 1-255 characters, unique on the users table
- * password: Required, length: 1-60 characters
+ * password: Required, length: 5-60 characters
 
 If the registration is valid, the status code will be 200. If any errors occur the status code will be 400 plus a JSON response with: "error": "validation_error"
 
