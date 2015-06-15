@@ -65,9 +65,9 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         if "#{mediaFile.file.toLowerCase()}" is refFile.name
                             found = true
                             break
-                    if !found
-                        $scope.xmlError = "Referenced File: #{refFile.name} not found  in media library!"
-                        return
+                    #if !found
+                    #    $scope.xmlError = "Referenced File: #{refFile.name} not found  in media library!"
+                    #    return
 
                 console.log $scope.xmlFile
                 server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
