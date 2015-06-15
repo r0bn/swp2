@@ -54,7 +54,7 @@
             
             
             ##############Array, damit man weiß welche Features es alle gibt.
-            featureArray = []
+            #featureArray = []
 
             ##############Hier schleife
 
@@ -66,16 +66,21 @@
                 
                 
                 createNewStorypointX(counter)
-                featureId = $(this).attr('id')
+                featureId = $(this).attr('id').split("_Feature")[0]
                 $("#inStorypoint_"+counter).val(featureId)
-                featureArray.push(featureId)
+                #featureArray.push(featureId)
                 
                 ############## video is wrong, cause images could be given too...
                 shownObject = $(this).find('Href').attr('xlink:href')
                 if typeof shownObject != 'undefined'
                     shownObject = shownObject.split("#")[1]
                     $('#inAsset_' + counter).val(shownObject)
-                $("#inAnchorPoint_" + counter).val($(this).find("pos").text())
+                    
+                position = $(this).find("pos").text()
+                position = position.replace(" ",", ")
+                $("#inAnchorPoint_" + counter).val(position)
+                
+                
                 trackerID = $(this).find('anchorRef').attr('xlink:href')
                 $xml.find('Trackable').each ->
                     if $(this).find('tracker').attr('xlink:href') == trackerID
@@ -106,7 +111,9 @@
                             onfalse = $xml.find('OnFalse').attr("xlink:href").split("#")[1]
                             $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).val(onfalse)
                             $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).html(onfalse + " <span class='caret' />")
+                 
                             $("#inQuizQuestion_" + window.interactioncounter).val($(this).find('Question').text())
+
                             
                             #############Antworten erstellen beim Quiz
                             $(this).find('Answer').each ->
@@ -151,7 +158,10 @@
                                     if itemRef != ""
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).val(itemRef)
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).html(itemRef + " <span class='caret' />")
-                                    featureRef = $(this).find('FeatureRef').attr("xlink:href").split("#")[1]
+                                    featureRef = $(this).find('FeatureRef').attr("xlink:href")
+                                    if typeof featureRef != 'undefined'
+                                        featureRef = featureRef.split("#")[1]
+                                        
                                     if featureRef != ""
                                         $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).val(featureRef)
                                         $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).html(featureRef + " <span class='caret' />")
@@ -176,23 +186,29 @@
                     i++
 
                 counter++
-                return
                 
+                
+            #Jetzt alle ddns clicken in den Dorpdown menues
+            i = 1
+            while i < counter
+                
+                ind = i + 10 
+                
+                buttonValue = $("#btnSetQuizOnTrueReferences_"+ ind).val()
+                console.log( buttonValue )
+                
+                
+                
+
+                
+                i++
+                
+            $("#btnCreateNewStorypoint").click()
             
             
             #Jetzt per EdgeStorypointFinder die Id des Storypoints herrausfinden und dann die Sachen dort eintragen.
             #Bei dependencyTag und bei den Interaktionen
-            
-            $xml.find('Interaction').each ->
-                
-                
-                
-                
-                
-                
-                
-            
-            dependencyTag = xmlString.split("<Dependency>")[1].split("</Dependency>")[0]
+
             
             
             return

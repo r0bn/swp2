@@ -199,7 +199,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
             
         $scope.createNewStorypoint = (counter) ->
-            createNewStorypointX(counter)
+            window.storypointCounter++
+            createNewStorypointX(window.storypointCounter)
             return
 
         
