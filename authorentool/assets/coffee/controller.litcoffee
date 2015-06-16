@@ -10,6 +10,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
         $scope.mediaData = media.mediaFiles
         $scope.media = media
+        $scope.final = false
 
         $scope.$watch "media.mediaFiles", () ->
             console.log media.sumSize()
@@ -23,8 +24,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     # XMl Synchronisation update GUI based on server file
                     startXMLSynchro($scope.xmlFile)
 
-                    # get xml file based on current gui settings
-                    xml = startSynchro()
                 catch error
                     console.log error
 
@@ -35,32 +34,19 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $scope.storys = data
             for s in $scope.storys
                 if s.id is $scope.storyId
-                    console.log s
+                    $scope.final = s.final
                     $scope.story = s
 
         # this saves the current xml file
         $scope.saveXML = () ->
-            ret = xmlService.isValidXML $scope.xmlFile
-            if ret.length > 0
-                $scope.xmlError = ret
-                return
-            else
-                $scope.xmlError = "XML valide!"
+            try
+                # get xml file based on current gui settings
+                $scope.xmlFile = startSynchro()
 
-                referencedFiles = xmlService.getFileReferences $scope.xmlFile
+            catch error
+                console.log error
 
-                for refFile in referencedFiles
-                    found = false
-                    console.log refFile
-                    for mediaFile in $scope.mediaData
-                        if "#{mediaFile.file.toLowerCase()}" is refFile.name
-                            found = true
-                            break
-                    #if !found
-                    #    $scope.xmlError = "Referenced File: #{refFile.name} not found  in media library!"
-                    #    return
-
-                server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
+            server.validate $scope.xmlFile, $scope.final, $scope.storyId, $scope.mediaData
 
         $scope.uploadMediaFile = () ->
             media.add $scope.storyId, $scope.mediaFileUpload
@@ -161,6 +147,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
             checkSafeButton()
             return
 
+        # handeld now by angularJS
+        ###
         $("#btnSaveStory").click ->
                 xml = startSynchro()
                 $scope.xmlFile = xml
@@ -183,7 +171,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                           $(this).dialog "close";
                         }
                 return
-
+        ###
             
         $scope.createNewStorypoint = (counter) ->
             createNewStorypointX(counter)

@@ -1,14 +1,13 @@
     storyTellarServices = angular.module "storyTellarServices", []
 
-    storyTellarServices.factory 'storytellerServer', ['$http', ($http) ->
-        serverUrl = "http://api.storytellar.de"
-        {
+    storyTellarServices.factory 'storytellerServer', ($http, xmlServices, apiUrl) ->
+        m = {
             getStoryList : (cb) ->
-                $http.get("#{serverUrl}/story")
+                $http.get("#{apiUrl}/story")
                     .success (data) ->
                         for d in data
                             d.final = true
-                        $http.get("#{serverUrl}/story/open")
+                        $http.get("#{apiUrl}/story/open")
                             .success (data2) ->
                                 for d in data2
                                     d.draft = true
@@ -20,28 +19,56 @@
                         console.log "error"
 
             getStoryXML : (id, cb) ->
-                $http.get("#{serverUrl}/story/#{id}")
+                $http.get("#{apiUrl}/story/#{id}")
                     .success (data) ->
                         cb(data)
                     .error () ->
                         console.log "error"
 
             createStory : (cb) ->
-                $http.post("#{serverUrl}/story", { xml : "start here", working_title : "draft story" })
+                $http.post("#{apiUrl}/story", { xml : "start here", working_title : "draft story" })
                     .success (data) ->
                         cb(data)
                     .error (err) ->
                         console.log err
 
             updateStory : (id, xml, final) ->
-                $http.post("#{serverUrl}/story/#{id}", { xml : xml, final : final })
+                $http.post("#{apiUrl}/story/#{id}", { xml : xml, final : final })
                     .success () ->
+                        alert "Story successfull send to the server\nfinal : #{final}"
                         console.log "updated"
                     .error (err) ->
+                        alert "Story konnte nicht an den Server gesendet werden!\n#{err}"
                         console.log err
 
+            # this saves the current xml file
+            validate : (xml, final, storyId, mediaFiles) ->
+                # only do checks if the save should be final
+                if final
+
+                    ret = xmlServices.isValidXML xml
+                    if ret.length > 0
+                        alert "xml nicht formgerecht:\n#{ret}"
+                        return
+                    else
+                        referencedFiles = xmlServices.getFileReferences xml
+                        console.log "Referenced Files:"
+                        console.log referencedFiles
+                        console.log xml
+                        for refFile in referencedFiles
+                            found = false
+                            for mediaFile in mediaFiles
+                                if "#{mediaFile.file.toLowerCase()}" is refFile.name
+                                    found = true
+                                    break
+                            if !found
+                                alert "Referenced File: #{refFile.name} not found  in media library! - Cancel"
+                                return
+
+                m.updateStory storyId, xml, final
+
+
         }
-    ]
 
     storyTellarServices.factory 'storytellarMedia', ($http, apiUrl, $filter) ->
         m = {
