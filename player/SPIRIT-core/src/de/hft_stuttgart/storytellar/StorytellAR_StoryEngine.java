@@ -17,7 +17,21 @@ import de.hft_stuttgart.spirit.UIController;
 public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 
 	/**
-	 * This enum is used for the state machine in StorytellAR_StoryEngine
+	 * This enum is used for the state machine in StorytellAR_StoryEngine, the EngineStates can be:
+	 * OPEN								no storypoint is currently active
+	 * IN_SCENE_START					a new storypoint is started
+	 * IN_SCENE_END						the current storypoint is finished
+	 * IN_SCENE_PICTURE_START			a new picture is started
+	 * IN_SCENE_PICTURE					a picture is displayed
+	 * IN_SCENE_PICTURE_END				the current picture is finished
+	 * IN_SCENE_VIDEO_START				a new video is started
+	 * IN_SCENE_VIDEO					a video is played
+	 * IN_SCENE_VIDEO_END				the current video is finished
+	 * IN_SCENE_INTERACTION_START		a new interaction is started
+	 * IN_SCENE_INTERACTION_QUIZ		a quiz is displayed
+	 * IN_SCENE_INTERACTION_ITEM		a item is displayed
+	 * IN_SCENE_INTERACTION_CHOOSER		a chooser is displayed
+	 * 
 	 * @author Lukas
 	 *
 	 */

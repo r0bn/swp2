@@ -61,7 +61,7 @@ public class StoryPoint extends Poi{
 	
 	/**
 	 * 
-	 * @param dependency
+	 * @param dependency the dependency to be added
 	 */
 	
 	public void addDependency( Dependency dependency ){
@@ -83,7 +83,7 @@ public class StoryPoint extends Poi{
 	}*/
 
 	/**
-	 * @return the status
+	 * @return the status, as StorypointStatus
 	 */
 	public StorypointStatus getStatus() {
 		return status;
@@ -97,7 +97,7 @@ public class StoryPoint extends Poi{
 	}
 
 	/**
-	 * @return the dependency
+	 * @return the dependencys, as list
 	 */
 	public List<Dependency> getDependency() {
 		return dependencies;
@@ -125,7 +125,7 @@ public class StoryPoint extends Poi{
 	}*/
 
 	/**
-	 * @return the interaction
+	 * @return the interaction, as string
 	 */
 	public String getInteraction() {
 		return interaction;
@@ -152,6 +152,9 @@ public class StoryPoint extends Poi{
 		this.isEndStorypoint = isEndScene;
 	}
 	
+	/**
+	 * Print the object
+	 */
 	@Override
 	public String toString(){
 		String strng;
@@ -169,10 +172,18 @@ public class StoryPoint extends Poi{
 		return strng;
 	}
 
+	/**
+	 * 
+	 * @return the trackable_image, as Trackable
+	 */
 	public Trackable getTrackable_image() {
 		return trackable_image;
 	}
 
+	/**
+	 * 
+	 * @param trackable_image the Trackable to set
+	 */
 	public void setTrackable_image(Trackable trackable_image) {
 		this.trackable_image = trackable_image;
 	}

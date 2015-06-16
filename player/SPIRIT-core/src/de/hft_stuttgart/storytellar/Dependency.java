@@ -30,7 +30,7 @@ public class Dependency {
 	
 	/**
 	 * 
-	 * @param storypoint
+	 * @param storypoint storypoint to be added
 	 */
 	
 	public void addStorypoint( String storypoint ) {
@@ -39,7 +39,7 @@ public class Dependency {
 	
 	/**
 	 * 
-	 * @param item
+	 * @param item item to be added
 	 */
 	
 	public void addItem( String item ) {
@@ -47,19 +47,19 @@ public class Dependency {
 	}
 	
 	/**
-	 * @return the scenes
+	 * @return the storypoints, as list
 	 */
 	public List<String> getStorypoints() {
 		return storypoints;
 	}
 	/**
-	 * @param scenes the scenes to set
+	 * @param scenes the storypoints to set
 	 */
 	public void setStorypoints(List<String> storypoint) {
 		this.storypoints = storypoint;
 	}
 	/**
-	 * @return the items
+	 * @return the items, as list
 	 */
 	public List<String> getItems() {
 		return items;
@@ -72,7 +72,7 @@ public class Dependency {
 	}
 	
 	/**
-	 * Check if conditions of dependency are fulfilled.
+	 * Check if conditions of the dependency are fulfilled.
 	 * @return true if conditions are fulfilled, else false
 	 */
 	public Boolean isFulfilled(Map<String,Interaction> interactions, Map<String,StoryPoint> sPoints){
@@ -94,6 +94,9 @@ public class Dependency {
 		return itemsFullfilled&storypointsFullfiled;
 	}
 	
+	/**
+	 * Print the object
+	 */
 	public String toString(){
 		String strng;
 		strng = "Depending storypoints: ";

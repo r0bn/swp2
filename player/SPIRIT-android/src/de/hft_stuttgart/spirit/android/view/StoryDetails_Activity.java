@@ -28,6 +28,12 @@ import de.hft_stuttgart.spirit.android.R;
 import de.hft_stuttgart.spirit.android.Story;
 import de.hft_stuttgart.spirit.android.view.StoryListStore_Fragment.GetStoreStories;
 
+/**
+ * StoryDetails_Activity is a activity to display the details of a story and download/play the story.
+ * 
+ * @author Oliver
+ *
+ */
 public class StoryDetails_Activity extends ActionBarActivity {
 
 	public final static String EXTRA_STORYID = "de.hft_stuttgart.spirit.android.view.STORYID";
@@ -41,7 +47,9 @@ public class StoryDetails_Activity extends ActionBarActivity {
 	
 	private final static String TAG = StoryDetails_Activity.class.toString();
 	
-    
+    /**
+     * Get the informations about a story from a intent and display the informations in the activity.
+     */
 	@Override
 	protected void onStart() {
 		
@@ -158,6 +166,13 @@ public class StoryDetails_Activity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * Handle clicks on the start, restart, delete and download buttons. On click of the start button, 
+     * the story is started in spirit. On click of the restart button, a old savestate of the story is 
+     * started. On click of the delete button, the local files are removed from the device. On click of
+     * the download button, the download of the story from the server is started.
+     *
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -232,8 +247,16 @@ public class StoryDetails_Activity extends ActionBarActivity {
 		}
     }
     
+    /**
+     * The DownloadStory clas is used to download a story in a asynchronous task
+     * @author Oliver
+     *
+     */
     public class DownloadStory extends AsyncTask<Void, Void, Void> {
 
+    	/**
+    	 * Download the story in a asynchronous task
+    	 */
     	@Override
     	protected Void doInBackground(
     			Void... params) {

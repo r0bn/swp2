@@ -30,7 +30,7 @@ public class Quiz implements Interaction{
 	}
 	
 	/**
-	 * @return the question
+	 * @return the question, as string
 	 */
 	public String getQuestion() {
 		return question;
@@ -44,7 +44,7 @@ public class Quiz implements Interaction{
 	}
 
 	/**
-	 * @return the answers
+	 * @return the answers, as list
 	 */
 	public List<String> getAnswers() {
 		return answers;
@@ -58,7 +58,7 @@ public class Quiz implements Interaction{
 	}
 
 	/**
-	 * @param nextScenes the nextScenes to set
+	 * @param nextScenes the storypoints to set
 	 */
 	public void setNextStorypoints(List<String> nextScenes) {
 		this.nextStorypoints = nextScenes;
@@ -76,6 +76,9 @@ public class Quiz implements Interaction{
 		return null;
 	}
 	
+	/**
+	 * Print the object
+	 */
 	public String toString(){
 		String strng;
 		strng = "Type: " + this.getClass().getName() + "\n";

@@ -30,7 +30,7 @@ public class Chooser implements Interaction{
 	}
 	
 	/**
-	 * @return the question
+	 * @return the question, as String
 	 */
 	public String getQuestion() {
 		return question;
@@ -44,7 +44,7 @@ public class Chooser implements Interaction{
 	}
 
 	/**
-	 * @return the answers
+	 * @return the answers, as list
 	 */
 	public List<String> getAnswers() {
 		return answers;
@@ -57,10 +57,18 @@ public class Chooser implements Interaction{
 		this.answers = answers;
 	}
 
+	/**
+	 * 
+	 * @return the items, as list
+	 */
 	public List<String> getItems() {
 		return items;
 	}
 
+	/**
+	 * 
+	 * @param items the items to set
+	 */
 	public void setItems(List<String> items) {
 		this.items = items;
 	}
@@ -77,6 +85,9 @@ public class Chooser implements Interaction{
 		return null;
 	}
 	
+	/**
+	 * Print the object
+	 */
 	public String toString(){
 		String strng;
 		strng = "Type: " + this.getClass().getName() + "\n";

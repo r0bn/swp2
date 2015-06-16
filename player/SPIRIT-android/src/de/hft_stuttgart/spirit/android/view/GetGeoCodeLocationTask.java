@@ -10,6 +10,11 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import de.hft_stuttgart.spirit.android.Story;
 
+/**
+ * 
+ * @author Oliver
+ *
+ */
 public class GetGeoCodeLocationTask extends AsyncTask<Story, Void, String> {
 
 	TextView view;
@@ -20,6 +25,9 @@ public class GetGeoCodeLocationTask extends AsyncTask<Story, Void, String> {
 		this.context = context;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	protected String doInBackground(Story... params) {
 		Geocoder gc = new Geocoder(context);
@@ -45,6 +53,9 @@ public class GetGeoCodeLocationTask extends AsyncTask<Story, Void, String> {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	protected void onPostExecute(String result) {
 		view.setText(result);

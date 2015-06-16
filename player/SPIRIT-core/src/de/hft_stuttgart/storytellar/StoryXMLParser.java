@@ -29,6 +29,8 @@ import de.hft_stuttgart.spirit.Poi;
 
 
 /**
+ * The StoryXMLParser class is used to parse a arml-File into a PlayableStory-object
+ * 
  * @author Oliver
  *
  */

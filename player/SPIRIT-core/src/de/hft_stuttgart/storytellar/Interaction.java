@@ -9,12 +9,12 @@ package de.hft_stuttgart.storytellar;
 public interface Interaction {
 
 	/**
-	 * Start interaction. not implemented yet.
+	 * Start interaction.
 	 */
 	public void start();
 	
 	/**
-	 * Get key for next scene. not implemented yet.
+	 * Get key for next scene.
 	 * @return Key for next scene
 	 */
 	public String next();

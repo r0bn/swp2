@@ -24,7 +24,7 @@ public class Item implements Interaction{
 	}
 	
 	/**
-	 * @return the description
+	 * @return the description, as String
 	 */
 	public String getDescription() {
 		return description;
@@ -38,14 +38,14 @@ public class Item implements Interaction{
 	}
 
 	/**
-	 * @return the isCollected
+	 * @return the value of isCollected, as Boolean
 	 */
 	public Boolean getIsCollected() {
 		return isCollected;
 	}
 
 	/**
-	 * @param isCollected the isCollected to set
+	 * @param isCollected the value isCollected should be set to
 	 */
 	public void setIsCollected(Boolean isCollected) {
 		this.isCollected = isCollected;
@@ -63,6 +63,9 @@ public class Item implements Interaction{
 		return null;
 	}
 
+	/**
+	 * Print the object
+	 */
 	public String toString(){
 		String strng = "Type: " + this.getClass().getName() + "\n";
 		strng += "Description: " + description + "\n";
