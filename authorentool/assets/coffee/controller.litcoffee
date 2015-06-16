@@ -4,41 +4,31 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl = angular.module "storyTellarCtrl", []
 
-    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", "$filter", ($scope, $routeParams, $http, server, xmlService, media, $filter) ->
+    storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
 
         $scope.storyId = $routeParams.story
-        $scope.codeMirrorUpdateUI = false
-        $scope.isUploading = false
-        $scope.isDeleting = false
-        orderBy = $filter('orderBy')
 
-        # Codemirror Options
-        # Details: https://codemirror.net/doc/manual.html#config
-        $scope.editorOptions =
-            lineWrapping : true
-            lineNumbers: true
-            #readOnly: 'nocursor'
-            mode: 'xml'
-            #indentUnit : 2
-            theme : "eclipse"
-            foldGutter : true
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        $scope.mediaData = media.mediaFiles
+        $scope.media = media
 
-        server.getStoryXML $scope.storyId, (data) ->
-                $scope.xmlFile = data
-                xml = $scope.xmlFile
-                startXMLSynchro(xml)
-                $scope.updateMedia()
+        $scope.$watch "media.mediaFiles", () ->
+            console.log media.sumSize()
+            $scope.mediaSumSize = media.sumSize()
+        , true
 
-        $scope.updateMedia = (cb) ->
-            media.getMediaFiles $scope.storyId, (mediaFiles) ->
-                $scope.mediaData = mediaFiles
-                $scope.orderBib('file', false)
-                cb() if cb?
+        server.getStoryXML $scope.storyId, (response) ->
+                $scope.xmlFile = response
 
-        $scope.orderBib = (predicate, reverse) ->
-            $scope.mediaData = orderBy($scope.mediaData, predicate, reverse)
+                try
+                    # XMl Synchronisation update GUI based on server file
+                    startXMLSynchro($scope.xmlFile)
 
+                    # get xml file based on current gui settings
+                    xml = startSynchro()
+                catch error
+                    console.log error
+
+                media.update($scope.storyId)
 
         # this will be initial executed and get all available story's
         server.getStoryList (data) ->
@@ -47,7 +37,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 if s.id is $scope.storyId
                     console.log s
                     $scope.story = s
-
 
         # this saves the current xml file
         $scope.saveXML = () ->
@@ -71,20 +60,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     #    $scope.xmlError = "Referenced File: #{refFile.name} not found  in media library!"
                     #    return
 
-                console.log $scope.xmlFile
                 server.updateStory $scope.storyId, $scope.xmlFile, $scope.story.final
 
         $scope.uploadMediaFile = () ->
-            $scope.isUploading = true
-            media.addMediaFile $scope.storyId, $scope.mediaFileUpload, () ->
-                $scope.updateMedia () ->
-                    $scope.isUploading = false
+            media.add $scope.storyId, $scope.mediaFileUpload
 
-        $scope.deleteMediaFile = (filename) ->
-            $scope.isDeleting = true
-            media.deleteFile $scope.storyId, filename, () ->
-                $scope.updateMedia () ->
-                    $scope.isDeleting = false
+        $scope.deleteMediaFile = (mediaFile) ->
+            media.delete mediaFile
+
+        $scope.orderBib = (prop, reverse) ->
+            media.order prop, reverse
 
         #jQuery Namespace Binding
         (($) ->
@@ -208,7 +193,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
    
 
         $scope.tabSwitch = (activeTabID) ->
-                if (activeTabID == "MedienBibTab") 
+                if (activeTabID == "MedienBibTab")
                     
                      # Passive Content
                     $("#GraEditor").css("display","none")
@@ -233,30 +218,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     $("#GraEditorTab").addClass("active")
                      # Active Content
                     $("#GraEditor").css("display", "block")
-                    
-                    #bekomme den aktuellen XML String
-                    xml = $scope.xmlFile
-                    startXMLSynchro(xml)
-                    
-                    return
-                else if (activeTabID == "XMLTab") 
-
-                    # Passive Content
-                    $("#MedienEditor").css("display","none")
-                    $("#GraEditor").css("display","none")
-                    
-                    # Passive Tabs
-                    $("#GraEditorTab").removeClass("active")
-                    $("#MedienBibTab").removeClass("active")
-                    
-                    # Active Tabs
-                    $("#XMLTab").addClass("active")
-                    # Active Content
-                    $("#XML").css("display", "block")
-                    $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
-
-                    xml = startSynchro()
-                    #$scope.xmlFile = xml
                     
                     return
 

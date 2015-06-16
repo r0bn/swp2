@@ -45,7 +45,7 @@ block content
                                     .form-group
                                         label.col-lg-2.control-label(for="inSize") Größe der Story
                                         .col-xs-10.col-lg-9
-                                            input.form-control(disabled, type="number", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
+                                            input.form-control(disabled, type="number",value="{{mediaSumSize / 1024 / 1024}}", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
                                         .col-xs-2.col-lg-1
                                             .dropdown.pull-right
                                                 button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB

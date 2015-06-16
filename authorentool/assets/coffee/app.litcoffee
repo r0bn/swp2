@@ -8,6 +8,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         'storyTellarServices'
         'configApp'
         'ui.codemirror'
+        'xmlViewer'
     ]
 
     storyTellarApp.config ['$routeProvider', '$locationProvider'
@@ -29,7 +30,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 })
                 .when('/story/xml/:story', {
                     templateUrl: 'xmlEditor.html'
-                    controller : 'editorCtrl'
+                    controller : 'xmlController'
                     auth : true
                 })
                 .otherwise {

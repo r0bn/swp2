@@ -43,31 +43,53 @@
         }
     ]
 
-    storyTellarServices.factory 'storytellarMedia', [ '$http', ($http) ->
-        serverUrl = "http://api.storytellar.de"
-        {
-            getMediaFiles : (storyId, cb) ->
-                $http.get("#{serverUrl}/story/#{storyId}/media")
+    storyTellarServices.factory 'storytellarMedia', ($http, apiUrl, $filter) ->
+        m = {
+            mediaFiles : []
+
+            isUploading : false
+            isDeleting : false
+            orderBy : $filter('orderBy')
+
+            update : (storyId) ->
+                $http.get("#{apiUrl}/story/#{storyId}/media")
                     .success (data) ->
-                        cb(data)
+                        angular.copy data, m.mediaFiles
+                        for mF in m.mediaFiles
+                            mF.storyId = storyId
+                        m.order('file', false)
+                        m.isUploading = false
                     .error (err) ->
+                        angular.copy [], m.mediaFiles
                         console.log err
-                        cb([])
 
-            getDownloadPath : (storyId, filename) ->
-                return "#{serverUrl}/media/#{storyId}/#{filename}"
+            order : (predicate, reverse) ->
+                angular.copy m.orderBy(m.mediaFiles, predicate, reverse), m.mediaFiles
 
-            deleteFile : (storyId, filename, cb) ->
-                $http.delete("#{serverUrl}/story/#{storyId}/media/#{filename}")
+            getDownloadPath : (mediaFile) ->
+                return "#{apiUrl}/media/#{mediaFile.storyId}/#{mediaFile.filename}"
+
+            delete : (mediaFile) ->
+                m.isDeleting = true
+                $http.delete("#{apiUrl}/story/#{mediaFile.storyId}/media/#{mediaFile.file}")
                     .success (data) ->
-                        cb()
+                        m.mediaFiles.splice m.mediaFiles.indexOf(mediaFile), 1
                     .error (err) ->
-                        console.log err
+                        alert err
+                    .finally () ->
+                        m.isDeleting = false
 
-            addMediaFile : (storyId, file, cb) ->
+            sumSize : () ->
+                sum = 0
+                for mF in m.mediaFiles
+                    sum += mF.size
+                return sum
+
+            add : (storyId, file) ->
+                m.isUploading = true
                 $http({
                     method : 'POST'
-                    url : "#{serverUrl}/story/#{storyId}/media"
+                    url : "#{apiUrl}/story/#{storyId}/media"
                     headers: {'Content-Type': undefined}
                     transformRequest : (data) ->
                         formData = new FormData()
@@ -77,15 +99,14 @@
                     data : { file : file }
                 })
                 .success () ->
-                    cb()
+                    m.update(storyId)
                 .error (err) ->
-                    console.log err
+                    alert err
         }
-    ]
 
     storyTellarServices.factory 'storytellarAuthentication', [ '$http', 'disableAuthentication', ($http, disableAuth) ->
         serverUrl = "http://api.storytellar.de"
-        isAuthenticated = disableAuth 
+        isAuthenticated = disableAuth
         {
             isValid : (user, password) ->
                 isAuthenticated = true
