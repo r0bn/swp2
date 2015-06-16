@@ -183,5 +183,9 @@ public class GeoTools implements SensorListener, LocationListener {
 	public void onAccuracyChanged(int sensor, int accuracy) {
 
 	}
+	
+	public float getMOrientation() {
+		return mOrientation;
+	}
 
 }
