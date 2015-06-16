@@ -2,30 +2,14 @@
     .row
         .col-md-12
                 ul.nav.nav-tabs(id="myTabs")
-                    li(id="XMLTab")
-                        a(ng-click="tabSwitch('XMLTab')", data-toggle="tab") XML Editor
                     li.active(id="GraEditorTab")
                         a(ng-click="tabSwitch('GraEditorTab')", data-toggle="tab") Graphischer Editor
                     li(id="MedienBibTab")
                         a(ng-click="tabSwitch('MedienBibTab')", data-toggle="tab") Medienbibliothek
 
-
-
                 .tab-content(id="myTabContent")
                     .tab-pane.fade.active.in(id="GraEditor") 
                         include ./formular.jade
-                    .tab-pane.fade.active.in(id="XML", style="display:none")
-                        .row
-                            .col-md-4(style="margin:20px")
-                                button.btn.btn-primary.btn-lg(ng-click="saveXML()") Speichern 
-                                br 
-                                input(type="checkbox",ng-model="story.final")  
-                                | Final
-                            .col-md-8
-                                | {{ xmlError }}
-                        .row
-                            .col-md-12
-                                div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile",ui-refresh='codeMirrorUpdateUI')
 
                     .tab-pane.fade.active.in(id="MedienEditor", style="display:none")
                         include ./library.jade 

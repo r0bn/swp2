@@ -27,6 +27,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     controller : 'editorCtrl'
                     auth : true
                 })
+                .when('/story/xml/:story', {
+                    templateUrl: 'xmlEditor.html'
+                    controller : 'editorCtrl'
+                    auth : true
+                })
                 .otherwise {
                     redirectTo: "/"
                 }
