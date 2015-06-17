@@ -30,7 +30,7 @@
             if radiusAttr == "km"
                 $("#ddnradius").val("Kilometer")
                 $("#ddnradius").html("Kilometer <span class='caret' />")
-            if radiusAttr == "me"
+            if radiusAttr == "m"
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
             
@@ -51,8 +51,6 @@
             counter = 1
             
             
-            ##############Array, damit man weiß welche Features es alle gibt.
-            #featureArray = []
 
             ##############Hier schleife
 
@@ -66,7 +64,6 @@
                 createNewStorypointX(counter)
                 featureId = $(this).attr('id').split("_Feature")[0]
                 $("#inStorypoint_"+counter).val(featureId)
-                #featureArray.push(featureId)
                 
                 ############## video is wrong, cause images could be given too...
                 shownObject = $(this).find('Href').attr('xlink:href')
@@ -87,7 +84,7 @@
                 interactionId = ""
                 $(this).find('InteractionRef').each ->
                     interactionId = $(this).attr('xlink:href').split("#")[1]
-                    console.log('InteraktionRef_ID: ' + interactionId)
+                    #console.log('InteraktionRef_ID: ' + interactionId)
                     interactionArray.push(interactionId)
 
                 i = 0
@@ -103,14 +100,21 @@
                             createQuiz(counter)
 
                             $("#inQuizID_"+window.interactioncounter).val($(this).attr('id'))
-                            ontrue = $xml.find('OnTrue').attr("xlink:href").split("#")[1]
-                            ontrue = ontrue.split("_Feature")[0]
-                            $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).val(ontrue)
-                            $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).html(ontrue + " <span class='caret' />")
-                            onfalse = $xml.find('OnFalse').attr("xlink:href").split("#")[1]
-                            onfalse = onfalse.split("_Feature")[0]
-                            $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).val(onfalse)
-                            $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).html(onfalse + " <span class='caret' />")
+                            
+                            ontrue = $xml.find('OnTrue').attr("xlink:href")
+                            if typeof ontrue != 'undefined'
+                                ontrue = ontrue.split("#")[1]
+                                ontrue = ontrue.split("_Feature")[0]
+                                $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).val(ontrue)
+                                $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).html(ontrue + " <span class='caret' />")
+                            
+                            #onfalse. Check if the button is defined
+                            onfalse = $xml.find('OnFalse').attr("xlink:href")
+                            if typeof onfalse != 'undefined'
+                                onfalse = onfalse.split("#")[1]
+                                onfalse = onfalse.split("_Feature")[0]
+                                $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).val(onfalse)
+                                $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).html(onfalse + " <span class='caret' />")
                  
                             $("#inQuizQuestion_" + window.interactioncounter).val($(this).find('Question').text())
 
@@ -195,7 +199,7 @@
             #Gehe über alle Interaktionen drüber!!!
 
             ind = 10 
-            console.log("InteraktionsCounter : " + window.interactioncounter)
+            #console.log("InteraktionsCounter : " + window.interactioncounter)
             while ind <= window.interactioncounter
                 #console.log(ind)
                 #Beim Item werden keine Kanten gesetzt. Daher ist das egal.
@@ -211,6 +215,7 @@
                     #OnTrue Kanten setzten
                     buttonOnTrueValue = $("#btnSetQuizOnTrueReferences_"+ ind).val().split("_Feature")[0]
                     #console.log("TRUE:")
+                    #console.log(buttonOnTrueValue)
                     if typeof buttonOnTrueValue != 'undefined'
                     
                         #hier wurde i mit übergeben, weil das storypointarray aus dem das berechnet wird, kann nicht sich selbst beinhalten
@@ -232,6 +237,7 @@
                     #OnFalse Kanten setzten
                     buttonOnFalseValue = $("#btnSetQuizOnFalseReferences_"+ ind).val().split("_Feature")[0]
                     #console.log("FALSE:")
+                    #console.log(buttonOnFalseValue)
                     if typeof buttonOnFalseValue != 'undefined'
                     
                         #hier wurde i mit übergeben, weil das storypointarray aus dem das berechnet wird, kann nicht sich selbst beinhalten
@@ -401,9 +407,6 @@
                 currStorypointName = $("#inStorypoint_" + storypointArray[i].split("_")[1]).val()
 
                 if buttonValue == currStorypointName
-                
-                    alert buttonValue
-                    alert currStorypointName
                 
                     returnStorypointID = $("#inStorypoint_" + storypointArray[i].split("_")[1]).attr("id").split("_")[1]
                     return returnStorypointID
