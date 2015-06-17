@@ -10,7 +10,7 @@
             #alert $xml.find('gml:pos').text()
             
             $("#inTitel").val($xml.find('Title').text())
-            $("#ttaDescription").text($xml.find('Description').text())
+            $("#ttaDescription").text($xml.find('Description:first').text())
             $("#inAutor").val($xml.find('Author').text())
             # robin: will be automatically calculated by the library
             #$("#inSize").val($xml.find('Size').text())
@@ -92,8 +92,7 @@
                 while i < interactionArray.length
                 
                     saveTime = true
-                    
-                    
+
                     $xml.find('Quiz').each ->
                         #console.log($(this).attr('id'))
                         if $(this).attr('id') == interactionArray[i]
@@ -159,10 +158,20 @@
                                     # window.chooserAnswerCounter
                                     $("#inChooserAnswerID_" + window.chooserAnswerCounter).val($(this).attr('id'))
                                     $("#inChooserAnswerText_" + window.chooserAnswerCounter).val($(this).find('Text').text())
-                                    itemRef = $(this).find('ItemRef').attr("xlink:href").split("#")[1]
+                                    
+                                    ###############ItemRef Prüfen
+                                    itemRef = $(this).find('ItemRef').attr("xlink:href")
+
+                                    if typeof itemRef != 'undefined'
+                                        itemRef = itemRef.split("#")[1]
+                                        itemRef = itemRef.split("_Feature")[0]
+                                    
                                     if itemRef != ""
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).val(itemRef)
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).html(itemRef + " <span class='caret' />")
+                                    
+                                    ########FeatureRef Prüfen
+                                    
                                     featureRef = $(this).find('FeatureRef').attr("xlink:href")
                                     if typeof featureRef != 'undefined'
                                         featureRef = featureRef.split("#")[1]

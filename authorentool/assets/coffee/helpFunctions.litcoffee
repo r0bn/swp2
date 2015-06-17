@@ -53,3 +53,28 @@
                         $(this).attr("for", newFor)
                 setIDs($(this), counter)
             return
+            
+
+
+        baueXML = () ->
+            xml = '<?xml version="1.0" encoding="UTF-8"?>\r\n'
+            xml += '<arml xmlns="http://www.opengis.net/arml/2.0"\r\n'
+            xml += '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\r\n'
+            xml += '    xmlns:xlink="http://www.w3.org/1999/xlink"\r\n'
+            xml += '    xmlns:gml="http://www.opengis.net/gml/3.2"\r\n'
+            xml += '    xsi:schemaLocation="http://www.opengis.net/arml/2.0 schema/ExARML.xsd">\r\n'
+            xml += '</arml>'
+            xml += '    <Story>\r\n'
+            xml += '        <Revision>7</Revision>\r\n'
+            xml += '        <Title> </Title>\r\n'
+            xml += '        <Description> </Description>\r\n'
+            xml += '        <Author> </Author>\r\n'
+            xml += '        <Size uom="kb"> 0 </Size>\r\n'
+            xml += '        <Location>\r\n'
+            xml += '            <gml:Point gml:id="Location">\r\n'
+            xml += '                <gml:pos> 0 0 </gml:pos>\r\n'
+            xml += '            </gml:Point>\r\n'
+            xml += '        </Location>\r\n'
+            xml += '        <Radius uom="m">0</Radius>\r\n'
+            xml += '    </Story>\r\n'
+            return xml

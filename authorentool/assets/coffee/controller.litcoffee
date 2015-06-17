@@ -116,7 +116,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 #$("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/6zlViU5PBPY?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>')
                 return
             
-            if aktInhalt.toLowerCase().indexOf("close") >= 0
+            if aktInhalt.toLowerCase().indexOf("deleteStory") >= 0
                 
                 $("#rowFormular").empty()
                 #$("#rowFormular").children().each () ->
@@ -124,17 +124,15 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     #$(this).effect("clip")
                 
                 console.log ($scope.xmlFile)
-                
+                $scope.xmlFile = baueXML()
                 server.validate $scope.xmlFile, $scope.final, $scope.storyId, $scope.mediaData
                 window.location.reload()
                     
             if aktInhalt.toLowerCase().indexOf("rekursiv") >= 0
                 rekRek = aktInhalt.split("rekursiv")[0]
                 $(this).val(rekRek + "rekursiv")
-                
-            
-                
-                
+
+
 
         #check dependencies
         $("#btnCheckStory").click ->
