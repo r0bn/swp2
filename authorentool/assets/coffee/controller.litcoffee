@@ -117,8 +117,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 return
             
             if aktInhalt.toLowerCase().indexOf("close") >= 0
-                $("#rowFormular").children().each () ->
-                    $(this).effect("clip")
+                
+                $("#rowFormular").empty()
+                #$("#rowFormular").children().each () ->
+                #    $(this).remove()
+                    #$(this).effect("clip")
+                
+                console.log ($scope.xmlFile)
+                
+                server.validate $scope.xmlFile, $scope.final, $scope.storyId, $scope.mediaData
+                window.location.reload()
                     
             if aktInhalt.toLowerCase().indexOf("rekursiv") >= 0
                 rekRek = aktInhalt.split("rekursiv")[0]
@@ -151,8 +159,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
         # handeld now by angularJS
         ###
         $("#btnSaveStory").click ->
-                xml = startSynchro()
-                $scope.xmlFile = xml
+                #xml = startSynchro()
+                #$scope.xmlFile = xml
                 $scope.saveXML()
                 if $scope.xmlError != "XML valide!"
                     $("#saveFunctionErrorText").text($scope.xmlError)

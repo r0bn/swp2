@@ -239,14 +239,14 @@
                         xml += '            <Chooser id="' + synchronizeInputHelper("inChooserID_"+ interID[2]).replace(" ", "") + '">\r\n'
                         xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature" />\r\n'
                         xml += '                <Question>' + synchronizeInputHelper("inChooserQuestion_"+ interID[2]) + '</Question>\r\n'
-                        answer = $("#btnChooserAnswer_" + interID[2]).parent().next()
+                        answer = $("#btnChooserAnswer_" + interID[2]).parent().parent().next()
                         while typeof answer.attr("id") != "undefined"
                             answer_id = answer.attr("id").split("_")
                             answer_id = answer_id[1]
                             xml += '                <Answer id="' + synchronizeInputHelper("inChooserAnswerID_"+answer_id).replace(" ", "") + '">\r\n'
                             xml += '                    <Text>' + synchronizeInputHelper("inChooserAnswerText_" +answer_id) + '</Text>\r\n'
                             if $("#btnSetChooserItemReferences_"+ answer_id).val() != '' && $("#btnSetChooserItemReferences_"+ answer_id).val() != 'Neue Ref setzen'
-                                xml += '                    <ItemRef>' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id).replace(" ", "") + '</ItemRef>\r\n'
+                                xml += '                    <ItemRef xlink:href="#' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id).replace(" ", "") + '" />\r\n'
                             if $("#btnSetChooserStorypointReferences_"+ answer_id).val() != '' && $("#btnSetChooserStorypointReferences_"+ answer_id).val() != 'Neue Ref setzen'
                                 xml += '                    <FeatureRef xlink:href="#' + synchronizeInputHelper("btnSetChooserStorypointReferences_" +answer_id).replace(" ", "") + '" />\r\n'
                             xml += '                </Answer>\r\n'
