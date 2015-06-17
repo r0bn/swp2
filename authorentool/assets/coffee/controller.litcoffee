@@ -61,7 +61,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
             try
                 # get xml file based on current gui settings
                 $scope.xmlFile = startSynchro()
-
             catch error
                 console.log error
 
@@ -89,7 +88,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $("#inRadius").on "input", () ->
             tmp = $(this).val().replace(/[^\d.-]/g, '')
             $(this).val(Math.abs(tmp))
-        lightMedienBox()
+        initialLightMedienBox()
         initDropdownClicks()
         window.googleMap()
         

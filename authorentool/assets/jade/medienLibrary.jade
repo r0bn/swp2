@@ -24,7 +24,14 @@ block content
                                                         a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
                                                     th
                                             tbody
-                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'jpg' }")
+                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'jpg'}")
+                                                    td {{ obj.file }}
+                                                    td 
+                                                        span.label.label-default {{ obj.extension }}
+                                                    td
+                                                        a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen 
+                                                        button.btn.btn-primary.btn-xs.btn-select(style="margin-right:5px",data-filename="{{obj.filename}}") Auswählen 
+                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'png' }")
                                                     td {{ obj.file }}
                                                     td 
                                                         span.label.label-default {{ obj.extension }}
@@ -52,7 +59,7 @@ block content
                                                         a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
                                                     th
                                             tbody
-                                                tr(ng-repeat="obj in mediaData | filter:{ extension: 'mp4' }")
+                                                tr(ng-repeat="obj in mediaData | filter:{ }")
                                                     td {{ obj.file }}
                                                     td 
                                                         span.label.label-default {{ obj.extension }}
