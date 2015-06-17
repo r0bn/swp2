@@ -35,10 +35,29 @@
             updateStory : (id, xml, final) ->
                 $http.post("#{apiUrl}/story/#{id}", { xml : xml, final : final })
                     .success () ->
-                        alert "Story successfull send to the server\nfinal : #{final}"
+                        
+                        $("#saveFunctionSuccess").css("display", "block")
+                        $("#saveFunctionSuccess").dialog
+                          modal: true
+                          buttons: {
+                            Ok: -> 
+                              $(this).dialog "close";
+                            }
+                        
+                        
                         console.log "updated"
                     .error (err) ->
-                        alert "Story konnte nicht an den Server gesendet werden!\n#{err}"
+                        tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
+                        
+                        $("#saveFunctionErrorText").text(tempErrValue)
+                        $("#saveFunctionError").css("display", "block")
+                        $("#saveFunctionError").dialog
+                          modal: true
+                          buttons: {
+                            Ok: -> 
+                              $(this).dialog "close";
+                            }
+                        
                         console.log err
 
             # this saves the current xml file
@@ -48,7 +67,17 @@
 
                     ret = xmlServices.isValidXML xml
                     if ret.length > 0
-                        alert "xml nicht formgerecht:\n#{ret}"
+                        tempErrValue =  "xml nicht formgerecht:\n#{ret}"
+                        
+                        $("#saveFunctionErrorText").text(tempErrValue)
+                        $("#saveFunctionError").css("display", "block")
+                        $("#saveFunctionError").dialog
+                          modal: true
+                          buttons: {
+                            Ok: -> 
+                              $(this).dialog "close";
+                            }
+                        
                         return
                     else
                         referencedFiles = xmlServices.getFileReferences xml
@@ -62,7 +91,17 @@
                                     found = true
                                     break
                             if !found
-                                alert "Referenced File: #{refFile.name} not found  in media library! - Cancel"
+                                tempErrValue = "Referenced File: #{refFile.name} not found  in media library! - Cancel"
+                                
+                                $("#saveFunctionErrorText").text(tempErrValue)
+                                $("#saveFunctionError").css("display", "block")
+                                $("#saveFunctionError").dialog
+                                  modal: true
+                                  buttons: {
+                                    Ok: -> 
+                                      $(this).dialog "close";
+                                    }
+                                
                                 return
 
                 m.updateStory storyId, xml, final

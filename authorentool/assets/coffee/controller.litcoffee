@@ -124,7 +124,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     # Do something with the result
                     return
                 
-                window.location.replace("#/home")
+                window.location.replace("/#/home")
                 
                     
             if aktInhalt.toLowerCase().indexOf("rekursiv") >= 0
