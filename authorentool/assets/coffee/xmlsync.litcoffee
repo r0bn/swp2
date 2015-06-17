@@ -33,7 +33,6 @@
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
             
-            #######################Bis hierhin wird alle ordentlich eingetragen
             ###########################################StorypointDaten
             $xml
                 ####################Löschen ALler bisherigen Storypoints
@@ -104,9 +103,11 @@
 
                             $("#inQuizID_"+window.interactioncounter).val($(this).attr('id'))
                             ontrue = $xml.find('OnTrue').attr("xlink:href").split("#")[1]
+                            ontrue = ontrue.split("_Feature")[0]
                             $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).val(ontrue)
                             $("#btnSetQuizOnTrueReferences_"+window.interactioncounter).html(ontrue + " <span class='caret' />")
                             onfalse = $xml.find('OnFalse').attr("xlink:href").split("#")[1]
+                            onfalse = onfalse.split("_Feature")[0]
                             $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).val(onfalse)
                             $("#btnSetQuizOnFalseReferences_"+window.interactioncounter).html(onfalse + " <span class='caret' />")
                  
@@ -159,12 +160,13 @@
                                     featureRef = $(this).find('FeatureRef').attr("xlink:href")
                                     if typeof featureRef != 'undefined'
                                         featureRef = featureRef.split("#")[1]
+                                        featureRef = featureRef.split("_Feature")[0]
                                         
                                     if featureRef != ""
                                         $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).val(featureRef)
                                         $("#btnSetChooserStorypointReferences_"+window.chooserAnswerCounter).html(featureRef + " <span class='caret' />")
                                     
-                                console.log('Chooser gefunden')
+                                #console.log('Chooser gefunden')
                                 saveTime = false
                                 
                     if saveTime
@@ -179,32 +181,143 @@
                                 if collected == "true"
                                     document.getElementById("inItemIsCollected_" + window.interactioncounter).checked = true
                                 
-                                console.log('Item Gefunden')            
+                                #console.log('Item Gefunden')            
                     
                     i++
 
                 counter++
  
-            #Jetzt alle ddns clicken in den Dorpdown menues
-            i = 1
-            while i < counter
+ 
+ 
+            # Add Edges to the graph. Interactions (Chooser and Quiz) ONLY!!!
+ 
+            #Gehe über alle Interaktionen drüber!!!
+
+            ind = 10 
+            console.log("InteraktionsCounter : " + window.interactioncounter)
+            while ind <= window.interactioncounter
+                #console.log(ind)
+                #Beim Item werden keine Kanten gesetzt. Daher ist das egal.
+                if typeof $("#fgpNeu_Item_"+ind).attr("id") != 'undefined'
+                    
+                    ind++
+                    continue
+                    
+                #Quiz Kanten setzten: 
                 
-                ind = i + 10 
-                
-                buttonValue = $("#btnSetQuizOnTrueReferences_"+ ind).val()
-                console.log( buttonValue )
-                
-                
+                if typeof $("#fgpNeu_Quiz_"+ind).attr("id") != 'undefined'
+                    #console.log("Quiz")
+                    #OnTrue Kanten setzten
+                    buttonOnTrueValue = $("#btnSetQuizOnTrueReferences_"+ ind).val().split("_Feature")[0]
+                    #console.log("TRUE:")
+                    if typeof buttonOnTrueValue != 'undefined'
+                    
+                        #hier wurde i mit übergeben, weil das storypointarray aus dem das berechnet wird, kann nicht sich selbst beinhalten
+                        toStorypointId = findStorypointByButtonValue( buttonOnTrueValue, "#btnSetQuizOnTrueReferences_"+ ind )
+                        previousStorypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_" + ind, "fhlNeuerStorypoint" )
+                        
+                        #console.log(previousStorypoint)
+                        
+                        previousStorypoint = previousStorypoint.split("_")
+                        previousStorypointId = previousStorypoint[previousStorypoint.length - 1]
+                        
+                        #console.log("To: " + toStorypointId)
+                        #console.log("From: " + previousStorypointId)
+                        
+                        if toStorypointId != -1
+                            AddEdge(previousStorypointId, toStorypointId)
+
+
+                    #OnFalse Kanten setzten
+                    buttonOnFalseValue = $("#btnSetQuizOnFalseReferences_"+ ind).val().split("_Feature")[0]
+                    #console.log("FALSE:")
+                    if typeof buttonOnFalseValue != 'undefined'
+                    
+                        #hier wurde i mit übergeben, weil das storypointarray aus dem das berechnet wird, kann nicht sich selbst beinhalten
+                        toStorypointId = findStorypointByButtonValue( buttonOnFalseValue, "#btnSetQuizOnFalseReferences_"+ ind )
+                        previousStorypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_" + ind, "fhlNeuerStorypoint" )
+                        previousStorypoint = previousStorypoint.split("_")
+                        previousStorypointId = previousStorypoint[previousStorypoint.length - 1]
+
+                        #console.log("To: " + toStorypointId)
+                        #console.log("From: " + previousStorypointId)
+
+                        if toStorypointId != -1
+                            AddEdge(previousStorypointId, toStorypointId)
+
+
+                #Chooser Kanten setzten:
                 
 
+                #if a chooser exists:
+                if typeof $("#fgpNeu_Chooser_"+ind).attr("id") != 'undefined'
                 
-                i++
-                
-            $("#btnCreateNewStorypoint").click()
+                    #Storypoint Kanten setzten
+                    
+                    #Loop for every answer
+                    answerCounter = 10
+                    while answerCounter <= window.chooserAnswerCounter
+                        buttonStorypointValue = $("#btnSetChooserStorypointReferences_"+ answerCounter).val()
+                        
+                        if typeof buttonStorypointValue == 'undefined'
+                            answerCounter++
+                            continue
+                            
+                                
+                        #if typeof buttonStorypointValue != 'undefined'
+                        
+                        
+                        else
+                        
+                            buttonStorypointValue = buttonStorypointValue.split("_Feature")[0]
+                            
+                            #hier wurde i mit übergeben, weil das storypointarray aus dem das berechnet wird, kann nicht sich selbst beinhalten
+                            toStorypointId = findStorypointByButtonValue( buttonStorypointValue, "#btnSetChooserStorypointReferences_"+ answerCounter )
+                            
+                            previousStorypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_" + answerCounter, "fhlNeuerStorypoint" )
+                            previousStorypoint = previousStorypoint.split("_")
+                            previousStorypointId = previousStorypoint[previousStorypoint.length - 1]
+                            
+                            #console.log("Chooser To: " + toStorypointId)
+                            #console.log("Chooser From: " + previousStorypointId)
+
+                            $("#btnSetChooserStorypointReferences_"+answerCounter).attr("oldValue", "fhlNeuerStorypoint_" + toStorypointId)
+                            $("#btnSetChooserStorypointReferences_"+answerCounter).attr("currentEdge", "fhlNeuerStorypoint_" + toStorypointId)
+
+
+                            #Das hier wird ersetzt durch AddItem... Zeugs
+                            
+                            #if toStorypointId != -1
+                            #    AddEdge(previousStorypointId, toStorypointId)
+
+
+                            #Items überprüfen
+                            #Den Inhalt des Item-Buttons kommen...
+                            
+                            buttonItemValue = $("#btnSetChooserItemReferences_"+ answerCounter).val()
+                            
+                            #für den Chooser die AddItemToEdge ausführen... Passt!
+                            if toStorypointId != -1
+                                addItemToEdge(previousStorypointId, toStorypointId, buttonItemValue)
+                            
+                            
+                            #addItemToEdge = (FromStorypoint, ToStorypoint, ItemLabel) ->
+
+                        answerCounter++
+
+                ind++
+
+
+            window.safeButtonCounter = counter
+            checkSafeButton()
             
             
-             #Jetzt per EdgeStorypointFinder die Id des Storypoints herrausfinden und dann die Sachen dort eintragen.
-             #Bei dependencyTag und bei den Interaktionen
+            #######################################Bis hierhin funktioniert alles
+            
+            #############Add Edges to the graph. StorypointReferences ONLY!!!
+            
+            
+            
 
             $xml.find('Dependency').each ->
                 $(this).find('Storypoint').each ->
@@ -268,11 +381,33 @@
                     return
                 return
 
-
-
             return
 
+
+
+
            
-           
-           
+        #returns the Id of the storypoint by a given button Value
+        findStorypointByButtonValue = ( buttonValue, currentStorypointId ) ->
+            
+            
+            currentStorypointID = $(currentStorypointId).closest(".form-horizontal").attr("id")
+            storypointArray = getAllStorypoints(0, "#"+currentStorypointID)
+
+            i = 0
+            while i < storypointArray.length
+                
+                currStorypointName = $("#inStorypoint_" + storypointArray[i].split("_")[1]).val()
+
+                if buttonValue == currStorypointName
+                
+                    alert buttonValue
+                    alert currStorypointName
+                
+                    returnStorypointID = $("#inStorypoint_" + storypointArray[i].split("_")[1]).attr("id").split("_")[1]
+                    return returnStorypointID
+                i++
+
+            return -1
+            
            
