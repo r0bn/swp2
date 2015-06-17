@@ -80,7 +80,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.quizAnswerCounter = 10
         window.chooserAnswerCounter = 10
         window.interactioncounter = 10
-        
+        window.mbibCallerField = ""
         #dependencyCounter
         window.zyklusCounter = 0
         
