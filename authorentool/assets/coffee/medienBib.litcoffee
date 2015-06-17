@@ -39,10 +39,12 @@
             $('#medienLightbox .btn-select').click (handler) ->
                 $(window.mbibCallerField).val($(this).data("filename"))
                 $('#medienLightbox').modal("hide")
-
+                return
+            return
         selectFromMedienBib2 = () ->
             $('#medienLightbox2').modal("show")
             $('#medienLightbox2 .btn-select').click (handler) ->
                $(window.mbibCallerField).val($(this).data("filename"))
                $('#medienLightbox2').modal("hide")
-
+               return
+            return

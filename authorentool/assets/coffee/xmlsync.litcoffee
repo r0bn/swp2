@@ -69,7 +69,6 @@
                 ############## video is wrong, cause images could be given too...
                 shownObject = $(this).find('Href').attr('xlink:href')
                 if typeof shownObject != 'undefined'
-                    shownObject = shownObject.split("#")[1]
                     $('#inAsset_' + counter).val(shownObject)
                     
                 position = $(this).find("pos").text()
