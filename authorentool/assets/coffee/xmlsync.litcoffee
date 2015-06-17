@@ -64,6 +64,7 @@
                 createNewStorypointX(counter)
                 featureId = $(this).attr('id').split("_Feature")[0]
                 $("#inStorypoint_"+counter).val(featureId)
+                $("#inStorypoint_"+counter).trigger("keyup")
                 
                 ############## video is wrong, cause images could be given too...
                 shownObject = $(this).find('Href').attr('xlink:href')
