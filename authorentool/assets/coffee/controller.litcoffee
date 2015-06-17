@@ -38,6 +38,24 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     $scope.final = s.final
                     $scope.story = s
 
+        # this deletes the current xml file
+        $scope.deleteXML = () ->
+            $("#dialog-confirm-Story").css("display","block")
+            $('#dialog-confirm-Story').dialog
+                  modal: true
+                  buttons:
+                    'Löschen': ->
+                            $(this).dialog 'close'
+                            $.ajax
+                                  url: 'http://api.storytellar.de/story/' + $scope.storyId
+                                  type: 'DELETE'
+                                  success: (result) ->
+                                    # Do something with the result
+                                    return
+                            window.location.replace("/#/home/")
+                    'Abbrechen': ->
+                            $(this).dialog 'close'
+
         # this saves the current xml file
         $scope.saveXML = () ->
             try
