@@ -12,7 +12,8 @@
             $("#inTitel").val($xml.find('Title').text())
             $("#ttaDescription").text($xml.find('Description').text())
             $("#inAutor").val($xml.find('Author').text())
-            $("#inSize").val($xml.find('Size').text())
+            # robin: will be automatically calculated by the library
+            #$("#inSize").val($xml.find('Size').text())
             $("#ddnsize").val($xml.find('Size').attr("uom"))
             $("#ddnsize").html($xml.find('Size').attr("uom") + " <span class='caret' />")
             
