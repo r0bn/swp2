@@ -22,6 +22,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
                 try
                     # XMl Synchronisation update GUI based on server file
+                    console.log($scope.xmlFile)
                     startXMLSynchro($scope.xmlFile)
 
                 catch error

@@ -400,11 +400,7 @@
                 
                 currStorypointName = $("#inStorypoint_" + storypointArray[i].split("_")[1]).val()
 
-                if buttonValue == currStorypointName
-                
-                    alert buttonValue
-                    alert currStorypointName
-                
+                if buttonValue == currStorypointName                
                     returnStorypointID = $("#inStorypoint_" + storypointArray[i].split("_")[1]).attr("id").split("_")[1]
                     return returnStorypointID
                 i++
