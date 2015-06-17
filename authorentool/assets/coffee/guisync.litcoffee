@@ -122,11 +122,11 @@
                     videoID = videoID.split(".")
                     if videoID[1] == 'mp4'
                         xml += '                        <Video id="' + videoID[0] + '">\r\n'
-                        xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
+                        xml += '                            <Href xlink:href="#' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
                         xml += '                        </Video>\r\n'
                     if videoID[1] != 'mp4'
                         xml += '                        <Image id="' + videoID[0] + '">\r\n'
-                        xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
+                        xml += '                            <Href xlink:href="#' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
                         xml += '                        </Image>\r\n'
                 xml += '                    </assets>\r\n'
                 xml += '                    <gml:Point gml:id="' + synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Pos">\r\n'
