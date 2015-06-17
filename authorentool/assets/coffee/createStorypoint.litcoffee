@@ -39,10 +39,16 @@
                 
                 $("#btnAnchorImg_" + counter).click ->
                     window.mbibCallerField = "#inAnchorImg_" + counter
-                    
+                
+                $("#btnAnchorImgReset_" + counter).click ->
+                    $("#inAnchorImg_" + counter).val($("#lblAnchorImg_" + counter).val())
+                
                 $("#btnAsset_" + counter).click ->
                     window.mbibCallerField = "#inAsset_" + counter
                 
+                $("#btnAssetReset_" + counter).click ->
+                    $("#inAsset_" + counter).val($("#lblAsset_" + counter).val())
+                                    
                 $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
                 # Click Event für btnStorypointMap                 
                 $("#btnStorypointMap_" + counter).click ->
