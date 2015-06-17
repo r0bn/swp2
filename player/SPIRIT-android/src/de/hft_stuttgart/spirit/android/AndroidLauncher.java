@@ -2,7 +2,15 @@ package de.hft_stuttgart.spirit.android;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
+import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -33,10 +41,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +55,11 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.qualcomm.vuforia.CameraDevice;
 import com.qualcomm.vuforia.DataSet;
+import com.qualcomm.vuforia.Frame;
+import com.qualcomm.vuforia.Image;
 import com.qualcomm.vuforia.ImageTargetBuilder;
 import com.qualcomm.vuforia.ImageTracker;
+import com.qualcomm.vuforia.PIXEL_FORMAT;
 import com.qualcomm.vuforia.State;
 import com.qualcomm.vuforia.Trackable;
 import com.qualcomm.vuforia.TrackableSource;
@@ -76,12 +90,22 @@ public class AndroidLauncher extends AndroidApplication implements
 	WebView webView;
 	RelativeLayout layout;
 	RelativeLayout.LayoutParams params;
-	
 	ImageView imageView;
 	RelativeLayout.LayoutParams imageParams;
-	
 	TextView textView;
 	RelativeLayout.LayoutParams textParams;
+	
+	
+	//added part from new spirit app
+	Spinner spinner;
+	ArmlLoader armlLoader;
+
+	Mat vergleich = null;
+	Mat currentFrame = null;
+	boolean openCvReady = false;
+	OrbTools orbTools = new OrbTools();
+	ORBpruefung orb;
+	//
 	
 	private NfcAdapter mNfcAdapter;
 	private NfcLibgdxInterface nfcInterface;
@@ -122,6 +146,17 @@ public class AndroidLauncher extends AndroidApplication implements
 		if (mNfcAdapter != null) {
 			setupForegroundDispatch(this, mNfcAdapter);
 		}
+		
+		//added part from new spirit app
+		//static initialisation of open cv
+		if(!OpenCVLoader.initDebug())
+		{
+			Log.i(TAG, "OpenCV load not successfully");
+		} else{
+			openCvReady = true;
+			Log.i(TAG, "OpenCV load successfully. openCvReady="+openCvReady);
+		}
+		//
 	}
 
 	@Override
@@ -131,6 +166,13 @@ public class AndroidLauncher extends AndroidApplication implements
 		}
 		geoTools.pause();
 		super.onPause();
+		
+		//added part from new spirit app
+		if (orb != null){
+			orb.oc = null;
+			orb = null;
+			}
+		//
 		// Log.w("SPIRIT","pause auch im launcher! :E");
 	}
 
@@ -140,6 +182,26 @@ public class AndroidLauncher extends AndroidApplication implements
 		// Log.w("SPIRIT","destroy auch im launcher! :E");
 	}
 
+	//added part from new spirit app
+	/* not needed because of static initialisation of opencv?
+	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+		@Override
+		public void onManagerConnected(int status) {
+			switch (status) {
+			case LoaderCallbackInterface.SUCCESS: {
+				openCvReady = true;
+				Log.i(TAG, "OpenCV loaded successfully");
+			}
+				break;
+			default: {
+				super.onManagerConnected(status);
+			}
+				break;
+			}
+		}
+	};
+	*/
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		System.out.println("onNewIntent...");
@@ -242,9 +304,10 @@ public class AndroidLauncher extends AndroidApplication implements
 				+ "/StorytellAR";
 		String storyXMLPath = pathToAppDir + "/Content/" + String.valueOf(storyId) + "/arml.xml";
 		
+		//new spirit app: added orbtools to constructor of SpiritMain
 		gameView = initializeForView(new SpiritMain(new VuforiaLibgdxInterface(
 				this), new SpiritFilmWrapper(this), geoTools, nfcInterface,
-				this, new ArmlLoader(this, new XmlPullParserHandler()), storyXMLPath), config);
+				this, new ArmlLoader(this, new XmlPullParserHandler()), storyXMLPath, orbTools), config);
 		gameView.setId(123);
 
 		// RelativeLayout.LayoutParams params = new
@@ -264,6 +327,7 @@ public class AndroidLauncher extends AndroidApplication implements
 		setWebviewVisible(false);
 		layout.addView(webView, params);
 		
+		//not in new spirit app
 		imageView = new ImageView(this);
 		imageParams = new RelativeLayout.LayoutParams(900, 500);
 		imageParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -284,6 +348,22 @@ public class AndroidLauncher extends AndroidApplication implements
 		textView.setGravity(Gravity.CENTER);
 		textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 		layout.addView(textView,textParams);
+		//
+		
+		//added part from new spirit app
+		/*think this is not needed
+		spinner = new Spinner(this);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, armlLoader.getArmlFiles());
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAlpha(0.25f);
+		spinner.setAdapter(dataAdapter);
+
+		layout.addView(spinner);
+		spinner.setOnItemSelectedListener(this);
+		*/
+		//
 
 		setContentView(layout);
 	}
@@ -490,6 +570,61 @@ public class AndroidLauncher extends AndroidApplication implements
 		} else if (retryStartBuild) {
 			startBuild();
 		}
+		
+		//added part from new spirit app
+		//compare images
+		// convert picture for OpenCV
+				Frame frame = state.getFrame();
+				Image img = null;
+				for (int i = 0; i < frame.getNumImages(); i++) {
+					if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+						img = frame.getImage(i);
+						break;
+					}
+				}
+				if (img != null && openCvReady) {
+					//System.out.println("Image is not null and openCvReady == true : enter Loop");
+					ByteBuffer pixels = img.getPixels();
+					int rows = img.getHeight();
+					int cols = img.getWidth();
+					byte[] byteArray = new byte[pixels.remaining()];
+					pixels.get(byteArray);
+					Mat m = new Mat(rows, cols, CvType.CV_8UC2);
+					m.put(0, 0, byteArray);
+					currentFrame = new Mat(rows, cols, CvType.CV_8UC4);
+					Imgproc.cvtColor(m, currentFrame, Imgproc.COLOR_BGR5652RGBA);
+
+					if (openCvReady && !orbTools.waitingForOrb && currentFrame != null) {	
+						if (orbTools.name.equals(orbTools.vergleich)
+								&& vergleich != null) {
+							orb = new ORBpruefung(currentFrame.clone(),
+									vergleich.clone(), 1500, orbTools, this,
+									orbTools.name);
+							new Thread(orb).start();
+							orbTools.waitingForOrb = true;
+						} else if (!orbTools.vergleich.isEmpty()) {
+							if (vergleich != null) {
+								vergleich.release();
+							}
+							Mat tmp = Highgui.imread(orbTools.vergleich);
+							/*Mat tmp = Highgui.imread(Environment
+									.getExternalStorageDirectory().getPath()
+									+ "/"
+									+ orbTools.vergleich);*/
+							vergleich = new Mat();
+							float ratio = 500f / (float) tmp.width();
+							Size size = new Size(500, (float) tmp.height() * ratio);
+							Imgproc.resize(tmp, vergleich, size);
+							tmp.release();
+							// vergleich = Highgui.imread(Environment
+							// .getExternalStorageDirectory().getPath()
+							// + "/"+orbTools.vergleich);
+							orbTools.name = orbTools.vergleich;
+						}
+					}
+				}
+				
+				//
 	}
 
 	protected void startBuild() {
@@ -697,8 +832,46 @@ public class AndroidLauncher extends AndroidApplication implements
 
 	@Override
 	public boolean isWebviewVisible() {
-		return (webView.getVisibility() == View.VISIBLE);
+		
+		//added from new spirit app
+		if (webView != null)
+			return (webView.getVisibility() == View.VISIBLE);
+		else
+			return false;
+		//
 	}
+	
+	//added from new spirit app
+	/*think this is not needed
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		if (position != 0) {
+			// neue arml ausgewählt
+			armlLoader.lastSelectedArml = Environment
+					.getExternalStorageDirectory().getPath()
+					+ "/"
+					+ armlLoader.getArmlFiles()[position];
+
+			armlLoader.newArmlEvent = true;
+			// auswahl zurücksetzen, so dass erneutes starten möglich ist
+			spinner.post(new Runnable() {
+
+				@Override
+				public void run() {
+					spinner.setSelection(0);
+
+				}
+			});
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+	}
+	*/
+	//
+	
 	
 	@Override
 	public void showPicture(String picture) {

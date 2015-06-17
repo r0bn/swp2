@@ -38,7 +38,15 @@ public class Facade implements UIController {
 
 	@Override
 	public float getDistanceUserToClosestGhost() {
+		//added from new spirit app
+		if (app.getClosestGhost() != null){
 		return app.getGeoTools().getDistance(app.getClosestGhost());
+		}else{
+			return Float.MAX_VALUE;
+		}
+		//
+	
+		//return app.getGeoTools().getDistance(app.getClosestGhost());
 	}
 
 	@Override
@@ -251,6 +259,13 @@ public class Facade implements UIController {
 	public List<Poi> getArmlFromSdCard(String fullPath) {
 		return app.getArmlFromSdCard(fullPath);
 	}
+	
+	//added from new spirit app
+	@Override
+	public OrbInfos getOrbInfos() {
+		return app.getOrbInfos();
+	}
+	//
 	
 	@Override
 	public void showPicture(String picturePath) {

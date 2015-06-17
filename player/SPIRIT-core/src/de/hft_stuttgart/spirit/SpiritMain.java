@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -78,22 +79,28 @@ public class SpiritMain extends ApplicationAdapter implements
 	SignalToGhostEffect signalToGhostEffect;
 	FadeEffect fadeEffect;
 	TextButton[] customTextButton;
+	
+	//added from new spirit app
+	OrbInfos orbInfos;
+	//
+	
 	String storyXMLPath;	//Storytellar
 	PlayableStory story;	//Storytellar
 	
 	public SpiritMain(Vuforia v, SpiritFilm spiritFilm, SpiritGeoTools sgt,
-			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml) {
+			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, OrbInfos orbInfos) {
 		vuforia = v;
 		this.spiritFilm = spiritFilm;
 		geoTools = new GeoTools(sgt);
 		this.nfc = nfc;
 		this.webview = webview;
 		armlParser = arml;
+		this.orbInfos = orbInfos;
 	}
 	
 	//Storytellar
 	public SpiritMain(Vuforia v, SpiritFilm spiritFilm, SpiritGeoTools sgt,
-			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, String storyXMLPath) {
+			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, String storyXMLPath, OrbInfos orbInfos) {
 		vuforia = v;
 		this.spiritFilm = spiritFilm;
 		geoTools = new GeoTools(sgt);
@@ -101,10 +108,18 @@ public class SpiritMain extends ApplicationAdapter implements
 		this.webview = webview;
 		armlParser = arml;
 		this.storyXMLPath = storyXMLPath;	
+		
+		//added from new spirit app
+		this.orbInfos = orbInfos;
+		//
 	}
 
 	@Override
 	public void create() {
+		//added from new spirit app
+		Gdx.input.setCatchBackKey(true);
+		//
+		
 		modelBatch = new ModelBatch();
 
 		environment = new Environment();
@@ -170,6 +185,12 @@ public class SpiritMain extends ApplicationAdapter implements
 			handleTouch();
 		}
 
+		//added from new spirit app
+		if (Gdx.input.isKeyPressed(Keys.BACK)){
+			Gdx.app.exit();
+		}
+		//
+		
 		if (!workaround && vuforia.isReady()) {
 			workaround = true;
 			vuforia.onSurfaceCreated();
@@ -396,8 +417,14 @@ public class SpiritMain extends ApplicationAdapter implements
 
 	@Override
 	public void pause() {
+		//added from new spirit app
+		System.out.println("Pause Libgdx Start");
+		System.out.println("Vuforia onPause");
 		vuforia.onPause();
+		System.out.println("spiritFilm destroy");
 		spiritFilm.destroy();
+		System.out.println("Pause Ende Libgdx");
+		//
 	}
 
 	// SPIRIT APP Interfaces -> Zugriff StoryEngine usw
@@ -723,4 +750,12 @@ public class SpiritMain extends ApplicationAdapter implements
 	public void log(String who, String what) {
 		webview.log(who, what);
 	}
+	
+	//added from new spirit app
+	@Override
+	public OrbInfos getOrbInfos() {
+		return orbInfos;
+	}
+	//
+	
 }

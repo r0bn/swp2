@@ -266,6 +266,10 @@ public interface UIController {
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
 	
+	//added from new spirit app
+	public OrbInfos getOrbInfos();
+	//
+	
 	public void showPicture(String picturePath);
 
 	public void hidePicture();

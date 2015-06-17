@@ -526,7 +526,7 @@ public class StoryXMLParser {
 				Node subsubnode = subnode.getFirstChild();
 				do{
 					if (subsubnode.getNodeName().equals("src")) {
-						temp.setSrc(subsubnode.getTextContent());
+						temp.setSrc(pathToContent+subsubnode.getTextContent());
 					}
 					subsubnode = subsubnode.getNextSibling();
 				} while(subsubnode.getNextSibling()!=null);

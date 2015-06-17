@@ -88,6 +88,10 @@ public interface SpiritApp {
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
 	
+	//added from new spirit app
+	public OrbInfos getOrbInfos();
+	//
+	
 	public void openPicture(String pictureURL);
 
 	public void hidePicture();

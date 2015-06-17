@@ -104,9 +104,23 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() <= 10) {
+				if (facade.getDistanceUserToClosestGhost() > 10) {
 					activeStoryPoint = closest;
-					state = EngineStates.IN_SCENE_START;
+					facade.getOrbInfos().setVergleichName(closest.getTrackable_image().getSrc()); 	//Set Picture that is searched
+					
+					if(closest.getTrackable_image().getSrc().isEmpty() || facade.getOrbInfos().getLastResultName().equals(closest.getTrackable_image().getSrc())
+						|| facade.getOrbInfos().getLastResultName().equals("")) 
+						{
+							if(closest.getTrackable_image().getSrc().isEmpty() && facade.getTabletAngle() > 75 || facade.getOrbInfos().found(30, 40, 40))
+							{
+								state = EngineStates.IN_SCENE_START;
+							} else {
+								//System.out.println("StorytellAR_StoryEngine: Result of image tracking is too bad!");
+							}
+						} else {
+							//System.out.println("Name isn't matching!");
+							//System.out.println("Searched: "+closest.getTrackable_image().getSrc()+" Found: "+facade.getOrbInfos().getLastResultName());
+						}
 				}
 			} else {
 				facade.endStory();
