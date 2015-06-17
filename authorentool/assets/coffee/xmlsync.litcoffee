@@ -158,15 +158,10 @@
                                     # window.chooserAnswerCounter
                                     $("#inChooserAnswerID_" + window.chooserAnswerCounter).val($(this).attr('id'))
                                     $("#inChooserAnswerText_" + window.chooserAnswerCounter).val($(this).find('Text').text())
-                                    
-                                    ###############ItemRef Prüfen
-                                    itemRef = $(this).find('ItemRef').attr("xlink:href")
 
+                                    itemRef = $(this).find('ItemRef').attr("xlink:href")
                                     if typeof itemRef != 'undefined'
                                         itemRef = itemRef.split("#")[1]
-                                        itemRef = itemRef.split("_Feature")[0]
-                                    
-                                    if itemRef != ""
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).val(itemRef)
                                         $("#btnSetChooserItemReferences_"+window.chooserAnswerCounter).html(itemRef + " <span class='caret' />")
                                     
@@ -329,13 +324,8 @@
             checkSafeButton()
             
             
-            #######################################Bis hierhin funktioniert alles
-            
             #############Add Edges to the graph. StorypointReferences ONLY!!!
             
-            
-            
-
             $xml.find('Dependency').each ->
                 $(this).find('Storypoint').each ->
                     feature = $(this).find('FeatureRef').attr('xlink:href')
@@ -382,7 +372,7 @@
                             columnCounter = 1
                             $(this).find('Itemlist').each ->
                                 $(this).find('ItemRef').each ->
-                                    reference = $(this).attr("xlink:href")
+                                    reference = $(this).attr("xlink:href").split('#')[1]
                                     test = $('#ulSkStorypointItemRef_'+storypointID + '_' +rowCounter + '_' +columnCounter).children()
                                     z = 0
                                     while z < test.length
@@ -416,8 +406,8 @@
                 
                 currStorypointName = $("#inStorypoint_" + storypointArray[i].split("_")[1]).val()
 
-                if buttonValue == currStorypointName
-                
+
+                if buttonValue == currStorypointName                
                     returnStorypointID = $("#inStorypoint_" + storypointArray[i].split("_")[1]).attr("id").split("_")[1]
                     return returnStorypointID
                 i++

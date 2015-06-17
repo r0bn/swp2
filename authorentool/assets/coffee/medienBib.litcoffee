@@ -15,19 +15,14 @@
               return
 
         selectFromMedienBib1 = () ->
-            targetId = $(event.target).parent().parent().find("input[type='text']").attr('id')
-            console.log targetId
             $('#medienLightbox').modal("show")
-
             $('#medienLightbox .btn-select').click (handler) ->
-                $("##{targetId}").val($(this).data("filename"))
+                $(window.mbibCallerField).val($(this).data("filename"))
                 $('#medienLightbox').modal("hide")
 
         selectFromMedienBib2 = () ->
-            targetId = $(event.target).parent().parent().find("input[type='text']").attr('id')
-            console.log targetId
             $('#medienLightbox2').modal("show")
             $('#medienLightbox2 .btn-select').click (handler) ->
-                $("##{targetId}").val($(this).data("filename"))
-                $('#medienLightbox2').modal("hide")
+               $(window.mbibCallerField).val($(this).data("filename"))
+               $('#medienLightbox2').modal("hide")
 

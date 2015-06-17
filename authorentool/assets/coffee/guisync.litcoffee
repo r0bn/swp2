@@ -94,48 +94,6 @@
                         tmp_xml = ""
                         tmp_item_xml = ""
                         row++
-                $('#fhlStorypoints').find('.form-horizontal').each ->
-                    currentStorypointId = $(this).attr("id")
-                    currentStorypointId = currentStorypointId.split("_")
-                    currentStorypointId = currentStorypointId[1]
-                    interactions = $("#fgpInteractions_"+currentStorypointId).next()
-                    while typeof interactions.attr("id") != "undefined"
-                        interID = interactions.attr("id")
-                        interID = interID.split("_")
-                        if interID[1] == "Quiz"
-                            if $("#btnSetQuizOnTrueReferences_"+ interID[2]).val() == synchronizeInputHelper("inStorypoint_"+ storypointID)
-                                dependencyXML += '            <Container>\r\n'
-                                dependencyXML += '                <Storypointlist>\r\n'
-                                dependencyXML += '                  <StorypointRef xlink:href="#' + synchronizeInputHelper("inStorypoint_"+ currentStorypointId).replace(" ", "") + '" />\r\n'
-                                dependencyXML += '                </Storypointlist>\r\n'
-                                dependencyXML += '                <Itemlist />\r\n'
-                                dependencyXML += '            </Container>\r\n'   
-                            if $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() == synchronizeInputHelper("inStorypoint_"+ storypointID)
-                                dependencyXML += '            <Container>\r\n'
-                                dependencyXML += '                <Storypointlist>\r\n'
-                                dependencyXML += '                  <StorypointRef xlink:href="#' + synchronizeInputHelper("inStorypoint_"+ currentStorypointId).replace(" ", "") + '" />\r\n'
-                                dependencyXML += '                </Storypointlist>\r\n'
-                                dependencyXML += '                <Itemlist />\r\n'
-                                dependencyXML += '            </Container>\r\n'
-                        if interID[1] == "Chooser"
-                            answer = $("#btnChooserAnswer_" + interID[2]).parent().next()
-                            while typeof answer.attr("id") != "undefined"
-                                answer_id = answer.attr("id").split("_")
-                                answer_id = answer_id[1]
-                                if $("#btnSetChooserStorypointReferences_"+ answer_id).val() == synchronizeInputHelper("inStorypoint_"+ storypointID)
-                                    dependencyXML += '            <Container>\r\n'
-                                    dependencyXML += '                <Storypointlist>\r\n'
-                                    dependencyXML += '                  <StorypointRef xlink:href="#' + synchronizeInputHelper("inStorypoint_"+ currentStorypointId).replace(" ", "") + '" />\r\n'
-                                    dependencyXML += '                </Storypointlist>\r\n'
-                                    if $("#btnSetChooserItemReferences_"+ answer_id).val() != '' 
-                                        dependencyXML += '                <Itemlist>\r\n'
-                                        dependencyXML += '                   <ItemRef xlink:href="#' + synchronizeInputHelper("btnSetChooserItemReferences_"+ answer_id).replace(" ", "") + '"/>\r\n'
-                                        dependencyXML += '                </Itemlist>\r\n'
-                                    else
-                                        dependencyXML += '                <Itemlist />\r\n'
-                                    dependencyXML += '            </Container>\r\n'
-                                answer = answer.next()
-                        interactions = interactions.next()
                 if dependencyXML == ""
                     dependencyXML += '            <Container>\r\n'
                     dependencyXML += '                <Storypointlist />\r\n'
@@ -179,7 +137,7 @@
                     xml += '                <anchorRef xlink:href="#' + synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature_ImageTracker" />\r\n'
                     
                 xml += '                <InteractionList>\r\n'
-                interactions = $("#fgpInteractions_"+id).next().next().next()
+                interactions = $("#fgpInteractions_"+id).next()
                 while typeof interactions.attr("id") != "undefined"
                     interID = interactions.attr("id")
                     interID = interID.split("_")
@@ -281,14 +239,14 @@
                         xml += '            <Chooser id="' + synchronizeInputHelper("inChooserID_"+ interID[2]).replace(" ", "") + '">\r\n'
                         xml += '                <FeatureRef xlink:href="#'+ synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature" />\r\n'
                         xml += '                <Question>' + synchronizeInputHelper("inChooserQuestion_"+ interID[2]) + '</Question>\r\n'
-                        answer = $("#btnChooserAnswer_" + interID[2]).parent().next()
+                        answer = $("#btnChooserAnswer_" + interID[2]).parent().parent().next()
                         while typeof answer.attr("id") != "undefined"
                             answer_id = answer.attr("id").split("_")
                             answer_id = answer_id[1]
                             xml += '                <Answer id="' + synchronizeInputHelper("inChooserAnswerID_"+answer_id).replace(" ", "") + '">\r\n'
                             xml += '                    <Text>' + synchronizeInputHelper("inChooserAnswerText_" +answer_id) + '</Text>\r\n'
                             if $("#btnSetChooserItemReferences_"+ answer_id).val() != '' && $("#btnSetChooserItemReferences_"+ answer_id).val() != 'Neue Ref setzen'
-                                xml += '                    <ItemRef>' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id).replace(" ", "") + '</ItemRef>\r\n'
+                                xml += '                    <ItemRef xlink:href="#' + synchronizeInputHelper("btnSetChooserItemReferences_" +answer_id).replace(" ", "") + '" />\r\n'
                             if $("#btnSetChooserStorypointReferences_"+ answer_id).val() != '' && $("#btnSetChooserStorypointReferences_"+ answer_id).val() != 'Neue Ref setzen'
                                 xml += '                    <FeatureRef xlink:href="#' + synchronizeInputHelper("btnSetChooserStorypointReferences_" +answer_id).replace(" ", "") + '" />\r\n'
                             xml += '                </Answer>\r\n'

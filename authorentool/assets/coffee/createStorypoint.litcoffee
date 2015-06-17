@@ -37,7 +37,11 @@
                 btnSwitchDown("#btnSwitchDown_" + counter, "#" + stuff.id)
                 btnSwitchUp("#btnSwitchUp_" + counter, "#" + stuff.id)
                 
-                
+                $("#btnAnchorImg_" + counter).click ->
+                    window.mbibCallerField = "#inAnchorImg_" + counter
+                    
+                $("#btnAsset_" + counter).click ->
+                    window.mbibCallerField = "#inAsset_" + counter
                 
                 $("#btnStorypointMap_" + counter).attr("gpsField", $("#btnStorypointMap_" + counter).attr("gpsField") + "_" + counter)
                 # Click Event für btnStorypointMap                 
