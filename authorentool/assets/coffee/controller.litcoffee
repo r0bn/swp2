@@ -116,8 +116,13 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 #$("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/6zlViU5PBPY?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>')
                 return
             
-            if aktInhalt.toLowerCase().indexOf("close") >= 0
-                
+            if aktInhalt.toLowerCase().indexOf("dElEtEStOrY") >= 0
+                $.ajax
+                  url: 'http://api.storytellar.de/story/' + $scope.storyId
+                  type: 'DELETE'
+                  success: (result) ->
+                    # Do something with the result
+                    return
                 $("#rowFormular").empty()
                 #$("#rowFormular").children().each () ->
                 #    $(this).remove()
@@ -125,8 +130,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 
                 console.log ($scope.xmlFile)
                 
-                server.validate $scope.xmlFile, $scope.final, $scope.storyId, $scope.mediaData
-                window.location.reload()
+                #server.validate $scope.xmlFile, $scope.final, $scope.storyId, $scope.mediaData
+                #window.location.reload()
                     
             if aktInhalt.toLowerCase().indexOf("rekursiv") >= 0
                 rekRek = aktInhalt.split("rekursiv")[0]
