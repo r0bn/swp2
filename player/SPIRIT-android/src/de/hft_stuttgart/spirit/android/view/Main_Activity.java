@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,11 +31,14 @@ import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.R;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 
 /**
  * This Activity is the Main Activity of the StorytellAR Application.
@@ -114,8 +118,31 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         	}
         }
         
-    }
+     // Check if gps is enabled
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        	Log.i(this.getClass().getName(), "GPS not enabled");
+            new AlertDialog.Builder(this)
+            	.setTitle("GPS deaktiviert")
+            	.setMessage("Zum Spielen dieser App wird GPS benötigt. wollen sie ihr GPS einschalten?")
+            	.setPositiveButton("Einschalten", new DialogInterface.OnClickListener(){
+            		public void onClick(DialogInterface dialog, int id){
+            			// Enable gps manually
+            			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        Log.i(this.getClass().getName(), "GPS enabled manually");
+                    }
+            	})
+            	.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener(){
+            		public void onClick(DialogInterface dialog, int id){
+            			// Close dialog without enabling gps
+                        dialog.cancel();
+                    }
+            	}).show();
+        } else {
+        	Log.i(this.getClass().getName(), "GPS enabled");
+        }
+    }
 
     /**
      * This method is called when the OptionsMenu is created.
