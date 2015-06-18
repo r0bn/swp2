@@ -5,6 +5,9 @@ fonts = helvetica, arial, sans-serif
     overflow: hidden
     text-overflow: ellipsis
 
+.checkbox input[type='checkbox']
+    margin-left: 0
+
 .btnDesign
     height: 35px
     font-size: 12pt
@@ -19,12 +22,19 @@ body
 
 .modal-content
     padding: 0px 25px 25px 25px
+    width: 100%
+    height: 100%
 
 .modal-dialog
-    margin: 30px 15%
-#gmeg_map_canvas
+    //margin: 30px 15%
     width: 80%
-    height: 80%
+    margin-left: auto
+    margin-right: auto
+#gmeg_map_canvas
+    //width: 80%
+    height: 700px
+#medienBib
+    height: 700px
 
 #lightbox
   .modal-content
@@ -115,3 +125,17 @@ div
 @media screen and (max-width: 1200px)
     #colColumn2 
         display: none
+    .form-horizontal.control-label
+        text-align: left
+
+@media screen and (max-width: 920px)
+    #gmeg_map_canvas
+        height: 500px
+    #medienBib
+        height: 500px
+
+@media screen and (max-width: 767px)
+    #gmeg_map_canvas
+        height: 300px
+    #medienBib
+        height: 300px
