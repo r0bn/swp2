@@ -275,7 +275,7 @@
                 <Geometry>
                     <assets>
                         <Image id="Piratenzeugs">
-                            <href xlink:href="Piratenzeug.jpg" />
+                            <href xlink:href="Piratenzeug.png" />
                         </Image>
                     </assets>
                     <gml:Point gml:id="Punkt_C_1_KT">
@@ -340,7 +340,7 @@
                 <Geometry>
                     <assets>
                         <Video id="Piratengespraech">
-                            <Href xlink:href="Sequenz_D2_1.mp4" />
+                            <Href xlink:href="Sequenz_D1_1.mp4" />
                         </Video>
                     </assets>
                     <gml:Point gml:id="Punkt_D_1_Pirat">

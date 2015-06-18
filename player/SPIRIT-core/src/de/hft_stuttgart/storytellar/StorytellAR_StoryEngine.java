@@ -104,7 +104,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() > 10) {
+				if (facade.getDistanceUserToClosestGhost() <= 10) {
 					activeStoryPoint = closest;
 					facade.getOrbInfos().setVergleichName(closest.getTrackable_image().getSrc()); 	//Set Picture that is searched
 					
