@@ -1,6 +1,10 @@
 package de.hft_stuttgart.spirit.android;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -70,6 +74,7 @@ import de.hft_stuttgart.spirit.SpiritMain;
 import de.hft_stuttgart.spirit.SpiritWebviewHandler;
 import de.hft_stuttgart.spirit.android.view.Main_Activity;
 import de.hft_stuttgart.spirit.android.view.StoryDetails_Activity;
+import de.hft_stuttgart.storytellar.PlayableStory;
 
 public class AndroidLauncher extends AndroidApplication implements
 		VuforiaControl, SpiritWebviewHandler {
@@ -936,5 +941,52 @@ public class AndroidLauncher extends AndroidApplication implements
 	@Override
 	public void log(String who, String what) {
 		Log.w(who,what);
+	}
+	
+	public void saveStory(PlayableStory story){
+		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/Content/" + String.valueOf(story.getID()) + "/save.ser");
+		
+		FileOutputStream   fos  = null;
+        ObjectOutputStream oos  = null;
+        boolean            keep = true;
+        
+        try {
+            fos = new FileOutputStream(suspend_f);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(story);
+        } catch (Exception e) {
+            keep = false;
+        } finally {
+            try {
+                if (oos != null)   oos.close();
+                if (fos != null)   fos.close();
+                if (keep == false) suspend_f.delete();
+            } catch (Exception e) { /* do nothing */ }
+        }
+
+	}
+	
+	public PlayableStory loadStory(Integer ID){
+		
+		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/Content/" + String.valueOf(ID) + "/save.ser");
+
+        PlayableStory story = null;
+        FileInputStream fis = null;
+        ObjectInputStream is = null;
+
+        try {
+            fis = new FileInputStream(suspend_f);
+            is = new ObjectInputStream(fis);
+            story = (PlayableStory) is.readObject();
+        } catch(Exception e) {
+            String val= e.getMessage();
+        } finally {
+            try {
+                if (fis != null)   fis.close();
+                if (is != null)   is.close();
+            } catch (Exception e) { }
+        }
+
+		return story;
 	}
 }
