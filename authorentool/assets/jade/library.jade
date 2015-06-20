@@ -1,5 +1,14 @@
 .col-md-12
     .row
+        .col-md-6
+
+            .panel.panel-default(style="margin-top:20px") 
+                .panel-heading
+                    Ordner Struktur
+                .panel-body
+                    | Um die Medien Dateien in Ordner zu strukturieren, in der Hochzuladenen Datei am Anfang
+                    | den Ordnername angeben und mit "_" trennen. Beispiel: Ordner_restlicherDateiName.png
+    .row
         .col-md-12
             table.table.table-striped.table-hover
                 thead
@@ -13,9 +22,16 @@
                         th 
                             a(href="",ng-click="reverse=!reverse;orderBib('created_at', reverse)") Erstellt
                         th Aktion
-                tbody
-                    tr(ng-repeat="obj in mediaData")
-                        td {{ obj.file }}
+                tbody(ng-repeat="(key, value) in media.dirs")
+                    tr.info
+                        td 
+                            b Ordner: {{key}}
+                        td
+                        td
+                        td
+                        td
+                    tr(ng-repeat="obj in value.files")
+                        td {{ obj.display}}
                         td 
                             span.label.label-default {{ obj.extension }}
                         td {{ obj.size }} bytes

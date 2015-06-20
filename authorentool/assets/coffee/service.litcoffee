@@ -112,6 +112,7 @@
     storyTellarServices.factory 'storytellarMedia', ($http, apiUrl, $filter) ->
         m = {
             mediaFiles : []
+            dirs : { test: "asdf" }
 
             isUploading : false
             isDeleting : false
@@ -125,9 +126,32 @@
                             mF.storyId = storyId
                         m.order('file', false)
                         m.isUploading = false
+                        m.buildDirectoryStructure()
                     .error (err) ->
                         angular.copy [], m.mediaFiles
                         console.log err
+
+            buildDirectoryStructure : () ->
+                directorys = {}
+                directorys["default"] = {}
+                directorys["default"].name = "default"
+                directorys["default"].files = []
+                for file in m.mediaFiles
+                    if file.file.indexOf('_') > 0
+                        dir = file.file.split('_')[0]
+                        if !directorys[dir]?
+                            directorys[dir] = {}
+                            directorys[dir].files = []
+                        directorys[dir].name = dir
+                        file.display = file.file.substring(file.file.indexOf('_') + 1)
+                        directorys[dir].files.push file
+                    else
+                        file.display = file.file
+                        directorys["default"].files.push file
+
+                angular.copy directorys, m.dirs
+                console.log m.dirs
+
 
             order : (predicate, reverse) ->
                 angular.copy m.orderBy(m.mediaFiles, predicate, reverse), m.mediaFiles

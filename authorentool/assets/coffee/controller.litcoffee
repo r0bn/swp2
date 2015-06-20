@@ -17,6 +17,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $scope.mediaSumSize = media.sumSize()
         , true
 
+        $scope.$watch "media.dirs", () ->
+            console.log $scope.media.dirs
+        , true
+
         server.getStoryXML $scope.storyId, (response) ->
                 $scope.xmlFile = response
 
