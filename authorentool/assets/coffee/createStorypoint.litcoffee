@@ -143,14 +143,14 @@
                 #ClickEvent für inEndOfStory_Checkbox
                 $("#inEndOfStory_"+counter).click ->
                     if $("#inEndOfStory_"+counter).is(" :checked ")
-                        
+                            isSetted = false
                             $("#dialog-confirm-EndpointSet").css("display","block")
                             $('#dialog-confirm-EndpointSet').dialog
                               modal: true
                               buttons:
                                 'Deklarieren': ->
+                                        isSetted = true
                                         $(this).dialog 'close'
-                                        
                                         #Delete all Interactions for this Storypoint
                                         removeAllInteractions(counter)
                                         #Delete all Edges from this Storypoint
@@ -171,7 +171,7 @@
                                         document.getElementById("inEndOfStory_"+counter).checked = false
                                         return
                               close: ->
-                                        document.getElementById("inEndOfStory_"+counter).checked = false
+                                        document.getElementById("inEndOfStory_"+counter).checked = isSetted
                                         return
 
                     else
