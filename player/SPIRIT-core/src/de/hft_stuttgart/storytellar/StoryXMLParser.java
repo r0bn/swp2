@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javafx.scene.Scene;
+//import javafx.scene.Scene;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -87,6 +87,7 @@ public class StoryXMLParser {
 		}
 		
 		// Parse metadata
+		story.setID(Integer.parseInt(storyelement.getElementsByTagName("id").item(0).getTextContent()));
 		story.setTitle(storyelement.getElementsByTagName("Title").item(0).getTextContent());
 		
 		story.setDescription(storyelement.getElementsByTagName("Description").item(0).getTextContent());
