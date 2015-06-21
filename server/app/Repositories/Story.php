@@ -167,7 +167,7 @@ class Story implements StoryInterface
 
     public function updateStorySlot($xml, $id, $workingTitle)
     {
-        $story = \App\Story::find($id);
+        $story = \App\Story::findOrFail($id);
 
         $story->working_title = $workingTitle;
 

@@ -7,6 +7,11 @@ class StorytellarServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
+            'App\Interfaces\AuthHelper',
+            'App\Repositories\AuthHelper'
+        );
+
+        $this->app->bind(
             'App\Interfaces\FileHelper',
             'App\Repositories\FileHelper'
         );

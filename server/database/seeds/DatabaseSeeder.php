@@ -31,7 +31,7 @@ class UserTableSeeder extends Seeder {
     {
         \DB::table('users')->delete();
 
-        \App\User::create(['username' => 'test', 'password' => Hash::make('1234')]);
+        \App\User::create(['email' => 'test', 'password' => Hash::make('123456')]);
     }
 
 }

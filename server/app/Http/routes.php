@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -62,10 +64,29 @@ Route::post('docs/tests/xmlschemavalidation', 'StorytellarController@postXmlSche
  * Authentication and user management
  */
 
-Route::post('register', 'RegisterController@register');
+//Route::post('register', 'RegisterController@register');
 
 Route::post('authenticate', 'AuthenticateController@authenticate');
 
 Route::get('reauthenticate', ['middleware' => ['jwt.refresh'], 'uses' => 'AuthenticateController@reauthenticate']);
 
 Route::get('user', ['middleware' => ['jwt.auth'], 'uses' => 'StorytellarController@getUserStories']);
+
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+
+Route::get('account/password', function () {
+    return view('auth.password');
+});
+
+Route::get('account', function () {
+    return view('auth.register');
+});
+
+Route::get('account/register', function () {
+    return view('auth.register');
+});
+
+Route::get('register/verify/{token}', 'RegisterController@verifyUser');

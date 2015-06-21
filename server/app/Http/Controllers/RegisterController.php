@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+//use Illuminate\Routing\Controller;
+use App\User;
 
 
 class RegisterController extends Controller
@@ -27,6 +28,22 @@ class RegisterController extends Controller
             $user->save();
         }
 
+    }
+
+
+    public function verifyUser($token)
+    {
+        $user = User::where('verified_token', '=', $token)->firstOrFail();
+
+        $this->setVerifiedStatus($user);
+
+        return view('auth.registersuccess');
+    }
+
+    public function setVerifiedStatus($user)
+    {
+        $user->verified = 1;
+        $user->save();
     }
 
 }
