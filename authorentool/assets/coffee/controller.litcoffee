@@ -59,6 +59,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             try
                 # get xml file based on current gui settings
                 $scope.xmlFile = startSynchro()
+                console.log $scope.xmlFile
             catch error
                 console.log error
 
