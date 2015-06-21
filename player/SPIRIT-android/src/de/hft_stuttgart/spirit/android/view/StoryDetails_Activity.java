@@ -44,8 +44,8 @@ public class StoryDetails_Activity extends ActionBarActivity {
 	public final static String EXTRA_UPDATEDAT = "de.hft_stuttgart.spirit.android.view.CREATIONDATE";
 	public final static String EXTRA_STOREORINSTALLED = "de.hft_stuttgart.spirit.android.view.STOREORINSTALLED";
 	public final static String EXTRA_SIZE = "de.hft_stuttgart.spirit.android.view.SIZE";
-	
 	private final static String TAG = StoryDetails_Activity.class.toString();
+
 	
     /**
      * Get the informations about a story from a intent and display the informations in the activity.
@@ -185,11 +185,13 @@ public class StoryDetails_Activity extends ActionBarActivity {
 		case R.id.action_start:
 			Intent start_intent = new Intent(getApplicationContext(),AndroidLauncher.class);
 			start_intent.putExtra(EXTRA_STORYID, intent.getIntExtra(EXTRA_STORYID, -1));
+			start_intent.putExtra("EXTRA_RESTARTMARKER", "false");
         	startActivity(start_intent);
 			return true;
 		case R.id.action_restart:
 			Intent restart_intent = new Intent(getApplicationContext(),AndroidLauncher.class);
 			restart_intent.putExtra(EXTRA_STORYID, intent.getIntExtra(EXTRA_STORYID, -1));
+			restart_intent.putExtra("EXTRA_RESTARTMARKER", "true");
         	startActivity(restart_intent);
 			return true;
 		case R.id.action_delete:

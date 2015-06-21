@@ -3,13 +3,15 @@
  */
 package de.hft_stuttgart.storytellar;
 
+import java.io.Serializable;
+
 /**
  * Interaction of a scene as item to pick up
  * 
  * @author Oliver
  * 
  */
-public class Item implements Interaction{
+public class Item implements Interaction, Serializable{
 
 	private String description;
 	private Boolean isCollected;

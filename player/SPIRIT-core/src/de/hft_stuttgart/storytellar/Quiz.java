@@ -6,13 +6,16 @@ package de.hft_stuttgart.storytellar;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.Serializable;
+
+
 /**
  * Interaction of a scene as quiz with question and answers.
  * 
  * @author Oliver
  * 
  */
-public class Quiz implements Interaction{
+public class Quiz implements Interaction, Serializable{
 	
 	private String question;
 	private List<String> answers;

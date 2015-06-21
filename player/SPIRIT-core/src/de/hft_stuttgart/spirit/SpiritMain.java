@@ -62,6 +62,8 @@ public class SpiritMain extends ApplicationAdapter implements
 	boolean startFilm = false;
 	boolean resumeFilm = false;
 
+	int storyId;
+	
 	GeoTools geoTools;
 	ArrayList<GhostLocation> ghosts = new ArrayList<GhostLocation>();
 	Facade spiritFacade;
@@ -76,6 +78,7 @@ public class SpiritMain extends ApplicationAdapter implements
 	private ArmlParser armlParser;
 	long lastVuforiaTrackableFound = 0;
 	SpiritWebviewHandler webview;
+	StorySaveLoadHandler storySaveLoad;
 	SignalToGhostEffect signalToGhostEffect;
 	FadeEffect fadeEffect;
 	TextButton[] customTextButton;
@@ -100,7 +103,7 @@ public class SpiritMain extends ApplicationAdapter implements
 	
 	//Storytellar
 	public SpiritMain(Vuforia v, SpiritFilm spiritFilm, SpiritGeoTools sgt,
-			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, String storyXMLPath, OrbInfos orbInfos) {
+			NfcInterface nfc, SpiritWebviewHandler webview, ArmlParser arml, String storyXMLPath, OrbInfos orbInfos,int storyid, StorySaveLoadHandler storySaveLoad) {
 		vuforia = v;
 		this.spiritFilm = spiritFilm;
 		geoTools = new GeoTools(sgt);
@@ -108,12 +111,16 @@ public class SpiritMain extends ApplicationAdapter implements
 		this.webview = webview;
 		armlParser = arml;
 		this.storyXMLPath = storyXMLPath;	
-		
+		this.storyId = storyid;
 		//added from new spirit app
 		this.orbInfos = orbInfos;
 		//
+		
+		story = storySaveLoad.loadStory(storyId);
+		if(story == null){
+			story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
+		}
 	}
-
 	@Override
 	public void create() {
 		//added from new spirit app
@@ -149,8 +156,6 @@ public class SpiritMain extends ApplicationAdapter implements
 		spiritFilm.setup();
 		events = new ArrayList<SpiritEvent>();
 		
-		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
-			
 		spiritFacade = new Facade(this, story);
 		guiAtlas = new TextureAtlas(Gdx.files.internal("gui.pack"));
 		sonarAtlas = new TextureAtlas(Gdx.files.internal("sonar.pack"));

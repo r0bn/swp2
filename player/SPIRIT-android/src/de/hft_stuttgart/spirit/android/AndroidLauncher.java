@@ -5,7 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -17,6 +21,7 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -72,12 +77,17 @@ import com.qualcomm.vuforia.TrackerManager;
 
 import de.hft_stuttgart.spirit.SpiritMain;
 import de.hft_stuttgart.spirit.SpiritWebviewHandler;
+import de.hft_stuttgart.spirit.StorySaveLoadHandler;
 import de.hft_stuttgart.spirit.android.view.Main_Activity;
 import de.hft_stuttgart.spirit.android.view.StoryDetails_Activity;
 import de.hft_stuttgart.storytellar.PlayableStory;
+import de.hft_stuttgart.storytellar.StoryPoint;
+import de.hft_stuttgart.storytellar.StorypointStatus;
+
+
 
 public class AndroidLauncher extends AndroidApplication implements
-		VuforiaControl, SpiritWebviewHandler {
+		VuforiaControl, SpiritWebviewHandler,StorySaveLoadHandler {
 	private static final String MIME_TEXT_PLAIN = "text/plain";
 	public static final String TAG = "NfcDemo";
 
@@ -89,7 +99,9 @@ public class AndroidLauncher extends AndroidApplication implements
 	private int startBuildFails = 0;
 	int targetBuilderCounter = -1;
 	boolean retryStartBuild = false;
-
+	SpiritMain spiritmain;
+	int storyId;
+	boolean storyended = false;
 	View gameView;
 	GeoToolsWrapper geoTools;
 	WebView webView;
@@ -118,6 +130,16 @@ public class AndroidLauncher extends AndroidApplication implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		storyId = getIntent().getIntExtra(StoryDetails_Activity.EXTRA_STORYID, -1);
+	
+		if (getIntent().hasExtra("EXTRA_RESTARTMARKER")){	
+ 			if (getIntent().getStringExtra("EXTRA_RESTARTMARKER").equals("true")){
+ 				deleteSave(storyId);
+ 			}
+ 		}
+
+		//deleteSave(storyId);
+		
 		nfcInterface = new NfcLibgdxInterface();
 
 		// geoTools starten
@@ -141,6 +163,9 @@ public class AndroidLauncher extends AndroidApplication implements
 		vuforiaSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		// handleIntent(getIntent());
+		
+		
+		
 	}
 
 	@Override
@@ -166,6 +191,7 @@ public class AndroidLauncher extends AndroidApplication implements
 
 	@Override
 	protected void onPause() {
+
 		if (mNfcAdapter != null) {
 			stopForegroundDispatch(this, mNfcAdapter);
 		}
@@ -179,11 +205,21 @@ public class AndroidLauncher extends AndroidApplication implements
 			}
 		//
 		// Log.w("SPIRIT","pause auch im launcher! :E");
+		if (!storyended){
+			spiritmain.getStory().setID(storyId);
+			saveStory(spiritmain.getStory());
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
+		
+		
 		super.onDestroy();
+		if (!storyended){
+			spiritmain.getStory().setID(storyId);
+			saveStory(spiritmain.getStory());
+		}
 		// Log.w("SPIRIT","destroy auch im launcher! :E");
 	}
 
@@ -304,17 +340,17 @@ public class AndroidLauncher extends AndroidApplication implements
 //				this, new ArmlLoader(this, new XmlPullParserHandler())), config);
 
 		// Generate path for xml file
-		int storyId = getIntent().getIntExtra(StoryDetails_Activity.EXTRA_STORYID, -1);
 		String pathToAppDir = Environment.getExternalStorageDirectory()
 				+ "/StorytellAR";
 		String storyXMLPath = pathToAppDir + "/Content/" + String.valueOf(storyId) + "/arml.xml";
 		
 		//new spirit app: added orbtools to constructor of SpiritMain
-		gameView = initializeForView(new SpiritMain(new VuforiaLibgdxInterface(
+		spiritmain = new SpiritMain(new VuforiaLibgdxInterface(
 				this), new SpiritFilmWrapper(this), geoTools, nfcInterface,
-				this, new ArmlLoader(this, new XmlPullParserHandler()), storyXMLPath, orbTools), config);
+				this, new ArmlLoader(this, new XmlPullParserHandler()), storyXMLPath, orbTools,storyId,this);
+		gameView = initializeForView(spiritmain, config);
 		gameView.setId(123);
-
+//		
 		// RelativeLayout.LayoutParams params = new
 		// RelativeLayout.LayoutParams(640, 480);
 		// layout.addView(gameView,params);
@@ -904,6 +940,8 @@ public class AndroidLauncher extends AndroidApplication implements
 
 	@Override
 	public void endStory() {
+		storyended = true;
+		deleteSave(storyId);	//restart the story next time
 		Intent i = new Intent(this, Main_Activity.class);
 		startActivity(i);
 	}
@@ -944,8 +982,8 @@ public class AndroidLauncher extends AndroidApplication implements
 	}
 	
 	public void saveStory(PlayableStory story){
-		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/Content/" + String.valueOf(story.getID()) + "/save.ser");
 		
+		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(story.getID()) +"/save.ser");
 		FileOutputStream   fos  = null;
         ObjectOutputStream oos  = null;
         boolean            keep = true;
@@ -953,9 +991,27 @@ public class AndroidLauncher extends AndroidApplication implements
         try {
             fos = new FileOutputStream(suspend_f);
             oos = new ObjectOutputStream(fos);
+            
+            //change status of the active storypoint to open, so that it will be executed once again
+            for(StoryPoint point: story.getStorypoints().values()) {
+				if(point.getStatus() == StorypointStatus.ACTIVE) {
+					point.setStatus(StorypointStatus.OPEN);
+				}
+			}
+            
             oos.writeObject(story);
+            Toast.makeText(this, "Der Spielstand wurde gespeichert.", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             keep = false;
+
+//            For Testing: prints the errorStackTrace on the screen
+//            Writer writer = new StringWriter();
+//            PrintWriter printWriter = new PrintWriter(writer);
+//            e.printStackTrace(printWriter);
+//            String s = writer.toString();
+//            
+//            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+            
         } finally {
             try {
                 if (oos != null)   oos.close();
@@ -963,12 +1019,41 @@ public class AndroidLauncher extends AndroidApplication implements
                 if (keep == false) suspend_f.delete();
             } catch (Exception e) { /* do nothing */ }
         }
+        
+        
+//        For Testing: (creates a textfile with the playable story infos inside the storyfolder)
+//        try {
+//            File myFile = new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(story.getID()) +"/Saved.txt");
+//            myFile.createNewFile();
+//            FileOutputStream fOut = new FileOutputStream(myFile);
+//            OutputStreamWriter myOutWriter = 
+//                                    new OutputStreamWriter(fOut);
+//            myOutWriter.append(story.toString());
+//            myOutWriter.close();
+//            fOut.close();
+//            Toast.makeText(getBaseContext(),
+//                    "Done writing SD 'Saved.txt'",
+//                    Toast.LENGTH_SHORT).show();
+//        } catch (Exception e) {
+//            Toast.makeText(getBaseContext(), e.getMessage(),
+//                    Toast.LENGTH_SHORT).show();
+//        }
 
 	}
-	
+	public void deleteSave(Integer ID){
+		try {
+			final File save=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(ID) + "/save.ser");
+			save.delete();
+			//Toast.makeText(this, "save deleted", Toast.LENGTH_LONG).show(); // For Testing: warning: doesn't work for storyended
+		 } catch(Exception e) {
+			//Toast.makeText(this, "error while deleting", Toast.LENGTH_LONG).show(); //For Testing: warning: doesn't work for storyended
+			String val= e.getMessage();
+		 }
+	}
+
 	public PlayableStory loadStory(Integer ID){
 		
-		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/Content/" + String.valueOf(ID) + "/save.ser");
+		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(ID) + "/save.ser");
 
         PlayableStory story = null;
         FileInputStream fis = null;
@@ -978,6 +1063,7 @@ public class AndroidLauncher extends AndroidApplication implements
             fis = new FileInputStream(suspend_f);
             is = new ObjectInputStream(fis);
             story = (PlayableStory) is.readObject();
+            Toast.makeText(this, "Der Spielstand wurde geladen.", Toast.LENGTH_LONG).show();
         } catch(Exception e) {
             String val= e.getMessage();
         } finally {
@@ -986,7 +1072,9 @@ public class AndroidLauncher extends AndroidApplication implements
                 if (is != null)   is.close();
             } catch (Exception e) { }
         }
-
+        
 		return story;
 	}
+	
+	  
 }

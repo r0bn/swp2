@@ -1,5 +1,7 @@
 package de.hft_stuttgart.storytellar;
 
+import java.io.Serializable;
+
 /**
  * Saves a trackable image. The trackable image is needed to define the position of a video/image on the screen.
  * Trackable images were parsed from the XML and downloaded with the other media files.
@@ -9,7 +11,7 @@ package de.hft_stuttgart.storytellar;
  *
  */
 
-public class Trackable {
+public class Trackable implements Serializable{
 	
 	private String id;
 	private String algorithm;

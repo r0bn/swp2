@@ -75,7 +75,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	}
 
 	/**
-	 * The update-method is called after every frame. the game loggic is implemented here.
+	 * The update-method is called after every frame. the game logic is implemented here.
 	 */
 	@Override
 	public void update() {
@@ -87,7 +87,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 		/*In this statemachine the logic is handled. See "StorytellAR_StoryEngine.png" in documentation for more details*/
 		switch (state) {
 		case OPEN:
-			
+
 			/*If a StoryPoint is queued, start it*/
 			boolean breaker = false;
 			for(StoryPoint point: story.getStorypoints().values()) {

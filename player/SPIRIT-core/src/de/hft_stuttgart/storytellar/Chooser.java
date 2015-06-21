@@ -3,6 +3,7 @@
  */
 package de.hft_stuttgart.storytellar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Oliver
  * 
  */
-public class Chooser implements Interaction{
+public class Chooser implements Interaction, Serializable{
 	
 	private String question;
 	private List<String> answers;

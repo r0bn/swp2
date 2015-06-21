@@ -4,6 +4,7 @@
 package de.hft_stuttgart.storytellar;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import de.hft_stuttgart.spirit.Poi;
  * 
  * @author Marcel
  */
-public class StoryPoint extends Poi{
+public class StoryPoint extends Poi implements Serializable{
 	
 	//maybe change status codes
 	//private String name;
