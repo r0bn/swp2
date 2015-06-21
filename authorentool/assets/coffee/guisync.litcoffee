@@ -210,7 +210,7 @@
                         if $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != '' && $("#btnSetQuizOnFalseReferences_"+ interID[2]).val() != 'Neue Ref setzen'
                             xml += '                <OnFalse xlink:href="#'+ synchronizeInputHelper("btnSetQuizOnFalseReferences_"+ interID[2]).replace(" ", "") + '_Feature" />\r\n'
                         xml += '                <Question>' + synchronizeInputHelper("inQuizQuestion_"+ interID[2]) + '</Question>\r\n'
-                        answer = $("#btnQuizAnswer_" + interID[2]).parent().next()
+                        answer = $("#btnQuizAnswer_" + interID[2]).parent().parent().next()
                         while typeof answer.attr("id") != "undefined"
                             answer_id = answer.attr("id").split("_")
                             answer_id = answer_id[1]
