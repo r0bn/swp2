@@ -35,17 +35,34 @@
             updateStory : (id, xml, final) ->
                 $http.post("#{apiUrl}/story/#{id}", { xml : xml, final : final })
                     .success () ->
-                        
-                        $("#saveFunctionSuccess").css("display", "block")
-                        $("#saveFunctionSuccess").dialog
-                          modal: true
-                          buttons: {
-                            Ok: -> 
-                              $(this).dialog "close";
-                            }
-                        
-                        
-                        console.log "updated"
+
+                        # if the user used final, than check if server validated it
+                        m.getStoryList (list) ->
+                            for l in list
+                                if l.id is id
+                                    if final
+                                        if !l.final
+                                            tempErrValue = "Story wurde vom Server nicht korrekt validiert! \n Status veröffentlicht konnte nicht eingestellt werden."
+                                            
+                                            $("#saveFunctionErrorText").text(tempErrValue)
+                                            $("#saveFunctionError").css("display", "block")
+                                            $("#saveFunctionError").dialog
+                                              modal: true
+                                              buttons: {
+                                                Ok: -> 
+                                                  $(this).dialog "close";
+                                                }
+                                            return
+
+                                    $("#saveFunctionSuccess").css("display", "block")
+                                    $("#saveFunctionSuccess").dialog
+                                      modal: true
+                                      buttons: {
+                                        Ok: ->
+                                          $(this).dialog "close"
+                                        }
+                                    console.log "updated"
+
                     .error (err) ->
                         tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
                         
