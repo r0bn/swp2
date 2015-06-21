@@ -87,7 +87,7 @@ public class StoryXMLParser {
 		}
 		
 		// Parse metadata
-		story.setID(Integer.parseInt(storyelement.getElementsByTagName("id").item(0).getTextContent()));
+	//	story.setID(Integer.parseInt(storyelement.getElementsByTagName("id").item(0).getTextContent())); //java.lang.runtimeException 
 		story.setTitle(storyelement.getElementsByTagName("Title").item(0).getTextContent());
 		
 		story.setDescription(storyelement.getElementsByTagName("Description").item(0).getTextContent());
