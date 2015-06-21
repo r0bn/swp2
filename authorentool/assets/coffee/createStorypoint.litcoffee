@@ -170,6 +170,9 @@
                                         $(this).dialog 'close'
                                         document.getElementById("inEndOfStory_"+counter).checked = false
                                         return
+                              close: ->
+                                        document.getElementById("inEndOfStory_"+counter).checked = false
+                                        return
 
                     else
                         $("#btnCreateInteraction_" + counter).attr("disabled", false)
