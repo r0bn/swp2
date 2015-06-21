@@ -13,12 +13,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.final = false
 
         $scope.$watch "media.mediaFiles", () ->
-            console.log media.sumSize()
             $scope.mediaSumSize = media.sumSize()
-        , true
-
-        $scope.$watch "media.dirs", () ->
-            console.log $scope.media.dirs
         , true
 
         server.getStoryXML $scope.storyId, (response) ->

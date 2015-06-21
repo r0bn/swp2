@@ -150,7 +150,6 @@
                         directorys["default"].files.push file
 
                 angular.copy directorys, m.dirs
-                console.log m.dirs
 
 
             order : (predicate, reverse) ->
@@ -163,7 +162,12 @@
                 m.isDeleting = true
                 $http.delete("#{apiUrl}/story/#{mediaFile.storyId}/media/#{mediaFile.file}")
                     .success (data) ->
-                        m.mediaFiles.splice m.mediaFiles.indexOf(mediaFile), 1
+                        indexFile = 0
+                        for mF, key in m.mediaFiles
+                            if mF.file is mediaFile.file
+                                indexFile = key
+                        m.mediaFiles.splice indexFile, 1
+                        m.buildDirectoryStructure()
                     .error (err) ->
                         alert err
                     .finally () ->
