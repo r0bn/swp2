@@ -38,6 +38,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	private enum EngineStates {
 		OPEN, 
 		IN_SCENE_START,
+		IN_SCENE_REFERENCE_SEARCH,
 		IN_SCENE_END,
 		IN_SCENE_PICTURE_START, 
 		IN_SCENE_PICTURE, 
@@ -104,23 +105,14 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() <= 10) {
+				if (facade.getDistanceUserToClosestGhost() <= 15) {
 					activeStoryPoint = closest;
-					facade.getOrbInfos().setVergleichName(closest.getTrackable_image().getSrc()); 	//Set Picture that is searched
-					
-					if(closest.getTrackable_image().getSrc().isEmpty() || facade.getOrbInfos().getLastResultName().equals(closest.getTrackable_image().getSrc())
-						|| facade.getOrbInfos().getLastResultName().equals("")) 
-						{
-							if(closest.getTrackable_image().getSrc().isEmpty() && facade.getTabletAngle() > 75 || facade.getOrbInfos().found(30, 40, 40))
-							{
-								state = EngineStates.IN_SCENE_START;
-							} else {
-								//System.out.println("StorytellAR_StoryEngine: Result of image tracking is too bad!");
-							}
-						} else {
-							//System.out.println("Name isn't matching!");
-							//System.out.println("Searched: "+closest.getTrackable_image().getSrc()+" Found: "+facade.getOrbInfos().getLastResultName());
-						}
+					if(!activeStoryPoint.getTrackable_image().getSrc().isEmpty()) {
+						facade.setText("Finde");
+						facade.setPictureAlpha(0.5f);
+						facade.showPicture(activeStoryPoint.getTrackable_image().getSrc());						
+					}
+					state = EngineStates.IN_SCENE_REFERENCE_SEARCH;
 				}
 			} else {
 				facade.endStory();
@@ -132,6 +124,26 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			} else {
 				facade.switchToARView();
 			}
+			break;
+		case IN_SCENE_REFERENCE_SEARCH:
+			facade.getOrbInfos().setVergleichName(activeStoryPoint.getTrackable_image().getSrc()); 	//Set Picture that is searched
+			
+			if(activeStoryPoint.getTrackable_image().getSrc().isEmpty() || facade.getOrbInfos().getLastResultName().equals(activeStoryPoint.getTrackable_image().getSrc())
+				|| facade.getOrbInfos().getLastResultName().equals("")) 
+				{
+					if(activeStoryPoint.getTrackable_image().getSrc().isEmpty() && facade.getTabletAngle() > 75 || facade.getOrbInfos().found(30, 40, 40))
+					{
+						facade.hideText();
+						facade.hidePicture();
+						facade.setPictureAlpha(1.0f);
+						state = EngineStates.IN_SCENE_START;
+					} else {
+						//System.out.println("StorytellAR_StoryEngine: Result of image tracking is too bad!");
+					}
+				} else {
+					//System.out.println("Name isn't matching!");
+					//System.out.println("Searched: "+closest.getTrackable_image().getSrc()+" Found: "+facade.getOrbInfos().getLastResultName());
+				}
 			break;
 		case IN_SCENE_START:/*Start the video or Picture of the actual scene*/
 			facade.switchToARView();

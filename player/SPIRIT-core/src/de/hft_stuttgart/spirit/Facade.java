@@ -301,6 +301,11 @@ public class Facade implements UIController {
 	public void log(String who, String what) {
 		app.log(who, what);
 	}
+
+	@Override
+	public void setPictureAlpha(float f) {
+		app.setPictureAlpha(f);
+	}
 	
 	
 

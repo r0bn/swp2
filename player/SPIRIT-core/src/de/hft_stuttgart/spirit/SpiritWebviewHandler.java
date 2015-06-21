@@ -15,4 +15,5 @@ public interface SpiritWebviewHandler {
 	public void setText(String text);
 	public void hideText();
 	public void log(String who, String what);
+	public void setPictureAlpha(float f);
 }

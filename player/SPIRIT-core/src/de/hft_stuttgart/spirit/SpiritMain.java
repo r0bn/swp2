@@ -762,5 +762,10 @@ public class SpiritMain extends ApplicationAdapter implements
 		return orbInfos;
 	}
 	//
+
+	@Override
+	public void setPictureAlpha(float f) {
+		webview.setPictureAlpha(f);
+	}
 	
 }

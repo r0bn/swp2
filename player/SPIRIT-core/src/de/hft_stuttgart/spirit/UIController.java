@@ -283,4 +283,6 @@ public interface UIController {
 	public void hideText();
 
 	public void log(String who, String what);
+
+	public void setPictureAlpha(float f);
 }

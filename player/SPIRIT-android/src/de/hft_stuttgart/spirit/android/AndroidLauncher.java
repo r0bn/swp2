@@ -939,6 +939,18 @@ public class AndroidLauncher extends AndroidApplication implements
 	}
 
 	@Override
+	public void setPictureAlpha(float f) {
+		final float finalF = f;
+		imageView.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				imageView.setAlpha(finalF);
+			}
+		});
+	}
+
+	@Override
 	public void endStory() {
 		storyended = true;
 		deleteSave(storyId);	//restart the story next time
@@ -1075,6 +1087,7 @@ public class AndroidLauncher extends AndroidApplication implements
         
 		return story;
 	}
+
 	
 	  
 }
