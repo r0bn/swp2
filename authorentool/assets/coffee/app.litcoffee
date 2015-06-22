@@ -53,3 +53,4 @@ The following code is a angularJS (https://angularjs.org/) Application.
             if nextPath is "/" && storytellarAuthentication.isAuthenticated()
                 $location.path("/home")
 
+

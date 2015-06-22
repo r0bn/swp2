@@ -142,11 +142,12 @@
                         for mF in m.mediaFiles
                             mF.storyId = storyId
                         m.order('file', false)
-                        m.isUploading = false
                         m.buildDirectoryStructure()
                     .error (err) ->
-                        angular.copy [], m.mediaFiles
+                        angular.copy [], [] 
                         console.log err
+                    .finally () ->
+                        m.isUploading = false
 
             buildDirectoryStructure : () ->
                 directorys = {}
@@ -186,7 +187,8 @@
                         m.mediaFiles.splice indexFile, 1
                         m.buildDirectoryStructure()
                     .error (err) ->
-                        alert err
+                        console.log err
+                        alert "Datei konnte nicht gelöscht werden."
                     .finally () ->
                         m.isDeleting = false
 
@@ -212,19 +214,44 @@
                 .success () ->
                     m.update(storyId)
                 .error (err) ->
-                    alert err
+                    console.log err
+                    alert "Datei upload vom Server nicht akzeptiert." 
+                .finally () ->
+                    m.update(storyId)
         }
 
-    storyTellarServices.factory 'storytellarAuthentication', [ '$http', 'disableAuthentication', ($http, disableAuth) ->
-        serverUrl = "http://api.storytellar.de"
+    storyTellarServices.factory 'storytellarAuthentication', [ '$http', 'disableAuthentication', 'apiUrl', ($http, disableAuth,apiUrl) ->
         isAuthenticated = disableAuth
-        {
-            isValid : (user, password) ->
-                isAuthenticated = true
-                return true
+        m = {
+            isValid : (user, password, cb) ->
+                if !disableAuth
+                    m.authenticate user, password, (res) ->
+
+                        console.log res
+                        isAuthenticated = res
+                        cb(isAuthenticated)
+                else
+                    isAuthenticated = true
+                    cb(true)
+                    return true
 
             isAuthenticated : () ->
                 return isAuthenticated
+
+            authenticate : (user, password, cb) ->
+                $http.post("#{apiUrl}/authenticate", { email: user, password : password })
+                    .success (response) ->
+                        token = response.token
+                        if token?
+
+                            $http.defaults.headers.common.Authorization = "Bearer #{token}"
+                            cb(true)
+                            return
+                        cb(false)
+                    .error (err) ->
+                        console.log err
+                        cb(false)
+                        
 
         }
     ]

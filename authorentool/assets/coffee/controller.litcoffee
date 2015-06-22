@@ -11,6 +11,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $scope.mediaData = media.mediaFiles
         $scope.media = media
         $scope.final = false
+        $scope.uploadEnabled = true
 
         $scope.$watch "media.mediaFiles", () ->
             $scope.mediaSumSize = media.sumSize()
@@ -267,9 +268,16 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellarAuthentication", ($scope, $location, $server) ->
 
+        $scope.mail = "storytellar@trashmail.de"
+        $scope.pass = "123456"
+
         $scope.login = () ->
-            if $server.isValid("dummy", "dummy")
-                $location.path("/home")
+            $server.isValid $scope.mail, $scope.pass, (res) ->
+                console.log res
+                if res
+                    $location.path("/home")
+                else
+                    $scope.isError = true
 
     ]
 
@@ -278,11 +286,17 @@ The following code is a angularJS (https://angularjs.org/) Application.
             restrict: 'A'
             scope :
                 fileModel : '='
+                uploadEnabled : '='
             link: (scope, element, attrs) ->
                 
                 element.bind 'change', () ->
                     scope.$apply () ->
                         scope.fileModel = element[0].files[0]
+                        if scope.fileModel.size > 3000000
+                            scope.uploadEnabled = false
+                            alert "Datei ist zu groß. Max. 30 MB"
+                        else
+                            scope.uploadEnabled = true
         }
     ]
 

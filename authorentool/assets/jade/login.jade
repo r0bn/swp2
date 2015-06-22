@@ -8,7 +8,9 @@
                     form(role="form")
                         fieldset
                             .form-group(ng-class="{'has-error' : isError}")
-                                input.form-control(placeholder="Password",name="password",type="password",autofocus="")
+                                input.form-control(placeholder="EMail",name="email",type="text",autofocus="",ng-model="mail")
+                            .form-group(ng-class="{'has-error' : isError}")
+                                input.form-control(placeholder="Password",name="password",type="password",autofocus="",ng-model="pass")
                             a.btn.btn-sm.btn-success(ng-click="login()") Login
                             span.help-block Momentan noch kein Password nötig! Einfach Login klicken.
 
