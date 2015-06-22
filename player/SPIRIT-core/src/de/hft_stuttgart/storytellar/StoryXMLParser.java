@@ -493,7 +493,7 @@ public class StoryXMLParser {
 		for (int i = 0; i < trackables.getLength(); i++) {
 			System.out.println(temp.getId()+"  equals  "+trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker"));
 			System.out.println(temp.getId().equals(trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker")));
-			if(temp.getId().equals(trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "Tracker"))){
+			if(temp.getId().equals(trackables.item(i).getAttributes().getNamedItem("id").getNodeValue().replace("Trackable", "ImageTracker"))){
 				getTrackableValues(trackables.item(i), temp);
 				break;
 			}
