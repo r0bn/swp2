@@ -142,7 +142,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -226,7 +226,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -315,7 +315,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         $("#btnSetChooserStorypointReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -703,7 +703,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetStorypointReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -721,6 +721,7 @@
             tmpObj = $(objectID)
             while found != true
                 parentNode = tmpObj.parent()
+                console.log parentNode.attr("id")
                 if typeof parentNode.attr("id") != "undefined"
                     tmp = parentNode.attr("id").split("_")
                     if tmp[0] == searchedParent
