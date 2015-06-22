@@ -107,12 +107,17 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				StoryPoint closest = sps.get(loc.name);
 				if (facade.getDistanceUserToClosestGhost() <= 15) {
 					activeStoryPoint = closest;
+					if(activeStoryPoint.getTrackable_image() == null){
+						state = EngineStates.IN_SCENE_START;
+					} else {
+						
 					if(!activeStoryPoint.getTrackable_image().getSrc().isEmpty()) {
 						facade.setText("Finde");
 						facade.setPictureAlpha(0.5f);
 						facade.showPicture(activeStoryPoint.getTrackable_image().getSrc());						
 					}
 					state = EngineStates.IN_SCENE_REFERENCE_SEARCH;
+					}
 				}
 			} else {
 				facade.endStory();
