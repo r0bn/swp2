@@ -992,7 +992,9 @@ public class AndroidLauncher extends AndroidApplication implements
 	public void log(String who, String what) {
 		Log.w(who,what);
 	}
-	
+	/**
+	 * Saves the Checkpoints reached of the current story the user was playing.
+	 */
 	public void saveStory(PlayableStory story){
 		
 		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(story.getID()) +"/save.ser");
@@ -1052,6 +1054,10 @@ public class AndroidLauncher extends AndroidApplication implements
 //        }
 
 	}
+	/**
+	 * Deletes the saved data of the app with the ID given as param.
+	 * @param ID is the story.ID of the playableStory you want to delete.
+	 */
 	public void deleteSave(Integer ID){
 		try {
 			final File save=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(ID) + "/save.ser");
@@ -1062,7 +1068,9 @@ public class AndroidLauncher extends AndroidApplication implements
 			String val= e.getMessage();
 		 }
 	}
-
+	/**
+	 * loads a previously serialized story back into the app context.
+	 */
 	public PlayableStory loadStory(Integer ID){
 		
 		final File suspend_f=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + String.valueOf(ID) + "/save.ser");
