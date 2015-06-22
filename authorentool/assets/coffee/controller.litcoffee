@@ -89,7 +89,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             $(this).val(Math.abs(tmp))
         initialLightMedienBox()
         initDropdownClicks()
-        window.googleMap()
+        googleMap()
         
         # Counters
         window.dropdownLiCounter = 0
@@ -109,11 +109,11 @@ The following code is a angularJS (https://angularjs.org/) Application.
         window.endStorypoints = []
         window.startStorypoints = []
         
-        
         # Nodes and Edges for the dependency graph
         window.nodes = []
         window.edges = []
         window.duplicateEdges = []
+        window.markers = []
         initHelpSystem()
         initScrollbar()
 

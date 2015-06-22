@@ -1,7 +1,7 @@
 
 
         startXMLSynchro = (xmlString) ->
-
+            window.markers =[]
             xmlDoc = $.parseXML(xmlString)
             $xml = $(xmlDoc)
             
@@ -33,7 +33,9 @@
             if radiusAttr == "m"
                 $("#ddnradius").val("Meter")
                 $("#ddnradius").html("Meter <span class='caret' />")
-            
+            window.mapCaller = 'btnMap'
+            latlong = new (google.maps.LatLng)(gps1,gps2)
+            addMarker(latlong, window.markers)
             ###########################################StorypointDaten
             $xml
                 ####################Löschen ALler bisherigen Storypoints
@@ -62,20 +64,28 @@
                 
                 
                 createNewStorypointX(counter)
+                
                 featureId = $(this).attr('id').split("_Feature")[0]
                 $("#inStorypoint_"+counter).val(featureId)
                 $("#inStorypoint_"+counter).trigger("keyup")
-                
+
                 ############## video is wrong, cause images could be given too...
                 shownObject = $(this).find('Href').attr('xlink:href')
+                if typeof shownObject == 'undefined'
+                    shownObject = $(this).find('href').attr('xlink:href')
                 if typeof shownObject != 'undefined'
                     $('#inAsset_' + counter).val(shownObject)
                     
                 position = $(this).find("pos").text()
                 position = position.replace(" ",", ")
                 $("#inAnchorPoint_" + counter).val(position)
-                
-                
+                position = position.split(", ")
+                gps1 = position[0]
+                gps2 = position[1]
+                window.mapCaller = "btnStorypointMap_" + counter
+                latlong = new (google.maps.LatLng)(gps1,gps2)
+                addMarker(latlong, window.markers)
+                setAllMap(null, markers)
                 trackerID = $(this).find('anchorRef').attr('xlink:href')
                 $xml.find('Trackable').each ->
                     if $(this).find('tracker').attr('xlink:href') == trackerID
