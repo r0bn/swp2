@@ -266,10 +266,12 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     ]
 
-    storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellarAuthentication", ($scope, $location, $server) ->
+    storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellarAuthentication", "disableAuthentication", ($scope, $location, $server, disA) ->
 
-        $scope.mail = "storytellar@trashmail.de"
-        $scope.pass = "123456"
+            #$scope.mail = "storytellar@trashmail.de"
+            #$scope.pass = "123456"
+        $scope.mail = ""
+        $scope.pass = ""
 
         $scope.login = () ->
             $server.isValid $scope.mail, $scope.pass, (res) ->

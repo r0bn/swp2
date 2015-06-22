@@ -12,6 +12,7 @@
                             .form-group(ng-class="{'has-error' : isError}")
                                 input.form-control(placeholder="Password",name="password",type="password",autofocus="",ng-model="pass")
                             a.btn.btn-sm.btn-success(ng-click="login()") Login
-                            span.help-block Momentan noch kein Password nötig! Einfach Login klicken.
+                            span.help-block
+                                a(href="http://api.storytellar.de/account",target="_blank") Account anlegen
 
 
