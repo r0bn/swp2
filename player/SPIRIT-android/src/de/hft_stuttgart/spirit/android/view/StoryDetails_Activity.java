@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit.android.view;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -166,6 +168,22 @@ public class StoryDetails_Activity extends ActionBarActivity {
         return true;
     }
 
+    
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+    	Intent intent = getIntent();
+    	File saveGame=new File(Environment.getExternalStorageDirectory() + "/StorytellAR/Content/" + intent.getIntExtra(EXTRA_STORYID, -1) + "/save.ser");
+    	if(saveGame.exists() && !saveGame.isDirectory()) { 
+     	    menu.getItem(0).setTitle("Fortsetzen");
+     	   menu.getItem(1).setEnabled(true);	//shows restart Menu option	
+    	}else{
+    		menu.getItem(0).setTitle("Start");
+    		menu.getItem(1).setEnabled(false);	//hides restart Menu option	
+    	}
+        return true;
+    }
+    
+    
     /**
      * Handle clicks on the start, restart, delete and download buttons. On click of the start button, 
      * the story is started in spirit. On click of the restart button, a old savestate of the story is 
