@@ -118,7 +118,9 @@ public class StoryXMLParser {
 		story.setStorypoints(storypoints);
 		
 		nodes = arelementselement.getElementsByTagName("Interactions");
-		addInteractionsfromNode(nodes.item(0),story);
+		if (nodes!=null && nodes.getLength()>0) {
+			addInteractionsfromNode(nodes.item(0),story);
+		}
 		
 		// Get dependency node
 		Node dependencynode = doc.getElementsByTagName("Dependency").item(0);
@@ -169,7 +171,10 @@ public class StoryXMLParser {
 						addLocationfromNode(anchors_subnode,sPoint);
 					}
 					if (anchors_subnode.getNodeName().equals("InteractionList")) {
-						interactionRef.put(getInteractionReffromNode(anchors_subnode), sPoint.getName());
+						String val = getInteractionReffromNode(anchors_subnode);
+						if (val!=null) {
+							interactionRef.put(val, sPoint.getName());
+						}
 					}
 					if (anchors_subnode.getNodeName().equals("anchorRef")) {
 						trackableRef.put(anchors_subnode.getAttributes().getNamedItem("xlink:href").getNodeValue().replace("#", ""), sPoint);
@@ -256,12 +261,13 @@ public class StoryXMLParser {
 	private String getInteractionReffromNode( Node node ){
 		
 		Node subnode = node.getFirstChild();
+
 		do {
 			if (subnode.getNodeName().equals("InteractionRef")) {
 				return subnode.getAttributes().getNamedItem("xlink:href").getNodeValue();
 			}
 			subnode = subnode.getNextSibling();
-		} while (subnode.getNextSibling()!=null);
+		} while (subnode!=null);
 		return null;
 	}
 	
@@ -274,20 +280,29 @@ public class StoryXMLParser {
 	private void addInteractionsfromNode( Node node, PlayableStory story ){
 		
 		Element element = (Element)node;
+		if (element==null) {
+			return;
+		}
 		
 		NodeList subnodes = element.getElementsByTagName("Quiz");
-		for (int i = 0; i < subnodes.getLength(); i++) {
-			addQuizfromNode(subnodes.item(i), story);
+		if (subnodes!=null) {
+			for (int i = 0; i < subnodes.getLength(); i++) {
+				addQuizfromNode(subnodes.item(i), story);
+			}
 		}
 		
 		subnodes = element.getElementsByTagName("Item");
-		for (int i = 0; i < subnodes.getLength(); i++) {
-			addItemfromNode(subnodes.item(i), story);
+		if (subnodes!=null) {
+			for (int i = 0; i < subnodes.getLength(); i++) {
+				addItemfromNode(subnodes.item(i), story);
+			}
 		}
 		
 		subnodes = element.getElementsByTagName("Chooser");
-		for (int i = 0; i < subnodes.getLength(); i++) {
-			addWaychooserfromNode(subnodes.item(i), story);
+		if (subnodes!=null) {
+			for (int i = 0; i < subnodes.getLength(); i++) {
+				addWaychooserfromNode(subnodes.item(i), story);
+			}
 		}
 	}
 	
