@@ -121,11 +121,11 @@
                     videoID = synchronizeInputHelper("inAsset_"+ id)
                     videoID = videoID.split(".")
                     if videoID[1] == 'mp4'
-                        xml += '                        <Video id="' + videoID[0] + '">\r\n'
+                        xml += '                        <Video id="' + synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature_' + videoID[0] + '">\r\n'
                         xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
                         xml += '                        </Video>\r\n'
                     if videoID[1] != 'mp4'
-                        xml += '                        <Image id="' + videoID[0] + '">\r\n'
+                        xml += '                        <Image id="'+ synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature_' + videoID[0] + '">\r\n'
                         xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
                         xml += '                        </Image>\r\n'
                 xml += '                    </assets>\r\n'
@@ -167,9 +167,9 @@
             return xml
         synchronizeInteractionTag = (xml) ->
             xml += '        <Interactions>\r\n'
-            xml = synchronizeItems(xml)
             xml = synchronizeQuizes(xml)
             xml = synchronizeChoosers(xml)
+            xml = synchronizeItems(xml)
 
             
             xml += '        </Interactions>\r\n'
@@ -217,9 +217,9 @@
                             xml += '                <Answer id="' + synchronizeInputHelper("inQuizAnswerID_"+answer_id).replace(" ", "") + '">\r\n'
                             xml += '                    <Text>' + synchronizeInputHelper("inQuizAnswerText_" +answer_id) + '</Text>\r\n'
                             if $("#ddnState_" + answer_id).val() == "Wahr"
-                                xml += '                    <Status>True</Status>\r\n'
+                                xml += '                    <Status>true</Status>\r\n'
                             else
-                                xml += '                    <Status>False</Status>\r\n'
+                                xml += '                    <Status>false</Status>\r\n'
                             xml += '                </Answer>\r\n'
                             answer = answer.next()
                         xml += '            </Quiz>\r\n'
