@@ -1,5 +1,5 @@
 ### API Documentation: http://api.storytellar.de/docs
-**Last updated:** 22.6.2015 01:40:24
+**Last updated:** 22.6.2015 10:24:31
 
 ### User Account Registration & Password Resetting: http://api.storytellar.de/account
 **Note:** E-Mail address needs to be confirmed!
