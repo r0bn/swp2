@@ -99,6 +99,8 @@
                             createQuiz(counter)
 
                             $("#inQuizID_"+window.interactioncounter).val($(this).attr('id'))
+                            $("#inQuizID_"+window.interactioncounter).trigger("keyup")
+                            
                             
                             ontrue = $xml.find('OnTrue').attr("xlink:href")
                             if typeof ontrue != 'undefined'
@@ -144,6 +146,7 @@
                                 createChooser(counter)
                                 
                                 $("#inChooserID_" + window.interactioncounter).val($(this).attr('id'))
+                                $("#inChooserID_" + window.interactioncounter).trigger("keyup")
                                 $("#inChooserQuestion_" + window.interactioncounter).val($(this).find('Question').text())
                                 
                                 #################Antworten erstellen beim Chooser
@@ -185,6 +188,8 @@
                                 $("#ddnInteractions_" + counter).val("Item")
                                 createItem(counter)
                                 $("#inItemID_" + window.interactioncounter).val($(this).attr('id'))
+                                $("#inItemID_" + window.interactioncounter).trigger("keyup")
+                                
                                 $("#inItemDescription_" + window.interactioncounter).val($(this).find('Description').text())
                                 collected = $(this).find('IsCollected').text().trim()
                                 if collected == "true"
