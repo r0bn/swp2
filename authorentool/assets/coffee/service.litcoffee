@@ -74,7 +74,11 @@
                                     console.log "updated"
 
                     .error (err) ->
-                        tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
+                        if err.error?
+                            tempErrValue = "Sie sind nicht der Author dieser Story und können diese nicht bearbeiten."
+                        else
+                            tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
+
                         
                         $("#saveFunctionErrorText").text(tempErrValue)
                         $("#saveFunctionError").css("display", "block")
@@ -225,7 +229,7 @@
                     m.update(storyId)
                 .error (err) ->
                     console.log err
-                    alert "Datei upload vom Server nicht akzeptiert." 
+                    alert "Datei upload vom Server nicht akzeptiert."
                 .finally () ->
                     m.update(storyId)
         }
