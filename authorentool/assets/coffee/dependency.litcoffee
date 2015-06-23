@@ -21,11 +21,8 @@
             #loescht sich selbst aus dem array wieder raus, da eine Ref auf sich selbst keinen Sinn macht
             index = storypointArray.indexOf(currentStorypointID)
             storypointArray.splice(index,1)
-            
-            #loescht alle Storypoint raus, die Endpunkte sind, da es nach diesen keine weiteren Referenzen geben kann.
-            #Und das würde es, sollte man diese bei Referenz erstellen beim Storypoint auswählen. Daher werden dort
-            #gesonderte Array geliefert
-            
+
+            #löscht alle Endstorypointss            
             tempEndpointArray = getAllEndpointStorypoints()
 
             i = 0
@@ -104,16 +101,9 @@
                 $("#" + stuff.id).find("a").html(tmpStoryname)
                 i++
 
-            # musste ich einbauen, damit die IDs der unterknoten nicht alle gleich sind, sondern verschieden. Das läuft
             lauf = 0
             setReferenceDropdownIDs($("#ulSkQuizOnTrueRef_" + counter), lauf)
 
-            # Jetzt wurde für jedes DropdownMenu berechnet, wie viele Felder es beinhalten soll. Allerdings wird lediglich
-            # nur die Schattenkopie von liSkQuizOnTrueRef angehängt. Jetzt werden noch die a - Felder befüllt
-            # und zwar mit den Storypointnamen, und sollten die nicht gesetzt sein mit dem Platzhalter.
-
-            # jetzt werden die Dropdownfelder klickbar gemacht und der richtige Name eingetragen. Hier macht er alles richtig
-            # außer, dass er immer das click-event für ALLE ddnQuiz... übernimmt, anstatt eines EINEM zu geben - geht nicht
             j = 0
             while j < z
                 indexe = window.dropdownLiCounter + "_" + (j+1)
@@ -152,7 +142,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetQuizOnTrueReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetQuizOnTrueReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -236,7 +226,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetQuizOnFalseReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetQuizOnFalseReferences_"+counter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -325,13 +315,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue
-                    
-                        ##########################################################################################################
-                        ##########################################CookieSUCHTI#########################################
-                        #storypoint = edgeStorypointfinder("#btnSetChooserStorypointReferences_"+counter, "fhlNeuerStorypoint" )
-                        # storypoint = storypoint.split("_")
-                        # RemoveEdge(storypoint[1])
+                    if $("#btnSetChooserStorypointReferences_"+ counter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         $("#btnSetChooserStorypointReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserStorypointReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -407,9 +391,6 @@
                 indexe = window.dropdownLiCounter + "_" + (j+1)
                 if j == itemArray.length
                     $("#ddnChooserItem_"+indexe).click ->
-                        #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                        #storypoint = storypoint.split("_")
-                        #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_"+counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_"+counter).html("Neue Ref setzen <span class='caret' />")
                         storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
@@ -422,12 +403,6 @@
                 else $("#ddnChooserItem_"+indexe).click ->
                     $("#btnSetChooserItemReferences_"+counter).val($(this).text())
                     $("#btnSetChooserItemReferences_"+counter).html($(this).text() + "<span class='caret' />")
-                    #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                    #storypoint = storypoint.split("_")
-                    #storypoint_2 = $(this).attr("itemOwner")
-                    #storypoint_2 = storypoint_2.split("_")
-                    #RemoveEdge(storypoint[1])
-                    #AddEdge(storypoint[1], storypoint_2[1])
                     storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
                     storypoint = storypoint.split("_")
                     storypoint_2 =$("#btnSetChooserStorypointReferences_"+counter).attr("currentEdge")
@@ -443,9 +418,6 @@
                         tmpItemValue = $("#inItemID_" + tmpCounter).attr("placeholder")
 
                     if $("#btnSetChooserItemReferences_"+ counter).val() == tmpItemValue
-                        #storypoint = edgeStorypointfinder("#btnSetChooserItemReferences_"+counter, "fhlNeuerStorypoint" )
-                        #storypoint = storypoint.split("_")
-                        #RemoveEdge(storypoint[1])
                         $("#btnSetChooserItemReferences_" + counter).val("Neue Ref setzen")
                         $("#btnSetChooserItemReferences_" + counter).html("Neue Ref setzen <span class='caret' />")
                     return
@@ -465,9 +437,6 @@
             z = itemArray.length
             z++
             
-            #######
-            ####### Fügt ITEM Einträge hinzu
-            #######
             while i < z
                 stuff = copyForm.cloneNode(true)
                 stuff.id = stuff.id + "_" +counter + "_" + rowCounter + "_" + columnCounter + "_tmp_" + i
@@ -734,7 +703,7 @@
                     if tmpStorypointValue == ''
                         tmpStorypointValue = $("#inStorypoint_" + tmpCounter).attr("placeholder")
 
-                    if $("#btnSetStorypointReferences_"+ counter).val() == tmpStorypointValue
+                    if $("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter).val() == tmpStorypointValue && typeof tmpStorypointValue != 'undefined'
                         storypoint = edgeStorypointfinder("#btnSetStorypointReferences_"+counter + "_" +rowCounter + "_" + columnCounter, "fhlNeuerStorypoint" )
                         storypoint = storypoint.split("_")
                         # RemoveEdge(storypoint[1])
@@ -752,6 +721,7 @@
             tmpObj = $(objectID)
             while found != true
                 parentNode = tmpObj.parent()
+                console.log parentNode.attr("id")
                 if typeof parentNode.attr("id") != "undefined"
                     tmp = parentNode.attr("id").split("_")
                     if tmp[0] == searchedParent
@@ -1000,7 +970,6 @@
             
             if !foundStartpoint
                 return "Story hat keinen Startpunkt"
-            #if foundStartpoint now is true, that means that there is at least 1 startPoint, anywhere.
             
             #Check if All Story-Endpoints are reachable from an Startpoint
             reachableEndpoints = checkEndpointFromStartpoint()
@@ -1082,7 +1051,6 @@
             findAllPath(startpointStorypointArray, endpointStorypointArray)
             reachableEndpoint = checkEveryPath()
 
-            #reachableEndpoint = findPath(startpointStorypointArray, endpointStorypointArray)
             return reachableEndpoint
    
             
@@ -1122,8 +1090,6 @@
         #Methode to calculate if an Endstorypoint is reachable from a Startstorypoint
         findPath = (startpointStorypointArray, endpointStorypointArray) ->
         
-            #Erhöhung des ZyklusCounters. Da hier einfach weitergemacht wird. Sollte 150 mal (!!!) diese Methode aufgerufen werden, 
-            #so lässt die Wahrscheinlichkeit nach, dass hier was richtiges ausgewertet wird...
             window.zyklusCounter++
             if window.zyklusCounter > 150
                 return "Möglicher Zyklus gefunden oder es gibt keinen Weg vom Startpunkt zum Endpunkt. Story kann unter Umständen nicht korrekt überprüft werden."
@@ -1151,14 +1117,7 @@
                 if checkRightPath(startpointStorypointArray, pointerPathArrayToEndstorypoint)
                     window.everyPathArray.push(true)
                     return true
-                    
-                    
-                #Braucht man nicht, da hier geprüft werden muss, ob wirklich alles schon drinne ist und nicht step by step im
-                #rekursiven aufruf. Lasse ich aber vorsichtshalber noch drinne. Nach ersten Tests ging es aber mit checkRightPath!
-                #if startpointStorypointArray.indexOf(pointerPathArrayToEndstorypoint[precursorStorypointCounter]) >= 0
-                    #return true
-                    
-                    
+
                 else 
                     #rekursiver aufruf, ob es einen Weg ab dem VORGÄNGER des Vorgängers zu einem Startpunkt gibt. 
                     #Hier wird einfach rekursive die Methode wieder aufgerufen OHNE etwas zu returnen, da hier nicht schon
@@ -1182,11 +1141,6 @@
                         continue
                     else
                         window.everyPathArray.push(tempVar)
-                        #return tempVar
-                        #if typeof tempVar == 'string'
-                            #return tempVar
-                        #else
-                            #return true
 
                 precursorStorypointCounter++
             return false
@@ -1201,14 +1155,12 @@
             checkBooleanArray = []
             #Prüfe ob endpointStorypointArrays Elemente alle in checkArray vorkommen
             endpointStorypointArray.forEach (s, i, o) ->
-                # Die Variable o enthält eine Referenz auf das Array.
                 if checkArray.indexOf(s) >= 0
                     checkBooleanArray.push(true)
                 else
                     checkBooleanArray.push(false)
             #Prüfe ob checkArrays Elemente alle in endpointStorypointArray vorkommen
             checkArray.forEach (s, i, o) ->
-                # Die Variable o enthält eine Referenz auf das Array.
                 if endpointStorypointArray.indexOf(s) >= 0
                     checkBooleanArray.push(true)
                 else

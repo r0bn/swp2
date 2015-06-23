@@ -54,6 +54,7 @@
                 xml += '        </Storypoint>\r\n'
             xml += '    </Dependency>\r\n'
             return xml
+
         synchronizeDependecyContainers = (xml, storypointID) ->
                 dependencyXML = "";
                 rowCounter = $("#btnCreateReferences_" + storypointID).attr("rowCounter")
@@ -101,12 +102,14 @@
                     dependencyXML += '            </Container>\r\n'
                 xml += dependencyXML
                 return xml    
+
         synchronizeARMLTag = (xml) ->
             xml += '    <ARElements>\r\n'
             xml = synchronizeFeatures(xml)
             xml = synchronizeInteractionTag(xml)
             xml += '    </ARElements>\r\n'
             return xml
+
         synchronizeFeatures = (xml) ->
             $('#fhlStorypoints').find('.form-horizontal').each ->
                 id = $(this).attr("id")
@@ -126,7 +129,7 @@
                         xml += '                        </Video>\r\n'
                     if videoID[1] != 'mp4'
                         xml += '                        <Image id="'+ synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Feature_' + videoID[0] + '">\r\n'
-                        xml += '                            <Href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
+                        xml += '                            <href xlink:href="' + synchronizeInputHelper("inAsset_"+ id) + '" />\r\n'
                         xml += '                        </Image>\r\n'
                 xml += '                    </assets>\r\n'
                 xml += '                    <gml:Point gml:id="' + synchronizeInputHelper("inStorypoint_"+ id).replace(" ", "") + '_Pos">\r\n'
@@ -165,6 +168,7 @@
                     xml += '            <size>0.2</size>\r\n'
                     xml += '        </Trackable>\r\n'
             return xml
+
         synchronizeInteractionTag = (xml) ->
             xml += '        <Interactions>\r\n'
             xml = synchronizeQuizes(xml)
@@ -174,6 +178,7 @@
             
             xml += '        </Interactions>\r\n'
             return xml
+
         synchronizeItems = (xml) ->
             $('#fhlStorypoints').find('.form-horizontal').each ->
                 id = $(this).attr("id")
@@ -191,6 +196,7 @@
                         xml += '            </Item>\r\n'
                     interactions = interactions.next()
             return xml
+
         synchronizeQuizes = (xml) ->
             $('#fhlStorypoints').find('.form-horizontal').each ->
                 id = $(this).attr("id")

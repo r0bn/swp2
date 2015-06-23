@@ -149,6 +149,7 @@
                   $lightbox.find('.close').removeClass 'hidden'
                   i = 0
                   found = -1
+                  markers = window.markers
                   while i < markers.length
                        if markers[i].get("markerOwner") == window.mapCaller
                             markers[i].setMap window.map

@@ -79,7 +79,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
         (($) ->
             ) jQuery
 
-        
+        # Click Events
         $("#btnMap").click ->
             window.mapCaller = "btnMap"
         $("#inSize").on "input", () ->
@@ -88,67 +88,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
         $("#inRadius").on "input", () ->
             tmp = $(this).val().replace(/[^\d.-]/g, '')
             $(this).val(Math.abs(tmp))
-        initialLightMedienBox()
-        initDropdownClicks()
-        window.googleMap()
-        
-        # Counters
-        window.dropdownLiCounter = 0
-        window.storypointCounter = 0
-        window.quizAnswerCounter = 10
-        window.chooserAnswerCounter = 10
-        window.interactioncounter = 10
-        window.mbibCallerField = ""
-        #dependencyCounter
-        window.zyklusCounter = 0
-        
-        #everyPathArray, for checking every Path in the dependencys
-        window.everyPathArray = []
-        
-        
-        # EndstorypointArray and StartstorypointArray
-        window.endStorypoints = []
-        window.startStorypoints = []
-        
-        
-        # Nodes and Edges for the dependency graph
-        window.nodes = []
-        window.edges = []
-        window.duplicateEdges = []
-        initHelpSystem()
-        initScrollbar()
-
-        window.safeButtonCounter = 0
-
-        $("#ttaDescription").keyup ->
-            aktInhalt = $(this).val()
-            if aktInhalt.toLowerCase().indexOf("harlem") >= 0
-                #$("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/8f7wj_RcqYk?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>');
-                $("#rowFormular").children().each () ->
-                    if $(this).css("display") != "none"
-                        $(this).delay(21000).effect("shake", {times:100})
-                return
-
-            if aktInhalt.toLowerCase().indexOf("love") >= 0
-                #$("#divHelpBox").html('<iframe width="'+0+'" height="'+0+'" src="https://www.youtube.com/embed/6zlViU5PBPY?autoplay=1&loop=1&rel=0&wmode=transparent" frameborder="0" allowfullscreen wmode="Opaque"></iframe>')
-                return
-            
-            if aktInhalt.indexOf("dElEtEStOrY") >= 0
-                $.ajax
-                  url: 'http://api.storytellar.de/story/' + $scope.storyId
-                  type: 'DELETE'
-                  success: (result) ->
-                    # Do something with the result
-                    return
-                
-                window.location.replace("/#/home")
-                
-                    
-            if aktInhalt.toLowerCase().indexOf("rekursiv") >= 0
-                rekRek = aktInhalt.split("rekursiv")[0]
-                $(this).val(rekRek + "rekursiv")
-
-
 
         #check dependencies
         $("#btnCheckStory").click ->
@@ -169,9 +108,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
             #alert window.safeButtonCounter
             checkSafeButton()
             return
-
-        # handeld now by angularJS
-        ###
+            
         $("#btnSaveStory").click ->
                 #xml = startSynchro()
                 #$scope.xmlFile = xml
@@ -193,16 +130,46 @@ The following code is a angularJS (https://angularjs.org/) Application.
                         Ok: -> 
                           $(this).dialog "close";
                         }
-                return
-        ###
-            
+                return            
+
+
+        # init. methods
+        initialLightMedienBox()
+        initDropdownClicks()
+        googleMap()
+        initHelpSystem()
+        initScrollbar()
+        
+        # Counters
+        window.dropdownLiCounter = 0
+        window.storypointCounter = 0
+        window.quizAnswerCounter = 10
+        window.chooserAnswerCounter = 10
+        window.interactioncounter = 10
+        window.mbibCallerField = ""
+        window.safeButtonCounter = 0
+        #dependencyCounter
+        window.zyklusCounter = 0
+        
+        #everyPathArray, for checking every Path in the dependencys
+        window.everyPathArray = []
+        
+        
+        # EndstorypointArray and StartstorypointArray
+        window.endStorypoints = []
+        window.startStorypoints = []
+        
+        # Nodes and Edges for the dependency graph
+        window.nodes = []
+        window.edges = []
+        window.duplicateEdges = []
+        window.markers = []
+
+
         $scope.createNewStorypoint = (counter) ->
             window.storypointCounter++
             createNewStorypointX(window.storypointCounter)
             return
-
-        
-   
 
         $scope.tabSwitch = (activeTabID) ->
                 if (activeTabID == "MedienBibTab")
