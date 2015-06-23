@@ -12,7 +12,17 @@
                                 for d in data2
                                     d.draft = true
                                     d.final = false
-                                cb(data.concat(data2))
+                                data = data.concat(data2)
+                                $http.get("#{apiUrl}/user")
+                                    .success (data3) ->
+                                        for dm in data
+                                            dm.owner = false
+                                            for d in data3
+                                                if dm.id is d.id
+                                                    dm.owner = true
+                                        cb(data)
+                                    .error () ->
+                                        console.log "error"
                             .error () ->
                                 console.log "error"
                     .error () ->
