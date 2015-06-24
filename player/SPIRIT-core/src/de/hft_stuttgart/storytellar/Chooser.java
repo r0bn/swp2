@@ -116,10 +116,16 @@ public class Chooser implements Interaction, Serializable{
 			strng += "Answer " + String.valueOf((i + 1)) + ": \n";
 			strng += "Text: " + answers.get(i);
 			if(items.size() > i){
-				strng += " Item: " + items.get(i) + "\n";
+				strng += " Item: " + items.get(i) + "";
 			} else {
-				strng += " Item: [undef]\n";
+				strng += " Item: [undef]";
 			}
+			if(nextScenes.size() > i){
+				strng += " Storypoint: " + nextScenes.get(i) + "";
+			} else {
+				strng += " Storypoint: [undef]";
+			}
+			strng = strng + "\n";
 		}
 		return strng;
 	}

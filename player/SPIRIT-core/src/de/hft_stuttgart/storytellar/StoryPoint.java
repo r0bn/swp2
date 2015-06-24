@@ -95,6 +95,7 @@ public class StoryPoint extends Poi implements Serializable{
 	 */
 	public void setStatus(StorypointStatus status) {
 		this.status = status;
+		System.out.println("Updated status of Storypoint " + this.getName() + " to: " + this.getStatus().toString());
 	}
 
 	/**

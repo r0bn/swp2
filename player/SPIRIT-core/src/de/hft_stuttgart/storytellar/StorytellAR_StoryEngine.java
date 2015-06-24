@@ -235,7 +235,21 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				facade.hideText();
 				Chooser chooser = (Chooser) activeInteraction;
 				Item selectedItem = (Item) story.getInteractions().get(chooser.getItems().get(buttonPressed));
-				selectedItem.setIsCollected(true);
+				if (selectedItem!=null) {
+					selectedItem.setIsCollected(true);
+				}
+				
+				StoryPoint sPoint;
+				for (int i = 0; i < chooser.getNextScenes().size(); i++) {
+					sPoint = story.getStorypoints().get(chooser.getNextScenes().get(i));
+					if (sPoint!=null) {
+						if (i==buttonPressed) {
+							sPoint.setStatus(StorypointStatus.QUEUED);
+						} else {
+							sPoint.setStatus(StorypointStatus.DONE);
+						}
+					}
+				}
 				buttonPressed = -1;
 				state = EngineStates.IN_SCENE_END;
 			}
