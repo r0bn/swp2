@@ -7,7 +7,7 @@
              # Zentriert die Map animiert
             window.map.panTo marker.getPosition()
             marker.set("markerOwner", window.mapCaller)
-            markers.push(marker)
+            window.markers.push(marker)
             if window.mapCaller == "btnMap" && $("#ddnradius").val() != "Einheit"
                 rad = $("#inRadius").val()
                 if $("#ddnradius").val() == "Einheit"
@@ -25,7 +25,7 @@
                     fillOpacity: 0.35
                     editable: true
                 circle.set("markerOwner", window.mapCaller)
-                markers.push(circle)
+                window.markers.push(circle)
 
                 google.maps.event.addListener circle, 'radius_changed', () ->
                                     rad = circle.getRadius()
@@ -44,8 +44,8 @@
 
         setAllMap = (map, markers) ->
           i = 0
-          while i < markers.length
-            markers[i].setMap map
+          while i < window.markers.length
+            window.markers[i].setMap map
             i++
           return
 
@@ -63,7 +63,7 @@
                 searchBox = new (google.maps.places.SearchBox)(input)
                 autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] })
                 autocomplete.bindTo('bounds', window.map);
-                markers = []
+                window.markers = []
                 google.maps.event.addListener searchBox, 'places_changed', ->
                   `var marker`
                   `var i`
@@ -77,7 +77,7 @@
                         marker.setMap null
                         i++
                   # For each place, get the icon, place name, and location.
-                  markers = []
+                  window.markers = []
                   bounds = new (google.maps.LatLngBounds)
                   i = 0
                   place = undefined
@@ -90,7 +90,7 @@
                       scaledSize: new (google.maps.Size)(25, 25)
                     # Create a marker for each place.
                     setAllMap(null, markers)
-                    markers = []
+                    window.markers = []
                     marker = new (google.maps.Marker)(
                       map: window.map
                       icon: image
@@ -148,19 +148,18 @@
                   $lightbox.find('.modal-dialog').css 'width': $mapDiv.width()
                   $lightbox.find('.close').removeClass 'hidden'
                   i = 0
-                  found = -1
-                  markers = window.markers
-                  while i < markers.length
-                       if markers[i].get("markerOwner") == window.mapCaller
-                            markers[i].setMap window.map
+                  found = -1 
+                  while i < window.markers.length
+                       if window.markers[i].get("markerOwner") == window.mapCaller
+                            window.markers[i].setMap window.map
                             
-                            if markers[i] instanceof google.maps.Circle
+                            if window.markers[i] instanceof google.maps.Circle
                                 rad = $("#inRadius").val()
                                 if $("#ddnradius").val() == "Einheit"
                                     rad = 0
                                 else if $("#ddnradius").val() == "Kilometer"
                                     rad = rad * 1000
-                                markers[i].set('radius', Math.ceil(rad))
+                                window.markers[i].set('radius', Math.ceil(rad))
                             else
                                 found = i
                                 
@@ -168,7 +167,7 @@
                   
                   google.maps.event.trigger window.map, 'resize'
                   if found > -1
-                    window.map.setCenter markers[found].getPosition()
+                    window.map.setCenter window.markers[found].getPosition()
                   return
                 $lightbox.on 'hide.bs.modal', (e) ->
                     setAllMap(null, markers)
