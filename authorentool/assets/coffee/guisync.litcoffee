@@ -81,17 +81,18 @@
                                 tmp_item_xml += '                    <ItemRef xlink:href="#' + $("#" + ddns2ID).val().replace(" ", "") +  '"/>\r\n'
                                 if typeof ddns3ID != 'undefined' && $("#" + ddns3ID).val() != "" && $("#" + ddns3ID).val() != 'Neue Ref setzen'
                                     tmp_item_xml += '                    <ItemRef xlink:href="#' + $("#" + ddns3ID).val().replace(" ", "") +  '"/>\r\n'
-                        dependencyXML += '            <Container>\r\n'
-                        dependencyXML += '                <Storypointlist>\r\n'
-                        dependencyXML += tmp_xml
-                        dependencyXML += '                </Storypointlist>\r\n'
-                        if tmp_item_xml == ""
-                            dependencyXML += '                <Itemlist />\r\n'
-                        else
-                            dependencyXML += '                <Itemlist>\r\n'
-                            dependencyXML += tmp_item_xml
-                            dependencyXML += '                </Itemlist>\r\n'
-                        dependencyXML += '            </Container>\r\n'
+                        if tmp_xml != ""
+                            dependencyXML += '            <Container>\r\n'
+                            dependencyXML += '                <Storypointlist>\r\n'
+                            dependencyXML += tmp_xml
+                            dependencyXML += '                </Storypointlist>\r\n'
+                            if tmp_item_xml == ""
+                                dependencyXML += '                <Itemlist />\r\n'
+                            else
+                                dependencyXML += '                <Itemlist>\r\n'
+                                dependencyXML += tmp_item_xml
+                                dependencyXML += '                </Itemlist>\r\n'
+                            dependencyXML += '            </Container>\r\n'
                         tmp_xml = ""
                         tmp_item_xml = ""
                         row++
