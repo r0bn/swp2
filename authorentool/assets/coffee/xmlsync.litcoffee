@@ -315,18 +315,20 @@
                             rowCounter++
                             columnCounter = 1
                             $(this).find('Storypointlist').each ->
-                                $('#btnCreateReferences_' + storypointID).click()
-                                
-                                $(this).find('StorypointRef').each ->
-                                    reference = $(this).attr("xlink:href").split('#')[1].split('_Feature')[0]
-                                    test = $('#ulStorypointRef_'+storypointID + '_' +rowCounter + '_' +columnCounter).children()
-                                    z = 0
-                                    while z < test.length
-                                        if $(test[z]).children().text() == reference
-                                            $(test[z]).children().click()
-                                            break
-                                        z++
-                                    columnCounter++
+                                if $(this).find('StorypointRef:first').length != 0
+                                    $('#btnCreateReferences_' + storypointID).click()
+                                    
+                                    $(this).find('StorypointRef').each ->
+                                        reference = $(this).attr("xlink:href").split('#')[1].split('_Feature')[0]
+                                        test = $('#ulStorypointRef_'+storypointID + '_' +rowCounter + '_' +columnCounter).children()
+                                        z = 0
+                                        while z < test.length
+                                            if $(test[z]).children().text() == reference
+                                                $(test[z]).children().click()
+                                                break
+                                            z++
+                                        columnCounter++
+                                        return
                                     return
                                 return
                             columnCounter = 1

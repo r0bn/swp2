@@ -22,6 +22,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
                 try
                     # XMl Synchronisation update GUI based on server file
+                    console.log $scope.xmlFile
                     startXMLSynchro($scope.xmlFile)
 
                 catch error
@@ -112,7 +113,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 #xml = startSynchro()
                 #$scope.xmlFile = xml
                 $scope.saveXML()
-                if $scope.xmlError != "XML valide!"
+                if $scope.xmlError != "XML valide!" && typeof $scope.xmlError != 'undefined'
                     $("#saveFunctionErrorText").text($scope.xmlError)
                     $("#saveFunctionError").css("display", "block")
                     $("#saveFunctionError").dialog
