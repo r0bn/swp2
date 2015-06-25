@@ -107,7 +107,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() <= 15) {
+				if (facade.getDistanceUserToClosestGhost() <= 20) {
 					activeStoryPoint = closest;
 					if(activeStoryPoint.getTrackable_image() == null){
 						state = EngineStates.IN_SCENE_START;
