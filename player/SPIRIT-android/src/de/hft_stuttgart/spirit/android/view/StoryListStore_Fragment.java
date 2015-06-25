@@ -176,8 +176,8 @@ public class StoryListStore_Fragment extends Fragment {
             TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
             
-            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-            task.execute(item);
+            //GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            //task.execute(item);
 
 
             textTitel.setText(item.getTitle());
