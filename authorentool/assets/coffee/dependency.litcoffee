@@ -721,7 +721,6 @@
             tmpObj = $(objectID)
             while found != true
                 parentNode = tmpObj.parent()
-                console.log parentNode.attr("id")
                 if typeof parentNode.attr("id") != "undefined"
                     tmp = parentNode.attr("id").split("_")
                     if tmp[0] == searchedParent
@@ -866,7 +865,6 @@
         AddoDeleteNewNodes = (nodeLabelInfo,searchID, counter) ->
             if searchID != ''
                 splitted = searchID.split("_")
-                console.log searchID
                 RemoveEdge(splitted[1])
                 i = 0
                 while i < window.nodes.length
