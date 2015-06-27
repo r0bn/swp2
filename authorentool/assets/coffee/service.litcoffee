@@ -42,6 +42,13 @@
                     .error (err) ->
                         console.log err
 
+            deleteStory : (storyId) ->
+                $http.delete("#{apiUrl}/story/#{storyId}")
+                    .success (data) ->
+                        window.location.replace("/#/home/")
+                    .error (err) ->
+                        console.log err
+
             updateStory : (id, xml, final) ->
                 $http.post("#{apiUrl}/story/#{id}", { xml : xml, final : final })
                     .success () ->

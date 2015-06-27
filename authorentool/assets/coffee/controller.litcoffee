@@ -70,13 +70,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                   buttons:
                     'Löschen': ->
                             $(this).dialog 'close'
-                            $.ajax
-                                  url: 'http://api.storytellar.de/story/' + $scope.storyId
-                                  type: 'DELETE'
-                                  success: (result) ->
-                                    # Do something with the result
-                                    return
-                            window.location.replace("/#/home/")
+                            console.log $scope.storyId
+                            server.deleteStory($scope.storyId)
                     'Abbrechen': ->
                             $(this).dialog 'close'
 
