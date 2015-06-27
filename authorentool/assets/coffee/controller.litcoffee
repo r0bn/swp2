@@ -7,15 +7,40 @@ The following code is a angularJS (https://angularjs.org/) Application.
     storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
 
         $scope.storyId = $routeParams.story
-
+        $scope.codeMirrorUpdateUI = false
         $scope.mediaData = media.mediaFiles
         $scope.media = media
         $scope.final = false
         $scope.uploadEnabled = true
+        $scope.manEditAllow = false
 
         $scope.$watch "media.mediaFiles", () ->
             $scope.mediaSumSize = media.sumSize()
         , true
+
+        # Codemirror Options
+        # Details: https://codemirror.net/doc/manual.html#config
+        $scope.editorOptions =
+            lineWrapping : true
+            lineNumbers: true
+            readOnly: true
+            mode: 'xml'
+            #indentUnit : 2
+            theme : "eclipse"
+            foldGutter : true
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+
+        $scope.manEditA = () ->
+            $scope.editorOptions.readOnly = false
+            $scope.manEditAllow = true
+            $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
+            console.log "A"
+
+        $scope.manEditD = () ->
+            $scope.editorOptions.readOnly = true
+            $scope.manEditAllow = false
+            $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
+            console.log "D"
 
         server.getStoryXML $scope.storyId, (response) ->
                 $scope.xmlFile = response
@@ -196,7 +221,23 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     $("#GraEditorTab").addClass("active")
                      # Active Content
                     $("#GraEditor").css("display", "block")
+                    return
+
+                else if (activeTabID == "XMLTab")
+
+                    # Passive Content
+                    $("#MedienEditor").css("display","none")
+                    $("#GraEditor").css("display","none")
                     
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+                    
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+                    # Active Content
+                    $("#XML").css("display", "block")
+                    $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
                     return
 
         $scope.btnHelpEinklappenClick = () ->
