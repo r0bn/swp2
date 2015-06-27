@@ -158,7 +158,8 @@
                         m.order('file', false)
                         m.buildDirectoryStructure()
                     .error (err) ->
-                        angular.copy [], [] 
+                        angular.copy [], m.mediaFiles
+                        angular.copy [], m.dirs
                         console.log err
                     .finally () ->
                         m.isUploading = false
