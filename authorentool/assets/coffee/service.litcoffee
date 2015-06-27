@@ -202,8 +202,15 @@
                         m.buildDirectoryStructure()
                     .error (err) ->
                         console.log err
-                        alert "Datei konnte nicht gelöscht werden."
-                    .finally () ->
+                        $("#saveFunctionErrorText").text("Datei konnte nicht gelöscht werden.")
+                        $("#saveFunctionError").css("display", "block")
+                        $("#saveFunctionError").dialog
+                          modal: true
+                          buttons: {
+                            Ok: -> 
+                              $(this).dialog "close";
+                            }
+                        .finally () ->
                         m.isDeleting = false
 
             sumSize : () ->
@@ -229,7 +236,15 @@
                     m.update(storyId)
                 .error (err) ->
                     console.log err
-                    alert "Datei upload vom Server nicht akzeptiert."
+                    $("#saveFunctionErrorText").text("Datei upload vom Server nicht akzeptiert.")
+                    $("#saveFunctionError").css("display", "block")
+                    $("#saveFunctionError").dialog
+                      modal: true
+                      buttons: {
+                        Ok: -> 
+                          $(this).dialog "close";
+                        }
+                    
                 .finally () ->
                     m.update(storyId)
         }

@@ -301,9 +301,18 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 element.bind 'change', () ->
                     scope.$apply () ->
                         scope.fileModel = element[0].files[0]
-                        if scope.fileModel.size > 30000000
+
+                        if scope.fileModel? && scope.fileModel.size > 30000000
                             scope.uploadEnabled = false
-                            alert "Datei ist zu groß. Max. 30 MB"
+                            $("#saveFunctionErrorText").text("Datei ist zu groß. Max. 30 MB")
+                            $("#saveFunctionError").css("display", "block")
+                            $("#saveFunctionError").dialog
+                              modal: true
+                              buttons: {
+                                Ok: -> 
+                                  $(this).dialog "close";
+                                }
+
                         else
                             scope.uploadEnabled = true
         }
