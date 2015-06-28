@@ -36,7 +36,11 @@ class StorytellarController extends Controller
         $this->xmlValidator = $xmlValidator;
     }
 
-
+    /*
+    * If the parameter request contains a query,
+    * a function is called to retrieve a list of the stories matching the query
+    * Otherwise a function is called to retriev all published stories
+    */
     public function getStories(Request $request)
     {
         $retVal = null;
@@ -50,6 +54,10 @@ class StorytellarController extends Controller
         return $retVal;
     }
 
+    /*
+    * Looks up the user with the current token (managed via middleware)
+    * Calls function to retrieve a list of all the stories bind to the user
+    */
     public function getUserStories()
     {
         $token = \JWTAuth::getToken();
@@ -58,21 +66,35 @@ class StorytellarController extends Controller
         return $this->story->getUserStories($user->id);
     }
 
+    /*
+    * Calls function to retrieve a list of all open stories
+    */
     public function getOpenStories()
     {
         return $this->story->getAllOpenStories();
     }
 
+    /*
+    * Calls function to download the story xml
+    */
     public function getStory($id)
     {
         return $this->story->getStory($id);
     }
 
+    /*
+    * Calls function to retrieve a list of all media files of a story
+    */
     public function getStoryMediaFiles($id)
     {
         return $this->fileHelper->getStoryMediaFiles($id);
     }
 
+    /*
+    * Handles data out of the request parameter
+    * Checks if the story should be bind to an user
+    * Calls function to create a new story slot
+    */
     public function createStory(Request $request)
     {
         $retVal = null;
@@ -93,6 +115,11 @@ class StorytellarController extends Controller
         return $retVal;
     }
 
+    /*
+    * Calls functions to - check the user status of the related story
+    *                    - validate the xml if the final tag is set
+    *                    - update/publish the story if allowed
+    */
     public function updateStory(Request $request, $id)
     {
         if ($this->authHelper->checkUserValidation($id)) {
@@ -107,6 +134,10 @@ class StorytellarController extends Controller
         }
     }
 
+    /*
+    * Calls functions to - check the user status of the related story
+    *                    - delete the story with the given id if allowed
+    */
     public function deleteStory($id)
     {
         if ($this->authHelper->checkUserValidation($id)) {
@@ -114,6 +145,11 @@ class StorytellarController extends Controller
         }
     }
 
+    /*
+    * Calls functions to - check the user status of the related story
+    *                    - add a media file to the story
+    *                    - change final status if necessary
+    */
     public function addFile(Request $request, $id)
     {
         if ($this->authHelper->checkUserValidation($id)) {
@@ -124,6 +160,11 @@ class StorytellarController extends Controller
         }
     }
 
+    /*
+    * Calls functions to - check the user status of the related story
+    *                    - delete the media file if allowed
+    *                    - change final status if necessary
+    */
     public function deleteFile($id, $filename)
     {
         if ($this->authHelper->checkUserValidation($id)) {
@@ -166,6 +207,9 @@ class StorytellarController extends Controller
         return \View::make('tests.xmlschemavalidation');
     }
 
+    /*
+    * Calls various functions to validate the given xml
+    */
     public function postXmlSchemaValidation(Request $request)
     {
         $xmlString = $request->input('xmlstring');

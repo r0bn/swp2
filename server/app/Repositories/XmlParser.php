@@ -6,6 +6,9 @@ use App\Interfaces\XmlParser as XmlParserInterface;
 
 class XmlParser implements XmlParserInterface
 {
+    /*
+    * Collects the xml metadata out of the xml and returns them
+    */
     public function getXmlMetadata($xmlString)
     {
         $xml = simplexml_load_string($xmlString);
@@ -27,7 +30,9 @@ class XmlParser implements XmlParserInterface
         return $xmlMetadata;
     }
 
-
+    /*
+    * Searches all media files in the xml and returns the names
+    */
     public function getXmlMediaFiles($xmlString)
     {
         $xml = simplexml_load_string($xmlString);
@@ -51,7 +56,9 @@ class XmlParser implements XmlParserInterface
         return array_unique($filesArray);
     }
 
-
+    /*
+    * Deprecated! 
+    */
     public function getXmlMetadataSlot($xmlString)
     {
         $xmlMetadata = null;

@@ -8,6 +8,9 @@ use App\User;
 class RegisterController extends Controller
 {
 
+    /*
+    * Depricated! This function registers a new user if the credentials are valid
+    */
     public function register(Request $request)
     {
         $credentials = $request->only('username', 'password');
@@ -30,7 +33,9 @@ class RegisterController extends Controller
 
     }
 
-
+    /*
+    * Deprecated! Checks whether an usertoken is valid
+    */
     public function verifyUser($token)
     {
         $user = User::where('verified_token', '=', $token)->firstOrFail();
@@ -40,6 +45,9 @@ class RegisterController extends Controller
         return view('auth.registersuccess');
     }
 
+    /*
+    * Depricated!
+    */
     public function setVerifiedStatus($user)
     {
         $user->verified = 1;

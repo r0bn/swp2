@@ -42,7 +42,9 @@ class Registrar implements RegistrarContract {
         return true;
 	}
 
-
+    /*
+    * Creates and sends an email to verify the email address
+    */
     public function sendVerificationEmail($email, $token)
     {
         // $host = $request->getHost();

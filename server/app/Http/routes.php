@@ -61,7 +61,7 @@ Route::post('docs/tests/xmlschemavalidation', 'StorytellarController@postXmlSche
 
 
 /**
- * Authentication and user management
+ * Routes for authentication and user management
  */
 
 //Route::post('register', 'RegisterController@register');

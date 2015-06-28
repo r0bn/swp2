@@ -10,6 +10,9 @@ use Tymon\JWTAuth\Providers\Auth\AuthInterface;
 
 class AuthenticateController extends Controller
 {
+    /*
+    * This function returns an authentication token when the user credentials are valid
+    */
     public function authenticate(Request $request)
     {
         $credentials = array(
@@ -44,7 +47,9 @@ class AuthenticateController extends Controller
 
     }
 
-
+    /*
+    * Checks whether a User has validated his email
+    */
     public function getUserEmailVerificationStatus($user)
     {
         $retVal = null;
