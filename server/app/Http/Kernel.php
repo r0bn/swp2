@@ -8,6 +8,8 @@ class Kernel extends HttpKernel
     /**
      * The application's global HTTP middleware stack.
      *
+     * The following middlewares will be executed every time a Route is called
+     *
      * @var array
      */
     protected $middleware = [
@@ -21,6 +23,8 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware.
+     *
+     * The following middlewares will be executed only on specific Routes
      *
      * @var array
      */

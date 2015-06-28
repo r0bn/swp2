@@ -58,6 +58,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	StoryPoint activeStoryPoint;
 	Interaction activeInteraction;
 	int buttonPressed;
+	boolean endStory;
 
 	long millis;
 
@@ -68,6 +69,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	 */
 	public StorytellAR_StoryEngine(UIController spiritFacade,
 			PlayableStory story) {
+		endStory = false;
 		facade = spiritFacade;
 		this.story = story;
 		state = EngineStates.OPEN;
@@ -81,7 +83,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 	@Override
 	public void update() {
 		/*Do not handle any logic when the camera(vuforia) is not ready.*/
-		if (!facade.vuforiaIsReady()) {
+		if (!facade.vuforiaIsReady() || endStory) {
 			return;
 		}
 	
@@ -105,7 +107,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			if (loc != null) {
 				Map<String, StoryPoint> sps = story.getStorypoints();
 				StoryPoint closest = sps.get(loc.name);
-				if (facade.getDistanceUserToClosestGhost() <= 15) {
+				if (facade.getDistanceUserToClosestGhost() <= 20) {
 					activeStoryPoint = closest;
 					if(activeStoryPoint.getTrackable_image() == null){
 						state = EngineStates.IN_SCENE_START;
@@ -121,6 +123,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 				}
 			} else {
 				facade.endStory();
+				endStory = true;
 			}
 
 			/* AR / Sonar change with tabletangle*/
@@ -244,7 +247,7 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 					sPoint = story.getStorypoints().get(chooser.getNextScenes().get(i));
 					if (sPoint!=null) {
 						if (i==buttonPressed) {
-							sPoint.setStatus(StorypointStatus.QUEUED);
+							sPoint.setStatus(StorypointStatus.OPEN);
 						} else {
 							sPoint.setStatus(StorypointStatus.DONE);
 						}
@@ -265,6 +268,10 @@ public class StorytellAR_StoryEngine implements SpiritStoryEngine {
 			break;
 		case IN_SCENE_END:/*Close active storypoint and search for new enabled storypoints*/
 			activeStoryPoint.setStatus(StorypointStatus.DONE);
+			if(activeStoryPoint.getIsEndStorypoint()) {
+				endStory = true;
+				facade.endStory();
+			}
 			addOpenStoryPointsToSonar();
 			state = EngineStates.OPEN;
 			break;

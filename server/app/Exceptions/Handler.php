@@ -42,6 +42,10 @@ class Handler extends ExceptionHandler
     {
         $retVal = null;
 
+        /*
+        * If a Story Route with an non existing ID is called,
+        * there will be a HTTP Response with 'Story not found' Error
+        */
         if ($e instanceof ModelNotFoundException) {
             $errorMessage = [
                 'message' => 'Story not found'

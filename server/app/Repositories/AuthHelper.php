@@ -8,7 +8,12 @@ use App\User;
 
 class AuthHelper implements AuthHelperInterface
 {
-
+    /*
+    * Looks up the story in the database
+    * Calls function to check whether an user is bind to the given story or not
+    * If its bind to an user a function is called to validate the user
+    * Returns whether the user is valid or not
+    */
     public function checkUserValidation($storyId)
     {
         $retVal = null;
@@ -28,7 +33,9 @@ class AuthHelper implements AuthHelperInterface
         return $retVal;
     }
 
-
+    /*
+    * Checks whether the story is bind to an user or not
+    */
     public function getStoryUserStatus($story)
     {
         $retVal = null;
@@ -42,7 +49,11 @@ class AuthHelper implements AuthHelperInterface
         return $retVal;
     }
 
-
+    /*
+    * Looks up the user in the database
+    * Calls function to get the user varification status
+    * Returns whether the user is valid or not
+    */
     public function validateUser($storyUserId, $tokenUserId)
     {
         $retVal = null;
@@ -58,7 +69,9 @@ class AuthHelper implements AuthHelperInterface
         return $retVal;
     }
 
-
+    /*
+    * Checks the verification status of the given user
+    */
     public function getUserVerificationStatus($user)
     {
         $retVal = null;

@@ -161,15 +161,6 @@ public class StoryFilter implements Parcelable {
 			boolean show = false;
 			String split[]= TextUtils.split(this.title, " ");
 			for (int i=0; i < split.length ; i++){
-				//if only one part of the String is enough to let an item through the filter:
-//				if((item.getTitle().toLowerCase().contains(split[i].toLowerCase()) && (split[i].trim().length() > 0)){
-//					//return false;
-//					show = true;
-//				}
-//			}
-//				if(!show) return false;
-				
-				//if all parts of the ItemString must be in the FilterString to let an item through the filter:
 				if( !(item.getTitle().toLowerCase().contains(split[i].toLowerCase())) && (split[i].trim().length() > 0) ){
 					return false;
 				}
@@ -180,14 +171,6 @@ public class StoryFilter implements Parcelable {
 			boolean show = false;
 			String split[]= TextUtils.split(this.author, " ");
 			for (int i=0; i < split.length ; i++){
-				//if only one part of the String is enough to let an item through the filter:
-//				if(item.getAuthor().toLowerCase().contains(split[i].toLowerCase()) && (split[i].trim().length() > 0)){
-//					//return false;
-//					show = true;
-//				}
-//			}
-//			if(!show) return false;
-				//if all parts of the ItemString must be in the FilterString to let an item through the filter:
 				if( !(item.getAuthor().toLowerCase().contains(split[i].toLowerCase())) && (split[i].trim().length() > 0) ){
 					return false;
 				}
@@ -301,10 +284,33 @@ public class StoryFilter implements Parcelable {
 		}
 		
 		if (this.size_max.trim().length() > 0) getQuery.append("size_max=" + this.size_max.trim()+"&");
-		if (!this.creationDateMin.matches("Datum festlegen")) getQuery.append("creation_date_min="
-		       + creationDateMin.replaceAll("\\.", "")+"&");
-		if (!this.creationDateMax.matches("Datum festlegen")) getQuery.append("creation_date_max="
-			       + creationDateMax.replaceAll("\\.", "")+"&");
+		
+		if (!this.creationDateMin.matches("Datum festlegen")){
+			SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy"); //old format
+			try {
+				Date dateMin = sdf.parse(this.creationDateMax);
+				sdf.applyPattern("yyyy-MM-dd");
+				String newDateMin = sdf.format(dateMin);
+				getQuery.append("creation_date_max="+newDateMin+"&");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} //dateString with old format
+		} 
+		
+		if (!this.creationDateMax.matches("Datum festlegen")){ 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy"); //old format
+			try {
+				Date dateMax = sdf.parse(this.creationDateMax);
+				sdf.applyPattern("yyyy-MM-dd");
+				String newDateMax = sdf.format(dateMax);
+				getQuery.append("creation_date_max="+newDateMax+"&");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		if (this.city.trim().length() > 0){
 	           getQuery.append("gps_point=" + this.latitude + "+" + this.longitude +"&"
 	                   +"gps_point_radius=" + this.radius+"&");		
