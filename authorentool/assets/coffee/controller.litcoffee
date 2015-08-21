@@ -7,15 +7,40 @@ The following code is a angularJS (https://angularjs.org/) Application.
     storyTellarCtrl.controller "editorCtrl", ["$scope", "$routeParams", "$http", "storytellerServer", "xmlServices", "storytellarMedia", ($scope, $routeParams, $http, server, xmlService, media) ->
 
         $scope.storyId = $routeParams.story
-
+        $scope.codeMirrorUpdateUI = false
         $scope.mediaData = media.mediaFiles
         $scope.media = media
         $scope.final = false
         $scope.uploadEnabled = true
+        $scope.manEditAllow = false
 
         $scope.$watch "media.mediaFiles", () ->
             $scope.mediaSumSize = media.sumSize()
         , true
+
+        # Codemirror Options
+        # Details: https://codemirror.net/doc/manual.html#config
+        $scope.editorOptions =
+            lineWrapping : true
+            lineNumbers: true
+            readOnly: true
+            mode: 'xml'
+            #indentUnit : 2
+            theme : "eclipse"
+            foldGutter : true
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+
+        $scope.manEditA = () ->
+            $scope.editorOptions.readOnly = false
+            $scope.manEditAllow = true
+            $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
+            console.log "A"
+
+        $scope.manEditD = () ->
+            $scope.editorOptions.readOnly = true
+            $scope.manEditAllow = false
+            $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
+            console.log "D"
 
         server.getStoryXML $scope.storyId, (response) ->
                 $scope.xmlFile = response
@@ -45,13 +70,8 @@ The following code is a angularJS (https://angularjs.org/) Application.
                   buttons:
                     'Löschen': ->
                             $(this).dialog 'close'
-                            $.ajax
-                                  url: 'http://api.storytellar.de/story/' + $scope.storyId
-                                  type: 'DELETE'
-                                  success: (result) ->
-                                    # Do something with the result
-                                    return
-                            window.location.replace("/#/home/")
+                            console.log $scope.storyId
+                            server.deleteStory($scope.storyId)
                     'Abbrechen': ->
                             $(this).dialog 'close'
 
@@ -60,7 +80,6 @@ The following code is a angularJS (https://angularjs.org/) Application.
             try
                 # get xml file based on current gui settings
                 $scope.xmlFile = startSynchro()
-                console.log $scope.xmlFile
             catch error
                 console.log error
 
@@ -113,7 +132,7 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 #xml = startSynchro()
                 #$scope.xmlFile = xml
                 $scope.saveXML()
-                if $scope.xmlError != "XML valide!"
+                if $scope.xmlError != "XML valide!" && typeof $scope.xmlError != 'undefined'
                     $("#saveFunctionErrorText").text($scope.xmlError)
                     $("#saveFunctionError").css("display", "block")
                     $("#saveFunctionError").dialog
@@ -197,7 +216,23 @@ The following code is a angularJS (https://angularjs.org/) Application.
                     $("#GraEditorTab").addClass("active")
                      # Active Content
                     $("#GraEditor").css("display", "block")
+                    return
+
+                else if (activeTabID == "XMLTab")
+
+                    # Passive Content
+                    $("#MedienEditor").css("display","none")
+                    $("#GraEditor").css("display","none")
                     
+                    # Passive Tabs
+                    $("#GraEditorTab").removeClass("active")
+                    $("#MedienBibTab").removeClass("active")
+                    
+                    # Active Tabs
+                    $("#XMLTab").addClass("active")
+                    # Active Content
+                    $("#XML").css("display", "block")
+                    $scope.codeMirrorUpdateUI =! $scope.codeMirrorUpdateUI
                     return
 
         $scope.btnHelpEinklappenClick = () ->
@@ -235,10 +270,10 @@ The following code is a angularJS (https://angularjs.org/) Application.
 
     storyTellarCtrl.controller "loginCtrl", ["$scope", "$location", "storytellarAuthentication", "disableAuthentication", ($scope, $location, $server, disA) ->
 
-            #$scope.mail = "storytellar@trashmail.de"
-            #$scope.pass = "123456"
         $scope.mail = ""
         $scope.pass = ""
+        #$scope.mail = "storytellar@trashmail.de"
+        #$scope.pass = "123456"
 
         $scope.login = () ->
             $server.isValid $scope.mail, $scope.pass, (res) ->
@@ -261,9 +296,18 @@ The following code is a angularJS (https://angularjs.org/) Application.
                 element.bind 'change', () ->
                     scope.$apply () ->
                         scope.fileModel = element[0].files[0]
-                        if scope.fileModel.size > 3000000
+
+                        if scope.fileModel? && scope.fileModel.size > 30000000
                             scope.uploadEnabled = false
-                            alert "Datei ist zu groß. Max. 30 MB"
+                            $("#saveFunctionErrorText").text("Datei ist zu groß. Max. 30 MB")
+                            $("#saveFunctionError").css("display", "block")
+                            $("#saveFunctionError").dialog
+                              modal: true
+                              buttons: {
+                                Ok: -> 
+                                  $(this).dialog "close";
+                                }
+
                         else
                             scope.uploadEnabled = true
         }

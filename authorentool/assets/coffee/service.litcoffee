@@ -12,7 +12,17 @@
                                 for d in data2
                                     d.draft = true
                                     d.final = false
-                                cb(data.concat(data2))
+                                data = data.concat(data2)
+                                $http.get("#{apiUrl}/user")
+                                    .success (data3) ->
+                                        for dm in data
+                                            dm.owner = false
+                                            for d in data3
+                                                if dm.id is d.id
+                                                    dm.owner = true
+                                        cb(data)
+                                    .error () ->
+                                        console.log "error"
                             .error () ->
                                 console.log "error"
                     .error () ->
@@ -29,6 +39,13 @@
                 $http.post("#{apiUrl}/story", { xml : "start here", working_title : "draft story" })
                     .success (data) ->
                         cb(data)
+                    .error (err) ->
+                        console.log err
+
+            deleteStory : (storyId) ->
+                $http.delete("#{apiUrl}/story/#{storyId}")
+                    .success (data) ->
+                        window.location.replace("/#/home/")
                     .error (err) ->
                         console.log err
 
@@ -64,7 +81,11 @@
                                     console.log "updated"
 
                     .error (err) ->
-                        tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
+                        if err.error?
+                            tempErrValue = "Sie sind nicht der Author dieser Story und können diese nicht bearbeiten."
+                        else
+                            tempErrValue = "Story konnte nicht an den Server gesendet werden!\n#{err}"
+
                         
                         $("#saveFunctionErrorText").text(tempErrValue)
                         $("#saveFunctionError").css("display", "block")
@@ -144,7 +165,8 @@
                         m.order('file', false)
                         m.buildDirectoryStructure()
                     .error (err) ->
-                        angular.copy [], [] 
+                        angular.copy [], m.mediaFiles
+                        angular.copy [], m.dirs
                         console.log err
                     .finally () ->
                         m.isUploading = false
@@ -188,8 +210,15 @@
                         m.buildDirectoryStructure()
                     .error (err) ->
                         console.log err
-                        alert "Datei konnte nicht gelöscht werden."
-                    .finally () ->
+                        $("#saveFunctionErrorText").text("Datei konnte nicht gelöscht werden.")
+                        $("#saveFunctionError").css("display", "block")
+                        $("#saveFunctionError").dialog
+                          modal: true
+                          buttons: {
+                            Ok: -> 
+                              $(this).dialog "close";
+                            }
+                        .finally () ->
                         m.isDeleting = false
 
             sumSize : () ->
@@ -215,7 +244,15 @@
                     m.update(storyId)
                 .error (err) ->
                     console.log err
-                    alert "Datei upload vom Server nicht akzeptiert." 
+                    $("#saveFunctionErrorText").text("Datei upload vom Server nicht akzeptiert.")
+                    $("#saveFunctionError").css("display", "block")
+                    $("#saveFunctionError").dialog
+                      modal: true
+                      buttons: {
+                        Ok: -> 
+                          $(this).dialog "close";
+                        }
+                    
                 .finally () ->
                     m.update(storyId)
         }

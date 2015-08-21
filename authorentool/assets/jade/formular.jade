@@ -19,7 +19,7 @@ block content
                                         legend.ellipsis Storydaten
                                     .col-xs-4.col-sm-2
                                         .btn-group.dropup.pull-right(id="bgpControlGroupStoryData", role="group" aria-label="...")
-                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnSaveStory", type="button",ng-click="saveXML()") 
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnSaveStory", type="button") 
                                                 span.glyphicon.glyphicon-upload
                                             button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnDeleteStory", type='button',ng-click="deleteXML()") 
                                                 span.glyphicon.glyphicon-trash
@@ -51,7 +51,7 @@ block content
                                             input.form-control(disabled, type="number",value="{{mediaSumSize / 1024 / 1024 | number : 0}}", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
                                         .col-xs-2.col-lg-1
                                             .dropdown.pull-right
-                                                button#ddnsize.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="KB") KB
+                                                button#ddnsize.btn.btn-default.dropdown-toggle(disabled, type='button', data-toggle='dropdown', aria-expanded='true', value="MB") MB
                                                     span.caret 
                                                 ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                                                     li(role='presentation')
