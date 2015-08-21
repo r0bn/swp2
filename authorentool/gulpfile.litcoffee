@@ -46,16 +46,27 @@
       .pipe concat 'main.js'
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
+      
 
     gulp.task 'js-vendor', () ->
         gulp.src [
-            './bower_components/jquery/dist/jquery.js'
+
+
+
             './bower_components/codemirror/lib/codemirror.js'
             './bower_components/codemirror/mode/xml/xml.js'
             './bower_components/codemirror/addon/fold/*.js'
             './bower_components/angular/angular.js'
             './bower_components/angular-route/angular-route.js'
+
+            './bower_components/vis/dist/vis.min.js'
+
             './bower_components/angular-ui-codemirror/ui-codemirror.js'
+            './bower_components/jquery/dist/jquery.min.js'
+            './bower_components/bootswatch-dist/js/bootstrap.min.js'
+            './bower_components/bootswatch-dist/js/bootstrap-lightbox.min.js'
+            './bower_components/jquery-ui/jquery-ui.min.js'
+            
         ]
         .pipe concat 'vendor.js'
         #.pipe uglify()
@@ -69,6 +80,7 @@
       .pipe stylus()
       .pipe gulp.dest './static/build'
       .pipe reload({stream:true})
+      
 
     gulp.task 'css-vendor', () ->
         gulp.src [
@@ -76,10 +88,13 @@
             './bower_components/codemirror/addon/fold/foldgutter.css'
             './bower_components/codemirror/theme/eclipse.css'
             './bower_components/bootswatch-dist/css/bootstrap.css'
+            './bower_components/vis/vis.min.css'
+            './bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css'
         ]
         .pipe concat 'vendor.css'
         .pipe gulp.dest './static/build'
         .pipe reload({stream:true})
+
 
 ## Documentation
 
@@ -90,6 +105,7 @@
             exec __dirname + "/node_modules/docco/bin/docco -o docs/ -L " +__dirname + "/docs/language.json -l linear " + fileList, (err, stdout, stderr) ->
                 console.log stdout
                 console.log stderr
+
 
 ## Build all
 

@@ -1,0 +1,62 @@
+.col-md-12
+    .row
+        .col-md-6
+
+            .panel.panel-default(style="margin-top:20px") 
+                .panel-heading
+                    Ordner Struktur
+                .panel-body
+                    | Um die Medien Dateien in Ordner zu strukturieren, in der Hochzuladenen Datei am Anfang
+                    | den Ordnername angeben und mit "_" trennen. Beispiel: Ordner_restlicherDateiName.png
+                    br
+                    b Die Dateigröße darf 30 MB (3000000 Bytes) nicht überschreiten.
+    .row
+        .col-md-12
+            table.table.table-striped.table-hover
+                thead
+                    tr
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('file', reverse)") Name 
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('extension', reverse)") Typ 
+                        th  
+                            a(href="",ng-click="reverse=!reverse;orderBib('size', reverse)") Größe
+                        th 
+                            a(href="",ng-click="reverse=!reverse;orderBib('created_at', reverse)") Erstellt
+                        th Aktion
+                tbody(ng-repeat="(key, value) in media.dirs")
+                    tr.info
+                        td 
+                            b Ordner: {{key}}
+                        td
+                        td
+                        td
+                        td
+                    tr(ng-repeat="obj in value.files")
+                        td {{ obj.display}}
+                        td 
+                            span.label.label-default {{ obj.extension }}
+                        td {{ obj.size }} bytes
+                        td {{ obj.created_at }}
+                        td
+                            a.btn.btn-success.btn-xs(style="margin-right:5px",href="http://api.storytellar.de/media/{{storyId}}/{{obj.file}}",target="_blank") Anzeigen
+                            button.btn.btn-danger.btn-xs(ng-click="deleteMediaFile(obj)",ng-show="!media.isDeleting") Löschen 
+    .row
+        .col-md-4(ng-show="!media.isUploading")
+            input(type="file",upload-enabled="uploadEnabled",file-model="mediaFileUpload",accept=".jpg,.jpeg,.mp4,.png")
+            br
+            button.btn.btn-primary.btn(ng-disabled="!uploadEnabled",ng-click="uploadMediaFile()") Hochladen
+        .col-md-4(ng-show="media.isUploading")
+            .alert.alert-warning
+                h4 Upload
+                p File is uploading.
+                .progress.progress-striped.active
+                    .progress-bar(style="width:100%")
+
+        .col-md-4(ng-show="media.isDeleting")
+            .alert.alert-warning
+                h4 Deleting 
+                p Server requested to delete file. 
+                .progress.progress-striped.active
+                    .progress-bar.progress-bar-danger(style="width:100%")
+

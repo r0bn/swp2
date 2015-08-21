@@ -1,0 +1,96 @@
+fonts = helvetica, arial, sans-serif
+
+.btnDesign
+    height: 35px
+    font-size: 12pt
+    padding: 5px
+    float: right
+
+.column
+    font-size: 12pt
+body
+  padding 30px 0px
+  min-width: 1366px
+
+.modal-content
+    padding: 0px 25px 25px 25px
+
+.modal-dialog
+    margin: 30px 15%
+#gmeg_map_canvas
+    width: 80%
+    height: 80%
+
+#lightbox
+  .modal-content
+    display inline-block
+    text-align center
+  .close
+    opacity: 1
+    color: black
+    padding: 5px 8px
+    right: 0px
+    z-index: 1032
+
+#medienLightbox
+  .modal-content
+    display inline-block
+    text-align center
+  .close
+    opacity: 1
+    color: black
+    padding: 5px 8px
+    right: 0px
+    z-index: 1032
+
+
+.controls
+  margin-top 16px
+  border 1px solid transparent
+  border-radius 2px 0 0 2px
+  box-sizing border-box
+  -moz-box-sizing border-box
+  height 32px
+  outline none
+  box-shadow 0 2px 6px rgba(0, 0, 0, 0.3)
+
+div
+  &.login-control
+    display none
+
+.inMapSearch
+  background-color #fff
+  z-index: 0
+  position: absolute
+  left: 0px
+  top: 5px !important
+  font-family: Roboto, Arial
+  width: 50%
+  font-size 15px
+  font-weight 300
+  margin-left 12px
+  margin-right 20px
+  padding 0 11px 0 13px
+  text-overflow ellipsis
+  &:focus
+    border-color #4d90fe
+
+#type-selector
+  color #fff
+  background-color #4d90fe
+  padding 5px 11px 0px 11px
+  label
+    font-family Roboto
+    font-size 13px
+    font-weight 300
+
+.pac-container
+    z-index 9999 !important
+
+#divDependencyBox
+  width 400px
+  height 400px
+  border 1px solid lightgray
+
+
+

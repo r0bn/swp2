@@ -1,0 +1,12 @@
+.container-fluid
+    .row
+        .col-md-4(style="margin:20px")
+            button.btn.btn-primary.btn-lg(ng-click="saveXML()") Speichern 
+            br 
+            input(type="checkbox",ng-model="final")  
+            | Final
+        .col-md-8
+            | {{ xmlError }}
+    .row
+        .col-md-12
+            div(ui-codemirror,ui-codemirror-opts="editorOptions",ng-model="xmlFile",ui-refresh='codeMirrorUpdateUI')

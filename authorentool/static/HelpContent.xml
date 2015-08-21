@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Content>
+<inFinal>Sofern Sie diese Option wählen, wird überprüft ob alle Mediendateien vorhanden sind und ob aus Ihren Eingaben eine gültige Story erstellt werden konnte. Sollte dies der Fall sein wird die Story veröffentlicht, sodass sie von anderen Benutzern in der Storytellar-App gespielt werden kann.</inFinal>
+<inTitel> Bitte tragen Sie an dieser Stelle den Titel der Story eingegeben. Dieser kann von Ihnen frei gewählt werden. Der Titel wird in der App angezeigt.</inTitel>
+<ttaDescription> Bitte tragen Sie an dieser Stelle die Beschreibung Ihrer Story eingegeben. Diese kann von Ihnen frei gewählt werden </ttaDescription>
+<inAutor> Bitte geben Sie hier Ihren (Künstler-)Namen ein. Dieser wird in der App angezeigt. </inAutor>
+<inSize> Die Größe der Story wurde durch die Größe Ihrer hochgeladenen Dateien berechnet </inSize>
+<inLatLngLocation> Sie können mit Hilfe der Map die Längen- und Breitengrade des Ortes (der Stadt) angeben, wo die Story spielt. Sie können in der Map nach Ihrem Punkt suchen und diesen mittels einem Klick auf die Map bestimmen. </inLatLngLocation>
+<inRadius> Der Radius gibt dem Endbenutzer die Information, wie weit die Story um den "Ort" herum spielt. Der Radius kann von Ihnen bestimmt werden. </inRadius>
+<inInternet> Sollte dieser Storypoint über eine Internetverbindung verfügen selektieren Sie "Storypoint verfügt über Internet". </inInternet>
+<inAccessable> Sollte dieser Storypoint erreichbar sein selektieren Sie "Storypoint ist erreichbar". </inAccessable>
+<inEndOfStory> Sollte dieser Storypoint ein möglicher Endpunkt Ihrer Story darstellen, so selektieren Sie "Storypoint ist Endpunkt".</inEndOfStory>
+<inStorypoint> Sie können in diesem Feld Ihrem Storypunkt einen inviduellen Namen geben. Dieser Name dient lediglich zum Auseinanderhalten der Storypoins. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inStorypoint>
+<inAnchorPoint> Geben Sie hier bitte die genauen GPS-Koordinaten des Storypoins an. Dazu können Sie die Map verwenden, indem sie dort auf den gewünschten Ort klicken. </inAnchorPoint>
+<inAnchorImg> Bestimmen Sie, aus der von Ihnen angelegten Medien Bibliothek, ein Bild, das neben den GPS-Koordinaten als Auslöser für den Effekt des anzuzeigenden Objektes dienen soll. </inAnchorImg>
+<inAsset> Bestimmen Sie, aus der von Ihnen angelegten Medien Bibliothek, eine Datei, die beim auslösen des Storypoins dem Benutzer angezeigt werden soll. </inAsset>
+<btnCreateReferences> Bestimmen Sie hier, welche Punkte VOR diesem Punkt besucht werden müssen. Diese Punkte müssen zwangsweise besucht sein, damit dieser Punkt ausgelöst werden kann. </btnCreateReferences>
+<btnSetStorypointReferences>Wählen Sie hier den vorher zu besuchenden Storypoint aus.</btnSetStorypointReferences>
+<btnSetStorypointItemReferences>wählen Sie hier gegebenen Falls ein Item aus, welches bis zu diesem Punkt eingesammelt sein muss.</btnSetStorypointItemReferences>
+<ddnInteractions> Bestimmen Sie hier, welche Interaktionen diesem Asset folgen sollen. Zu beachten: Die Reihenfolge der Interaktionen spielt eine wichtige Rolle. Nach dieser Reihenfolge werden die Interaktionen ausgeführt. </ddnInteractions>
+<inItemID> Sie können in diesem Feld Ihrem Item einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Items. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inItemID>
+<inItemDescription> Bitte geben sie eine kurze Beschreibung des Items an. </inItemDescription>
+<inItemIsCollected> Soll das Item direkt aufgenommen werden wählen Sie diese Option aus. </inItemIsCollected>
+<inQuizID> Sie können in diesem Feld Ihrem Quiz einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Quizes. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inQuizID>
+<btnSetQuizOnTrueReferences> **OPTIONAL** Man kann optional angeben, welcher Storypoint aufgerufen werden soll, sollte der Benutzer bei dem Quiz die richtige Antwort geben (der Storypoint muss angelegt sein). </btnSetQuizOnTrueReferences>
+<btnSetQuizOnFalseReferences> ** OPTIONAL** Man kann optional angeben, welcher Storypoint aufgerufen werden soll, sollte der Benutzer bei dem Quiz die falsche Antwort geben (der Storypoint muss angelegt sein). Sollte dieses Feld nicht angegeben werden, so kann das Quiz so lange ausgeführt werden, bis der Benutzer die richtige Antwort gibt. </btnSetQuizOnFalseReferences>
+<inQuizQuestion> Geben Sie hier Ihre Frage ein, welche bei dem Storypunkt gefragt werden soll. </inQuizQuestion>
+<inQuizAnswerID> Sie können in diesem Feld Ihrer Antwort einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Antworten dieses speziellen Quizes. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inQuizAnswerID>
+<inQuizAnswerText> Geben Sie hier eine mögliche Antwort zur obrigen Frage ein. Wählen Sie im folgenden Dropdown-Menu aus, ob die Antwort richtig oder falsch ist. </inQuizAnswerText>
+<ddnState> Wählen Sie im folgenden Dropdown-Menu aus, ob die Antwort richtig oder falsch ist. </ddnState>
+<inChooserID> Sie können in diesem Feld Ihrem Chooser einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Choosers. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inChooserID>
+<inChooserQuestion> Geben Sie hier Ihre Frage ein, welches bei dem Storypunkt gefragt werden soll. </inChooserQuestion>
+<inChooserAnswerID> Sie können in diesem Feld Ihrer Chooser Antwort einen inviduellen Namen geben. Dieser Name dient lediglich zum auseinanderhalten der Antworten dieses speziellen Choosers. Es dürfen keine Leerzeichen, Ausrufezeichen, Fragezeichen oder Hashtags verwendet werden. </inChooserAnswerID>
+<inChooserAnswerText> Geben Sie hier eine mögliche Antwort zur obrigen Frage ein. Wählen Sie in den folgenden Dropdown-Menüs aus, ob der Antwort ein weiterer Storypoint folgen soll oder ob ein Item aufgenommen werden soll. Der Storypoint sowie das Item muss angelegt sein </inChooserAnswerText>
+<btnSetChooserItemReferences> ** OPTIONAL ** Bestimmen Sie hier, welches Item aufgenommen werden soll, nachdem die Interaktion vorbei ist (das Item muss angelegt sein). </btnSetChooserItemReferences>
+<btnSetChooserStorypointReferences> ** OPTIONAL ** Bestimmen Sie hier, welcher Storypoint folgen soll, nachdem die Interaktion vorbei ist (der Storypoint muss angelegt sein). </btnSetChooserStorypointReferences>
+<ddnradius>Wählen Sie hier die Maßeinheit für den Radius aus.</ddnradius>
+<ddnsize>Wählen Sie hier die Maßeinheit für die Größe der Story aus.</ddnsize>
+</Content>

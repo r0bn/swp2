@@ -1,0 +1,522 @@
+block scripts 
+    
+block vars
+    - var storypointCounter = 0
+    - var poiCounter = 0
+    - var QuizRefOnTrueCounter = 0
+block content
+
+    .container
+        br
+        .row(id="rowFormular")
+            .col-lg-9.column(id="colColumn1")
+                .row
+                    .col-lg-11
+                        form.form-horizontal
+                            fieldset
+                                .row
+                                    .col-xs-8.col-sm-7
+                                        legend.ellipsis Storydaten
+                                    .col-xs-4.col-sm-2
+                                        .btn-group.dropup.pull-right(id="bgpControlGroupStoryData", role="group" aria-label="...")
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnSaveStory", type="button") 
+                                                span.glyphicon.glyphicon-upload
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnDeleteStory", type='button',ng-click="deleteXML()") 
+                                                span.glyphicon.glyphicon-trash
+                                    .col-xs-12.col-sm-3
+                                        .checkbox.pull-right
+                                            input(id="inFinal", type='checkbox',ng-model="final",placeholder="Final")
+                                            label(id="lblFinal", for='inFinal') Veröffentlicht
+                                .clearfix.visible-xs-block
+                                br
+                                .row     
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inTitel") Titel
+                                        .col-lg-10
+                                            input.form-control(type="text", id="inTitel", maxlength="255", placeholder="Titel")
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="ttaDescription") Beschreibung
+                                        .col-lg-10
+                                            textarea.form-control(rows="3", id="ttaDescription",maxlength="255", max-height: "200px", placeholder="Beschreibung der Story")
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inAutor") Autor
+                                        .col-lg-10
+                                            input.form-control(type="text", id="inAutor",maxlength="255", placeholder="Name des Autors")
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inSize") Größe der Story
+                                        .col-xs-10.col-lg-9
+                                            input.form-control(disabled, type="number",value="{{mediaSumSize / 1024 / 1024 | number : 0}}", min="0", id="inSize",step="1", placeholder="Größe aller Dateien der Story")
+                                        .col-xs-2.col-lg-1
+                                            .dropdown.pull-right
+                                                button#ddnsize.btn.btn-default.dropdown-toggle(disabled, type='button', data-toggle='dropdown', aria-expanded='true', value="MB") MB
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnkb", role='menuitem', tabindex='0') KB
+                                                    li(role='presentation')
+                                                        a(id="ddnmb", role='menuitem', tabindex='1') MB
+                                                    li(role='presentation')
+                                                        a(id="ddngb", role='menuitem', tabindex='2') GB
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inLatLngLocation") Ort
+
+                                        .col-lg-8
+                                            input.form-control( disabled, id="inLatLngLocation", placeholder="GPS Koordinaten")
+                                            #lightbox.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                                                .modal-dialog   
+                                                    .modal-content
+                                                        .modal-body
+                                                            .form-group
+                                                                .col-lg-6
+                                                                    input.form-control.controls.inMapSearch(id="inMapSearch", placeholder="Map GPS Suche")
+                                                                button.close.hidden(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                                                            .form-group  
+                                                                #gmeg_map_canvas.responsivemap
+                                        .col-lg-2
+                                            button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnMap", type="button", gpsField="inLatLngLocation", data-toggle='modal', data-target='#lightbox') Map
+
+                                    .form-group
+                                        label.col-lg-2.control-label(for="inRadius") Radius um den Ort
+                                        .col-xs-8.col-sm-10.col-lg-8
+                                            input.form-control(type="number", min="0", id="inRadius",step="1", placeholder="Umkreis")
+                                        .col-xs-4.col-sm-2.col-lg-2
+                                            .dropdown.pull-right
+                                                button#ddnradius.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', value="Meter") Meter
+                                                    span.caret 
+                                                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                                    li(role='presentation')
+                                                        a(id="ddnme", role='menuitem', tabindex='0') Meter
+                                                    li(role='presentation')
+                                                        a(id="ddnkm", role='menuitem', tabindex='1') Kilometer
+
+                        
+
+
+
+                
+                form.form-horizontal(id="fhlStorypoints")
+                    fieldset
+                        legend Storypoints
+                            .form-group(id="fgpStorypoint")
+                                button.btn.btn-warning.btn-lg.pull-primary.btnDesign(id="btnCreateNewStorypoint",type="button", ng-click="storypointCounter=storypointCounter+1;createNewStorypoint(storypointCounter)") Neuen Storypoint erstellen
+                form.form-horizontal(id="fhlNeuerStorypoint", style="display: none")
+                    .col-lg-1
+                    fieldset
+                        .form-group
+                            .col-xs-6.col-lg-9
+                                legend.ellipsis(id="lgdNeuerStorypointFieldset") Neuer Storypoint 
+                            .col-xs-6.col-lg-3
+                                .btn-group.dropup.pull-right(id="bgpControlGroup", role="group" aria-label="...")
+                                    button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
+                                        span.glyphicon.glyphicon-menu-up  
+                                    button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
+                                        span.glyphicon.glyphicon-menu-down
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnStorypointEinklappen", type='button')
+                                        span.glyphicon.glyphicon-resize-small(id="resize") 
+                                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnNeuesStorypointDelete", type='button') 
+                                        span.glyphicon.glyphicon-trash
+                        .col-lg-1
+                        fieldset(id="fstNeuesStorypointContent")
+                            .form-group(style="vertical-align:bottom; line-height:20px")
+                                                // ----------------------------Hier die Punkteeinstellungen
+                                .row
+                                    .col-lg-4
+                                        label Storypointeinstellungen
+                                .row
+                                    .col-lg-4
+                                        .checkbox
+                                            input(id="inInternet", type='checkbox', placeholder="Internet?")
+                                            label(id="lblInternet", for='inInternet') Storypoint verfügt über Internet
+                                    .col-lg-4
+                                        .checkbox
+                                            input(id="inAccessable", type='checkbox', placeholder="Erreichbar?")
+                                            label(id="lblAccessable", for='inAccessable') Storypoint ist erreichbar
+                                    .col-lg-4
+                                        .checkbox
+                                            input(id="inEndOfStory", type='checkbox', placeholder="Endpunkt?")
+                                            label(id="lblEndOfStory", for='inEndOfStory') Storypoint ist Endpunkt
+                                
+                                                // -----------------------------ENDE
+
+
+                            .form-group(style="margin-top:5%")
+                                .col-lg-4
+                                    label.control-label(id="lblInputStorypoint", for="inStorypoint") Storypoint
+                                .col-lg-8
+                                    input.form-control(type="text",maxlength="255", id="inStorypoint", placeholder="Storypointname")
+
+
+                            .form-group
+                                .col-lg-4
+                                    label.control-label(id="lblAnchorPoint", for="inAnchorPoint") Ort
+                                .col-lg-6
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorPoint", placeholder="Anker GPS Koordinaten")
+                                .col-lg-2
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnStorypointMap", type="button", gpsField="inAnchorPoint", data-toggle='modal', data-target='#lightbox') Map
+
+                                                    // ------------ANCHOR-IMAGE
+                            .form-group
+                                .col-lg-4
+                                    label.control-label(id="lblAnchorImg", for="inAnchorImg") Auslösebild bestimmen
+                                .col-xs-8.col-sm-10.col-lg-6
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAnchorImg", placeholder="Referenzbild aus MedienBib auswählen")
+                                .col-xs-4.col-sm-2
+                                    .btn-group.pull-right(id="bgpControlGroupAnchorImg", role="group" aria-label="...")
+                                        button.btn.btn-primary.btnDesign(id="btnAnchorImg", type="button",onclick="selectFromMedienBib1()") MBib
+                                        button.btn.btn-primary.btnDesign.btn-danger(id="btnAnchorImgReset", type='button') 
+                                            span.glyphicon.glyphicon-trash
+
+                                                                                         // -------------ASSETS
+                            .form-group
+                                .col-lg-4
+                                    label.control-label(id="lblAsset", for="inAsset") Anzeigbares Objekt
+                                .col-xs-8.col-sm-10.col-lg-6
+                                    input.form-control(disabled, type="text",maxlength="255", id="inAsset", placeholder="Anzeigebild/Anzeigevideo aus MedienBib auswählen")
+                                .col-xs-4.col-sm-2
+                                    .btn-group.pull-right(id="bgpControlGroupAsset", role="group" aria-label="...")
+                                        button.btn.btn-primary.btnDesign(id="btnAsset", type="button", onclick="selectFromMedienBib2()") MBib
+                                        button.btn.btn-primary.btnDesign.btn-danger(id="btnAssetReset", type='button') 
+                                            span.glyphicon.glyphicon-trash
+                                                    // ------------ REFERENZEN
+                            .form-group(id="fgpReferences")
+                                div(id="fgpButtonReferences")
+                                    .col-lg-9
+                                    .col-lg-3
+                                        button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateReferences", type="button") Referenz erstellen
+ 
+
+
+                            .form-group(id="fgpInteractions")
+                                .col-lg-5
+                                    label.control-label(id="lblInteractions", for="ddnInteractions") Interaktion wählen
+                                .col-xs-5.col-lg-4
+                                    .dropup
+                                        button.btn.btn-default.dropdown-toggle(id="ddnInteractions", type='button', data-toggle='dropdown', aria-expanded='true') Interaktion 
+                                            span.caret 
+                                        ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                                            li(role='presentation')
+                                                a(role='menuitem', id="ddnChooser", tabindex='0', aria-label="Chooser", value="Chooser") Chooser
+                                            li(role='presentation')
+                                                a(role='menuitem', id="ddnQuiz", tabindex='1', value="Quiz") Quiz
+                                            li(role='presentation')
+                                                a(role='menuitem', id="ddnItem", tabindex='2', value="Item") Item
+                                .col-xs-7.col-lg-3
+                                    button.btn.btn-primary.btn-block.pull-primary.btnDesign(id="btnCreateInteraction", interactionCounter="10000", type="button") Interaktion erstellen
+
+
+            .col-lg-3.column(id="colColumn2", style="position:fixed; right:20px; margin-top:0%")
+                            form.form-horizontal
+                                fieldset
+                                    .col-lg-8
+                                        legend Hilfe
+                                    .col-lg-4
+                                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnHelpEinklappen", type='button', ng-click="btnHelpEinklappenClick()")
+                                            span.glyphicon.glyphicon-resize-small(id="resize")
+                                div(id="divHelpBox", style="display: none;width: 300px; height:200px; overflow-y: auto; font-size: 12pt")
+
+                            form.form-horizontal
+                                .row
+                                    
+                                fieldset
+                                    .row(style="margin-top:1%")
+                                        .col-md-10
+                                            legend Abhängigkeiten
+                                        .col-md-2
+                                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnCheckStory", type="button") Prüfen 
+                                                span.glyphicon.glyphicon-check
+
+                                    .row
+                                        .col-md-12
+                                            div(id="divDependencyBox", style=" width: 300px; min-height:100px; text-align:center;")
+
+
+
+
+                                                        // ----------------------- AB HIER: SCHATTEN
+                                                        
+                        // Save-Hinweis                                      
+            div(id="saveFunctionSuccess", title="Saved", style="display:none")
+                p
+                    span.ui-icon.ui-icon-circle-check(style="float:left; margin-left:50%; margin-top:10%; transform:scale(2)")
+                p(style="float:left; margin-left:10%; margin-right:10%; margin-top:5%") Die Story wurde gespeichert und an den Server geschickt.
+            div(id="saveFunctionError", title="Saved", style="display:none")
+                p
+                    span.ui-icon.ui-icon-circle-close(style="float:left; margin-left:50%; margin-top:10%; transform:scale(2)")
+                p(id = "saveFunctionErrorText",style="float:left; margin-left:10%; margin-right:10%; margin-top:5%") Die Story konnte nicht gespeichert werden. Der Fehlercode ist im Tab 'XML Editor' ganz unten einzusehen.
+                                                        // STORYPOINT - MULTIREFERENZBOX SCHATTENKOPIEN
+            div(id="dialog-confirm-Storypoint" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie den Storypoint wirklich löschen?
+            div(id="dialog-confirm-Story" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie die Story wirklich löschen?
+            div(id="dialog-confirm-Chooser" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie die Antwort wirklich löschen?
+            div(id="dialog-confirm-Item" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie das Item wirklich löschen?
+            div(id="dialog-confirm-Quiz" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie das Quiz wirklich löschen?
+            div(id="dialog-confirm-Antwort" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie die Antwort wirklich löschen?
+            div(id="dialog-confirm-Referenzen" title="Wirklich?",style="height: auto;display: none")
+                p Möchten Sie die Antwort wirklich löschen?
+            div(id="dialog-confirm-EndpointSet" title="Wirklich?",style="height: auto;display: none")
+                p Wenn Sie diesen Punkt als Endpunkt deklarieren, werden alle Interaktionen dieses Punktes gelöscht, sowie alle Referenzen, die mittels des Buttons: 'Referenz erstellen' erstellt wurden. Fortfahren?
+                
+                
+                        // Benutzer-Hinweise CheckPlayable
+            div(id="dialog-confirm-Playable" title="Hinweis",style="height: auto;display: none")
+                p(id="dialog-confirm-Playable-text") dummy
+                
+                                              
+                                              
+                                              
+                                                                    
+            .form-group(id="fgpMultipleStorypointRefs", style="display:none")
+                .col-xs-3(id="colStorypointRefDeep")
+                    .dropdown
+                        button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP Ref wählen
+                            span.caret 
+                        ul.dropdown-menu(id="ulStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+                .col-lg-1
+                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnStorypointRefDelete", type='button') 
+                        span.glyphicon.glyphicon-trash
+            .form-group(id="fgpMultipleItemRefs", style="display:none")
+                .col-xs-3(id="colItemRefDeep")
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetStorypointItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
+                                span.caret 
+                            ul.dropdown-menu(id="ulSkStorypointItemRef", role="menu", aria-labelledby="dropdownMenu1")
+
+                                            // ---------------------- STORYPOINT - REFERENZ SCHATTEN
+
+            li(id="liSkStorypointRef", role="presentation", style="display:none")
+                a(id="ddnStorypointStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu 
+
+            .col-lg-3(id="colSkStorypointRefDeep", style="display:none")
+                .dropdown
+                    button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSkSetStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') SP-Ref wählen
+                        span.caret 
+                    ul.dropdown-menu(id="ulSkStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+                 // -------------------- ITEM
+            .form-group(id="fgpNeu_Item", style="display: none")
+                .col-lg-1
+                fieldset
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuesItemFieldset") Neues Item 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpItemControlGroup", role="group" aria-label="...")
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
+                                span.glyphicon.glyphicon-menu-up  
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
+                                span.glyphicon.glyphicon-menu-down
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnItemEinklappen", type='button')
+                                span.glyphicon.glyphicon-resize-small(id="resize")
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnItemDelete", type='button') 
+                                span.glyphicon.glyphicon-trash
+                .col-lg-1
+                fieldset(id="fstNeuesItemContent")                          
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblItemID", for="inItemID") Item ID
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inItemID", placeholder="Item ")
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblItemDescription", for="inItemDescription") Beschreibung
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inItemDescription", placeholder="Itembeschreibung")
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblItemStorypointRef", for="inItemStorypointRef") StorypointRef
+                        .col-lg-7
+                            input.form-control(disabled, type="text",maxlength="255", id="inItemStorypointRef", placeholder="Item Storypointreferenz")
+                    .form-group
+                        .col-lg-offset-6.col-lg-6
+                            .checkbox
+                                input(id="inItemIsCollected", type='checkbox', placeholder="Item ist aufgenommen")
+                                label(id="lblItemIsCollected", for='inItemIsCollected') Item wird aufgenommen
+                                // ------------------- QUIZ
+            .form-group(id="fgpNeu_Quiz", style="display: none") 
+                .col-lg-1
+                fieldset                      
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuesQuizFieldset") Neues Quiz 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpQuizControlGroup", role="group" aria-label="...")
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
+                                span.glyphicon.glyphicon-menu-up  
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
+                                span.glyphicon.glyphicon-menu-down
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnQuizEinklappen", type='button')
+                                span.glyphicon.glyphicon-resize-small(id="resize")
+                                 
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizDelete", type='button') 
+                                span.glyphicon.glyphicon-trash
+                .col-lg-1
+                fieldset(id="fstNeuesQuizContent")
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblQuizID", for="inQuizID") Quiz ID
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inQuizID", placeholder="Quiz ID")   
+                    .form-group
+                        .col-lg-5
+                            label.control-label( id="lblQuizStorypointRef", for="inQuizStorypointRef") StorypointRef
+                        .col-lg-7
+                            input.form-control(disabled, type="text",maxlength="255", id="inQuizStorypointRef", placeholder="Quiz Storypointreferenz")
+                    .form-group
+                        .col-lg-4
+                            label.control-label(id="lblQuizOnTrue", for="btnSetQuizOnTrueReferences") Quiz OnTrue
+                        .col-lg-3
+                        .col-lg-5
+                            .dropdown
+                                button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetQuizOnTrueReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenzen bei richtiger Antwort
+                                    span.caret 
+                        
+                                ul.dropdown-menu(id="ulSkQuizOnTrueRef", role="menu", aria-labelledby="dropdownMenu1")
+
+                    .form-group
+                        .col-lg-4
+                            label.control-label(id="lblQuizOnFalse", for="btnSetQuizOnFalseReferences") Quiz OnFalse
+                        .col-lg-3
+                        .col-lg-5
+                            .dropdown
+                                button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetQuizOnFalseReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenz bei falscher Antwort
+                                    span.caret
+                        
+                                ul.dropdown-menu(id="ulSkQuizOnFalseRef", role="menu", aria-labelledby="dropdownMenu1")
+
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblQuizQuestion", for="inQuizQuestion") Question
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inQuizQuestion", placeholder="Quiz Frage")
+                    .form-group
+                        .col-xs-12
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnQuizAnswer", type='button', quizAnswerCounter="0") 
+                                span Antwort hinzufügen
+            .form-group(id="fgpAnswer", style="display: none")
+                .col-lg-1
+                    label.control-label(id="lblQuizAnswerID", for="inQuizAnswerID") ID
+                .col-lg-2
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerID", placeholder="Quiz Antwort ID")
+                .col-lg-1
+                    label.control-label(id="lblQuizAnswerText", for="inQuizAnswerText") Text
+                .col-xs-8.col-sm-10.col-lg-5
+                    input.form-control(type="text",maxlength="255", id="inQuizAnswerText", placeholder="Quiz Antwort Text")
+                .col-xs-4.col-sm-2.col-md-1
+                    .dropdown
+                        button.btn.btn-default.dropdown-toggle(id='ddnState', type='button', data-toggle='dropdown', aria-expanded='true') Status
+                            span.caret 
+                        ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                            li(role='presentation')
+                                a(id="ddnTrue", role='menuitem', tabindex='0', value='Wahr') Wahr
+                            li(role='presentation')
+                                a(id="ddnFalse", role='menuitem', tabindex='1', value='Falsch') Falsch
+                .col-lg-1
+                .col-lg-1
+                    button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnQuizAnswerDelete", type='button')
+                        span.glyphicon.glyphicon-trash    
+            
+
+                                        // OnTrue und OnFalse Schattenkopien für das Quiz
+            li(id="liSkQuizOnTrueRef", role="presentation", style="display:none")
+                a(id="ddnQuizOnTrueStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+
+            li(id="liSkQuizOnFalseRef", role="presentation", style="display:none")
+                a(id="ddnQuizOnFalseStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+
+
+
+                                            // ------------------------- Chooser
+            .form-group(id="fgpNeu_Chooser", style="display: none")
+                .col-lg-1
+                fieldset                      
+                    .col-xs-6.col-lg-9
+                        legend.ellipsis(id="lgdNeuerChooserFieldset") Neuer Chooser 
+                    .col-xs-6.col-lg-3
+                        .btn-group.dropup.pull-right(id="bgpChooserControlGroup", role="group" aria-label="...")
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchUp", type='button')
+                                span.glyphicon.glyphicon-menu-up  
+                            button.btn-default.btn.btn-lg.pull-primary.btnDesign(id="btnSwitchDown", type='button')
+                                span.glyphicon.glyphicon-menu-down
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-success(id="btnChooserEinklappen", type='button')
+                                span.glyphicon.glyphicon-resize-small(id="resize")
+                                 
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserDelete", type='button') 
+                                span.glyphicon.glyphicon-trash
+
+                .col-lg-1
+                fieldset(id="fstNeuerChooserContent")
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblChooserID", for="inChooserID") Chooser ID
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inChooserID", placeholder="Chooser ID")   
+                    .form-group
+                        .col-lg-5
+                            label.control-label( id="lblChooserStorypointRef", for="inChooserStorypointRef") StorypointRef
+                        .col-lg-7
+                            input.form-control(disabled, type="text",maxlength="255", id="inChooserStorypointRef", placeholder="Chooser Storypointreferenz")
+                    .form-group
+                        .col-lg-5
+                            label.control-label(id="lblChooserQuestion", for="inChooserQuestion") Frage
+                        .col-lg-7
+                            input.form-control(type="text",maxlength="255", id="inChooserQuestion", placeholder="Chooser Frage")
+                    .form-group
+                        .col-xs-12
+                            button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-default(id="btnChooserAnswer", type='button', ChooserAnswerCounter="0") 
+                                span Antwort hinzufügen
+
+            .div(id="fgpChooserAnswer", style="display: none")
+                .row
+                    .col-lg-1
+                        label.control-label(id="lblChooserAnswerID", for="inChooserAnswerID") ID
+                    .col-lg-3
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerID", placeholder="Chooser Antwort ID")
+                    .col-lg-1
+                    .col-lg-2
+                        label.control-label(id="lblChooserAnswerItemRef", for="btnSetChooserItemReferences") ItemRef
+                    .col-lg-4
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserItemReferences", type="button", data-toggle='dropdown', aria-expanded='true') Item Ref wählen
+                                span.caret
+                    
+                            ul.dropdown-menu(id="ulSkChooserItemRef", role="menu", aria-labelledby="dropdownMenu1")
+                            
+                    .col-lg-1
+                        button.btn.btn-primary.btn-lg.pull-primary.btnDesign.btn-danger(id="btnChooserAnswerDelete", type='button')
+                            span.glyphicon.glyphicon-trash
+                .row(style="margin-top:1%")
+                    .col-lg-1
+                        label.control-label(id="lblChooserAnswerText", for="inChooserAnswerText") Text
+                    .col-lg-3
+                        input.form-control(type="text",maxlength="255", id="inChooserAnswerText", placeholder="Chooser Antwort Text")
+                    .col-lg-1
+                    .col-lg-2
+                        label.control-label(id="lblChooserAnswerFeatureRef", for="btnSetChooserStorypointReferences") StorypointRef
+                    .col-lg-4
+                        .dropdown
+                            button.btn.btn-block.btn-default.dropdown-toggle.btnDesign.btn-info(id="btnSetChooserStorypointReferences", type="button", data-toggle='dropdown', aria-expanded='true') Referenz zu Storypoint
+                                span.caret
+                    
+                            ul.dropdown-menu(id="ulSkChooserStorypointRef", role="menu", aria-labelledby="dropdownMenu1")
+
+
+                                        // Chooser Schattenkopien für das Quiz
+            li(id="liSkChooserStorypointRef", role="presentation", style="display:none")
+                a(id="ddnChooserStorypoint", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+                
+            li(id="liSkChooserItemRef", role="presentation", style="display:none")
+                a(id="ddnChooserItem", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+
+            li(id="liSkStorypointItemRef", role="presentation", style="display:none")
+                a(id="ddnStorypointItem", role="menuitem", tabindex="0", aria-label="Referenz", value="Referenz") Ref. zu
+
+            include ./medienLibrary.jade
+                //.tab-pane.fade(id="XML")
+                        p Zwei und ewig so weiter
+    p           
+

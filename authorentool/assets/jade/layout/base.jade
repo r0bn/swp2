@@ -10,6 +10,7 @@ html
   head
     meta(charset="utf-8")
     meta(name="robots",content="noindex,nofollow")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     base(href="/")
 
     link(rel="icon" href="favicon.png")
@@ -17,7 +18,10 @@ html
     // AngularJS, Codemirror and styles are bundeld in one file 
     link(rel="stylesheet",href="build/vendor.css")
     script(src="build/vendor.js")
+    // Googlemaps update. Muss so eingebunden werden, damit das Kontingent nicht voll läuft
+    script(src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places")
     link(rel="stylesheet",href="build/main.css")
+    link(rel="stylesheet",href="build/formular.css")
 
     title #{title} 
 
@@ -28,7 +32,7 @@ html
     .navbar.navbar-default
       .container-fluid
         .navbar-header
-            a.navbar-brand(href="") Authorentool
+            a.navbar-brand(href="/#/") Autorentool
 
     // Blocks to be extend
     block content
