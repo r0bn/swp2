@@ -6,6 +6,9 @@ use App\Interfaces\XmlParser as XmlParserInterface;
 
 class XmlParser implements XmlParserInterface
 {
+    /*
+    * Collects the xml metadata out of the xml and returns them
+    */
     public function getXmlMetadata($xmlString)
     {
         $xml = simplexml_load_string($xmlString);
@@ -27,7 +30,35 @@ class XmlParser implements XmlParserInterface
         return $xmlMetadata;
     }
 
+    /*
+    * Searches all media files in the xml and returns the names
+    */
+    public function getXmlMediaFiles($xmlString)
+    {
+        $xml = simplexml_load_string($xmlString);
 
+        $xml->registerXPathNamespace('x', 'http://www.opengis.net/arml/2.0');
+        $xml->registerXPathNamespace('xlink', 'http://www.w3.org/1999/xlink');
+
+        $files = $xml->xpath('//x:Href/@xlink:href');
+        $tracker = $xml->xpath('//x:src');
+
+        $filesArray = array();
+
+        foreach ($files as $file) {
+            $filesArray[] = $file->__toString();
+        }
+
+        foreach ($tracker as $track) {
+            $filesArray[] = $track->__toString();
+        }
+
+        return array_unique($filesArray);
+    }
+
+    /*
+    * Deprecated! 
+    */
     public function getXmlMetadataSlot($xmlString)
     {
         $xmlMetadata = null;

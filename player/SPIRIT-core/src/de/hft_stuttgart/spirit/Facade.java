@@ -38,7 +38,15 @@ public class Facade implements UIController {
 
 	@Override
 	public float getDistanceUserToClosestGhost() {
+		//added from new spirit app
+		if (app.getClosestGhost() != null){
 		return app.getGeoTools().getDistance(app.getClosestGhost());
+		}else{
+			return Float.MAX_VALUE;
+		}
+		//
+	
+		//return app.getGeoTools().getDistance(app.getClosestGhost());
 	}
 
 	@Override
@@ -252,6 +260,13 @@ public class Facade implements UIController {
 		return app.getArmlFromSdCard(fullPath);
 	}
 	
+	//added from new spirit app
+	@Override
+	public OrbInfos getOrbInfos() {
+		return app.getOrbInfos();
+	}
+	//
+	
 	@Override
 	public void showPicture(String picturePath) {
 		app.openPicture(picturePath);
@@ -266,5 +281,32 @@ public class Facade implements UIController {
 	public void endStory() {
 		app.endStory();
 	}
+
+	@Override
+	public boolean vuforiaIsReady() {
+		return app.vuforiaIsReady();
+	}
+
+	@Override
+	public void setText(String text) {
+		app.setText(text);
+	}
+
+	@Override
+	public void hideText() {
+		app.hideText();
+	}
+
+	@Override
+	public void log(String who, String what) {
+		app.log(who, what);
+	}
+
+	@Override
+	public void setPictureAlpha(float f) {
+		app.setPictureAlpha(f);
+	}
+	
+	
 
 }

@@ -8,6 +8,10 @@ use Carbon\Carbon;
 
 class Story implements StoryInterface
 {
+    /*
+    * Searches the database for all stories with set final parameter
+    * Retrieves their metadatas and returns the list as JSON
+    */
     public function getAllStories()
     {
         $stories = array();
@@ -36,7 +40,44 @@ class Story implements StoryInterface
         return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 
+    /*
+    * Searches the database for all stories from a certain user
+    * Retrieves their metadatas and returns the list as JSON
+    */
+    public function getUserStories($userId)
+    {
+        $stories = array();
 
+        foreach (\App\Story::where('user_id', '=', $userId)->get() as $entry) {
+            $story = array();
+
+            $story['id'] = $entry->id;
+            $story['final'] = $entry->final;
+            $story['working_title'] = $entry->working_title;
+            $story['title'] = $entry->title;
+            $story['description'] = $entry->description;
+            $story['author'] = $entry->author;
+            $story['revision'] = $entry->revision;
+            $story['size'] = $entry->size;
+            $story['size_uom'] = $entry->size_uom;
+            $story['location'] = $entry->location;
+            $story['radius'] = $entry->radius;
+            $story['radius_uom'] = $entry->radius_uom;
+            $story['created_at'] = $entry->created_at->toDateTimeString();
+            $story['updated_at'] = $entry->updated_at->toDateTimeString();
+
+            $stories[] = $story;
+        }
+
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+
+        return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
+    }
+
+    /*
+    * Searches the database for all stories where the final parameter is not set
+    * Retrieves their metadatas and returns the list as JSON
+    */
     public function getAllOpenStories()
     {
         $stories = array();
@@ -57,7 +98,9 @@ class Story implements StoryInterface
         return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 
-
+    /*
+    * Searches the database for a certain story and returns the xml
+    */
     public function getStory($id)
     {
         $story = \App\Story::findOrFail($id);
@@ -65,7 +108,13 @@ class Story implements StoryInterface
         return $story->xml_file;
     }
 
-
+    /*
+    * Deprecated! Use create story slot and update story in combination
+    *
+    * Retrieves the XML metadata
+    * Creates a new story in the database
+    * Returns the story id
+    */
     public function createStory($xml)
     {
         $xmlParser = new XmlParser();
@@ -92,9 +141,15 @@ class Story implements StoryInterface
         return $story->id;
     }
 
-    public function createStorySlot($xml, $workingTitle)
+    /*
+    * Creates a new story in the database
+    * Returns the story id
+    */
+    public function createStorySlot($xml, $workingTitle, $userId)
     {
         $story = new \App\Story;
+
+        $story->user_id = $userId;
 
         $story->working_title = $workingTitle;
 
@@ -107,6 +162,11 @@ class Story implements StoryInterface
         return $story->id;
     }
 
+    /*
+    * This function is called when the xml validates through all necessary tests
+    * Updates the xm and metadata
+    * Sets the final parameter
+    */
     public function updateStory($xml, $id)
     {
         $xmlParser = new XmlParser();
@@ -133,9 +193,14 @@ class Story implements StoryInterface
         $story->save();
     }
 
+    /*
+    * This function is called when the xml doesn't validates through all necessary tests
+    * Updates the xml and metadata
+    * Sets the final parameter to false
+    */
     public function updateStorySlot($xml, $id, $workingTitle)
     {
-        $story = \App\Story::find($id);
+        $story = \App\Story::findOrFail($id);
 
         $story->working_title = $workingTitle;
 
@@ -148,7 +213,11 @@ class Story implements StoryInterface
         $story->save();
     }
 
-
+    /*
+    * Looks up the story in the database
+    * Deletes the story
+    * Deletes all corresponding metadata and folders
+    */
     public function deleteStory($id)
     {
         $story = \App\Story::findOrFail($id);
@@ -159,7 +228,10 @@ class Story implements StoryInterface
         \Storage::deleteDirectory($id);
     }
 
-
+    /*
+    * Searches all stories which matches the given parameters
+    * Returns them as an JSON
+    */
     public function getFilteredStories($parameters)
     {
         // get & set the input parameters
@@ -255,7 +327,10 @@ class Story implements StoryInterface
         return response()->json($stories, 200, $headers, JSON_UNESCAPED_UNICODE);
     }
 
-
+    /*
+    * Calculates the distance between two gps points
+    * Considers the curvature of the earth
+    */
     public function getGpsDistance($latitude1, $longitude1, $latitude2, $longitude2)
     {
         $earth_radius = 6371;
@@ -270,7 +345,9 @@ class Story implements StoryInterface
         return $distance;
     }
 
-
+    /*
+    * Creates a timestamp with the last possible time for the date
+    */
     public function setLatestTimestamp($date)
     {
         $retVal = null;
@@ -284,7 +361,9 @@ class Story implements StoryInterface
         return $retVal;
     }
 
-
+    /*
+    * Creates a timestamp with the earliest possible time for the date
+    */
     public function setEarliestTimestamp($date)
     {
         $retVal = null;
@@ -296,6 +375,18 @@ class Story implements StoryInterface
         }
 
         return $retVal;
+    }
+
+    /*
+    * Looks up a given story in the database and changes its final status 
+    */
+    public function changeFinalStatus($id, $status)
+    {
+        $story = \App\Story::findOrFail($id);
+
+        $story->final = $status;
+
+        $story->save();
     }
 
 

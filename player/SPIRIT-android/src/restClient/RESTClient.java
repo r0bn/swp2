@@ -28,10 +28,10 @@ public class RESTClient {
     /**
      * The URL to use for requests
      */
-    //private String URLallStories = "http://api.storytellar.de/story";
+    private String URLallStories = "http://api.storytellar.de/story";
 	
 	//get temporary test-xmls from server -> returns always the same tree sample-stories
-	private String URLallStories = "http://api.storytellar.de/temp";
+	//private String URLallStories = "http://api.storytellar.de/temp";
     private String URLmediaData = "http://api.storytellar.de/media";
 
     /**

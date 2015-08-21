@@ -6,6 +6,9 @@ use App\Interfaces\XmlValidator as XmlValidatorInterface;
 
 class XmlValidator implements XmlValidatorInterface
 {
+    /*
+    * Checks whether the xml metadata matches the rules or not
+    */
     public function validateXmlMetadata($xmlMetadata)
     {
         $retVal = null;
@@ -31,6 +34,9 @@ class XmlValidator implements XmlValidatorInterface
         return $retVal;
     }
 
+    /*
+    * Validates the xml against the ExARML Schema
+    */
     public function validateXmlSchema($xml)
     {
         $retVal = null;
@@ -45,6 +51,34 @@ class XmlValidator implements XmlValidatorInterface
         $xmlValidation = $xmlValidator->loadXML($xml);
 
         if ($xmlValidation && $xmlValidator->schemaValidate($xsdfile)) {
+            $retVal = true;
+        } else {
+            $retVal = false;
+        }
+
+        return $retVal;
+    }
+
+    /*
+    * Checks if the media files out of the xml matches the media files stored on the server
+    */
+    public function validateXmlMediaFiles($id, $xml)
+    {
+        $retVal = null;
+
+        $xmlParser = new XmlParser();
+        $xmlMediaFiles = $xmlParser->getXmlMediaFiles($xml);
+
+        $allFiles = array();
+
+        foreach (\Storage::allFiles($id) as $fileData) {
+            $fileInfo = pathinfo($fileData);
+            $allFiles[] = $fileInfo['basename'];
+        }
+
+        $diff = array_diff($xmlMediaFiles, $allFiles);
+
+        if (empty($diff)) {
             $retVal = true;
         } else {
             $retVal = false;

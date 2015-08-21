@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 /**
- * 
- * @author Mirjam
- *
  *Class 'Story' saves the data of a downloaded Story. This includes the meta data and the paths of the downloaded XML
  *and media data of the story. Class is serializable to load already downloaded stories to list 'downloadedStories' when the app starts.
+ * 
+ * 
+ * @author Mirjam
  */
 public class Story implements Serializable {
 	private Integer id;

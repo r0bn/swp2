@@ -40,9 +40,12 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*
- * @author Stefan
+/**
+ * 
  * This activity is used to filter the Stories in the StoryListInstalled_Fragment and StoryListStore_Fragment.
+ *
+ * @author Stefan
+ *
  */
 public class Filter_Activity extends ActionBarActivity {
 

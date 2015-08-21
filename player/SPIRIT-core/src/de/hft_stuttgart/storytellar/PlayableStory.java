@@ -3,6 +3,7 @@
  */
 package de.hft_stuttgart.storytellar;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,12 +12,36 @@ import de.hft_stuttgart.spirit.Poi;
 
 
 /**
- * @author Marcel
  * Is the actual Story for the StoryTellar project
+ * 
+ * @author Marcel
+ * 
  */
-public class PlayableStory {
+public class PlayableStory implements Serializable {
 	
+	/**
+	 * used to save checkpoints for each story
+	 */
+	private static final long serialVersionUID = -542199031893450594L;
 	// Metadata:
+	private Integer ID;
+	
+	public Integer getID() {
+		return ID;
+	}
+
+	public void setID(Integer iD) {
+		ID = iD;
+	}
+
+	public String getInitialStorypoint() {
+		return initialStorypoint;
+	}
+
+	public void setInitialStorypoint(String initialStorypoint) {
+		this.initialStorypoint = initialStorypoint;
+	}
+
 	private String title;
 	private String description;
 	private Double size;

@@ -176,12 +176,17 @@ public class GeoTools implements SensorListener, LocationListener {
 	public void onSensorChanged(int sensor, float[] values) {
 		mOrientation = values[0];
 		standWinkel = (float) Math.abs(values[1]);
+		Log.d("Orientation", ""+ mOrientation);
 
 	}
 
 	@Override
 	public void onAccuracyChanged(int sensor, int accuracy) {
 
+	}
+	
+	public float getMOrientation() {
+		return mOrientation;
 	}
 
 }

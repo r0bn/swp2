@@ -2,6 +2,7 @@
 
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
 class Registrar implements RegistrarContract {
@@ -15,7 +16,6 @@ class Registrar implements RegistrarContract {
 	public function validator(array $data)
 	{
 		return Validator::make($data, [
-			'name' => 'required|max:255',
 			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
 		]);
@@ -29,11 +29,34 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-		return User::create([
-			'name' => $data['name'],
+        $verifiedToken = bin2hex(openssl_random_pseudo_bytes(16)) . uniqid();
+
+		User::create([
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
+            'verified_token' => $verifiedToken,
 		]);
+
+        $this->sendVerificationEmail($data['email'], $verifiedToken);
+
+        return true;
 	}
+
+    /*
+    * Creates and sends an email to verify the email address
+    */
+    public function sendVerificationEmail($email, $token)
+    {
+        // $host = $request->getHost();
+        $host = 'http://local.dev:8888/';
+
+        $verificationLink = $host . 'register/verify/' . $token;
+
+        \Mail::send(array('text' => 'emails.verifyemail'), ['verificationLink' => $verificationLink], function($message) use ($email)
+        {
+            $message->to($email)->subject('Storytellar e-mail verification link');
+        });
+
+    }
 
 }

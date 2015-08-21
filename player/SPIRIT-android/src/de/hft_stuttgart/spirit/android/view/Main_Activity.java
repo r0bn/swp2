@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,17 +31,21 @@ import android.widget.Toast;
 import de.hft_stuttgart.spirit.android.R;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 
 /**
+ * This Activity is the Main Activity of the StorytellAR Application.
+ *It contains the two fragments which hold the installed stories and the stories which can be downloaded.
  * 
  * @author Lukas
- *	This Activity is the Main Activity of the StorytellAR Application.
- *	It contains the two fragments which hold the installed stories and the stories which can be downloaded.
+ *	
  */
 @SuppressWarnings("deprecation")
 public class Main_Activity extends ActionBarActivity implements ActionBar.TabListener{
@@ -58,6 +63,9 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    private static final int TIME_INTERVAL = 2000; // desired time between two back presses to close the app
+    private long mBackPressed;
 
     /**
      * This method is called, when the Activity is created.
@@ -110,8 +118,31 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         	}
         }
         
-    }
+     // Check if gps is enabled
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        	Log.i(this.getClass().getName(), "GPS not enabled");
+            new AlertDialog.Builder(this)
+            	.setTitle("GPS deaktiviert")
+            	.setMessage("Zum Spielen dieser App wird GPS benötigt. wollen sie ihr GPS einschalten?")
+            	.setPositiveButton("Einschalten", new DialogInterface.OnClickListener(){
+            		public void onClick(DialogInterface dialog, int id){
+            			// Enable gps manually
+            			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        Log.i(this.getClass().getName(), "GPS enabled manually");
+                    }
+            	})
+            	.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener(){
+            		public void onClick(DialogInterface dialog, int id){
+            			// Close dialog without enabling gps
+                        dialog.cancel();
+                    }
+            	}).show();
+        } else {
+        	Log.i(this.getClass().getName(), "GPS enabled");
+        }
+    }
 
     /**
      * This method is called when the OptionsMenu is created.
@@ -125,6 +156,9 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
         return true;
     }
 
+    /**
+     * 
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -172,7 +206,27 @@ public class Main_Activity extends ActionBarActivity implements ActionBar.TabLis
 
     	    return false;
     }
-   
+    
+    /**
+     * Back button listener.
+     * Will close the application if the back button is pressed twice in a TIME_INTERVAL.
+     */
+    
+    @Override
+    public void onBackPressed()
+    {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) 
+        { 
+        	  Intent intent = new Intent(Intent.ACTION_MAIN);
+              intent.addCategory(Intent.CATEGORY_HOME);
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              startActivity(intent);
+        }
+        else { Toast.makeText(getBaseContext(), "Zum Beenden erneut tippen.", Toast.LENGTH_SHORT).show(); }
+
+        mBackPressed = System.currentTimeMillis();
+    }
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in

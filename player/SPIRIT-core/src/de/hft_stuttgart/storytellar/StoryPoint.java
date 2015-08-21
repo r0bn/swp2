@@ -4,16 +4,19 @@
 package de.hft_stuttgart.storytellar;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hft_stuttgart.spirit.Poi;
 
 /**
+ * That part of the Story that plays at a certain Location with Videos, images, etc.
+ * 
  * @author Marcel
- *That part of the Story that plays at a certain Location with Videos, images, etc.
  */
-public class StoryPoint extends Poi{
+public class StoryPoint extends Poi implements Serializable{
 	
 	//maybe change status codes
 	//private String name;
@@ -42,8 +45,24 @@ public class StoryPoint extends Poi{
 	}
 	
 	/**
+	 * Check if one of the dependencys of this storypoint is fulfilled
+	 * @param interactions Interaction-objects of the story
+	 * @param sPoints StoryPoint-objects of the story
+	 * @return true if at least one dependency is fulfilled
+	 */
+	
+	public Boolean isPlayable(Map<String,Interaction> interactions, Map<String,StoryPoint> sPoints){
+		for (int i = 0; i < dependencies.size(); i++) {
+			if (!dependencies.get(i).isFulfilled(interactions, sPoints)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * 
-	 * @param dependency
+	 * @param dependency the dependency to be added
 	 */
 	
 	public void addDependency( Dependency dependency ){
@@ -65,7 +84,7 @@ public class StoryPoint extends Poi{
 	}*/
 
 	/**
-	 * @return the status
+	 * @return the status, as StorypointStatus
 	 */
 	public StorypointStatus getStatus() {
 		return status;
@@ -76,10 +95,11 @@ public class StoryPoint extends Poi{
 	 */
 	public void setStatus(StorypointStatus status) {
 		this.status = status;
+		System.out.println("Updated status of Storypoint " + this.getName() + " to: " + this.getStatus().toString());
 	}
 
 	/**
-	 * @return the dependency
+	 * @return the dependencys, as list
 	 */
 	public List<Dependency> getDependency() {
 		return dependencies;
@@ -107,7 +127,7 @@ public class StoryPoint extends Poi{
 	}*/
 
 	/**
-	 * @return the interaction
+	 * @return the interaction, as string
 	 */
 	public String getInteraction() {
 		return interaction;
@@ -134,6 +154,9 @@ public class StoryPoint extends Poi{
 		this.isEndStorypoint = isEndScene;
 	}
 	
+	/**
+	 * Print the object
+	 */
 	@Override
 	public String toString(){
 		String strng;
@@ -151,10 +174,18 @@ public class StoryPoint extends Poi{
 		return strng;
 	}
 
+	/**
+	 * 
+	 * @return the trackable_image, as Trackable
+	 */
 	public Trackable getTrackable_image() {
 		return trackable_image;
 	}
 
+	/**
+	 * 
+	 * @param trackable_image the Trackable to set
+	 */
 	public void setTrackable_image(Trackable trackable_image) {
 		this.trackable_image = trackable_image;
 	}

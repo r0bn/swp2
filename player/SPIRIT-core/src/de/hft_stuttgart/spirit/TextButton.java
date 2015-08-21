@@ -28,7 +28,7 @@ public class TextButton {
 		this.font = font;
 		box = guiAtlas.createSprite("textbox");
 		box.setSize(
-				((Gdx.graphics.getHeight() / 5) / box.getHeight())
+				((Gdx.graphics.getHeight() / 6) / box.getHeight())
 						* box.getWidth(), Gdx.graphics.getHeight() / 5);
 
 		switch (a) {
@@ -63,9 +63,7 @@ public class TextButton {
 	public void draw(SpriteBatch batch) {
 		box.draw(batch);
 		if (font.getBounds(text).width > 0.95 * box.getWidth()) {
-			font.setScale(fontScale * 0.95f * box.getWidth()/font.getBounds(text).width);
-		} else {
-			font.setScale(fontScale);
+			font.setScale(0.95f * box.getWidth()/font.getBounds(text).width);
 		}
 		font.setColor(1, 1, 1, 1);
 		font.draw(batch, text,

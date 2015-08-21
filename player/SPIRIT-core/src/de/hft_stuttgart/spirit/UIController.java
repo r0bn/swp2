@@ -14,7 +14,7 @@ public interface UIController {
 	public Location getUserLocation();
 
 	/**
-	 * FÃ¼gt einen neuen Geist hinzu, der dann im Radar als Ziel angezeigt wird.
+	 * Fügt einen neuen Geist hinzu, der dann im Radar als Ziel angezeigt wird.
 	 * 
 	 * @param Geistlocation
 	 */
@@ -40,7 +40,7 @@ public interface UIController {
 	public Location[] getGhostLocations();
 
 	/**
-	 * Gibt die Entfernung zum nahesten Geist als float zurÃ¼ck.
+	 * Gibt die Entfernung zum nahesten Geist als float zurück.
 	 * 
 	 * @return Entfernung in Metern
 	 */
@@ -63,7 +63,7 @@ public interface UIController {
 	public void showAllGhostNamesInRadar();
 
 	/**
-	 * Aktiviert die Namensanzeige fÃ¼r einen bestimmten Geist.
+	 * Aktiviert die Namensanzeige für einen bestimmten Geist.
 	 */
 	public void showGostnameInRader(Location ghost);
 
@@ -80,7 +80,7 @@ public interface UIController {
 	// Playlist
 
 	/**
-	 * FÃ¼gt einen neuen Eintrag zur Playlist hinzu.
+	 * Fügt einen neuen Eintrag zur Playlist hinzu.
 	 * 
 	 * @param PlaylistEntry
 	 *            des neuen Films.
@@ -93,23 +93,23 @@ public interface UIController {
 	public void removeAllVideos();
 
 	/**
-	 * @return GrÃ¶ÃŸe der Playlistqueue
+	 * @return Größe der Playlistqueue
 	 */
 	public int getQueueSize();
 
 	/**
 	 * Gibt die Position der aktuellen Wiedergabe an Wird aktuell kein Film
-	 * abgespielt ist die RÃ¼ckgabe -1
+	 * abgespielt ist die Rückgabe -1
 	 * 
 	 * @return Position in Millisekunden
 	 */
 	public int getFilmPosition();
 
 	/**
-	 * Gibt die LÃ¤nge des aktuellen Films an Wird aktuell kein Film abgespielt
-	 * ist die RÃ¼ckgabe -1
+	 * Gibt die Länge des aktuellen Films an Wird aktuell kein Film abgespielt
+	 * ist die Rückgabe -1
 	 * 
-	 * @return LÃ¤nge in Millisekunden
+	 * @return Länge in Millisekunden
 	 */
 	public int getFilmDuration();
 
@@ -119,23 +119,23 @@ public interface UIController {
 	public void stopFilm();
 
 	/**
-	 * Startet den nÃ¤chsten Eintrag in der Playlist. Wenn aktuell bereits ein
-	 * Film lÃ¤uft, hat dies nur Auswirkung, wenn der nÃ¤chste Eintrag in der
-	 * Playlist Autostart deaktiviert. Dieser wÃ¼rde dann automatisch gestartet
+	 * Startet den nächsten Eintrag in der Playlist. Wenn aktuell bereits ein
+	 * Film läuft, hat dies nur Auswirkung, wenn der nächste Eintrag in der
+	 * Playlist Autostart deaktiviert. Dieser würde dann automatisch gestartet
 	 * werden. Um eine aktuelle Wiedergabe abzubrechen nextFilm() benutzen.
 	 */
 	public void startFilm();
 
 	/**
-	 * Bricht die aktuelle Wiedergabe ab und startet den nÃ¤chsten Eintrag in der
-	 * Playlist. Wird aktuell kein Film abgespielt, wird nur der nÃ¤chste Film
+	 * Bricht die aktuelle Wiedergabe ab und startet den nächsten Eintrag in der
+	 * Playlist. Wird aktuell kein Film abgespielt, wird nur der nächste Film
 	 * gestartet, wie bei startFilm().
 	 */
 	public void nextFilm();
 
 	/**
 	 * Bricht die aktuelle Wiedergabe ab, leer die Playlist und setzt die Story
-	 * Engine zurÃ¼ck.
+	 * Engine zurück.
 	 */
 	public void resetAll();
 
@@ -166,7 +166,7 @@ public interface UIController {
 
 	/**
 	 * Erstellt einen Button, der vom Nutzer angetippt werden kann. Es werden
-	 * bis zu 6 solcher Buttons unterstÃ¼tzt. Wird ein Button angetippt werden
+	 * bis zu 6 solcher Buttons unterstützt. Wird ein Button angetippt werden
 	 * alle ausgeblendet und es wird ein Event erzeugt.
 	 * 
 	 * @param text
@@ -184,14 +184,14 @@ public interface UIController {
 	public void updateStoryEngine();
 
 	/**
-	 * Die Storyengine zurÃ¼cksetzen.
+	 * Die Storyengine zurücksetzen.
 	 */
 	public void resetStoryEngine();
 
 	// sonstiges
 
 	/**
-	 * LÃ¤sst das GerÃ¤t vibrieren
+	 * Lässt das Gerät vibrieren
 	 * 
 	 * @param Vibrationszeit
 	 *            in Millisekunden
@@ -199,7 +199,7 @@ public interface UIController {
 	public void vibrate(int time);
 
 	/**
-	 * LÃ¤sst das GerÃ¤t in einem bestimmten Muster zu vibrieren. Die erste Zahl
+	 * Lässt das Gerät in einem bestimmten Muster zu vibrieren. Die erste Zahl
 	 * gibt an, wie lange bis zum ersten Vibrieren gewartet werden soll. Dann
 	 * abwechselnd Vibrationszeit und Pause, jeweils in Millisekunden.
 	 * 
@@ -213,14 +213,14 @@ public interface UIController {
 	public void cancelVibrate();
 
 	/**
-	 * Gibt alle Events zurÃ¼ck, die seit dem letzten Abruf aufgetreten sind.
+	 * Gibt alle Events zurück, die seit dem letzten Abruf aufgetreten sind.
 	 * 
 	 * @return Array aller Events
 	 */
 	public SpiritEvent[] getEvents();
 
 	/**
-	 * Gibt den aktuellen Neigungswinkel des Tablets zurÃ¼ck
+	 * Gibt den aktuellen Neigungswinkel des Tablets zurück
 	 * 
 	 * @return Winkel
 	 */
@@ -250,7 +250,7 @@ public interface UIController {
 	public void startSignalToGhostEffect(long time);
 
 	/**
-	 * Aktiviert die "Untertitel" fÃ¼r die aktuelle Wiedergabe.
+	 * Aktiviert die "Untertitel" für die aktuelle Wiedergabe.
 	 */
 	public void enableSubtitle();
 
@@ -262,13 +262,27 @@ public interface UIController {
 	public void setBrowserAlpha(float alpha);
 	public void hideBrowser();
 	public void setBrowserSize(float width, float height);
-	//für Parser 
+	//f??arser 
 	public List<Poi> getArmlFromAssets(String filename);
 	public List<Poi> getArmlFromSdCard(String fullPath);
+	
+	//added from new spirit app
+	public OrbInfos getOrbInfos();
+	//
 	
 	public void showPicture(String picturePath);
 
 	public void hidePicture();
 
 	public void endStory();
+
+	public boolean vuforiaIsReady();
+
+	public void setText(String question);
+
+	public void hideText();
+
+	public void log(String who, String what);
+
+	public void setPictureAlpha(float f);
 }

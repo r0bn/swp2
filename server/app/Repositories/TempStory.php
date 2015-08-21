@@ -6,6 +6,10 @@ use App\Interfaces\TempStory as TempStoryInterface;
 
 use Carbon\Carbon;
 
+/*
+* Only for the temp routes for the player group
+* Check story for comments
+*/
 class TempStory implements TempStoryInterface
 {
     public function getAllStories()

@@ -1,7 +1,9 @@
 package de.hft_stuttgart.spirit;
 
+import java.io.Serializable;
 
-public class Poi {
+
+public class Poi implements Serializable{
 	
 	// Hier Felder einfügen
 	private String name;

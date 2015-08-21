@@ -109,6 +109,7 @@ public class StoryListStore_Fragment extends Fragment {
                 i.putExtra(StoryDetails_Activity.EXTRA_LOCATION, selectedStory.getLocation());
                 i.putExtra(StoryDetails_Activity.EXTRA_AUTHOR, selectedStory.getAuthor());
                 i.putExtra(StoryDetails_Activity.EXTRA_UPDATEDAT, selectedStory.getUpdated_at());
+                i.putExtra(StoryDetails_Activity.EXTRA_SIZE, selectedStory.getSize());
                 i.putExtra(StoryDetails_Activity.EXTRA_STOREORINSTALLED, "STORE");
                 
     	 		if (oldIntent.hasExtra("StoreFragmentStoryFilter")){	
@@ -172,11 +173,11 @@ public class StoryListStore_Fragment extends Fragment {
                 vi = inflater.inflate(R.layout.listview_item_row, null);
 
             TextView textTitel = (TextView) vi.findViewById(R.id.textTitel);
-            TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
+            //TextView textRegion = (TextView) vi.findViewById(R.id.textRegion);
             TextView textAutor = (TextView) vi.findViewById(R.id.textAutor);
             
-            GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
-            task.execute(item);
+            //GetGeoCodeLocationTask task = new GetGeoCodeLocationTask(textRegion,getActivity());
+            //task.execute(item);
 
 
             textTitel.setText(item.getTitle());
