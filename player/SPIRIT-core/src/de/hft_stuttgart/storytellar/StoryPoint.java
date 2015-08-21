@@ -16,23 +16,23 @@ import de.hft_stuttgart.spirit.Poi;
 public class StoryPoint extends Poi{
 	
 	//maybe change status codes
-	private String name;
+	//private String name;
 	private StorypointStatus status;
 	private List<Dependency> dependencies; // Instead of the, in the xml-documentation described, containers are multipe dependencies used.
 	private File video;
-	private Interaction interaction;
+	private String interaction;
 	private Boolean isEndStorypoint;
+	private Trackable trackable_image = null;
 	
 	public StoryPoint(){
 		super();
 		this.dependencies = new ArrayList<Dependency>();
 		this.video = new File("");
-		this.interaction = new Quiz(); // Default for interaction is quiz
 		this.status = StorypointStatus.OPEN;
 		this.isEndStorypoint = false;
 	}
 	
-	public StoryPoint(StorypointStatus status,	List<Dependency> dependencies, File video, Interaction interaction, Boolean isEndStorypoint){
+	public StoryPoint(StorypointStatus status,	List<Dependency> dependencies, File video, String interaction, Boolean isEndStorypoint){
 		super();
 		this.status = status;
 		this.dependencies = dependencies;
@@ -53,16 +53,16 @@ public class StoryPoint extends Poi{
 	/**
 	 * @return the name
 	 */
-	public String getName() {
+	/*public String getName() {
 		return name;
-	}
+	}*/
 
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	/*public void setName(String name) {
 		this.name = name;
-	}
+	}*/
 
 	/**
 	 * @return the status
@@ -109,14 +109,14 @@ public class StoryPoint extends Poi{
 	/**
 	 * @return the interaction
 	 */
-	public Interaction getInteraction() {
+	public String getInteraction() {
 		return interaction;
 	}
 
 	/**
 	 * @param interaction the interaction to set
 	 */
-	public void setInteraction(Interaction interaction) {
+	public void setInteraction(String interaction) {
 		this.interaction = interaction;
 	}
 
@@ -133,27 +133,29 @@ public class StoryPoint extends Poi{
 	public void setIsEndStorypoint(Boolean isEndScene) {
 		this.isEndStorypoint = isEndScene;
 	}
-
-	/**
-	 * starts the scene. not implemented yet.
-	 */
-	public void start(){
-		
-	}
 	
 	@Override
 	public String toString(){
 		String strng;
-		strng = ">>> Storypoint: " + name + " <<<\n";
+		strng = ">>> Storypoint: " + super.getName() + " <<<\n";
 		strng += "Status: " + status.toString() + "\n";
 		strng += "Video: " + super.getVideo() + "\n";
-		strng += "Interaction: " + interaction.toString() + "\n";
+		strng += "Interaction: " + interaction + "\n";
 		strng += "IsEndStorypoint: " + isEndStorypoint.toString() + "\n";
 		strng += "Dependencis:\n";
 		for (int i = 0; i < dependencies.size(); i++) {
 			strng += dependencies.get(i).toString() + "\n";
 		}
+		strng += "Trackable: "+trackable_image + "\n";
 		strng += super.toString();
 		return strng;
+	}
+
+	public Trackable getTrackable_image() {
+		return trackable_image;
+	}
+
+	public void setTrackable_image(Trackable trackable_image) {
+		this.trackable_image = trackable_image;
 	}
 }

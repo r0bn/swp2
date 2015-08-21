@@ -9,4 +9,7 @@ public interface SpiritWebviewHandler {
 	public int getWebviewWidth();
 	public int getWebviewHeight();
 	public boolean isWebviewVisible();
+	public void showPicture(String data);
+	public void hidePicture();
+	public void endStory();
 }

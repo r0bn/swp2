@@ -133,7 +133,10 @@ public class SpiritMain extends ApplicationAdapter implements
 		vuforia.onSurfaceCreated();
 		spiritFilm.setup();
 		events = new ArrayList<SpiritEvent>();
-		spiritFacade = new Facade(this);
+		
+		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
+			
+		spiritFacade = new Facade(this, story);
 		guiAtlas = new TextureAtlas(Gdx.files.internal("gui.pack"));
 		sonarAtlas = new TextureAtlas(Gdx.files.internal("sonar.pack"));
 		webViewX = guiAtlas.createSprite("stopp");
@@ -154,10 +157,6 @@ public class SpiritMain extends ApplicationAdapter implements
 		customTextButton[3] = new TextButton(guiAtlas, font,positionA.Right,positionB.CENTER);
 		customTextButton[4] = new TextButton(guiAtlas, font,positionA.Left,positionB.BOTTOM);
 		customTextButton[5] = new TextButton(guiAtlas, font,positionA.Right,positionB.BOTTOM);
-		
-		story = new StoryXMLParser().parse(storyXMLPath);	//Storytellar
-		
-
 	}
 
 	boolean workaround = false;
@@ -353,20 +352,20 @@ public class SpiritMain extends ApplicationAdapter implements
 		
 		
 		// nebel starten und stoppen
-		if (!spiritFilm.isNull() && spiritFilm.isPlaying()){
-			if (spiritFilm.getPosition() > spiritFilm.getDuration() - 500){
-				if (!fadeEffect.isActive){
-					startFadeEffect();
-				}
-			}else if (spiritFilm.getPosition() > 500){
-				if (fadeEffect.isActive){
-					stopFadeEffect();
-				}
-			}
-		}
-		if(spiritFilm.isNull() && !spiritFilm.isPlaying() && !playlist.isNextFilmAvailable()){
-			stopFadeEffect();
-		}
+//		if (!spiritFilm.isNull() && spiritFilm.isPlaying()){
+//			if (spiritFilm.getPosition() > spiritFilm.getDuration() - 500){
+//				if (!fadeEffect.isActive){
+//					startFadeEffect();
+//				}
+//			}else if (spiritFilm.getPosition() > 500){
+//				if (fadeEffect.isActive){
+//					stopFadeEffect();
+//				}
+//			}
+//		}
+//		if(spiritFilm.isNull() && !spiritFilm.isPlaying() && !playlist.isNextFilmAvailable()){
+//			stopFadeEffect();
+//		}
 
 	}
 
@@ -446,7 +445,7 @@ public class SpiritMain extends ApplicationAdapter implements
 		spiritFacade.stopFilm();
 		spiritFacade.resetStoryEngine();
 		startFilm = false;
-		stopFadeEffect();
+		//stopFadeEffect();
 	}
 
 	@Override
@@ -684,5 +683,21 @@ public class SpiritMain extends ApplicationAdapter implements
 	 */
 	public void setStory(PlayableStory story) {
 		this.story = story;
+	}
+	
+	
+	@Override
+	public void openPicture(String pictureURL) {
+        webview.showPicture(pictureURL);
+	}
+
+	@Override
+	public void hidePicture() {
+		webview.hidePicture();
+	}
+
+	@Override
+	public void endStory() {
+		webview.endStory();
 	}
 }

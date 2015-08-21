@@ -73,7 +73,7 @@ public class Dependency {
 	 * @return true if conditions are fulfilled, else false
 	 */
 	public Boolean isFulfilled(){
-		return null;
+		return true;
 	}
 	
 	public String toString(){

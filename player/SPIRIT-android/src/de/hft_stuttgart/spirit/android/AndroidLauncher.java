@@ -1,5 +1,6 @@
 package de.hft_stuttgart.spirit.android;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.nfc.NdefMessage;
@@ -28,6 +30,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -47,6 +50,7 @@ import com.qualcomm.vuforia.TrackerManager;
 
 import de.hft_stuttgart.spirit.SpiritMain;
 import de.hft_stuttgart.spirit.SpiritWebviewHandler;
+import de.hft_stuttgart.spirit.android.view.Main_Activity;
 import de.hft_stuttgart.spirit.android.view.StoryDetails_Activity;
 
 public class AndroidLauncher extends AndroidApplication implements
@@ -68,6 +72,9 @@ public class AndroidLauncher extends AndroidApplication implements
 	WebView webView;
 	RelativeLayout layout;
 	RelativeLayout.LayoutParams params;
+	
+	ImageView imageView;
+	RelativeLayout.LayoutParams imageParams;
 
 	private NfcAdapter mNfcAdapter;
 	private NfcLibgdxInterface nfcInterface;
@@ -249,8 +256,15 @@ public class AndroidLauncher extends AndroidApplication implements
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		setWebviewVisible(false);
 		layout.addView(webView, params);
-		setContentView(layout);
+		
+		imageView = new ImageView(this);
+		imageParams = new RelativeLayout.LayoutParams(900, 500);
+		imageParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		imageParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		imageView.setVisibility(View.INVISIBLE);
+		layout.addView(imageView,imageParams);
 
+		setContentView(layout);
 	}
 
 	@Override
@@ -663,5 +677,35 @@ public class AndroidLauncher extends AndroidApplication implements
 	@Override
 	public boolean isWebviewVisible() {
 		return (webView.getVisibility() == View.VISIBLE);
+	}
+	
+	@Override
+	public void showPicture(String picture) {
+		final String pictureFinal = picture;
+		imageView.post(new Runnable() {
+			
+			@Override
+			public void run() {				
+				imageView.setImageBitmap(BitmapFactory.decodeFile(pictureFinal));
+				imageView.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+
+	@Override
+	public void hidePicture() {
+		imageView.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				imageView.setVisibility(View.GONE);
+			}
+		});
+	}
+
+	@Override
+	public void endStory() {
+		Intent i = new Intent(this, Main_Activity.class);
+		startActivity(i);
 	}
 }

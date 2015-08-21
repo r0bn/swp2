@@ -1,1 +1,1 @@
-## Back-End for Storytellar (Prototype 1)
+## Back-End for Storytellar (Prototype 2)
